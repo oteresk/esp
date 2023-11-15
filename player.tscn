@@ -1,26 +1,68 @@
-[gd_scene load_steps=3 format=3 uid="uid://ck5hhtaq74dmq"]
+[gd_scene load_steps=13 format=3 uid="uid://ck5hhtaq74dmq"]
+
+[ext_resource type="Script" path="res://player.cs" id="1_5cb2v"]
+[ext_resource type="Texture2D" uid="uid://chdl1s1uscao4" path="res://art/Hero-sprites/tile000.png" id="2_eid0k"]
+[ext_resource type="Texture2D" uid="uid://ds1akqdacl2no" path="res://art/Hero-sprites/tile001.png" id="3_b0sds"]
+[ext_resource type="Texture2D" uid="uid://d0ecyklv7him" path="res://art/Hero-sprites/tile002.png" id="4_3x2uf"]
+[ext_resource type="Texture2D" uid="uid://tsmm2fpa6hxl" path="res://art/Hero-sprites/tile011.png" id="5_lgegw"]
+[ext_resource type="Texture2D" uid="uid://ckf3kur5q25er" path="res://art/Hero-sprites/tile006.png" id="6_jqh4c"]
+[ext_resource type="Texture2D" uid="uid://b5e1fan7bhgs" path="res://art/Hero-sprites/tile007.png" id="7_m31hg"]
+[ext_resource type="Texture2D" uid="uid://dbg0wdh3r2lyl" path="res://art/Hero-sprites/tile008.png" id="8_hsd1o"]
+[ext_resource type="Texture2D" uid="uid://chqowx2lfuhk2" path="res://art/Hero-sprites/tile009.png" id="9_jv5h3"]
+[ext_resource type="Texture2D" uid="uid://c3y1qv5ui8njn" path="res://art/Hero-sprites/tile010.png" id="10_xgfpe"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7cwag"]
 animations = [{
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_eid0k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_b0sds")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_3x2uf")
+}],
 "loop": true,
 "name": &"idle",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_lgegw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_jqh4c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_m31hg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_hsd1o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_jv5h3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_xgfpe")
+}],
 "loop": true,
 "name": &"walk",
 "speed": 5.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_538jq"]
+radius = 6.0
+height = 34.0
 
 [node name="Player" type="Area2D"]
+script = ExtResource("1_5cb2v")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_7cwag")
 animation = &"walk"
+frame_progress = 0.500604
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_538jq")
