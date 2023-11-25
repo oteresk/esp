@@ -60,9 +60,10 @@ script = ExtResource("1_5cb2v")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_7cwag")
-animation = &"walk"
-frame_progress = 0.500604
+animation = &"idle"
+frame_progress = 0.297903
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_538jq")
