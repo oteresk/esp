@@ -6,26 +6,32 @@ public partial class player : Area2D
 	[Export]
 	public int Speed {get; set; } = 200;
 	public const float DashSpeed = 600;
-	private const float DashDuration = 0.2f;
-	private const float DashCooldown = 1.0f;
-	private float dashTimer = 0;
+	public const float DashDuration = 0.2f;
+	public const float DashCooldown = 1.0f;
+	public float dashTimer = 0;
+	
 	private float dashCooldownTimer = 0;
 	private bool isDashing = false;
+	
 	public Vector2 ScreenSize;
+	Vector2 velocity; 
+	AnimatedSprite2D animatedSprite2D;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		ScreenSize = GetViewportRect().Size;
+		animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		animatedSprite2D.Animation = "idle";
+		animatedSprite2D.Play();
 		// Hide();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		// The player's movement vector.
-		Vector2 velocity = Vector2.Zero; 
-
+		velocity = Vector2.Zero;
+		
 		// Basic movement handlers
 		if (Input.IsActionPressed("move_right"))
 			velocity.X += 0.1f;
@@ -49,8 +55,6 @@ public partial class player : Area2D
 			dashTimer = DashDuration;
 			dashCooldownTimer = DashCooldown;
 		}
-		
-		var animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 
 		// If player is dashing, multiply velocity by dash speed and check dash cooldown
 		if(isDashing)
@@ -68,18 +72,11 @@ public partial class player : Area2D
 		{
 			velocity *= Speed;
 		}	
-		// Otherwise just set the animation to idle
-		else
-		{
-			animatedSprite2D.Animation = "idle";
-		}
-		animatedSprite2D.Play();
 	
 		// Moving the character around the screen
 		Position += velocity * (float)delta;
-		Position = new Vector2(
-		x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
-		y: Mathf.Clamp(Position.Y, 0, ScreenSize.Y));
+		// Position = new Vector2( x: Position.X, y: Position.Y);
+		
 	
 		// Setting the animations for the character
 		if (velocity.X != 0)
@@ -93,6 +90,11 @@ public partial class player : Area2D
    			animatedSprite2D.Animation = "walk";
 			//animatedSprite2D.FlipV = velocity.Y > 0;
 		}
+		else 
+		{
+			animatedSprite2D.Animation = "idle";
+		}
+	
 	}
 	
 }
