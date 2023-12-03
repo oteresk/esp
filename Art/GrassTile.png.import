@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ds1akqdacl2no"
-path="res://.godot/imported/tile001.png-31ccd1343b0abffb64bb867c922e95c7.ctex"
+uid="uid://cg1yhdevm0s3e"
+path="res://.godot/imported/GrassTile.png-46e32d0a492a63ff19242c6bd945db1a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Hero-sprites/tile001.png"
-dest_files=["res://.godot/imported/tile001.png-31ccd1343b0abffb64bb867c922e95c7.ctex"]
+source_file="res://Art/GrassTile.png"
+dest_files=["res://.godot/imported/GrassTile.png-46e32d0a492a63ff19242c6bd945db1a.ctex"]
 
 [params]
 
