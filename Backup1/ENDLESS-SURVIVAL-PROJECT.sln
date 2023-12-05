@@ -1,15 +1,12 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.7.34003.232
-MinimumVisualStudioVersion = 10.0.40219.1
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "endless-survival-project", "endless-survival-project.csproj", "{27D0EA52-6479-484D-B4FA-873640FA1BB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		ExportDebug|Any CPU = ExportDebug|Any CPU
-		ExportRelease|Any CPU = ExportRelease|Any CPU
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{27D0EA52-6479-484D-B4FA-873640FA1BB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -18,11 +15,5 @@ Global
 		{27D0EA52-6479-484D-B4FA-873640FA1BB6}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
 		{27D0EA52-6479-484D-B4FA-873640FA1BB6}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{27D0EA52-6479-484D-B4FA-873640FA1BB6}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {DA369D13-6079-4A01-8C37-1AC2D7B15388}
 	EndGlobalSection
 EndGlobal

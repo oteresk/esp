@@ -24,7 +24,6 @@ public partial class player : Area2D
 		animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		animatedSprite2D.Animation = "idle";
 		animatedSprite2D.Play();
-		// Hide();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -54,7 +53,7 @@ public partial class player : Area2D
 			isDashing = true;
 			dashTimer = DashDuration;
 			dashCooldownTimer = DashCooldown;
-		}
+        }
 
 		// If player is dashing, multiply velocity by dash speed and check dash cooldown
 		if(isDashing)
@@ -81,14 +80,23 @@ public partial class player : Area2D
 		// Setting the animations for the character
 		if (velocity.X != 0)
 		{
-			animatedSprite2D.Animation = "walk";
-   			animatedSprite2D.FlipV = false;
-			animatedSprite2D.FlipH = velocity.X < 0;
+			if (isDashing)
+                animatedSprite2D.Animation = "dash";
+            else
+			{
+                animatedSprite2D.Animation = "walk";
+                animatedSprite2D.FlipV = false;
+                animatedSprite2D.FlipH = velocity.X < 0;
+            }
 		}
 		else if (velocity.Y != 0)
 		{
-   			animatedSprite2D.Animation = "walk";
-			//animatedSprite2D.FlipV = velocity.Y > 0;
+            if (isDashing)
+                animatedSprite2D.Animation = "dash";
+            else
+			{
+                animatedSprite2D.Animation = "walk";
+            }
 		}
 		else 
 		{

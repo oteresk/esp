@@ -1,0 +1,85 @@
+[gd_scene load_steps=10 format=3 uid="uid://dxwoxio674kr7"]
+
+[ext_resource type="Texture2D" uid="uid://qdo8fihjcymo" path="res://Art/GrassAtlas.png" id="2_smc35"]
+[ext_resource type="Shader" uid="uid://cvhn6ijovpdnc" path="res://Shaders/shader.tres" id="3_7njkp"]
+[ext_resource type="PackedScene" uid="uid://ykihvlu1ew8a" path="res://Scenes/player.tscn" id="3_eiu3v"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cqeti"]
+resource_name = "Grass"
+texture = ExtResource("2_smc35")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_w4233"]
+tile_size = Vector2i(128, 128)
+sources/6 = SubResource("TileSetAtlasSource_cqeti")
+tile_proxies/coords_level = [[1, Vector2i(0, 0)], [6, Vector2i(0, 0)], [4, Vector2i(0, 0)], [6, Vector2i(1, 0)], [5, Vector2i(0, 0)], [6, Vector2i(2, 0)]]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_s1uak"]
+noise_type = 3
+seed = 2
+frequency = 0.006
+fractal_type = 2
+fractal_octaves = 7
+fractal_lacunarity = 3.34
+fractal_weighted_strength = 0.63
+cellular_jitter = 0.7
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_toyhq"]
+width = 1024
+height = 1024
+seamless = true
+seamless_blend_skirt = 0.229
+noise = SubResource("FastNoiseLite_s1uak")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_188ne"]
+shader = ExtResource("3_7njkp")
+shader_parameter/Noise_Color = Color(0.12549, 0.34902, 0.247059, 1)
+shader_parameter/AlphaLevel = 0.36
+shader_parameter/Texture2DParameter = SubResource("NoiseTexture2D_toyhq")
+
+[sub_resource type="Environment" id="Environment_h8lsd"]
+background_mode = 3
+tonemap_mode = 3
+glow_enabled = true
+glow_intensity = 1.0
+glow_bloom = 0.02
+glow_blend_mode = 1
+glow_hdr_threshold = 0.01
+glow_hdr_scale = 1.0
+glow_hdr_luminance_cap = 0.1
+adjustment_enabled = true
+
+[node name="World" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scale = Vector2(2, 2)
+transform = Transform2D(2, 0, 0, 2, 0, 0)
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(1920, 1080)
+
+[node name="TileMap" type="TileMap" parent="ParallaxBackground/ParallaxLayer"]
+texture_filter = 1
+tile_set = SubResource("TileSet_w4233")
+format = 2
+layer_0/tile_data = PackedInt32Array(0, 131078, 0, 1, 65542, 0, 65537, 131078, 0, 65538, 6, 0, 65539, 65542, 0, 131075, 65542, 0, 131076, 131078, 0, 131077, 131078, 0, 196613, 131078, 0, 196614, 131078, 0, 262151, 65542, 0, 262152, 65542, 0, 327688, 131078, 0, 327689, 65542, 0, 131072, 131078, 0, 196608, 131078, 0, 262144, 65542, 0, 327680, 65542, 0, 131073, 6, 0, 196609, 65542, 0, 262145, 6, 0, 327681, 131078, 0, 2, 131078, 0, 131074, 131078, 0, 196610, 131078, 0, 262146, 65542, 0, 327682, 6, 0, 3, 65542, 0, 196611, 6, 0, 262147, 6, 0, 327683, 65542, 0, 4, 131078, 0, 65540, 65542, 0, 196612, 65542, 0, 262148, 131078, 0, 327684, 131078, 0, 5, 65542, 0, 65541, 131078, 0, 262149, 65542, 0, 327685, 131078, 0, 6, 6, 0, 65542, 65542, 0, 131078, 65542, 0, 262150, 131078, 0, 327686, 65542, 0, 7, 6, 0, 65543, 65542, 0, 131079, 65542, 0, 196615, 65542, 0, 327687, 65542, 0, 8, 131078, 0, 65544, 65542, 0, 131080, 65542, 0, 196616, 6, 0, 9, 65542, 0, 65545, 131078, 0, 131081, 131078, 0, 196617, 131078, 0, 262153, 131078, 0, 65536, 131078, 0, 393216, 65542, 0, 393217, 6, 0, 393218, 131078, 0, 393219, 6, 0, 393220, 131078, 0, 393221, 65542, 0, 393222, 131078, 0, 393223, 65542, 0, 393224, 6, 0, 393225, 65542, 0, 393226, 131078, 0, 458752, 6, 0, 458753, 131078, 0, 458754, 6, 0, 458755, 65542, 0, 458756, 6, 0, 458757, 131078, 0, 458758, 6, 0, 458759, 131078, 0, 458760, 6, 0, 458761, 131078, 0, 458762, 65542, 0, 524288, 131078, 0, 524289, 6, 0, 524290, 131078, 0, 524291, 6, 0, 524292, 6, 0, 524293, 6, 0, 524294, 65542, 0, 524295, 6, 0, 524296, 131078, 0, 524297, 65542, 0, 524298, 131078, 0, 327690, 6, 0, 262154, 6, 0, 196618, 6, 0, 131082, 6, 0, 65546, 6, 0, 10, 6, 0, 11, 131078, 0, 65547, 65542, 0, 131083, 6, 0, 196619, 6, 0, 262155, 6, 0, 327691, 65542, 0, 393227, 6, 0, 458763, 6, 0, 524299, 131078, 0, 12, 6, 0, 65548, 6, 0, 131084, 131078, 0, 196620, 131078, 0, 262156, 6, 0, 327692, 131078, 0, 393228, 65542, 0, 458764, 6, 0, 524300, 131078, 0, 13, 131078, 0, 65549, 131078, 0, 131085, 6, 0, 196621, 6, 0, 262157, 131078, 0, 327693, 6, 0, 393229, 131078, 0, 458765, 65542, 0, 524301, 131078, 0, 14, 6, 0, 65550, 131078, 0, 131086, 65542, 0, 196622, 6, 0, 262158, 6, 0, 327694, 131078, 0, 393230, 6, 0, 458766, 6, 0, 524302, 131078, 0)
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(1920, 1200)
+
+[node name="ColorRect" type="ColorRect" parent="ParallaxBackground/ParallaxLayer2"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_188ne")
+offset_right = 1920.0
+offset_bottom = 1200.0
+
+[node name="Player" parent="." instance=ExtResource("3_eiu3v")]
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+Speed = 100
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_h8lsd")
