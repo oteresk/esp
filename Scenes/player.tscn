@@ -1,16 +1,16 @@
 [gd_scene load_steps=14 format=3 uid="uid://ykihvlu1ew8a"]
 
 [ext_resource type="Script" path="res://Scripts/player.cs" id="1_kjyyd"]
-[ext_resource type="Texture2D" uid="uid://chdl1s1uscao4" path="res://Art/Hero-sprites/tile000.png" id="2_1trhb"]
-[ext_resource type="Texture2D" uid="uid://bboih6d0wcpjc" path="res://Art/Hero-sprites/tile012.png" id="2_pw2lt"]
-[ext_resource type="Texture2D" uid="uid://ds1akqdacl2no" path="res://Art/Hero-sprites/tile001.png" id="3_gok1e"]
-[ext_resource type="Texture2D" uid="uid://d0ecyklv7him" path="res://Art/Hero-sprites/tile002.png" id="4_o5std"]
-[ext_resource type="Texture2D" uid="uid://tsmm2fpa6hxl" path="res://Art/Hero-sprites/tile011.png" id="5_yc0qp"]
-[ext_resource type="Texture2D" uid="uid://ckf3kur5q25er" path="res://Art/Hero-sprites/tile006.png" id="6_puj2a"]
-[ext_resource type="Texture2D" uid="uid://b5e1fan7bhgs" path="res://Art/Hero-sprites/tile007.png" id="7_tems3"]
-[ext_resource type="Texture2D" uid="uid://dbg0wdh3r2lyl" path="res://Art/Hero-sprites/tile008.png" id="8_dwljk"]
-[ext_resource type="Texture2D" uid="uid://chqowx2lfuhk2" path="res://Art/Hero-sprites/tile009.png" id="9_7ytke"]
-[ext_resource type="Texture2D" uid="uid://c3y1qv5ui8njn" path="res://Art/Hero-sprites/tile010.png" id="10_0ly30"]
+[ext_resource type="Texture2D" uid="uid://chdl1s1uscao4" path="res://art/Hero-sprites/tile000.png" id="2_1trhb"]
+[ext_resource type="Texture2D" uid="uid://bboih6d0wcpjc" path="res://art/Hero-sprites/tile012.png" id="2_pw2lt"]
+[ext_resource type="Texture2D" uid="uid://ds1akqdacl2no" path="res://art/Hero-sprites/tile001.png" id="3_gok1e"]
+[ext_resource type="Texture2D" uid="uid://d0ecyklv7him" path="res://art/Hero-sprites/tile002.png" id="4_o5std"]
+[ext_resource type="Texture2D" uid="uid://tsmm2fpa6hxl" path="res://art/Hero-sprites/tile011.png" id="5_yc0qp"]
+[ext_resource type="Texture2D" uid="uid://ckf3kur5q25er" path="res://art/Hero-sprites/tile006.png" id="6_puj2a"]
+[ext_resource type="Texture2D" uid="uid://b5e1fan7bhgs" path="res://art/Hero-sprites/tile007.png" id="7_tems3"]
+[ext_resource type="Texture2D" uid="uid://dbg0wdh3r2lyl" path="res://art/Hero-sprites/tile008.png" id="8_dwljk"]
+[ext_resource type="Texture2D" uid="uid://chqowx2lfuhk2" path="res://art/Hero-sprites/tile009.png" id="9_7ytke"]
+[ext_resource type="Texture2D" uid="uid://c3y1qv5ui8njn" path="res://art/Hero-sprites/tile010.png" id="10_0ly30"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7cwag"]
 animations = [{
@@ -64,7 +64,7 @@ animations = [{
 radius = 6.0
 height = 34.0
 
-[node name="Player" type="Area2D"]
+[node name="Player" type="Area2D" groups=["players"]]
 script = ExtResource("1_kjyyd")
 metadata/_edit_group_ = true
 

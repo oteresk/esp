@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dxwoxio674kr7"]
+[gd_scene load_steps=11 format=3 uid="uid://dxwoxio674kr7"]
 
-[ext_resource type="Texture2D" uid="uid://qdo8fihjcymo" path="res://Art/GrassAtlas.png" id="2_smc35"]
+[ext_resource type="Texture2D" uid="uid://qdo8fihjcymo" path="res://art/GrassAtlas.png" id="2_smc35"]
 [ext_resource type="Shader" uid="uid://cvhn6ijovpdnc" path="res://Shaders/shader.tres" id="3_7njkp"]
 [ext_resource type="PackedScene" uid="uid://ykihvlu1ew8a" path="res://Scenes/player.tscn" id="3_eiu3v"]
+[ext_resource type="PackedScene" uid="uid://c0r7oxe41obm7" path="res://Scenes/enemy_1.tscn" id="4_bn5od"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cqeti"]
 resource_name = "Grass"
@@ -80,6 +81,8 @@ offset_bottom = 1200.0
 texture_filter = 1
 scale = Vector2(0.5, 0.5)
 Speed = 100
+
+[node name="enemy_1" parent="." instance=ExtResource("4_bn5od")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h8lsd")
