@@ -1,11 +1,12 @@
 [gd_scene load_steps=7 format=3 uid="uid://d2xu8yw5qkaq"]
 
 [ext_resource type="Shader" path="res://Shaders/Clipping.gdshader" id="1_e0ehh"]
-[ext_resource type="Texture2D" uid="uid://b8wi7npjxxek1" path="res://art/SpellCircleTilted.png" id="1_e3u36"]
-[ext_resource type="Texture2D" uid="uid://ll5couqyeoj5" path="res://art/SpellCircleTilted_Black.png" id="4_2j6nb"]
+[ext_resource type="Texture2D" uid="uid://b8wi7npjxxek1" path="res://Builds/Backup/v0.3/Art/SpellCircleTilted.png" id="1_e3u36"]
+[ext_resource type="Texture2D" uid="uid://ll5couqyeoj5" path="res://Builds/Backup/v0.3/Art/SpellCircleTilted_Black.png" id="4_2j6nb"]
 [ext_resource type="Script" path="res://Scripts/CaptureTimer.cs" id="4_jcyej"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4e048"]
+resource_local_to_scene = true
 shader = ExtResource("1_e0ehh")
 shader_parameter/fill_ratio = 0.0
 shader_parameter/start_angle = 0.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dxwoxio674kr7"]
+[gd_scene load_steps=10 format=3 uid="uid://dxwoxio674kr7"]
 
 [ext_resource type="PackedScene" uid="uid://dv81swjibar3c" path="res://Scenes/parallax_background.tscn" id="1_3b8vd"]
 [ext_resource type="PackedScene" uid="uid://ykihvlu1ew8a" path="res://Scenes/player.tscn" id="3_eiu3v"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/resource_template-IronMine.tscn" id="5_y1y6w"]
 [ext_resource type="PackedScene" uid="uid://3ug8x7bl8jwu" path="res://Scenes/resource_template-ManaWell.tscn" id="7_h85bg"]
 [ext_resource type="PackedScene" uid="uid://ctcv7jmln8o34" path="res://Scenes/resource_template-Wood.tscn" id="8_6fy56"]
-[ext_resource type="PackedScene" uid="uid://d2xu8yw5qkaq" path="res://Scenes/CaptureTimer.tscn" id="9_k7jhq"]
 [ext_resource type="PackedScene" uid="uid://bhl4p70uusacn" path="res://Scenes/fps.tscn" id="10_2xbt4"]
 
 [sub_resource type="Environment" id="Environment_h8lsd"]
@@ -33,6 +32,7 @@ Speed = 100
 environment = SubResource("Environment_h8lsd")
 
 [node name="ResourceDiscoveries" type="Node2D" parent="."]
+position = Vector2(-2, -2)
 script = ExtResource("4_egxe6")
 rTemplateIronMine = ExtResource("5_y1y6w")
 rTemplateGoldMine = ExtResource("4_ikssv")
@@ -40,15 +40,7 @@ rTemplateManaWell = ExtResource("7_h85bg")
 rTemplateWood = ExtResource("8_6fy56")
 gridSizeX = 10
 gridSizeY = 10
-cellSizeX = 1920
-cellSizeY = 1080
 resourcesPerCell = 2
-
-[node name="Resource" parent="ResourceDiscoveries" instance=ExtResource("4_ikssv")]
-position = Vector2(-330.2, -137)
-
-[node name="CaptureTimer" parent="ResourceDiscoveries" instance=ExtResource("9_k7jhq")]
-position = Vector2(-330.2, -137)
 
 [node name="FPS" parent="." instance=ExtResource("10_2xbt4")]
 

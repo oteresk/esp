@@ -1,12 +1,33 @@
-[gd_scene load_steps=4 format=3 uid="uid://3ug8x7bl8jwu"]
+[gd_scene load_steps=8 format=3 uid="uid://3ug8x7bl8jwu"]
 
 [ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="1_bdwio"]
-[ext_resource type="Texture2D" uid="uid://qxuklm01dh3j" path="res://Art/Resources/Mana Well.png" id="1_gahe0"]
+[ext_resource type="Texture2D" uid="uid://qxuklm01dh3j" path="res://Builds/Backup/v0.3/Art/Resources/Mana Well.png" id="1_gahe0"]
+[ext_resource type="Shader" path="res://Shaders/SaturationShader.gdshader" id="1_xtdyd"]
 [ext_resource type="Resource" uid="uid://dlx2so3iqltdy" path="res://ResourceDiscoveries/ManaWell.tres" id="2_ro3pi"]
+[ext_resource type="PackedScene" uid="uid://d2xu8yw5qkaq" path="res://Scenes/CaptureTimer.tscn" id="5_rvxdf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d03md"]
+resource_local_to_scene = true
+shader = ExtResource("1_xtdyd")
+shader_parameter/saturation = null
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_s0u15"]
+radius = 471.038
 
 [node name="Resource" type="Sprite2D"]
 z_index = 1
-scale = Vector2(0.4, 0.4)
+material = SubResource("ShaderMaterial_d03md")
 texture = ExtResource("1_gahe0")
 script = ExtResource("1_bdwio")
 RDResource = ExtResource("2_ro3pi")
+
+[node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_s0u15")
+
+[node name="CaptureTimer" parent="." instance=ExtResource("5_rvxdf")]
+visible = false
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

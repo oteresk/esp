@@ -17,6 +17,7 @@ ResourceScriptDirectories=["res://"]
 [application]
 
 config/name="endless-survival-project"
+run/main_scene="res://Scenes/world.tscn"
 config/features=PackedStringArray("4.1", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -33,7 +34,7 @@ project/assembly_name="endless-survival-project"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/MonoCustomResourceRegistry/plugin.cfg")
+enabled=PackedStringArray()
 
 [input]
 

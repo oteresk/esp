@@ -1,12 +1,31 @@
-[gd_scene load_steps=4 format=3 uid="uid://c410fmb2oa282"]
+[gd_scene load_steps=8 format=3 uid="uid://c410fmb2oa282"]
 
-[ext_resource type="Texture2D" uid="uid://diapsx8y3pdo" path="res://Art/Resources/Gold Mine.png" id="1_ldtuu"]
+[ext_resource type="Shader" path="res://Scenes/SaturationShader.gdshader" id="1_am5oi"]
+[ext_resource type="Texture2D" uid="uid://diapsx8y3pdo" path="res://Builds/Backup/v0.3/Art/Resources/Gold Mine.png" id="1_ldtuu"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="1_mu2uf"]
 [ext_resource type="Resource" uid="uid://b6ojs3ejbdlmx" path="res://ResourceDiscoveries/GoldMine.tres" id="2_x2ovg"]
+[ext_resource type="PackedScene" uid="uid://d2xu8yw5qkaq" path="res://Scenes/CaptureTimer.tscn" id="5_yqdwp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0g3ol"]
+resource_local_to_scene = true
+shader = ExtResource("1_am5oi")
+shader_parameter/saturation = 0.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v8oce"]
+radius = 471.038
 
 [node name="Resource" type="Sprite2D"]
-z_index = 1
-scale = Vector2(0.8, 0.8)
+material = SubResource("ShaderMaterial_0g3ol")
 texture = ExtResource("1_ldtuu")
 script = ExtResource("1_mu2uf")
 RDResource = ExtResource("2_x2ovg")
+
+[node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_v8oce")
+
+[node name="CaptureTimer" parent="." instance=ExtResource("5_yqdwp")]
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
