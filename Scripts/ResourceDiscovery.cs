@@ -82,7 +82,7 @@ public partial class ResourceDiscovery : Sprite2D
             float x = Position.X / ResourceDiscoveries.cellSizeX;
 
             Position = new Vector2(x * ResourceDiscoveries.cellSizeX + pos.X, y * ResourceDiscoveries.cellSizeY + pos.Y);
-			Debug.Print("Repo: "+Name+" x:" + x + " cellsizeX:" + ResourceDiscoveries.cellSizeX + " pos.x:" + pos.X+" Position: "+Position);
+			//Debug.Print("Repo: "+Name+" x:" + x + " cellsizeX:" + ResourceDiscoveries.cellSizeX + " pos.x:" + pos.X+" Position: "+Position);
         }
     }
 

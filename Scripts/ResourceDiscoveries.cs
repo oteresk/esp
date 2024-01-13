@@ -9,7 +9,6 @@ public partial class ResourceDiscoveries : Node2D
 [Export] private PackedScene rTemplateGoldMine;
 [Export] private PackedScene rTemplateManaWell;
 [Export] private PackedScene rTemplateWood;
-
 [Export] public int gridSizeX;
 [Export] public int gridSizeY;
 [Export] public static int cellSizeX=1920;
@@ -21,10 +20,25 @@ private Node2D capTimer;
 
     public override void _Ready()
 	{
+		Node pn = GetNode("../Player");
+
+        CallDeferred("Reparent", pn);
+
+
+        
+
 		GD.Randomize();
 		//Place resource discoveries
 		PlaceResourceDiscoveries();	
 	}
+
+	void Reparent(Node n)
+	{
+        n.GetParent().RemoveChild(n);
+        AddChild(n);
+    }
+
+
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
@@ -82,6 +96,8 @@ private void PlaceResourceDiscoveries()
 			// get random x and y pos within the cell
 			float xPos = (float)GD.Randi() % cellSizeX;
 			float yPos = (float)GD.Randi() % cellSizeY;
+
+		Debug.Print("xRand=" + xPos+" yRand="+yPos);
 
 		return new Vector2(xPos,yPos);
 	}

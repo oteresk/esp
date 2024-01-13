@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://btwxpde08w643"]
 
-[ext_resource type="Texture2D" uid="uid://c17ydqj1oygfj" path="res://Builds/Backup/v0.3/Art/Resources/Iron Mine.png" id="1_4rjnv"]
+[ext_resource type="Texture2D" uid="uid://c17ydqj1oygfj" path="res://Art/Resources/Iron Mine.png" id="1_4rjnv"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="1_iewui"]
 [ext_resource type="Shader" path="res://Shaders/SaturationShader.gdshader" id="1_k61yw"]
 [ext_resource type="Resource" uid="uid://blji6kurt5pcl" path="res://ResourceDiscoveries/IronMine.tres" id="2_txmhu"]
@@ -15,8 +15,10 @@ shader_parameter/saturation = null
 radius = 471.038
 
 [node name="Resource" type="Sprite2D"]
+y_sort_enabled = true
 material = SubResource("ShaderMaterial_spxbx")
 texture = ExtResource("1_4rjnv")
+offset = Vector2(0, -30)
 script = ExtResource("1_iewui")
 RDResource = ExtResource("2_txmhu")
 

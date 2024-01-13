@@ -23,27 +23,28 @@ adjustment_enabled = true
 
 [node name="World" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("3_eiu3v")]
-texture_filter = 1
-scale = Vector2(0.5, 0.5)
-Speed = 100
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h8lsd")
-
-[node name="ResourceDiscoveries" type="Node2D" parent="."]
-position = Vector2(-2, -2)
-script = ExtResource("4_egxe6")
-rTemplateIronMine = ExtResource("5_y1y6w")
-rTemplateGoldMine = ExtResource("4_ikssv")
-rTemplateManaWell = ExtResource("7_h85bg")
-rTemplateWood = ExtResource("8_6fy56")
-gridSizeX = 10
-gridSizeY = 10
-resourcesPerCell = 2
 
 [node name="FPS" parent="." instance=ExtResource("10_2xbt4")]
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("1_3b8vd")]
 scale = Vector2(1, 1)
 transform = Transform2D(1, 0, 0, 1, 0, 0)
+
+[node name="ResourceDiscoveries" type="Node2D" parent="."]
+y_sort_enabled = true
+position = Vector2(-2, -2)
+script = ExtResource("4_egxe6")
+rTemplateIronMine = ExtResource("5_y1y6w")
+rTemplateGoldMine = ExtResource("4_ikssv")
+rTemplateManaWell = ExtResource("7_h85bg")
+rTemplateWood = ExtResource("8_6fy56")
+gridSizeX = 1
+gridSizeY = 1
+resourcesPerCell = 5
+
+[node name="Player" parent="." instance=ExtResource("3_eiu3v")]
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+Speed = 100

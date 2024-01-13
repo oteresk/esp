@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="1_g74qy"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscoveryResource.cs" id="2_l2fjf"]
-[ext_resource type="Texture2D" uid="uid://d2w2biwiltg7x" path="res://Builds/Backup/v0.3/Art/Resources/Tree.png" id="3_hgklo"]
+[ext_resource type="Texture2D" uid="uid://d2w2biwiltg7x" path="res://Art/Resources/Tree.png" id="3_hgklo"]
 
 [sub_resource type="Resource" id="Resource_2r7ac"]
 script = ExtResource("2_l2fjf")
@@ -15,9 +15,9 @@ recoverType = 1
 spriteScale = 0.2
 
 [node name="Resource" type="Sprite2D"]
-z_index = 1
+y_sort_enabled = true
 texture = ExtResource("3_hgklo")
 centered = false
-offset = Vector2(-66, -300)
+offset = Vector2(-66, -220)
 script = ExtResource("1_g74qy")
 RDResource = SubResource("Resource_2r7ac")

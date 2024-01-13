@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://d2xu8yw5qkaq"]
 
 [ext_resource type="Shader" path="res://Shaders/Clipping.gdshader" id="1_e0ehh"]
-[ext_resource type="Texture2D" uid="uid://b8wi7npjxxek1" path="res://Builds/Backup/v0.3/Art/SpellCircleTilted.png" id="1_e3u36"]
-[ext_resource type="Texture2D" uid="uid://ll5couqyeoj5" path="res://Builds/Backup/v0.3/Art/SpellCircleTilted_Black.png" id="4_2j6nb"]
+[ext_resource type="Texture2D" uid="uid://b8wi7npjxxek1" path="res://Art/SpellCircleTilted.png" id="1_e3u36"]
+[ext_resource type="Texture2D" uid="uid://ll5couqyeoj5" path="res://Art/SpellCircleTilted_Black.png" id="4_2j6nb"]
 [ext_resource type="Script" path="res://Scripts/CaptureTimer.cs" id="4_jcyej"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4e048"]
@@ -27,12 +27,13 @@ scale = Vector2(2, 2)
 material = SubResource("ShaderMaterial_4e048")
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("1_e3u36")
+offset = Vector2(0, -80)
 script = ExtResource("4_jcyej")
 
 [node name="Area2D" type="Area2D" parent="." groups=["CaptureTimer"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(0, 23)
+position = Vector2(0, -8)
 scale = Vector2(13, 10)
 shape = SubResource("CircleShape2D_48rac")
 
