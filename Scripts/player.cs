@@ -104,7 +104,7 @@ public partial class player : Area2D
 		}
 
 		// set order to y pos
-		ZIndex=(int)Position.Y;
+//		ZIndex=(int)Position.Y;
 	
 	}
 	

@@ -15,8 +15,9 @@ recoverType = 1
 spriteScale = 0.2
 
 [node name="Resource" type="Sprite2D"]
-z_index = 1
-scale = Vector2(0.4, 0.4)
+y_sort_enabled = true
 texture = ExtResource("3_hgklo")
+centered = false
+offset = Vector2(-66, -220)
 script = ExtResource("1_g74qy")
 RDResource = SubResource("Resource_2r7ac")
