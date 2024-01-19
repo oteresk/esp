@@ -34,7 +34,8 @@ public partial class ResourceDiscovery : Sprite2D
 
 	public override void _Process(double delta)
 	{
-		if (mat != null)
+		// captureTimer shader
+		if (mat != null) // so it doesn't call this for trees (since trees can't be captured)
 		{
 			if (nearResource && discovered==false)
 			{
@@ -46,16 +47,22 @@ public partial class ResourceDiscovery : Sprite2D
 					mat.SetShaderParameter("saturation", 1);
 					capTimer.Visible = false;
 					discovered = true;
-				}
+
+					Debug.Print("Add RD: " + RDResource.resourceType);
+					ResourceDiscoveries.AddRD(RDResource.resourceType.ToString(), 1);
+                }
 
 
-				//Debug.Print("timer: "+ captureTimer.timer);
-			}
+                //Debug.Print("timer: "+ captureTimer.timer);
+            }
 			else
 			{
 				capTimer.Visible = false;
 			}
 		}
+
+
+
 	}
 
     // change sprite from black & white to color
