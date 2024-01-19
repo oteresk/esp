@@ -7,11 +7,20 @@ font_size = 50
 
 [node name="FPS" type="CanvasLayer"]
 
-[node name="Label" type="Label" parent="."]
-offset_left = 1200.0
-offset_top = -4.0
-offset_right = 1287.0
-offset_bottom = 68.0
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -151.0
+offset_bottom = 136.0
+grow_horizontal = 0
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="Label" type="Label" parent="MarginContainer"]
+layout_mode = 2
 text = "100"
 label_settings = SubResource("LabelSettings_inqb6")
 script = ExtResource("1_aecyv")
