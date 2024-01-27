@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://dxwoxio674kr7"]
+[gd_scene load_steps=11 format=3 uid="uid://dxwoxio674kr7"]
 
-[ext_resource type="PackedScene" uid="uid://dv81swjibar3c" path="res://Scenes/parallax_background.tscn" id="1_3b8vd"]
 [ext_resource type="PackedScene" uid="uid://ykihvlu1ew8a" path="res://Scenes/player.tscn" id="3_eiu3v"]
+[ext_resource type="PackedScene" uid="uid://c0r7oxe41obm7" path="res://Scenes/enemy_1.tscn" id="4_bn5od"]
+[ext_resource type="PackedScene" uid="uid://dv81swjibar3c" path="res://Scenes/parallax_background.tscn" id="1_3b8vd"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="4_egxe6"]
 [ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/resource_template-GoldMine.tscn" id="4_ikssv"]
 [ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/resource_template-IronMine.tscn" id="5_y1y6w"]
@@ -48,3 +49,8 @@ resourcesPerCell = 5
 texture_filter = 1
 scale = Vector2(0.5, 0.5)
 Speed = 100
+
+[node name="enemy_1" parent="." instance=ExtResource("4_bn5od")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_h8lsd")
