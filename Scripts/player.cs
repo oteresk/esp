@@ -53,7 +53,7 @@ public partial class player : Area2D
 			isDashing = true;
 			dashTimer = DashDuration;
 			dashCooldownTimer = DashCooldown;
-        }
+		}
 
 		// If player is dashing, multiply velocity by dash speed and check dash cooldown
 		if(isDashing)
@@ -81,22 +81,22 @@ public partial class player : Area2D
 		if (velocity.X != 0)
 		{
 			if (isDashing)
-                animatedSprite2D.Animation = "dash";
-            else
+				animatedSprite2D.Animation = "dash";
+			else
 			{
-                animatedSprite2D.Animation = "walk";
-                animatedSprite2D.FlipV = false;
-                animatedSprite2D.FlipH = velocity.X < 0;
-            }
+				animatedSprite2D.Animation = "walk";
+				animatedSprite2D.FlipV = false;
+				animatedSprite2D.FlipH = velocity.X < 0;
+			}
 		}
 		else if (velocity.Y != 0)
 		{
-            if (isDashing)
-                animatedSprite2D.Animation = "dash";
-            else
+			if (isDashing)
+				animatedSprite2D.Animation = "dash";
+			else
 			{
-                animatedSprite2D.Animation = "walk";
-            }
+				animatedSprite2D.Animation = "walk";
+			}
 		}
 		else 
 		{

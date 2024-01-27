@@ -4,33 +4,33 @@ using System.Diagnostics;
 
 public partial class ResourceDiscovery : Sprite2D
 {
-    [Export] public ResourceDiscoveryResource RDResource;
+	[Export] public ResourceDiscoveryResource RDResource;
 	public bool nearResource = false;
-    private ShaderMaterial mat;
+	private ShaderMaterial mat;
 	private Node2D capTimer;
 	private CaptureTimer captureTimer;
 	private bool discovered = false;
 
-    public override void _Ready()
+	public override void _Ready()
 	{
 		Texture2D tx=(Texture2D)RDResource.sprImage;
 		this.Texture=tx;
 
 		mat = (ShaderMaterial)this.Material;
 
-        if (mat!=null)
-        {
+		if (mat!=null)
+		{
 			mat.SetShaderParameter("saturation", .1);
-            capTimer = (Node2D)GetNode("CaptureTimer");
+			capTimer = (Node2D)GetNode("CaptureTimer");
 			captureTimer = (CaptureTimer)GetNode("CaptureTimer/Progress");
-        }
+		}
 
-    }
+	}
 
 	public void MakeSaturated()
 	{
-        mat.SetShaderParameter("saturation", 1);
-    }
+		mat.SetShaderParameter("saturation", 1);
+	}
 
 	public override void _Process(double delta)
 	{
@@ -58,32 +58,32 @@ public partial class ResourceDiscovery : Sprite2D
 		}
 	}
 
-    // change sprite from black & white to color
-    public void _on_area_2d_area_exited(Area2D area)
-    {
-		if (area.IsInGroup("Player") && discovered==false)
+	// change sprite from black & white to color
+	public void _on_area_2d_area_exited(Area2D area)
+	{
+		if (area.IsInGroup("Players") && discovered==false)
 		{
 			nearResource = false;
 		}
 	}
 
-    public void _on_area_2d_area_entered(Area2D area)
-    {
-		if (area.IsInGroup("Player") && discovered==false)
+	public void _on_area_2d_area_entered(Area2D area)
+	{
+		if (area.IsInGroup("Players") && discovered==false)
 		{
 			nearResource = true;
 		}
 
 		// if overlapping another resource discovery, get new position
-        if (area.IsInGroup("ResourceDiscovery"))
-        {
+		if (area.IsInGroup("ResourceDiscovery"))
+		{
 			Vector2 pos = ResourceDiscoveries.GetRandomPos();
 			float y = Position.Y / ResourceDiscoveries.cellSizeY;
-            float x = Position.X / ResourceDiscoveries.cellSizeX;
+			float x = Position.X / ResourceDiscoveries.cellSizeX;
 
-            Position = new Vector2(x * ResourceDiscoveries.cellSizeX + pos.X, y * ResourceDiscoveries.cellSizeY + pos.Y);
+			Position = new Vector2(x * ResourceDiscoveries.cellSizeX + pos.X, y * ResourceDiscoveries.cellSizeY + pos.Y);
 			//Debug.Print("Repo: "+Name+" x:" + x + " cellsizeX:" + ResourceDiscoveries.cellSizeX + " pos.x:" + pos.X+" Position: "+Position);
-        }
-    }
+		}
+	}
 
 }

@@ -18,14 +18,8 @@ public partial class ResourceDiscoveries : Node2D
 private Node2D resourceDiscovery;
 private Node2D capTimer;
 
-    public override void _Ready()
-	{
-		Node pn = GetNode("../Player");
-
-        CallDeferred("Reparent", pn);
-
-
-        
+	public override void _Ready()
+	{	
 
 		GD.Randomize();
 		//Place resource discoveries
@@ -34,9 +28,9 @@ private Node2D capTimer;
 
 	void Reparent(Node n)
 	{
-        n.GetParent().RemoveChild(n);
-        AddChild(n);
-    }
+		n.GetParent().RemoveChild(n);
+		AddChild(n);
+	}
 
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -58,10 +52,10 @@ private void PlaceResourceDiscoveries()
 			for (int i=1;i<=resourcesPerCell;i++)
 			{
 					Debug.Print("RD Len: " + GetChildCount());
-                Vector2 pos = GetRandomPos();
-                rdType =GD.Randi() % 4;
+				Vector2 pos = GetRandomPos();
+				rdType =GD.Randi() % 4;
 
-                switch (rdType)
+				switch (rdType)
 				{
 					case 0:
 						resourceDiscovery = (Node2D)rTemplateIronMine.Instantiate();
@@ -81,11 +75,11 @@ private void PlaceResourceDiscoveries()
 
 
 				resourceDiscovery.Position=new Vector2(x*cellSizeX+pos.X,y*cellSizeY+pos.Y);
-                ResourceDiscovery rdp = (ResourceDiscovery)GetNode(resourceDiscovery.GetPath());
+				ResourceDiscovery rdp = (ResourceDiscovery)GetNode(resourceDiscovery.GetPath());
 
 					string myType = rdp.RDResource.resourceType.ToString();
 
-                    Debug.Print("pos:"+resourceDiscovery.Position+" type:"+ myType);
+					Debug.Print("pos:"+resourceDiscovery.Position+" type:"+ myType);
 				
 			}
 

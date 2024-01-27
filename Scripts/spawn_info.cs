@@ -22,5 +22,5 @@ using MonoCustomResourceRegistry;
 		spawn_delay_counter = 0;
 	}
 
-    
+	
 }
