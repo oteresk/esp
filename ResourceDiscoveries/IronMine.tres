@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ResourceDiscoveryResource" load_steps=3 format=3 uid="uid://blji6kurt5pcl"]
+
+[ext_resource type="Script" path="res://Scripts/ResourceDiscoveryResource.cs" id="1_frdow"]
+[ext_resource type="Texture2D" uid="uid://c17ydqj1oygfj" path="res://art/Resources/Iron Mine.png" id="2_vh543"]
+
+[resource]
+script = ExtResource("1_frdow")
+sprImage = ExtResource("2_vh543")
+timeToCapture = 5.0
+resourceType = 0
+amount = 1.0
+freq = 1.0
+recoverType = 0
+spriteScale = 0.2

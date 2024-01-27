@@ -8,6 +8,12 @@
 
 config_version=5
 
+[MonoCustomResourceRegistry]
+
+ClassPrefix=""
+SearchType=0
+ResourceScriptDirectories=["res://"]
+
 [application]
 
 config/name="endless-survival-project"
@@ -20,10 +26,15 @@ config/icon="res://icon.svg"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
+window/vsync/vsync_mode=0
 
 [dotnet]
 
 project/assembly_name="endless-survival-project"
+
+[editor_plugins]
+
+enabled=PackedStringArray()
 
 [input]
 
@@ -57,8 +68,14 @@ dash={
 ]
 }
 
+[physics]
+
+common/physics_ticks_per_second=120
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method.mobile="forward_plus"
 renderer/rendering_method.web="forward_plus"
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true

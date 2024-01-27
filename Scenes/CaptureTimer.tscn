@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://d2xu8yw5qkaq"]
+
+[ext_resource type="Shader" path="res://Shaders/Clipping.gdshader" id="1_e0ehh"]
+[ext_resource type="Texture2D" uid="uid://b8wi7npjxxek1" path="res://Art/SpellCircleTilted.png" id="1_e3u36"]
+[ext_resource type="Texture2D" uid="uid://ll5couqyeoj5" path="res://Art/SpellCircleTilted_Black.png" id="4_2j6nb"]
+[ext_resource type="Script" path="res://Scripts/CaptureTimer.cs" id="4_jcyej"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4e048"]
+resource_local_to_scene = true
+shader = ExtResource("1_e0ehh")
+shader_parameter/fill_ratio = 0.0
+shader_parameter/start_angle = 0.0
+shader_parameter/max_angle = 360.0
+shader_parameter/invert_fill = false
+shader_parameter/reflect_x = false
+shader_parameter/reflect_y = true
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/fill_texture_overlay = ExtResource("1_e3u36")
+shader_parameter/bg_texture = ExtResource("4_2j6nb")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_48rac"]
+
+[node name="CaptureTimer" type="Node2D"]
+scale = Vector2(2, 2)
+
+[node name="Progress" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_4e048")
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("1_e3u36")
+offset = Vector2(0, -80)
+script = ExtResource("4_jcyej")
+
+[node name="Area2D" type="Area2D" parent="." groups=["CaptureTimer"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -8)
+scale = Vector2(13, 10)
+shape = SubResource("CircleShape2D_48rac")
+
+[connection signal="area_entered" from="Area2D" to="Progress" method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="Progress" method="_on_area_2d_area_exited"]

@@ -102,6 +102,9 @@ public partial class player : Area2D
 		{
 			animatedSprite2D.Animation = "idle";
 		}
+
+		// set order to y pos
+//		ZIndex=(int)Position.Y;
 	
 	}
 	
