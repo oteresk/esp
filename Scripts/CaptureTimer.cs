@@ -33,7 +33,7 @@ public partial class CaptureTimer : Sprite2D
 
 public void _on_area_2d_area_exited(Area2D area)
 	{
-		if (area.IsInGroup("Player"))
+		if (area.IsInGroup("Players"))
 		{
 			inCapture=false;
 			Debug.Print("Player out of CaptureTimer");
@@ -45,7 +45,7 @@ public void _on_area_2d_area_exited(Area2D area)
 
 public void _on_area_2d_area_entered(Area2D area)
 	{
-		if (area.IsInGroup("Player"))
+		if (area.IsInGroup("Players"))
 		{
 			inCapture=true;
 			// Player in CaptureTimer

@@ -1,8 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://dxwoxio674kr7"]
+[gd_scene load_steps=12 format=3 uid="uid://dxwoxio674kr7"]
 
-[ext_resource type="PackedScene" uid="uid://ykihvlu1ew8a" path="res://Scenes/player.tscn" id="3_eiu3v"]
-[ext_resource type="PackedScene" uid="uid://c0r7oxe41obm7" path="res://Scenes/enemy_1.tscn" id="4_bn5od"]
 [ext_resource type="PackedScene" uid="uid://dv81swjibar3c" path="res://Scenes/parallax_background.tscn" id="1_3b8vd"]
+[ext_resource type="Script" path="res://Scenes/world.gd" id="1_yl1dh"]
+[ext_resource type="PackedScene" uid="uid://ykihvlu1ew8a" path="res://Scenes/player.tscn" id="3_eiu3v"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="4_egxe6"]
 [ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/resource_template-GoldMine.tscn" id="4_ikssv"]
 [ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/resource_template-IronMine.tscn" id="5_y1y6w"]
@@ -22,7 +22,14 @@ glow_hdr_scale = 1.0
 glow_hdr_luminance_cap = 0.1
 adjustment_enabled = true
 
+[sub_resource type="Curve2D" id="Curve2D_obham"]
+_data = {
+"points": PackedVector2Array(41.38, -3.3371, -41.38, 3.3371, 1063, 588, 0, 0, 0, 0, -1026, 583, 0, 0, 0, 0, -1030, -616, 0, 0, 0, 0, 1061, -613, -0.0278406, -3.9812, 0.0278406, 3.9812, 1063, 588)
+}
+point_count = 5
+
 [node name="World" type="Node2D"]
+script = ExtResource("1_yl1dh")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h8lsd")
@@ -45,12 +52,33 @@ gridSizeX = 1
 gridSizeY = 1
 resourcesPerCell = 5
 
+[node name="WorldEnvironment2" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_h8lsd")
+
+[node name="EnemyTimer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
 [node name="Player" parent="." instance=ExtResource("3_eiu3v")]
 texture_filter = 1
 scale = Vector2(0.5, 0.5)
-Speed = 100
+Speed = 1000
 
-[node name="enemy_1" parent="." instance=ExtResource("4_bn5od")]
+[node name="AttackRange" parent="Player" index="4"]
+position = Vector2(0, -96)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_h8lsd")
+[node name="ShootingPoint" parent="Player/AttackRange" index="1"]
+position = Vector2(-2, 0)
+
+[node name="Path2D" type="Path2D" parent="Player"]
+curve = SubResource("Curve2D_obham")
+
+[node name="EnemySpawnPath" type="PathFollow2D" parent="Player/Path2D"]
+unique_name_in_owner = true
+position = Vector2(1063, 588)
+rotation = 3.06112
+
+[connection signal="timeout" from="EnemyTimer" to="." method="_on_enemy_timer_timeout"]
+
+[editable path="Player"]
+[editable path="Player/AttackRange"]

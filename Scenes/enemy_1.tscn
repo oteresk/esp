@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://c0r7oxe41obm7"]
 
 [ext_resource type="Script" path="res://Scripts/enemy_1.cs" id="1_je1u7"]
-[ext_resource type="Texture2D" uid="uid://bg3eu0iccbqcc" path="res://art/Enemy-sprites/enemy_01.png" id="2_s1cgv"]
+[ext_resource type="Texture2D" uid="uid://dwbt8yg032un1" path="res://Art/Enemy-sprites/enemy_01.png" id="2_s1cgv"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
 animations = [{
@@ -18,7 +18,11 @@ animations = [{
 radius = 7.0
 height = 28.331
 
-[node name="enemy_1" type="Area2D"]
+[node name="enemy_1" type="RigidBody2D"]
+collision_layer = 2
+collision_mask = 3
+mass = 0.01
+gravity_scale = 0.0
 script = ExtResource("1_je1u7")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

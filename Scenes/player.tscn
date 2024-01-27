@@ -1,16 +1,21 @@
-[gd_scene load_steps=14 format=3 uid="uid://ykihvlu1ew8a"]
+[gd_scene load_steps=15 format=3 uid="uid://ykihvlu1ew8a"]
 
 [ext_resource type="Script" path="res://Scripts/player.cs" id="1_kjyyd"]
-[ext_resource type="Texture2D" uid="uid://chdl1s1uscao4" path="res://art/Hero-sprites/tile000.png" id="2_1trhb"]
-[ext_resource type="Texture2D" uid="uid://bboih6d0wcpjc" path="res://art/Hero-sprites/tile012.png" id="2_pw2lt"]
-[ext_resource type="Texture2D" uid="uid://ds1akqdacl2no" path="res://art/Hero-sprites/tile001.png" id="3_gok1e"]
-[ext_resource type="Texture2D" uid="uid://d0ecyklv7him" path="res://art/Hero-sprites/tile002.png" id="4_o5std"]
-[ext_resource type="Texture2D" uid="uid://tsmm2fpa6hxl" path="res://art/Hero-sprites/tile011.png" id="5_yc0qp"]
-[ext_resource type="Texture2D" uid="uid://ckf3kur5q25er" path="res://art/Hero-sprites/tile006.png" id="6_puj2a"]
-[ext_resource type="Texture2D" uid="uid://b5e1fan7bhgs" path="res://art/Hero-sprites/tile007.png" id="7_tems3"]
-[ext_resource type="Texture2D" uid="uid://dbg0wdh3r2lyl" path="res://art/Hero-sprites/tile008.png" id="8_dwljk"]
-[ext_resource type="Texture2D" uid="uid://chqowx2lfuhk2" path="res://art/Hero-sprites/tile009.png" id="9_7ytke"]
-[ext_resource type="Texture2D" uid="uid://c3y1qv5ui8njn" path="res://art/Hero-sprites/tile010.png" id="10_0ly30"]
+[ext_resource type="Texture2D" uid="uid://chdl1s1uscao4" path="res://Art/Hero-sprites/tile000.png" id="2_1trhb"]
+[ext_resource type="Texture2D" uid="uid://bboih6d0wcpjc" path="res://Art/Hero-sprites/tile012.png" id="2_pw2lt"]
+[ext_resource type="Texture2D" uid="uid://ds1akqdacl2no" path="res://Art/Hero-sprites/tile001.png" id="3_gok1e"]
+[ext_resource type="Texture2D" uid="uid://d0ecyklv7him" path="res://Art/Hero-sprites/tile002.png" id="4_o5std"]
+[ext_resource type="Texture2D" uid="uid://tsmm2fpa6hxl" path="res://Art/Hero-sprites/tile011.png" id="5_yc0qp"]
+[ext_resource type="Texture2D" uid="uid://ckf3kur5q25er" path="res://Art/Hero-sprites/tile006.png" id="6_puj2a"]
+[ext_resource type="Texture2D" uid="uid://b5e1fan7bhgs" path="res://Art/Hero-sprites/tile007.png" id="7_tems3"]
+[ext_resource type="Texture2D" uid="uid://dbg0wdh3r2lyl" path="res://Art/Hero-sprites/tile008.png" id="8_dwljk"]
+[ext_resource type="Texture2D" uid="uid://chqowx2lfuhk2" path="res://Art/Hero-sprites/tile009.png" id="9_7ytke"]
+[ext_resource type="Texture2D" uid="uid://c3y1qv5ui8njn" path="res://Art/Hero-sprites/tile010.png" id="10_0ly30"]
+[ext_resource type="PackedScene" uid="uid://bpjxrp2i6uiq3" path="res://Scenes/attack_range.tscn" id="12_wtvyp"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_538jq"]
+radius = 6.75
+height = 34.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7cwag"]
 animations = [{
@@ -60,16 +65,15 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_538jq"]
-radius = 6.0
-height = 34.0
-
-
 [node name="Player" type="Area2D"]
 y_sort_enabled = true
-
 script = ExtResource("1_kjyyd")
 metadata/_edit_group_ = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(-2, -81)
+scale = Vector2(4, 3)
+shape = SubResource("CapsuleShape2D_538jq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -79,7 +83,7 @@ animation = &"dash"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[node name="Area2D" type="Area2D" parent="." groups=["Player"]]
+[node name="Area2D" type="Area2D" parent="." groups=["Players"]]
 position = Vector2(0, -85)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
@@ -87,10 +91,9 @@ position = Vector2(0, 34)
 scale = Vector2(4, 3)
 shape = SubResource("CapsuleShape2D_538jq")
 
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
-position = Vector2(0, -85)
+[node name="AttackRange" parent="." instance=ExtResource("12_wtvyp")]
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="RigidBody2D"]
-position = Vector2(0, 34)
-scale = Vector2(4, 3)
-shape = SubResource("CapsuleShape2D_538jq")
+[node name="ShootingPoint" parent="AttackRange" index="1"]
+position = Vector2(0, -95)
+
+[editable path="AttackRange"]
