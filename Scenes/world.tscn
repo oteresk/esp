@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dxwoxio674kr7"]
+[gd_scene load_steps=13 format=3 uid="uid://dxwoxio674kr7"]
 
 [ext_resource type="PackedScene" uid="uid://dv81swjibar3c" path="res://Scenes/parallax_background.tscn" id="1_3b8vd"]
 [ext_resource type="Script" path="res://Scenes/world.gd" id="1_yl1dh"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://3ug8x7bl8jwu" path="res://Scenes/resource_template-ManaWell.tscn" id="7_h85bg"]
 [ext_resource type="PackedScene" uid="uid://ctcv7jmln8o34" path="res://Scenes/resource_template-Wood.tscn" id="8_6fy56"]
 [ext_resource type="PackedScene" uid="uid://bhl4p70uusacn" path="res://Scenes/fps.tscn" id="10_2xbt4"]
+[ext_resource type="PackedScene" path="res://Scenes/gui.tscn" id="10_px18i"]
 
 [sub_resource type="Environment" id="Environment_h8lsd"]
 background_mode = 3
@@ -48,9 +49,12 @@ rTemplateIronMine = ExtResource("5_y1y6w")
 rTemplateGoldMine = ExtResource("4_ikssv")
 rTemplateManaWell = ExtResource("7_h85bg")
 rTemplateWood = ExtResource("8_6fy56")
-gridSizeX = 1
-gridSizeY = 1
-resourcesPerCell = 5
+gridSizeX = 10
+gridSizeY = 10
+resourcesPerCell = 2
+resourceUpdateFreq = 60
+
+[node name="Timer" type="Timer" parent="ResourceDiscoveries"]
 
 [node name="WorldEnvironment2" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h8lsd")
@@ -62,7 +66,9 @@ autostart = true
 [node name="Player" parent="." instance=ExtResource("3_eiu3v")]
 texture_filter = 1
 scale = Vector2(0.5, 0.5)
-Speed = 1000
+Speed = 300
+DashSpeed = 1200.0
+DashDuration = 0.3
 
 [node name="AttackRange" parent="Player" index="4"]
 position = Vector2(0, -96)
@@ -78,6 +84,9 @@ unique_name_in_owner = true
 position = Vector2(1063, 588)
 rotation = 3.06112
 
+[node name="GUI" parent="." instance=ExtResource("10_px18i")]
+
+[connection signal="timeout" from="ResourceDiscoveries/Timer" to="ResourceDiscoveries" method="OnTimer"]
 [connection signal="timeout" from="EnemyTimer" to="." method="_on_enemy_timer_timeout"]
 
 [editable path="Player"]
