@@ -7,7 +7,7 @@ public partial class CaptureTimer : Sprite2D
 	public CollisionObject2D col; 
 
 	[Export] public float timer=0;
-	private float captureSpeed=.0001f;
+	private float captureSpeed=.0002f;
 	
 	private bool inCapture=false;
 //[Export] public ResourceDiscovery rd;

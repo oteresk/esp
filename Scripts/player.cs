@@ -3,11 +3,10 @@ using System;
 
 public partial class player : Area2D
 {
-	[Export]
-	public int Speed {get; set; } = 200;
-	public const float DashSpeed = 600;
-	public const float DashDuration = 0.2f;
-	public const float DashCooldown = 1.0f;
+	[Export] public int Speed {get; set; } = 200;
+    [Export] public float DashSpeed = 600;
+    [Export] public float DashDuration = 0.2f;
+    [Export] public float DashCooldown = 1.0f;
 	public float dashTimer = 0;
 	
 	private float dashCooldownTimer = 0;

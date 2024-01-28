@@ -48,8 +48,8 @@ public partial class ResourceDiscovery : Sprite2D
 					discovered = true;
 				}
 
-
-				//Debug.Print("timer: "+ captureTimer.timer);
+				Debug.Print("Add RD: " + RDResource.resourceType);
+				ResourceDiscoveries.AddRD(RDResource.resourceType.ToString(), 1);
 			}
 			else
 			{
