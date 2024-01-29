@@ -1,7 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://dxwoxio674kr7"]
+[gd_scene load_steps=13 format=3 uid="uid://bc02f0ml8l03k"]
 
 [ext_resource type="PackedScene" uid="uid://dv81swjibar3c" path="res://Scenes/parallax_background.tscn" id="1_3b8vd"]
-[ext_resource type="Script" path="res://Scenes/world.gd" id="1_yl1dh"]
+[ext_resource type="Script" path="res://Scripts/world.gd" id="1_cnane"]
 [ext_resource type="PackedScene" uid="uid://ykihvlu1ew8a" path="res://Scenes/player.tscn" id="3_eiu3v"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="4_egxe6"]
 [ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/resource_template-GoldMine.tscn" id="4_ikssv"]
@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://3ug8x7bl8jwu" path="res://Scenes/resource_template-ManaWell.tscn" id="7_h85bg"]
 [ext_resource type="PackedScene" uid="uid://ctcv7jmln8o34" path="res://Scenes/resource_template-Wood.tscn" id="8_6fy56"]
 [ext_resource type="PackedScene" uid="uid://bhl4p70uusacn" path="res://Scenes/fps.tscn" id="10_2xbt4"]
-[ext_resource type="PackedScene" path="res://Scenes/gui.tscn" id="10_px18i"]
+[ext_resource type="PackedScene" uid="uid://d0rs3cdjkjukh" path="res://Scenes/gui.tscn" id="10_px18i"]
 
 [sub_resource type="Environment" id="Environment_h8lsd"]
 background_mode = 3
@@ -30,7 +30,7 @@ _data = {
 point_count = 5
 
 [node name="World" type="Node2D"]
-script = ExtResource("1_yl1dh")
+script = ExtResource("1_cnane")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h8lsd")
@@ -43,18 +43,16 @@ transform = Transform2D(1, 0, 0, 1, 0, 0)
 
 [node name="ResourceDiscoveries" type="Node2D" parent="."]
 y_sort_enabled = true
-position = Vector2(-2, -2)
 script = ExtResource("4_egxe6")
 rTemplateIronMine = ExtResource("5_y1y6w")
 rTemplateGoldMine = ExtResource("4_ikssv")
 rTemplateManaWell = ExtResource("7_h85bg")
 rTemplateWood = ExtResource("8_6fy56")
-gridSizeX = 10
-gridSizeY = 10
 resourcesPerCell = 2
 resourceUpdateFreq = 60
 
 [node name="Timer" type="Timer" parent="ResourceDiscoveries"]
+autostart = true
 
 [node name="WorldEnvironment2" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h8lsd")

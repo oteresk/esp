@@ -9,11 +9,19 @@ public partial class ResourceDiscoveries : Node2D
 	[Export] private PackedScene rTemplateGoldMine;
 	[Export] private PackedScene rTemplateManaWell;
 	[Export] private PackedScene rTemplateWood;
-	[Export] public int gridSizeX;
-	[Export] public int gridSizeY;
-	[Export] public static int cellSizeX=1920;
-	[Export] public static int cellSizeY=1080;
+	static private int gridSizeX=10;
+	static private int gridSizeY=10;
+	const int subGridSizeX = 10;
+    const int subGridSizeY = 10;
+    [Export] public static int pixelSizeX=192*3;
+	[Export] public static int pixelSizeY=108*3;
 	[Export] public int resourcesPerCell;
+
+	static private int[,] worldArray; // two-dimensional array
+	// 1 = Iron Mine
+	// 2 = Gold Mine
+	// 3 = Mana Well
+	// 4 = Tree
 
 // resource timer
 	[Export] public int resourceUpdateFreq;
@@ -38,8 +46,8 @@ public partial class ResourceDiscoveries : Node2D
 	private Node rGUI;
 	private resourceGUI rG2;
 	public override void _Ready()
-	{	
-
+	{
+		worldArray = new int[gridSizeX*subGridSizeX, gridSizeY*subGridSizeY];
 		GD.Randomize();
 		//Place resource discoveries
 		PlaceResourceDiscoveries();	
@@ -48,6 +56,9 @@ public partial class ResourceDiscoveries : Node2D
 		rGUI = GetNode("../GUI");
         rG2 = (resourceGUI)GetNode(rGUI.GetPath());
         UpdateResourceGUI();
+
+		// offset resourcediscoveries position to put player in middle of array
+		Position=new Vector2(-(gridSizeX*subGridSizeX)/2*pixelSizeX,-(gridSizeY*subGridSizeY)/2*pixelSizeY);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -103,59 +114,78 @@ public partial class ResourceDiscoveries : Node2D
 private void PlaceResourceDiscoveries()
 {
 	uint rdType;
-	int py=-(gridSizeY/2);
-	int py2=gridSizeY/2;
-	int px=-(gridSizeX/2);
-	int px2=gridSizeX/2;
-	Debug.Print("y:"+py+" to:"+py2+" x:"+px+" to:"+px2+" resourcesPerCell:"+resourcesPerCell);
 
-	for (int y=-(gridSizeY/2);y<=gridSizeY/2;y++)
-		for (int x=-(gridSizeX/2);x<=gridSizeX/2;x++)
+	for (int y=0;y<gridSizeY;y++)
+		for (int x=0;x<gridSizeX;x++)
 			for (int i=1;i<=resourcesPerCell;i++)
 			{
-					Debug.Print("RD Len: " + GetChildCount());
-				Vector2 pos = GetRandomPos();
-				rdType =GD.Randi() % 4;
-
-				switch (rdType)
-				{
-					case 0:
-						resourceDiscovery = (Node2D)rTemplateIronMine.Instantiate();
-						break;
-					case 1:
-						resourceDiscovery = (Node2D)rTemplateGoldMine.Instantiate();
-						break;
-					case 2:
-						resourceDiscovery = (Node2D)rTemplateManaWell.Instantiate();
-						break;
-					case 3:
-						resourceDiscovery = (Node2D)rTemplateWood.Instantiate();
-						break;
-				}
-
-				AddChild(resourceDiscovery);
-
-
-				resourceDiscovery.Position=new Vector2(x*cellSizeX+pos.X,y*cellSizeY+pos.Y);
-				ResourceDiscovery rdp = (ResourceDiscovery)GetNode(resourceDiscovery.GetPath());
-
-					string myType = rdp.RDResource.resourceType.ToString();
-
-					Debug.Print("pos:"+resourceDiscovery.Position+" type:"+ myType);
-				
+				//Debug.Print("RD Len: " + GetChildCount());
+				Vector2I pos;
+				pos= GetRandomPos(x,y);
+                rdType = GD.Randi() % 4;
+                PlaceDiscovery(x,y,pos.X,pos.Y,rdType);
 			}
+	// place some discoveries
+		//PlaceDiscovery(5, 5, 0, 0, 1);
+        //PlaceDiscovery(5, 5, 1, 0, 1);
+        //PlaceDiscovery(5, 5, 0, 1, 1);
+        //PlaceDiscovery(5, 5, 1, 1, 1);
+    }
 
-	}
+	private void PlaceDiscovery(int x, int y, int px, int py, uint rdType)
+	{ 
+        switch (rdType)
+        {
+            case 0:
+                resourceDiscovery = (Node2D)rTemplateIronMine.Instantiate();
+                worldArray[x * subGridSizeX + px, y * subGridSizeY +py] = 1;
+                break;
+            case 1:
+                resourceDiscovery = (Node2D)rTemplateGoldMine.Instantiate();
+                worldArray[x * subGridSizeX + px, y * subGridSizeY + py] = 2;
+                break;
+            case 2:
+                resourceDiscovery = (Node2D)rTemplateManaWell.Instantiate();
+                worldArray[x * subGridSizeX + px, y * subGridSizeY + py] = 3;
+                break;
+            case 3:
+                resourceDiscovery = (Node2D)rTemplateWood.Instantiate();
+                worldArray[x * subGridSizeX + px, y * subGridSizeY + py] = 4;
+                break;
+        }
 
-	public static Vector2 GetRandomPos()
+        AddChild(resourceDiscovery);
+
+
+        resourceDiscovery.Position = new Vector2(x*subGridSizeX * pixelSizeX + px * pixelSizeX, y*subGridSizeY * pixelSizeY + py * pixelSizeY);
+        ResourceDiscovery rdp = (ResourceDiscovery)GetNode(resourceDiscovery.GetPath());
+
+        string myType = rdp.RDResource.resourceType.ToString();
+
+		Debug.Print("x:" + x + " y:" + y + " px:" + px + " py:" + py);
+
+        Debug.Print("pos:" + resourceDiscovery.Position + " type:" + myType);
+    }
+
+	// returns a random x and y pos between 0-9
+	// it repeats the check until the worldArray location has 0 value
+	public static Vector2I GetRandomPos(int curX, int curY)
 	{
-			// get random x and y pos within the cell
-			float xPos = (float)GD.Randi() % cellSizeX;
-			float yPos = (float)GD.Randi() % cellSizeY;
+		int xPos;
+		int yPos;
 
-		Debug.Print("xRand=" + xPos+" yRand="+yPos);
+        do
+		{
+			// get random x and y pos 
+			xPos = GD.RandRange(0, subGridSizeX-1);
+            yPos = GD.RandRange(0, subGridSizeY-1);
 
-		return new Vector2(xPos,yPos);
+            Debug.Print("xRand=" + xPos + " yRand=" + yPos+" curX:"+curX+" curY:"+curY);
+			Debug.Print("worldArray[" + (curX * gridSizeX + xPos) + ", " + (curY * gridSizeY + yPos) +"]");
+		}
+		while (worldArray[curX*gridSizeX+xPos, curY*gridSizeY + yPos] != 0);
+
+        return new Vector2I(xPos,yPos);
 	}
 
 	// this gets called from the apropriate ResourceDiscovery.cs

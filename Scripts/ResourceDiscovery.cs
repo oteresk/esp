@@ -46,10 +46,9 @@ public partial class ResourceDiscovery : Sprite2D
 					mat.SetShaderParameter("saturation", 1);
 					capTimer.Visible = false;
 					discovered = true;
-				}
-
-				Debug.Print("Add RD: " + RDResource.resourceType);
-				ResourceDiscoveries.AddRD(RDResource.resourceType.ToString(), 1);
+                    Debug.Print("Add RD: " + RDResource.resourceType);
+                    ResourceDiscoveries.AddRD(RDResource.resourceType.ToString(), 1);
+                }
 			}
 			else
 			{
@@ -74,16 +73,6 @@ public partial class ResourceDiscovery : Sprite2D
 			nearResource = true;
 		}
 
-		// if overlapping another resource discovery, get new position
-		if (area.IsInGroup("ResourceDiscovery"))
-		{
-			Vector2 pos = ResourceDiscoveries.GetRandomPos();
-			float y = Position.Y / ResourceDiscoveries.cellSizeY;
-			float x = Position.X / ResourceDiscoveries.cellSizeX;
-
-			Position = new Vector2(x * ResourceDiscoveries.cellSizeX + pos.X, y * ResourceDiscoveries.cellSizeY + pos.Y);
-			//Debug.Print("Repo: "+Name+" x:" + x + " cellsizeX:" + ResourceDiscoveries.cellSizeX + " pos.x:" + pos.X+" Position: "+Position);
-		}
 	}
 
 }
