@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ctcv7jmln8o34"]
+[gd_scene load_steps=11 format=3 uid="uid://ctcv7jmln8o34"]
 
 [ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="1_g74qy"]
 [ext_resource type="Shader" path="res://Shaders/SaturationShader.gdshader" id="1_pnngt"]
@@ -25,6 +25,16 @@ spriteScale = 0.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_5yecl"]
 radius = 471.038
 
+[sub_resource type="Gradient" id="Gradient_nfuyp"]
+offsets = PackedFloat32Array(0, 0.00645161, 0.483871, 0.787097, 1)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0.516484, 0.516484, 0.516484, 1, 0.232418, 0.232418, 0.232418, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ajq7n"]
+gradient = SubResource("Gradient_nfuyp")
+fill = 2
+fill_from = Vector2(0.518349, 0.711009)
+fill_to = Vector2(0.495413, 0)
+
 [node name="Resource" type="Sprite2D"]
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_t7s0j")
@@ -35,13 +45,24 @@ script = ExtResource("1_g74qy")
 RDResource = SubResource("Resource_2r7ac")
 
 [node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visible = false
 shape = SubResource("CircleShape2D_5yecl")
 
 [node name="CaptureTimer" parent="." instance=ExtResource("4_7s3b0")]
 visible = false
 scale = Vector2(1, 1)
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(6, -38)
+scale = Vector2(3, 3)
+color = Color(0, 0.533333, 0.890196, 1)
+energy = 1.86
+range_z_min = -1
+range_z_max = 1
+texture = SubResource("GradientTexture2D_ajq7n")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

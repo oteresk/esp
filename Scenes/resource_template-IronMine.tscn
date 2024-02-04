@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://btwxpde08w643"]
+[gd_scene load_steps=10 format=3 uid="uid://btwxpde08w643"]
 
 [ext_resource type="Texture2D" uid="uid://c17ydqj1oygfj" path="res://Art/Resources/Iron Mine.png" id="1_4rjnv"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="1_iewui"]
@@ -14,6 +14,15 @@ shader_parameter/saturation = null
 [sub_resource type="CircleShape2D" id="CircleShape2D_fvjvk"]
 radius = 471.038
 
+[sub_resource type="Gradient" id="Gradient_mrxxq"]
+offsets = PackedFloat32Array(0, 0.270968, 0.696774)
+colors = PackedColorArray(1, 1, 1, 1, 0.516484, 0.516484, 0.516484, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dyhuy"]
+gradient = SubResource("Gradient_mrxxq")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [node name="Resource" type="Sprite2D"]
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_spxbx")
@@ -23,11 +32,21 @@ script = ExtResource("1_iewui")
 RDResource = ExtResource("2_txmhu")
 
 [node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visible = false
 shape = SubResource("CircleShape2D_fvjvk")
 
 [node name="CaptureTimer" parent="." instance=ExtResource("5_xb7x2")]
+visible = false
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(-34, 19)
+scale = Vector2(4, 4)
+color = Color(0.54902, 0.776471, 1, 1)
+energy = 2.16
+texture = SubResource("GradientTexture2D_dyhuy")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
