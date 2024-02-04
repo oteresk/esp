@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ResourceDiscovery" load_steps=3 format=3 uid="uid://dlx2so3iqltdy"]
+[gd_resource type="Resource" script_class="ResourceDiscoveryResource" load_steps=3 format=3 uid="uid://dptdy4x8gr5yu"]
 
 [ext_resource type="Script" path="res://Scripts/ResourceDiscoveryResource.cs" id="1_ofoip"]
-[ext_resource type="Texture2D" uid="uid://qxuklm01dh3j" path="res://art/Resources/Mana Well.png" id="2_gdcis"]
+[ext_resource type="Texture2D" uid="uid://qxuklm01dh3j" path="res://Art/Resources/Mana Well.png" id="2_gdcis"]
 
 [resource]
 script = ExtResource("1_ofoip")
@@ -10,3 +10,5 @@ timeToCapture = 5.0
 resourceType = 1
 amount = 1.0
 freq = 1.0
+recoverType = 0
+spriteScale = 0.0

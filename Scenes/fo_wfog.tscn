@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://1xxnq480idry"]
+
+[ext_resource type="Texture2D" uid="uid://dw6baw0ypmyb0" path="res://Art/Light.png" id="1_u3duq"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_x08ii"]
+blend_mode = 3
+
+[node name="FoWfog" type="Sprite2D"]
+material = SubResource("CanvasItemMaterial_x08ii")
+position = Vector2(17, -41)
+texture = ExtResource("1_u3duq")
+centered = false

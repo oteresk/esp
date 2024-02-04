@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c410fmb2oa282"]
+[gd_scene load_steps=8 format=3 uid="uid://c410fmb2oa282"]
 
 [ext_resource type="Shader" path="res://Scenes/SaturationShader.gdshader" id="1_am5oi"]
 [ext_resource type="Texture2D" uid="uid://diapsx8y3pdo" path="res://Art/Resources/Gold Mine.png" id="1_ldtuu"]
@@ -13,9 +13,6 @@ shader_parameter/saturation = 0.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v8oce"]
 radius = 471.038
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_g7u3t"]
-radius = 89.0898
 
 [node name="Resource" type="Sprite2D"]
 y_sort_enabled = true
@@ -34,13 +31,6 @@ shape = SubResource("CircleShape2D_v8oce")
 
 [node name="CaptureTimer" parent="." instance=ExtResource("5_yqdwp")]
 position = Vector2(-1, 59)
-
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(50, 32)
-scale = Vector2(1.8, 0.8)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-shape = SubResource("CircleShape2D_g7u3t")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

@@ -25,7 +25,10 @@ config/icon="res://icon.svg"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/stretch/mode="canvas_items"
+window/size/mode=2
+window/size/initial_position_type=0
+window/size/initial_position=Vector2i(1920, 0)
+window/stretch/aspect="ignore"
 window/vsync/vsync_mode=0
 
 [dotnet]
@@ -34,7 +37,7 @@ project/assembly_name="endless-survival-project"
 
 [editor_plugins]
 
-enabled=PackedStringArray()
+enabled=PackedStringArray("res://addons/MonoCustomResourceRegistry/plugin.cfg")
 
 [input]
 

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ResourceDiscoveryResource" load_steps=3 format=3 uid="uid://blji6kurt5pcl"]
 
 [ext_resource type="Script" path="res://Scripts/ResourceDiscoveryResource.cs" id="1_frdow"]
-[ext_resource type="Texture2D" uid="uid://c17ydqj1oygfj" path="res://art/Resources/Iron Mine.png" id="2_vh543"]
+[ext_resource type="Texture2D" uid="uid://c17ydqj1oygfj" path="res://Art/Resources/Iron Mine.png" id="2_vh543"]
 
 [resource]
 script = ExtResource("1_frdow")

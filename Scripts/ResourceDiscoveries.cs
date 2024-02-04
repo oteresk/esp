@@ -9,7 +9,8 @@ public partial class ResourceDiscoveries : Node2D
 	[Export] private PackedScene rTemplateGoldMine;
 	[Export] private PackedScene rTemplateManaWell;
 	[Export] private PackedScene rTemplateWood;
-	static private int gridSizeX=10;
+    [Export] private PackedScene rTemplatePlatform;
+    static private int gridSizeX=10;
 	static private int gridSizeY=10;
 	const int subGridSizeX = 10;
     const int subGridSizeY = 10;
@@ -22,6 +23,7 @@ public partial class ResourceDiscoveries : Node2D
 	// 2 = Gold Mine
 	// 3 = Mana Well
 	// 4 = Tree
+	// 5 = Platform
 
 // resource timer
 	[Export] public int resourceUpdateFreq;
@@ -31,23 +33,23 @@ public partial class ResourceDiscoveries : Node2D
 	private Node2D capTimer;
 
 // resource tracking
-	private int gold; // how much gold you have
+	private static float gold; // how much gold you have
 	static private int goldResourceCount; // how many gold mine resources you have discovered
-	private int iron;
+	public static float iron;
 	private static int ironResourceCount;
-	private int mana;
+	public static float mana;
 	private static int manaResourceCount;
-	private int wood;
+	public static float wood;
 
     private int seconds = 0;
 	private int minutes = 0;
 
 // GUI node
 	private Node rGUI;
-	private resourceGUI rG2;
+	static private resourceGUI rG2;
 	public override void _Ready()
 	{
-		worldArray = new int[gridSizeX*subGridSizeX, gridSizeY*subGridSizeY];
+	    worldArray = new int[gridSizeX*subGridSizeX, gridSizeY*subGridSizeY];
 		GD.Randomize();
 		//Place resource discoveries
 		PlaceResourceDiscoveries();	
@@ -59,7 +61,12 @@ public partial class ResourceDiscoveries : Node2D
 
 		// offset resourcediscoveries position to put player in middle of array
 		Position=new Vector2(-(gridSizeX*subGridSizeX)/2*pixelSizeX,-(gridSizeY*subGridSizeY)/2*pixelSizeY);
-	}
+
+        // hide structure select canvas
+        CanvasLayer nodStruct = (CanvasLayer)GetNode("/root/World/StructureGUI");
+        nodStruct.Visible = false;
+		Debug.Print("********************* " + nodStruct.GetPath());
+    }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
@@ -97,14 +104,14 @@ public partial class ResourceDiscoveries : Node2D
             gold += goldResourceCount;
             iron += ironResourceCount;
             mana += manaResourceCount;
-            //wood += woodResourceCount;
+
             UpdateResourceGUI(); 
 		}
 
-        Debug.Print("Timer: " + minutes+":"+seconds);
+        //Debug.Print("Timer: " + minutes+":"+seconds);
 	}
 
-	private void UpdateResourceGUI()
+	static public void UpdateResourceGUI()
 	{
 		rG2.lblGold.Text = gold.ToString();
         rG2.lblIron.Text = iron.ToString();
@@ -122,11 +129,11 @@ private void PlaceResourceDiscoveries()
 				//Debug.Print("RD Len: " + GetChildCount());
 				Vector2I pos;
 				pos= GetRandomPos(x,y);
-                rdType = GD.Randi() % 4;
+                rdType = GD.Randi() % 5;
                 PlaceDiscovery(x,y,pos.X,pos.Y,rdType);
 			}
 	// place some discoveries
-		//PlaceDiscovery(5, 5, 0, 0, 1);
+		PlaceDiscovery(5, 5, 1, 1, 3);
         //PlaceDiscovery(5, 5, 1, 0, 1);
         //PlaceDiscovery(5, 5, 0, 1, 1);
         //PlaceDiscovery(5, 5, 1, 1, 1);
@@ -152,6 +159,10 @@ private void PlaceResourceDiscoveries()
                 resourceDiscovery = (Node2D)rTemplateWood.Instantiate();
                 worldArray[x * subGridSizeX + px, y * subGridSizeY + py] = 4;
                 break;
+            case 4:
+                resourceDiscovery = (Node2D)rTemplatePlatform.Instantiate();
+                worldArray[x * subGridSizeX + px, y * subGridSizeY + py] = 5;
+                break;
         }
 
         AddChild(resourceDiscovery);
@@ -162,7 +173,7 @@ private void PlaceResourceDiscoveries()
 
         string myType = rdp.RDResource.resourceType.ToString();
 
-		Debug.Print("x:" + x + " y:" + y + " px:" + px + " py:" + py);
+		//Debug.Print("x:" + x + " y:" + y + " px:" + px + " py:" + py);
 
         Debug.Print("pos:" + resourceDiscovery.Position + " type:" + myType);
     }
@@ -180,8 +191,8 @@ private void PlaceResourceDiscoveries()
 			xPos = GD.RandRange(0, subGridSizeX-1);
             yPos = GD.RandRange(0, subGridSizeY-1);
 
-            Debug.Print("xRand=" + xPos + " yRand=" + yPos+" curX:"+curX+" curY:"+curY);
-			Debug.Print("worldArray[" + (curX * gridSizeX + xPos) + ", " + (curY * gridSizeY + yPos) +"]");
+            //Debug.Print("xRand=" + xPos + " yRand=" + yPos+" curX:"+curX+" curY:"+curY);
+			//Debug.Print("worldArray[" + (curX * gridSizeX + xPos) + ", " + (curY * gridSizeY + yPos) +"]");
 		}
 		while (worldArray[curX*gridSizeX+xPos, curY*gridSizeY + yPos] != 0);
 
@@ -203,6 +214,19 @@ private void PlaceResourceDiscoveries()
         {
             manaResourceCount += amount;
         }
+    }
+	// Add one-time resource
+	public static void AddResource(string resourceType,float amount,float amountMax)
+	{
+		if (resourceType == "Wood")
+		{
+			Debug.Print("*********" + amountMax);
+            int rAmount = (int)(GD.Randi() % (amountMax+1));
+			wood += (int)(rAmount+amount);
+		}
+
+
+        UpdateResourceGUI();
     }
 
 }
