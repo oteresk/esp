@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://03rf0tmt2nd5"]
+
+[node name="FogOfWar" type="Node2D"]
+visible = false

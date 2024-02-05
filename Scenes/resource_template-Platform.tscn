@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://djjmkb3mx4ata"]
+
+[ext_resource type="Shader" path="res://Shaders/SaturationShader.gdshader" id="1_pra6v"]
+[ext_resource type="Texture2D" uid="uid://cfibekp8apkfn" path="res://Art/Resources/Platform.png" id="2_dukuo"]
+[ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="3_1tq1j"]
+[ext_resource type="Resource" uid="uid://dlx2so3iqltdy" path="res://ResourceDiscoveries/Platform.tres" id="4_dth0a"]
+[ext_resource type="Texture2D" uid="uid://3fsglyijtxuk" path="res://Art/PlatformLight.png" id="5_ej1vv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d03md"]
+resource_local_to_scene = true
+shader = ExtResource("1_pra6v")
+shader_parameter/saturation = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_s0u15"]
+radius = 329.156
+
+[node name="Resource" type="Sprite2D"]
+y_sort_enabled = true
+material = SubResource("ShaderMaterial_d03md")
+texture = ExtResource("2_dukuo")
+offset = Vector2(0, 100)
+script = ExtResource("3_1tq1j")
+RDResource = ExtResource("4_dth0a")
+
+[node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
+scale = Vector2(0.520001, 0.28)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_s0u15")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(0, -236)
+scale = Vector2(1.4, 2)
+color = Color(0, 0.207843, 1, 1)
+energy = 2.5
+range_layer_min = -200
+texture = ExtResource("5_ej1vv")
+height = 333.0
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

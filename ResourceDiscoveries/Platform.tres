@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResourceDiscoveryResource" load_steps=3 format=3 uid="uid://dlx2so3iqltdy"]
+
+[ext_resource type="Script" path="res://Scripts/ResourceDiscoveryResource.cs" id="1_ngrgl"]
+[ext_resource type="Texture2D" uid="uid://cfibekp8apkfn" path="res://Art/Resources/Platform.png" id="2_wmvjl"]
+
+[resource]
+script = ExtResource("1_ngrgl")
+sprImage = ExtResource("2_wmvjl")
+timeToCapture = 5.0
+resourceType = 4
+amount = 0.0
+amountMax = 0.0
+freq = 0.0
+recoverType = 0
+spriteScale = 0.0

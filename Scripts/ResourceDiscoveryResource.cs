@@ -10,7 +10,8 @@ public partial class ResourceDiscoveryResource : Resource
 	[Export] public ResourceType resourceType;
 
 	[Export] public float amount;
-	[Export] public float freq;
+    [Export] public float amountMax;
+    [Export] public float freq;
 	[Export] public RecoverType recoverType;
 	[Export] public float spriteScale;
 
@@ -24,7 +25,8 @@ public enum ResourceType{
 	Iron,
 	Mana,
 	Gold,
-	Wood
+	Wood,
+	None
 }
 
 public enum RecoverType{

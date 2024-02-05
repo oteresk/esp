@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ResourceDiscoveryResource" load_steps=3 format=3 uid="uid://bkyvibecji1n1"]
 
 [ext_resource type="Script" path="res://Scripts/ResourceDiscoveryResource.cs" id="1_sjcp1"]
-[ext_resource type="Texture2D" uid="uid://d2w2biwiltg7x" path="res://art/Resources/Tree.png" id="2_g0fw3"]
+[ext_resource type="Texture2D" uid="uid://d2w2biwiltg7x" path="res://Art/Resources/Tree.png" id="2_g0fw3"]
 
 [resource]
 script = ExtResource("1_sjcp1")
@@ -9,6 +9,7 @@ sprImage = ExtResource("2_g0fw3")
 timeToCapture = 3.0
 resourceType = 3
 amount = 5.0
+amountMax = 10.0
 freq = 0.0
-recoverType = 1
+recoverType = 0
 spriteScale = 0.2

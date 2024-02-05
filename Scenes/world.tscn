@@ -1,15 +1,40 @@
-[gd_scene load_steps=13 format=3 uid="uid://dxwoxio674kr7"]
+[gd_scene load_steps=42 format=3 uid="uid://bc02f0ml8l03k"]
 
 [ext_resource type="PackedScene" uid="uid://dv81swjibar3c" path="res://Scenes/parallax_background.tscn" id="1_3b8vd"]
-[ext_resource type="Script" path="res://Scenes/world.gd" id="1_yl1dh"]
+[ext_resource type="Script" path="res://Scripts/world.gd" id="1_cnane"]
 [ext_resource type="PackedScene" uid="uid://ykihvlu1ew8a" path="res://Scenes/player.tscn" id="3_eiu3v"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="4_egxe6"]
 [ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/resource_template-GoldMine.tscn" id="4_ikssv"]
 [ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/resource_template-IronMine.tscn" id="5_y1y6w"]
-[ext_resource type="PackedScene" uid="uid://3ug8x7bl8jwu" path="res://Scenes/resource_template-ManaWell.tscn" id="7_h85bg"]
+[ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/resource_template-ManaWell.tscn" id="7_h85bg"]
 [ext_resource type="PackedScene" uid="uid://ctcv7jmln8o34" path="res://Scenes/resource_template-Wood.tscn" id="8_6fy56"]
+[ext_resource type="PackedScene" uid="uid://djjmkb3mx4ata" path="res://Scenes/resource_template-Platform.tscn" id="9_nb6ux"]
 [ext_resource type="PackedScene" uid="uid://bhl4p70uusacn" path="res://Scenes/fps.tscn" id="10_2xbt4"]
-[ext_resource type="PackedScene" path="res://Scenes/gui.tscn" id="10_px18i"]
+[ext_resource type="PackedScene" uid="uid://d0rs3cdjkjukh" path="res://Scenes/gui.tscn" id="10_px18i"]
+[ext_resource type="Script" path="res://Scripts/SettlementSelect.cs" id="12_cg3fo"]
+[ext_resource type="Texture2D" uid="uid://dvgfe0sk66tqs" path="res://Art/GUI/btnAlechemyLab.png" id="13_56blb"]
+[ext_resource type="Texture2D" uid="uid://b8wsbb2jt5pyu" path="res://Art/GUI/btnBlacksmith.png" id="14_pyxf8"]
+[ext_resource type="Texture2D" uid="uid://ckrrp2gcbqft0" path="res://Art/GUI/btnHerbalist.png" id="15_vdli0"]
+[ext_resource type="Texture2D" uid="uid://dnas3wtclg63g" path="res://Art/GUI/btnLodestone.png" id="16_2nuhw"]
+[ext_resource type="Texture2D" uid="uid://3uf26qhnwybg" path="res://Art/GUI/btnSettlement.png" id="17_ycron"]
+[ext_resource type="Texture2D" uid="uid://boifd3b0kaqav" path="res://Art/GUI/btnTower.png" id="18_qjudb"]
+[ext_resource type="Texture2D" uid="uid://b3gh0i468gumr" path="res://Art/GUI/btnTrainingCenter.png" id="19_r8ow7"]
+[ext_resource type="Texture2D" uid="uid://cgm3rv2kfrffc" path="res://Art/Resources/Alchemy Lab.png" id="20_ncgdp"]
+[ext_resource type="Texture2D" uid="uid://dq7yb4v644n7e" path="res://Art/GUI/Button.png" id="20_vu2nf"]
+[ext_resource type="Texture2D" uid="uid://d0qalqfl6foic" path="res://Art/Resources/Blacksmith.png" id="21_g0gov"]
+[ext_resource type="Texture2D" uid="uid://c5w17xtni46jo" path="res://Art/Resources/Herbalist.png" id="22_ri83h"]
+[ext_resource type="Texture2D" uid="uid://chuvyp41e1pvh" path="res://Art/Resources/Lodestone.png" id="23_k8mu6"]
+[ext_resource type="Texture2D" uid="uid://doi3etxku6hg7" path="res://Art/Resources/Settlement.png" id="24_lu2ef"]
+[ext_resource type="Texture2D" uid="uid://swedahiogmgi" path="res://Art/Resources/Tower.png" id="25_8wllh"]
+[ext_resource type="Texture2D" uid="uid://dj56og1qltf0m" path="res://Art/Resources/Training Center.png" id="26_svjtm"]
+[ext_resource type="Texture2D" uid="uid://bq4pom8h1qihh" path="res://Art/GUI/IronOre.png" id="28_mqoqv"]
+[ext_resource type="Texture2D" uid="uid://ke85s64nnx0g" path="res://Art/GUI/Wood.png" id="29_eowbu"]
+[ext_resource type="Texture2D" uid="uid://bkjl0vf4gs5nm" path="res://Art/GUI/RedStroke.png" id="30_w6xib"]
+[ext_resource type="PackedScene" path="res://Scenes/fog.tscn" id="31_3wxrh"]
+[ext_resource type="PackedScene" uid="uid://03rf0tmt2nd5" path="res://Scenes/FogOfWar.tscn" id="31_aslyk"]
+[ext_resource type="Script" path="res://Scripts/FogOfWar.cs" id="32_f36kf"]
+[ext_resource type="Texture2D" uid="uid://dw6baw0ypmyb0" path="res://Art/Light.png" id="33_0wlbc"]
+[ext_resource type="PackedScene" uid="uid://1xxnq480idry" path="res://Scenes/fo_wfog.tscn" id="35_p0u56"]
 
 [sub_resource type="Environment" id="Environment_h8lsd"]
 background_mode = 3
@@ -23,14 +48,29 @@ glow_hdr_scale = 1.0
 glow_hdr_luminance_cap = 0.1
 adjustment_enabled = true
 
+[sub_resource type="Gradient" id="Gradient_bydhu"]
+offsets = PackedFloat32Array(0, 0.63871)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bih6r"]
+gradient = SubResource("Gradient_bydhu")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [sub_resource type="Curve2D" id="Curve2D_obham"]
 _data = {
 "points": PackedVector2Array(41.38, -3.3371, -41.38, 3.3371, 1063, 588, 0, 0, 0, 0, -1026, 583, 0, 0, 0, 0, -1030, -616, 0, 0, 0, 0, 1061, -613, -0.0278406, -3.9812, 0.0278406, 3.9812, 1063, 588)
 }
 point_count = 5
 
+[sub_resource type="LabelSettings" id="LabelSettings_lonnw"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_56d7c"]
+font_size = 28
+
 [node name="World" type="Node2D"]
-script = ExtResource("1_yl1dh")
+script = ExtResource("1_cnane")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h8lsd")
@@ -43,18 +83,17 @@ transform = Transform2D(1, 0, 0, 1, 0, 0)
 
 [node name="ResourceDiscoveries" type="Node2D" parent="."]
 y_sort_enabled = true
-position = Vector2(-2, -2)
 script = ExtResource("4_egxe6")
 rTemplateIronMine = ExtResource("5_y1y6w")
 rTemplateGoldMine = ExtResource("4_ikssv")
 rTemplateManaWell = ExtResource("7_h85bg")
 rTemplateWood = ExtResource("8_6fy56")
-gridSizeX = 10
-gridSizeY = 10
-resourcesPerCell = 2
+rTemplatePlatform = ExtResource("9_nb6ux")
+resourcesPerCell = 3
 resourceUpdateFreq = 60
 
 [node name="Timer" type="Timer" parent="ResourceDiscoveries"]
+autostart = true
 
 [node name="WorldEnvironment2" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h8lsd")
@@ -76,7 +115,15 @@ position = Vector2(0, -96)
 [node name="ShootingPoint" parent="Player/AttackRange" index="1"]
 position = Vector2(-2, 0)
 
+[node name="PointLight2D" type="PointLight2D" parent="Player"]
+position = Vector2(0, -84)
+scale = Vector2(8, 8)
+color = Color(0.988235, 0.984314, 0, 1)
+energy = 0.2
+texture = SubResource("GradientTexture2D_bih6r")
+
 [node name="Path2D" type="Path2D" parent="Player"]
+visible = false
 curve = SubResource("Curve2D_obham")
 
 [node name="EnemySpawnPath" type="PathFollow2D" parent="Player/Path2D"]
@@ -86,8 +133,137 @@ rotation = 3.06112
 
 [node name="GUI" parent="." instance=ExtResource("10_px18i")]
 
+[node name="StructureGUI" type="CanvasLayer" parent="."]
+
+[node name="CanvasGroup" type="CanvasGroup" parent="StructureGUI" node_paths=PackedStringArray("btnNode0", "btnNode1", "btnNode2", "btnNode3", "lblIron", "lblWood", "redStroke", "lblCurStruct")]
+position = Vector2(848, 533)
+script = ExtResource("12_cg3fo")
+btnNode0 = NodePath("btn0")
+btnNode1 = NodePath("btn1")
+btnNode2 = NodePath("btn2")
+btnNode3 = NodePath("btn3")
+txStructBut = Array[Texture2D]([ExtResource("13_56blb"), ExtResource("14_pyxf8"), ExtResource("15_vdli0"), ExtResource("16_2nuhw"), ExtResource("17_ycron"), ExtResource("18_qjudb"), ExtResource("19_r8ow7")])
+txStruct = Array[Texture]([ExtResource("20_ncgdp"), ExtResource("21_g0gov"), ExtResource("22_ri83h"), ExtResource("23_k8mu6"), ExtResource("24_lu2ef"), ExtResource("25_8wllh"), ExtResource("26_svjtm")])
+lblIron = NodePath("lblIron")
+lblWood = NodePath("lblWood")
+costIron = PackedInt32Array(1, 2, 3, 2, 4, 4, 3)
+costWood = PackedInt32Array(1, 2, 0, 4, 2, 6, 3)
+redStroke = NodePath("RedStroke")
+lblCurStruct = NodePath("Label")
+
+[node name="btn0" type="TextureRect" parent="StructureGUI/CanvasGroup"]
+offset_left = -118.0
+offset_top = -13.0
+offset_right = 74.0
+offset_bottom = 168.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("18_qjudb")
+metadata/_edit_use_anchors_ = true
+
+[node name="btn1" type="TextureRect" parent="StructureGUI/CanvasGroup"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("13_56blb")
+metadata/_edit_use_anchors_ = true
+
+[node name="btn2" type="TextureRect" parent="StructureGUI/CanvasGroup"]
+offset_left = 212.0
+offset_top = -13.0
+offset_right = 404.0
+offset_bottom = 168.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_ycron")
+metadata/_edit_use_anchors_ = true
+
+[node name="btn3" type="TextureRect" parent="StructureGUI/CanvasGroup"]
+offset_left = -118.0
+offset_top = -13.0
+offset_right = 74.0
+offset_bottom = 168.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("20_vu2nf")
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="StructureGUI/CanvasGroup"]
+visible = false
+offset_left = 47.0
+offset_top = 232.0
+offset_right = 110.0
+offset_bottom = 280.0
+text = "Cur:"
+label_settings = SubResource("LabelSettings_lonnw")
+metadata/_edit_use_anchors_ = true
+
+[node name="Iron" type="TextureRect" parent="StructureGUI/CanvasGroup"]
+offset_left = -38.0
+offset_top = 187.0
+offset_right = 96.0
+offset_bottom = 285.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("28_mqoqv")
+
+[node name="lblIron" type="Label" parent="StructureGUI/CanvasGroup"]
+offset_left = 34.0
+offset_top = 194.0
+offset_right = 82.0
+offset_bottom = 236.0
+text = "999"
+label_settings = SubResource("LabelSettings_56d7c")
+
+[node name="Wood" type="TextureRect" parent="StructureGUI/CanvasGroup"]
+offset_left = 103.0
+offset_top = 188.0
+offset_right = 237.0
+offset_bottom = 286.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("29_eowbu")
+
+[node name="lblWood" type="Label" parent="StructureGUI/CanvasGroup"]
+offset_left = 181.0
+offset_top = 194.0
+offset_right = 229.0
+offset_bottom = 236.0
+text = "999"
+label_settings = SubResource("LabelSettings_56d7c")
+
+[node name="RedStroke" type="TextureRect" parent="StructureGUI/CanvasGroup"]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("30_w6xib")
+
+[node name="Fog" parent="." instance=ExtResource("31_3wxrh")]
+
+[node name="FogOfWar" parent="." node_paths=PackedStringArray("fog", "Player") instance=ExtResource("31_aslyk")]
+visible = true
+z_index = 10
+script = ExtResource("32_f36kf")
+fog = NodePath("FoWfog")
+fogWidth = 16000
+fogHeight = 16000
+LightTexture = ExtResource("33_0wlbc")
+lightWidth = 2048
+lightHeight = 2048
+Player = NodePath("../Player")
+debounce_time = 0.6
+
+[node name="FoWfog" parent="FogOfWar" instance=ExtResource("35_p0u56")]
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+energy = 0.2
+blend_mode = 1
+
 [connection signal="timeout" from="ResourceDiscoveries/Timer" to="ResourceDiscoveries" method="OnTimer"]
 [connection signal="timeout" from="EnemyTimer" to="." method="_on_enemy_timer_timeout"]
+[connection signal="visibility_changed" from="StructureGUI/CanvasGroup" to="StructureGUI/CanvasGroup" method="_on_visibility_changed"]
+[connection signal="mouse_entered" from="StructureGUI/CanvasGroup/btn0" to="StructureGUI/CanvasGroup" method="_on_btn_0_mouse_entered"]
+[connection signal="mouse_exited" from="StructureGUI/CanvasGroup/btn0" to="StructureGUI/CanvasGroup" method="_on_btn_0_mouse_exited"]
+[connection signal="mouse_entered" from="StructureGUI/CanvasGroup/btn1" to="StructureGUI/CanvasGroup" method="_on_btn_1_mouse_entered"]
+[connection signal="mouse_exited" from="StructureGUI/CanvasGroup/btn1" to="StructureGUI/CanvasGroup" method="_on_btn_1_mouse_exited"]
+[connection signal="mouse_entered" from="StructureGUI/CanvasGroup/btn2" to="StructureGUI/CanvasGroup" method="_on_btn_2_mouse_entered"]
+[connection signal="mouse_exited" from="StructureGUI/CanvasGroup/btn2" to="StructureGUI/CanvasGroup" method="_on_btn_2_mouse_exited"]
+[connection signal="mouse_entered" from="StructureGUI/CanvasGroup/btn3" to="StructureGUI/CanvasGroup" method="_on_btn_0_mouse_entered"]
+[connection signal="mouse_exited" from="StructureGUI/CanvasGroup/btn3" to="StructureGUI/CanvasGroup" method="_on_btn_0_mouse_exited"]
 
 [editable path="Player"]
 [editable path="Player/AttackRange"]
