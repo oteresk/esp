@@ -16,7 +16,7 @@ public partial class SettlementSelect : CanvasGroup
     [Export] public TextureRect btnNode3;
 
     [Export] public Texture2D[] txStructBut;
-    [Export] public Texture2D[] txStruct;
+    [Export] private PackedScene[] scnStruct;
 
     [Export] public Label lblIron;
     [Export] public Label lblWood;
@@ -185,10 +185,24 @@ public partial class SettlementSelect : CanvasGroup
                     // check if you can afford it
                     if (ResourceDiscoveries.iron >= costIron[curStruct] && ResourceDiscoveries.wood >= costWood[curStruct])
                     {
-                        platform.Texture = txStruct[curStruct];
-                        platform.Offset = new Vector2(0, 0);
-                        // disable GUI for this platform
-                        platform.structureIsBuilt = true;
+                        // build structure
+                        Vector2 strPos = platform.Position;
+                        ResourceDiscovery platformRD = (ResourceDiscovery)platform;
+                        int sX = platformRD.gridXPos;
+                        int sY = platformRD.gridYPos;
+
+                        // load structure scene
+                        Node2D structure;
+                        structure = (Node2D)scnStruct[curStruct].Instantiate();
+                        structure.Name="Structure "+ scnStruct[curStruct].ToString();
+
+                        Node2D nodRD = (Node2D)GetNode("/root/World/ResourceDiscoveries");
+                        nodRD.AddChild(structure);
+
+                        structure.Position = new Vector2(sX*ResourceDiscoveries.pixelSizeX, sY * ResourceDiscoveries.pixelSizeY);
+
+                        ResourceDiscoveries.worldArray[sX,sY] = curStruct+6;
+                       
                         // hide structure select canvas
                         CanvasLayer nodStruct = (CanvasLayer)GetNode("/root/World/StructureGUI");
                         nodStruct.Visible = false;
@@ -198,6 +212,9 @@ public partial class SettlementSelect : CanvasGroup
                         ResourceDiscoveries.wood -= costWood[curStruct];
                         // update ResourceGUI
                         ResourceDiscoveries.UpdateResourceGUI();
+
+                        // destroy platform
+                        platform.QueueFree();
 
                     }
 

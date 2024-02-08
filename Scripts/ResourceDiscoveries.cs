@@ -18,12 +18,14 @@ public partial class ResourceDiscoveries : Node2D
 	[Export] public static int pixelSizeY=108*3;
 	[Export] public int resourcesPerCell;
 
-	static private int[,] worldArray; // two-dimensional array
+	static public int[,] worldArray; // two-dimensional array
 	// 1 = Iron Mine
 	// 2 = Gold Mine
 	// 3 = Mana Well
 	// 4 = Tree
 	// 5 = Platform
+	// 6 = Alchemy Lab
+	// 7 = Blacksmith
 
 // resource timer
 	[Export] public int resourceUpdateFreq;
@@ -35,11 +37,11 @@ public partial class ResourceDiscoveries : Node2D
 // resource tracking
 	private static float gold; // how much gold you have
 	static private int goldResourceCount; // how many gold mine resources you have discovered
-	public static float iron;
+	public static float iron=30;
 	private static int ironResourceCount;
 	public static float mana;
 	private static int manaResourceCount;
-	public static float wood;
+	public static float wood=30;
 
     private int seconds = 0;
 	private int minutes = 0;
@@ -47,6 +49,8 @@ public partial class ResourceDiscoveries : Node2D
 // GUI node
 	private Node rGUI;
 	static private resourceGUI rG2;
+
+	static public bool useOcclusion = false;
 	public override void _Ready()
 	{
 	    worldArray = new int[gridSizeX*subGridSizeX, gridSizeY*subGridSizeY];
@@ -140,7 +144,9 @@ private void PlaceResourceDiscoveries()
     }
 
 	private void PlaceDiscovery(int x, int y, int px, int py, uint rdType)
-	{ 
+	{
+		ResourceDiscovery rdp;
+
         switch (rdType)
         {
             case 0:
@@ -169,7 +175,10 @@ private void PlaceResourceDiscoveries()
 
 
         resourceDiscovery.Position = new Vector2(x*subGridSizeX * pixelSizeX + px * pixelSizeX, y*subGridSizeY * pixelSizeY + py * pixelSizeY);
-        ResourceDiscovery rdp = (ResourceDiscovery)GetNode(resourceDiscovery.GetPath());
+
+        rdp = (ResourceDiscovery)GetNode(resourceDiscovery.GetPath());
+        rdp.gridXPos = x * subGridSizeX + px;
+        rdp.gridYPos = y * subGridSizeY + py;
 
         string myType = rdp.RDResource.resourceType.ToString();
 
