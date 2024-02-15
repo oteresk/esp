@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0h8hydyf0lpm"]
+
+[ext_resource type="Script" path="res://Scripts/MapIcon.cs" id="1_yk3pw"]
+[ext_resource type="Texture2D" uid="uid://delwyuw0vhyhf" path="res://Art/GUI/Map/Training Center.png" id="2_7p3vd"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ij8g1"]
+light_mode = 1
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_yk3pw")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_ij8g1")
+offset_top = -1.0
+offset_right = 245.0
+offset_bottom = 244.0
+texture = ExtResource("2_7p3vd")
+metadata/_edit_use_anchors_ = true

@@ -1,0 +1,76 @@
+[gd_scene load_steps=10 format=3 uid="uid://cx15v303xmpy6"]
+
+[ext_resource type="Shader" path="res://Shaders/SaturationShader.gdshader" id="1_ccdd2"]
+[ext_resource type="Texture2D" uid="uid://d0qalqfl6foic" path="res://Art/Resources/Blacksmith.png" id="2_2naun"]
+[ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="3_age7f"]
+[ext_resource type="Script" path="res://Scripts/FlickerLight.cs" id="4_u8h55"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d03md"]
+resource_local_to_scene = true
+shader = ExtResource("1_ccdd2")
+shader_parameter/saturation = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_s0u15"]
+radius = 329.156
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c286w"]
+
+[sub_resource type="Gradient" id="Gradient_kyycj"]
+offsets = PackedFloat32Array(0, 0.296774, 0.43871, 0.574194, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.451613, 0.451613, 0.451613, 1, 0.32518, 0.32518, 0.32518, 1, 0.191722, 0.191722, 0.191722, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4ft0u"]
+gradient = SubResource("Gradient_kyycj")
+width = 270
+height = 150
+fill = 1
+fill_from = Vector2(0.504587, 0.509174)
+fill_to = Vector2(0.857798, 0.155963)
+
+[node name="Resource" type="Sprite2D"]
+y_sort_enabled = true
+material = SubResource("ShaderMaterial_d03md")
+position = Vector2(-1, -153)
+texture = ExtResource("2_2naun")
+offset = Vector2(0, -20)
+script = ExtResource("3_age7f")
+
+[node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
+visible = false
+scale = Vector2(0.520001, 0.28)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visible = false
+position = Vector2(0, 146.429)
+shape = SubResource("CircleShape2D_s0u15")
+
+[node name="Occlusion Area Collider" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
+visible = false
+scale = Vector2(140, 90)
+shape = SubResource("RectangleShape2D_c286w")
+
+[node name="FlickerLight" type="PointLight2D" parent="." node_paths=PackedStringArray("tmr", "light")]
+position = Vector2(-4, 13)
+scale = Vector2(1.4, 2)
+color = Color(0.752941, 0.223529, 0.203922, 1)
+energy = 0.7
+range_layer_min = -200
+texture = SubResource("GradientTexture2D_4ft0u")
+height = 333.0
+script = ExtResource("4_u8h55")
+tmr = NodePath("Timer")
+speed = 0.03
+light = NodePath(".")
+
+[node name="Timer" type="Timer" parent="FlickerLight"]
+process_callback = 0
+wait_time = 0.01
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
+[connection signal="area_entered" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_entered"]
+[connection signal="area_exited" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_exited"]
+[connection signal="timeout" from="FlickerLight/Timer" to="FlickerLight" method="OnTimerTimeout"]

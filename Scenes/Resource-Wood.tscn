@@ -1,0 +1,78 @@
+[gd_scene load_steps=12 format=3 uid="uid://ctcv7jmln8o34"]
+
+[ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="1_g74qy"]
+[ext_resource type="Shader" path="res://Shaders/SaturationShader.gdshader" id="1_pnngt"]
+[ext_resource type="Script" path="res://Scripts/ResourceDiscoveryResource.cs" id="2_l2fjf"]
+[ext_resource type="Texture2D" uid="uid://d2w2biwiltg7x" path="res://Art/Resources/Tree.png" id="3_hgklo"]
+[ext_resource type="PackedScene" uid="uid://d2xu8yw5qkaq" path="res://Scenes/CaptureTimer.tscn" id="4_7s3b0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t7s0j"]
+resource_local_to_scene = true
+shader = ExtResource("1_pnngt")
+shader_parameter/saturation = 1.0
+
+[sub_resource type="Resource" id="Resource_2r7ac"]
+script = ExtResource("2_l2fjf")
+sprImage = ExtResource("3_hgklo")
+timeToCapture = 3.0
+resourceType = 3
+amount = 6.0
+amountMax = 10.0
+freq = 0.0
+recoverType = 0
+spriteScale = 0.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5yecl"]
+radius = 471.038
+
+[sub_resource type="Gradient" id="Gradient_nfuyp"]
+offsets = PackedFloat32Array(0, 0.00645161, 0.483871, 0.787097, 1)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0.516484, 0.516484, 0.516484, 1, 0.232418, 0.232418, 0.232418, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ajq7n"]
+gradient = SubResource("Gradient_nfuyp")
+fill = 2
+fill_from = Vector2(0.518349, 0.711009)
+fill_to = Vector2(0.495413, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_llrr6"]
+
+[node name="Resource" type="Sprite2D"]
+y_sort_enabled = true
+material = SubResource("ShaderMaterial_t7s0j")
+texture = ExtResource("3_hgklo")
+centered = false
+offset = Vector2(-66, -220)
+script = ExtResource("1_g74qy")
+RDResource = SubResource("Resource_2r7ac")
+
+[node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visible = false
+shape = SubResource("CircleShape2D_5yecl")
+
+[node name="CaptureTimer" parent="." instance=ExtResource("4_7s3b0")]
+visible = false
+scale = Vector2(1, 1)
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(6, -38)
+scale = Vector2(3, 3)
+color = Color(0, 0.533333, 0.890196, 1)
+energy = 1.86
+range_z_min = -1
+range_z_max = 1
+texture = SubResource("GradientTexture2D_ajq7n")
+
+[node name="Occlusion Area Collider" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
+scale = Vector2(140, 90)
+shape = SubResource("RectangleShape2D_llrr6")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
+[connection signal="area_entered" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_entered"]
+[connection signal="area_exited" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_exited"]

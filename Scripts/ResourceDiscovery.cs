@@ -13,35 +13,44 @@ public partial class ResourceDiscovery : Sprite2D
 	private ShaderMaterial mat;
 	private Node2D capTimer;
 	private CaptureTimer captureTimer;
-	private bool discovered = false;
+	[Export] public bool discovered = false;
+    public bool treeDiscovered = false;
     PackedScene scnStructureSelectGUI;
 	[Export] public CanvasLayer structureSelect;
-	public bool structureIsBuilt = false;
+	//public bool structureIsBuilt = false;   No longer needed because platform gets deleted when structure is built
+	public int gridXPos;
+	public int gridYPos;
+
     public override void _Ready()
 	{
-		Texture2D tx=(Texture2D)RDResource.sprImage;
-		this.Texture=tx;
-
-		mat = (ShaderMaterial)this.Material;
-		nearResource = false;
-
-        if (mat!=null)
+		if (RDResource != null)
 		{
-			if (RDResource.resourceType.ToString() != "None") // if not a platform
-			{
-				Debug.Print("RType:" + RDResource.resourceType.ToString());
-				capTimer = (Node2D)GetNode("CaptureTimer");
-				captureTimer = (CaptureTimer)GetNode("CaptureTimer/Progress");
+            Texture2D tx = (Texture2D)RDResource.sprImage;
+            this.Texture = tx;
 
-				if (RDResource.resourceType.ToString() != "Wood")
-					mat.SetShaderParameter("saturation", .1);
+			mat = (ShaderMaterial)this.Material;
+			nearResource = false;
+
+			if (mat != null)
+			{
+				if (RDResource.resourceType.ToString() != "None") // if not a platform
+				{
+					Debug.Print("RType:" + RDResource.resourceType.ToString());
+					capTimer = (Node2D)GetNode("CaptureTimer");
+					captureTimer = (CaptureTimer)GetNode("CaptureTimer/Progress");
+
+					if (RDResource.resourceType.ToString() != "Wood")
+						mat.SetShaderParameter("saturation", .1);
+				}
 			}
-        }
-        if (structureSelect != null)
-        {
-            structureSelect.Visible = false;
-            Debug.Print("Hide Structure Select ready");
-        }
+			if (structureSelect != null)
+			{
+				structureSelect.Visible = false;
+				Debug.Print("Hide Structure Select ready");
+			}
+		}
+		if (Globals.useOcclusion)
+			Visible = false;
     }
 
 	public void MakeSaturated()
@@ -55,38 +64,46 @@ public partial class ResourceDiscovery : Sprite2D
 		{
 			if (nearResource && discovered==false)
 			{
-				if (RDResource.resourceType.ToString() != "None")
-				{ 
-				//capTimer.Position = Position;
-				capTimer.Visible = true;
+				if (RDResource != null)
+				{
 
-					if (captureTimer.timer >= 1)
+					if (RDResource.resourceType.ToString() != "None")
 					{
-						// if frequency =0, then give one-time resource right away and not every minute
-						if (RDResource.freq > 0)
-						{ // not wood
-							mat.SetShaderParameter("saturation", 1);
-							capTimer.Visible = false;
-							discovered = true;
-							Debug.Print("Add RD: " + RDResource.resourceType);
-							ResourceDiscoveries.AddRD(RDResource.resourceType.ToString(), 1);
-						}
-						else
-						{ // wood
-							ResourceDiscoveries.AddResource(RDResource.resourceType.ToString(), RDResource.amount, RDResource.amountMax);
-							capTimer.Visible = false;
-							discovered = true;
-							StartCoroutine(MakeTreeFall());
+						//capTimer.Position = Position;
+						capTimer.Visible = true;
+
+						if (captureTimer.timer >= 1)
+						{
+							// if frequency =0, then give one-time resource right away and not every minute
+							if (RDResource.freq > 0)
+							{ // not wood
+								mat.SetShaderParameter("saturation", 1);
+								capTimer.Visible = false;
+								discovered = true;
+								Debug.Print("Add RD: " + RDResource.resourceType);
+								ResourceDiscoveries.AddRD(RDResource.resourceType.ToString(), 1);
+								// update minimap
+                                Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+                                miniMap.Call("DisplayMap");
+                            }
+							else
+							{ // wood
+								ResourceDiscoveries.AddResource(RDResource.resourceType.ToString(), RDResource.amount, RDResource.amountMax);
+								capTimer.Visible = false;
+								discovered = true;
+								StartCoroutine(MakeTreeFall());
+							}
 						}
 					}
-                }
-                else
-                {
-                    if (RDResource.resourceType.ToString() != "None")
-                    {
-                        capTimer.Visible = false;
-                    }
-                }
+					else
+					{
+						if (RDResource.resourceType.ToString() != "None")
+						{
+							capTimer.Visible = false;
+						}
+					}
+				}
+
             }
 		}
 	}
@@ -94,15 +111,20 @@ public partial class ResourceDiscovery : Sprite2D
 	// change sprite from black & white to color
 	public void _on_area_2d_area_exited(Area2D area)
 	{
-        if (RDResource.resourceType.ToString() == "None" && nearResource == true && area.IsInGroup("Players"))
-        {
-            // hide structure select canvas
-            CanvasLayer nodStruct = (CanvasLayer)GetNode("/root/World/StructureGUI");
-            nodStruct.Visible = false;
+		if (RDResource != null)
+		{
+			// exit platform
+			if (RDResource.resourceType.ToString() == "None" && nearResource == true && area.IsInGroup("Players"))
+			{
+				// hide structure select canvas
+				CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
+				nodStruct.Visible = false;
 
-			nearResource = false;
-			Debug.Print("Hide Structure Select");
-        }
+				nearResource = false;
+				Debug.Print("Hide Structure Select");
+			}
+		}
+		// not near resource
         if (area.IsInGroup("Players") && discovered == false && nearResource == true)
         {
             nearResource = false;
@@ -112,21 +134,32 @@ public partial class ResourceDiscovery : Sprite2D
 	public void _on_area_2d_area_entered(Area2D area)
 	{
 		//Debug.Print("Structure - nearresource:" + nearResource+ " resourceType:"+ RDResource.resourceType.ToString());
-        if (RDResource.resourceType.ToString() == "None" && nearResource == false && area.IsInGroup("Players") && structureIsBuilt==false)
-        {
-            CanvasLayer nodStruct = (CanvasLayer)GetNode("/root/World/StructureGUI");
-            nodStruct.Visible = true;
-			nearResource = true;
-			Debug.Print("Show Structure Select");
+		// platform
+		if (RDResource != null)
+		{
+			if (RDResource.resourceType.ToString() == "None" && nearResource == false && area.IsInGroup("Players"))
+			{
+				CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
+				nodStruct.Visible = true;
+				nearResource = true;
+				Debug.Print("Show Structure Select");
 
-			// let Structure Select know which platform you are on
-			SettlementSelect.platform = this;
+				// let Structure Select know which platform you are on
+				SettlementSelect.platform = this;
 
-        }
+				// discover platform and show on map
+                discovered = true;
+                // update minimap
+                Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+                miniMap.Call("DisplayMap");
+            }
+		}
+		// player near resource
         if (area.IsInGroup("Players") && discovered == false && nearResource == false)
         {
             nearResource = true;
         }
+
     }
 
     IEnumerable MakeTreeFall()
@@ -145,6 +178,45 @@ public partial class ResourceDiscovery : Sprite2D
         {
             await mainLoopTree.ToSignal(mainLoopTree, SceneTree.SignalName.ProcessFrame);
         }
+    }
+
+    public void _on_occlusion_area_collider_area_entered(Area2D area)
+    {
+		if (area.IsInGroup("Players") && Globals.useOcclusion)
+		{
+			Visible = true;
+			//Debug.Print("occlusion: enter:" + RDResource.ToString());
+			if (RDResource != null)
+			{
+				// platform
+				if (RDResource.resourceType.ToString() == "None" && nearResource == false && area.IsInGroup("Players"))
+				{
+					// discover platform and show on map
+					discovered = true;
+					// update minimap
+					Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+					miniMap.Call("DisplayMap");
+				}
+				// tree
+                if (RDResource.resourceType.ToString() == "Wood" && nearResource == false && area.IsInGroup("Players"))
+                {
+                    // discover platform and show on map
+                    treeDiscovered = true;
+                    // update minimap
+                    Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+                    miniMap.Call("DisplayMap");
+                }
+            }
+        }
+    }
+
+    public void _on_occlusion_area_collider_area_exited(Area2D area)
+    {
+		if (area.IsInGroup("Players") && Globals.useOcclusion)
+        {
+			Visible = false;
+			//Debug.Print("occlusion: exit" + RDResource.ToString());
+		}
     }
 
 }

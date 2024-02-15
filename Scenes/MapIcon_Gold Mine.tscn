@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://b5mdyytg2otaa"]
+
+[ext_resource type="Texture2D" uid="uid://b2ktun08eipdp" path="res://Art/GUI/Map/Gold Mine_sm.png" id="1_0btls"]
+[ext_resource type="Script" path="res://Scripts/MapIcon.cs" id="1_1ru4x"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ij8g1"]
+light_mode = 1
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_1ru4x")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_ij8g1")
+offset_top = -1.0
+offset_right = 245.0
+offset_bottom = 244.0
+texture = ExtResource("1_0btls")
+metadata/_edit_use_anchors_ = true
