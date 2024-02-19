@@ -56,12 +56,14 @@ public partial class ResourceDiscoveries : Node2D
 
 		// offset resourcediscoveries position to put player in middle of array
 		Position=new Vector2(-(Globals.gridSizeX* Globals.subGridSizeX)/2*pixelSizeX,-(Globals.gridSizeY * Globals.subGridSizeY)/2*pixelSizeY);
+        Node2D nodStruct = (Node2D)GetNode(Globals.NodeStructures);
+		nodStruct.Position = Position;
 
         // hide structure select canvas
-        CanvasLayer nodStruct = (CanvasLayer)GetNodeOrNull(Globals.NodeStructureGUI);
-		if (nodStruct != null)
+        CanvasLayer nodStructGUI = (CanvasLayer)GetNodeOrNull(Globals.NodeStructureGUI);
+		if (nodStructGUI != null)
 		{
-			nodStruct.Visible = false;
+            nodStructGUI.Visible = false;
 			//Debug.Print("********************* " + nodStruct.GetPath());
 		}
     }
@@ -116,8 +118,13 @@ public partial class ResourceDiscoveries : Node2D
             UpdateResourceGUI(); 
 		}
 
+        // refresh structure gui if visible
+        Node2D nodStructCanvas = (Node2D)GetNode(Globals.NodeStructureGUICanvas);
+		if (nodStructCanvas.Visible == true)
+			nodStructCanvas.Call("UpdateCost");
+
         //Debug.Print("Timer: " + minutes+":"+seconds);
-	}
+    }
 
 	static public void UpdateResourceGUI()
 	{
@@ -142,6 +149,7 @@ private void PlaceResourceDiscoveries()
 			}
 	// place some discoveries
 		PlaceDiscovery(5, 5, 1, 1, 4);
+        PlaceDiscovery(5, 5, 2, 2, 1);
         //PlaceDiscovery(5, 5, 1, 0, 1);
         //PlaceDiscovery(5, 5, 0, 1, 1);
         //PlaceDiscovery(5, 5, 1, 1, 1);

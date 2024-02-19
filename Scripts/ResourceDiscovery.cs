@@ -13,8 +13,9 @@ public partial class ResourceDiscovery : Sprite2D
 	private ShaderMaterial mat;
 	private Node2D capTimer;
 	private CaptureTimer captureTimer;
-	[Export] public bool discovered = false;
-    public bool treeDiscovered = false;
+	[Export] public float resourceCaptureSpeed=.2f;
+
+    [Export] public bool discovered = false;
     PackedScene scnStructureSelectGUI;
 	[Export] public CanvasLayer structureSelect;
 	//public bool structureIsBuilt = false;   No longer needed because platform gets deleted when structure is built
@@ -76,7 +77,7 @@ public partial class ResourceDiscovery : Sprite2D
 						{
 							// if frequency =0, then give one-time resource right away and not every minute
 							if (RDResource.freq > 0)
-							{ // not wood
+							{ // not wood or platform
 								mat.SetShaderParameter("saturation", 1);
 								capTimer.Visible = false;
 								discovered = true;
@@ -85,13 +86,20 @@ public partial class ResourceDiscovery : Sprite2D
 								// update minimap
                                 Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
                                 miniMap.Call("DisplayMap");
+
                             }
 							else
-							{ // wood
-								ResourceDiscoveries.AddResource(RDResource.resourceType.ToString(), RDResource.amount, RDResource.amountMax);
-								capTimer.Visible = false;
-								discovered = true;
-								StartCoroutine(MakeTreeFall());
+							{ // wood or platform
+								if (RDResource.resourceType.ToString()=="Wood") // if tree
+								{
+									ResourceDiscoveries.AddResource(RDResource.resourceType.ToString(), RDResource.amount, RDResource.amountMax);
+									capTimer.Visible = false;
+									discovered = true;
+									StartCoroutine(MakeTreeFall());
+                                    // update minimap
+                                    Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+                                    miniMap.Call("DisplayMap");
+                                }
 							}
 						}
 					}
@@ -147,17 +155,15 @@ public partial class ResourceDiscovery : Sprite2D
 				// let Structure Select know which platform you are on
 				SettlementSelect.platform = this;
 
-				// discover platform and show on map
-                discovered = true;
-                // update minimap
-                Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
-                miniMap.Call("DisplayMap");
             }
 		}
 		// player near resource
         if (area.IsInGroup("Players") && discovered == false && nearResource == false)
         {
             nearResource = true;
+			// set capture speed
+			if (captureTimer!=null)
+				captureTimer.captureSpeed = resourceCaptureSpeed;
         }
 
     }
@@ -191,8 +197,6 @@ public partial class ResourceDiscovery : Sprite2D
 				// platform
 				if (RDResource.resourceType.ToString() == "None" && nearResource == false && area.IsInGroup("Players"))
 				{
-					// discover platform and show on map
-					discovered = true;
 					// update minimap
 					Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
 					miniMap.Call("DisplayMap");
@@ -200,8 +204,6 @@ public partial class ResourceDiscovery : Sprite2D
 				// tree
                 if (RDResource.resourceType.ToString() == "Wood" && nearResource == false && area.IsInGroup("Players"))
                 {
-                    // discover platform and show on map
-                    treeDiscovered = true;
                     // update minimap
                     Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
                     miniMap.Call("DisplayMap");

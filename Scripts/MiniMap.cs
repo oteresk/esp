@@ -35,9 +35,6 @@ public partial class MiniMap : Node2D
 
         CalculateZoom();
         DisplayMap();
-
-        PositionMapIcons();
-
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -48,7 +45,6 @@ public partial class MiniMap : Node2D
         if (Player.Position != lastPos)
         {
             CalculateZoom();
-            PositionMapIcons();
             // position map reletive to player
             Position = new Vector2(-Player.Position.X / iconSpacingX, -Player.Position.Y / iconSpacingY) + offset;
         }
@@ -64,71 +60,37 @@ public partial class MiniMap : Node2D
         posRatioY = zoom;
     }
 
-    public void PositionMapIcons()
-    {
-        foreach (Node2D childNode in GetNode(Globals.NodeMiniMapContainer).GetChildren())
-        {
-            Vector2 pos= (Vector2)childNode.Get("worldPos");
-            childNode.Position = new Vector2(pos.X * posRatioX, pos.Y * posRatioY);
-            //Debug.Print("Map Icon Pos:" + pos);
-        }
-    }
-
-    // worldArray; 
-    // 1 = Iron Mine
-    // 2 = Gold Mine
-    // 3 = Mana Well
-    // 4 = Tree
-    // 5 = Platform
-    // 6 = Alchemy Lab
-    // 7 = Blacksmith
-    // 8 = Herbalist
-    // 9 = Lodestone
-    // 10 = Settlement
-    // 11 = Tower
-    // 12 = Training Center
-    public void UpdateMapIcon(int mX, int mY, int stru)
-    {
-        //Debug.Print("mx:"+mX+" my:"+mY+"Structure: " + stru);
-        foreach (Node2D childNode in GetNode(Globals.NodeMiniMapContainer).GetChildren())
-        {
-            Vector2 pos = (Vector2)childNode.Get("worldPos");
-            if (pos.X==mX && pos.Y==mY)
-            {
-                Vector2 oldPos = childNode.Position;
-                childNode.Free();
-                PackedScene pS;
-                pS = icon[stru + 5];
-                mapIcon = (Node2D)pS.Instantiate();
-                GetNode(Globals.NodeMiniMapContainer).AddChild((Node2D)mapIcon);
-                mapIcon.Scale = new Vector2(iconScale, iconScale);
-                mapIcon.Position = new Vector2(mX * posRatioX, mY * posRatioY);
-                mapIcon.Set("worldPos", new Vector2(mX, mY));
-            }
-        }
-    }
-
-
     public void DisplayMap()
     {
-        // worldArray; // two-dimensional array
-        // 1 = Iron Mine
-        // 2 = Gold Mine
-        // 3 = Mana Well
+//        Debug.Print("************ Display Map **********");
 
-        // 5 = Platform
+        // delete child nodes if they exist
+        Node rdNode = GetNode(Globals.NodeMiniMapContainer);
+        if (rdNode.GetChildCount() >0)
+        {
+            for (int iter= rdNode.GetChildCount()-1; iter>=0; iter--)
+            {
+                rdNode.GetChild(iter).QueueFree();
+            }
+        }
 
+        DisplayResourceDiscoveries();
+        DisplayStructures();
+    }
+
+    private void DisplayResourceDiscoveries()
+    {
         // Display Resource Discoveries on map
         foreach (Node childNode in GetNode(Globals.NodeResourceDiscoveries).GetChildren())
         {
             if (childNode.GetType() == typeof(ResourceDiscovery))
             {
-                if ((bool)childNode.Get("discovered") == true || (bool)childNode.Get("treeDiscovered") == true)
-                {
-                    PackedScene pS;
-                    pS = icon[0];
+                PackedScene pS;
+                pS = icon[0];
 
-                    ResourceDiscovery rdp = (ResourceDiscovery)GetNode(childNode.GetPath());
+                ResourceDiscovery rdp = (ResourceDiscovery)GetNode(childNode.GetPath());
+                if (rdp != null)
+                {
                     string myType = rdp.RDResource.resourceType.ToString();
 
                     switch (myType)
@@ -155,14 +117,57 @@ public partial class MiniMap : Node2D
                     GetNode(Globals.NodeMiniMapContainer).AddChild((Node2D)mapIcon);
                     mapIcon.Scale = new Vector2(iconScale, iconScale);
                     mapIcon.Position = new Vector2(rdp.gridXPos * posRatioX, rdp.gridYPos * posRatioY);
-                    mapIcon.Set("worldPos", new Vector2(rdp.gridXPos, rdp.gridYPos));
+                    mapIcon.Name = myType + " " + rdp.gridXPos + ", " + rdp.gridYPos;
+
+                    // make monochrome if already discovered
+                    if ((bool)childNode.Get("discovered") == true)
+                    {
+                        Color curColor = mapIcon.Modulate;
+                        Debug.Print("time - found: " + rdp.RDResource.resourceType.ToString());
+                        mapIcon.Modulate = new Color(curColor.R, curColor.G, curColor.B, .5f);
+                    }
                 }
+
             }
         }
-
     }
 
+    private void DisplayStructures()
+    {
+        // Display Resource Discoveries on map
+        foreach (Node childNode in GetNode(Globals.NodeStructures).GetChildren())
+        {
+            if (childNode.GetType() == typeof(ResourceDiscovery))
+            {
+                Debug.Print("Structure found: " + childNode.Name);
+                PackedScene pS;
+                pS = icon[0];
 
+                ResourceDiscovery rdp = (ResourceDiscovery)GetNode(childNode.GetPath());
+                if (rdp != null)
+                {
+                    int myType = Globals.worldArray[rdp.gridXPos, rdp.gridYPos];
+
+                    pS = icon[myType];
+
+                    mapIcon = (Node2D)pS.Instantiate();
+                    GetNode(Globals.NodeMiniMapContainer).AddChild((Node2D)mapIcon);
+                    mapIcon.Scale = new Vector2(iconScale, iconScale);
+                    mapIcon.Position = new Vector2(rdp.gridXPos * posRatioX, rdp.gridYPos * posRatioY);
+                    mapIcon.Name = myType + " " + rdp.gridXPos + ", " + rdp.gridYPos;
+
+                    // make monochrome if already discovered
+                    if ((bool)childNode.Get("discovered") == true)
+                    {
+                        Color curColor = mapIcon.Modulate;
+                        Debug.Print("time - found: " + rdp.RDResource.resourceType.ToString());
+                        mapIcon.Modulate = new Color(curColor.R, curColor.G, curColor.B, .5f);
+                    }
+                }
+
+            }
+        }
+    }
 
     public void ShowMiniMap()
     {

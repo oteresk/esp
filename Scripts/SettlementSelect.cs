@@ -187,6 +187,12 @@ public partial class SettlementSelect : CanvasGroup
                     {
                         if (platform != null)
                         {
+                            // subtract resources
+                            ResourceDiscoveries.iron -= costIron[curStruct];
+                            ResourceDiscoveries.wood -= costWood[curStruct];
+                            // update ResourceGUI
+                            ResourceDiscoveries.UpdateResourceGUI();
+
                             // build structure
                             Vector2 strPos = platform.Position;
                             ResourceDiscovery platformRD = (ResourceDiscovery)platform;
@@ -196,31 +202,35 @@ public partial class SettlementSelect : CanvasGroup
                             // load structure scene
                             Node2D structure;
                             structure = (Node2D)scnStruct[curStruct].Instantiate();
-                            structure.Name = "Structure " + scnStruct[curStruct].ToString();
 
-                            Node2D nodRD = (Node2D)GetNode(Globals.NodeResourceDiscoveries);
+                            Node2D nodRD = (Node2D)GetNode(Globals.NodeStructures);
                             nodRD.AddChild(structure);
 
                             structure.Position = new Vector2(sX * ResourceDiscoveries.pixelSizeX, sY * ResourceDiscoveries.pixelSizeY);
 
+                            ResourceDiscovery rdp = (ResourceDiscovery)GetNode(structure.GetPath()); // get resourceDiscovery of structure
+                            rdp.gridXPos = sX;
+                            rdp.gridYPos = sY;
+                            structure.Name = scnStruct[curStruct].ResourceName+" "+sX.ToString()+" "+sY.ToString();
+
+                            structure.Visible = true;
+
                             Globals.worldArray[sX, sY] = curStruct + 5;
-
-                            // refresh Minimap
-                            Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
-                            miniMap.Call("UpdateMapIcon", sX, sY, curStruct);
-
-                            // subtract resources
-                            ResourceDiscoveries.iron -= costIron[curStruct];
-                            ResourceDiscoveries.wood -= costWood[curStruct];
-                            // update ResourceGUI
-                            ResourceDiscoveries.UpdateResourceGUI();
 
                             // hide structure select canvas
                             CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
                             nodStruct.Visible = false;
 
                             // destroy platform ********call last
+                            Node rdNode=(Node)GetNode(Globals.NodeResourceDiscoveries);
+                            rdNode.RemoveChild(platform);
+
                             platform.QueueFree();
+
+                            // refresh Minimap
+                            Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+                            miniMap.Call("DisplayMap");
+
                         }
 
                     }
@@ -289,7 +299,7 @@ public partial class SettlementSelect : CanvasGroup
     }
 
     // update iron and wood cost
-    private void UpdateCost()
+    public void UpdateCost()
     {
         lblIron.Text = costIron[curStruct].ToString();
         lblWood.Text = costWood[curStruct].ToString();

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ctcv7jmln8o34"]
+[gd_scene load_steps=11 format=3 uid="uid://bqmyxsuina42m"]
 
 [ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="1_g74qy"]
 [ext_resource type="Shader" path="res://Shaders/SaturationShader.gdshader" id="1_pnngt"]
@@ -14,7 +14,6 @@ shader_parameter/saturation = 1.0
 [sub_resource type="Resource" id="Resource_2r7ac"]
 script = ExtResource("2_l2fjf")
 sprImage = ExtResource("3_hgklo")
-timeToCapture = 3.0
 resourceType = 3
 amount = 6.0
 amountMax = 10.0
