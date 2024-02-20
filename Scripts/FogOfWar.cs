@@ -71,8 +71,11 @@ public partial class FogOfWar : Node2D
     // Update the fog
     private void update_fog(Vector2I pos)
     {
-		
-        fogImage.BlendRect(lightImage, light_rect, (Vector2I)pos - (Vector2I)light_offset);
+        // offset light by a random amount
+        float xOff = (float)GD.RandRange(0.0f, 5.0f);
+        float yOff = (float)GD.RandRange(0.0f, 5.0f);
+        Vector2 rndOffset = new Vector2(xOff, yOff);
+        fogImage.BlendRect(lightImage, light_rect, (Vector2I)pos - (Vector2I)(light_offset+rndOffset));
         fogTexture.Update(fogImage);
     }
 
@@ -80,13 +83,11 @@ public partial class FogOfWar : Node2D
     public override void _Process(double delta)
     {
         time_since_last_fog_update += delta;
-        if (time_since_last_fog_update >= debounce_time)
+        if (time_since_last_fog_update >= debounce_time && Visible)
         {
             time_since_last_fog_update = 0.0f;
-            update_fog((Vector2I)Player.Position);
+            update_fog((Vector2I)new Vector2(Player.Position.X/14, Player.Position.Y/14));
         }
     }
-
-
 
 }

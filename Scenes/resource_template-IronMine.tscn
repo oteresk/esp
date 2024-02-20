@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://btwxpde08w643"]
+[gd_scene load_steps=11 format=3 uid="uid://c3gdtdyprotfs"]
 
 [ext_resource type="Texture2D" uid="uid://c17ydqj1oygfj" path="res://Art/Resources/Iron Mine.png" id="1_4rjnv"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="1_iewui"]
@@ -22,6 +22,9 @@ colors = PackedColorArray(1, 1, 1, 1, 0.516484, 0.516484, 0.516484, 1, 0, 0, 0, 
 gradient = SubResource("Gradient_mrxxq")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_omjqg"]
+radius = 7.0
 
 [node name="Resource" type="Sprite2D"]
 y_sort_enabled = true
@@ -47,6 +50,12 @@ scale = Vector2(4, 4)
 color = Color(0.54902, 0.776471, 1, 1)
 energy = 2.16
 texture = SubResource("GradientTexture2D_dyhuy")
+
+[node name="Discovery Area Collider" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Discovery Area Collider"]
+scale = Vector2(100, 100)
+shape = SubResource("CircleShape2D_omjqg")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

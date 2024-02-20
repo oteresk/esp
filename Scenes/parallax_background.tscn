@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://dv81swjibar3c"]
 
-[ext_resource type="Texture2D" uid="uid://qdo8fihjcymo" path="res://art/GrassAtlas.png" id="1_8p7rv"]
+[ext_resource type="Texture2D" uid="uid://qdo8fihjcymo" path="res://Art/GrassAtlas.png" id="1_8p7rv"]
 [ext_resource type="Shader" uid="uid://cvhn6ijovpdnc" path="res://Shaders/shader.tres" id="2_wmiwn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cqeti"]
