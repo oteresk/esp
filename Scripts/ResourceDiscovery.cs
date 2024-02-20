@@ -15,6 +15,7 @@ public partial class ResourceDiscovery : Sprite2D
 	private CaptureTimer captureTimer;
 	[Export] public float resourceCaptureSpeed=.2f;
 
+    [Export] public bool captured = false;
     [Export] public bool discovered = false;
     PackedScene scnStructureSelectGUI;
 	[Export] public CanvasLayer structureSelect;
@@ -63,7 +64,7 @@ public partial class ResourceDiscovery : Sprite2D
 	{
 		if (mat != null)
 		{
-			if (nearResource && discovered==false)
+			if (nearResource && captured==false)
 			{
 				if (RDResource != null)
 				{
@@ -80,7 +81,7 @@ public partial class ResourceDiscovery : Sprite2D
 							{ // not wood or platform
 								mat.SetShaderParameter("saturation", 1);
 								capTimer.Visible = false;
-								discovered = true;
+								captured = true;
 								Debug.Print("Add RD: " + RDResource.resourceType);
 								ResourceDiscoveries.AddRD(RDResource.resourceType.ToString(), 1);
 								// update minimap
@@ -94,7 +95,7 @@ public partial class ResourceDiscovery : Sprite2D
 								{
 									ResourceDiscoveries.AddResource(RDResource.resourceType.ToString(), RDResource.amount, RDResource.amountMax);
 									capTimer.Visible = false;
-									discovered = true;
+									captured = true;
 									StartCoroutine(MakeTreeFall());
                                     // update minimap
                                     Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
@@ -133,7 +134,7 @@ public partial class ResourceDiscovery : Sprite2D
 			}
 		}
 		// not near resource
-        if (area.IsInGroup("Players") && discovered == false && nearResource == true)
+        if (area.IsInGroup("Players") && captured == false && nearResource == true)
         {
             nearResource = false;
         }
@@ -158,7 +159,7 @@ public partial class ResourceDiscovery : Sprite2D
             }
 		}
 		// player near resource
-        if (area.IsInGroup("Players") && discovered == false && nearResource == false)
+        if (area.IsInGroup("Players") && captured == false && nearResource == false)
         {
             nearResource = true;
 			// set capture speed
@@ -191,24 +192,8 @@ public partial class ResourceDiscovery : Sprite2D
 		if (area.IsInGroup("Players") && Globals.useOcclusion)
 		{
 			Visible = true;
-			//Debug.Print("occlusion: enter:" + RDResource.ToString());
-			if (RDResource != null)
-			{
-				// platform
-				if (RDResource.resourceType.ToString() == "None" && nearResource == false && area.IsInGroup("Players"))
-				{
-					// update minimap
-					Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
-					miniMap.Call("DisplayMap");
-				}
-				// tree
-                if (RDResource.resourceType.ToString() == "Wood" && nearResource == false && area.IsInGroup("Players"))
-                {
-                    // update minimap
-                    Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
-                    miniMap.Call("DisplayMap");
-                }
-            }
+            //Debug.Print("occlusion: enter:" + RDResource.ToString());
+            
         }
     }
 
@@ -219,6 +204,17 @@ public partial class ResourceDiscovery : Sprite2D
 			Visible = false;
 			//Debug.Print("occlusion: exit" + RDResource.ToString());
 		}
+    }
+
+	public void OnDiscoveryColliderEnter(Area2D area)
+	{
+        if (area.IsInGroup("Players") && discovered == false)
+        {
+            discovered = true;
+            // update minimap
+            Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+            miniMap.Call("DisplayMap");
+        }
     }
 
 }

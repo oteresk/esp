@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bqmyxsuina42m"]
+[gd_scene load_steps=12 format=3 uid="uid://bqmyxsuina42m"]
 
 [ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="1_g74qy"]
 [ext_resource type="Shader" path="res://Shaders/SaturationShader.gdshader" id="1_pnngt"]
@@ -34,6 +34,8 @@ fill = 2
 fill_from = Vector2(0.518349, 0.711009)
 fill_to = Vector2(0.495413, 0)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bok6s"]
+
 [node name="Resource" type="Sprite2D"]
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_t7s0j")
@@ -62,6 +64,12 @@ energy = 1.86
 range_z_min = -1
 range_z_max = 1
 texture = SubResource("GradientTexture2D_ajq7n")
+
+[node name="Occlusion Area Collider" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
+scale = Vector2(140, 90)
+shape = SubResource("RectangleShape2D_bok6s")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

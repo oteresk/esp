@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c410fmb2oa282"]
+[gd_scene load_steps=12 format=3 uid="uid://c410fmb2oa282"]
 
 [ext_resource type="Shader" path="res://Scenes/SaturationShader.gdshader" id="1_am5oi"]
 [ext_resource type="Texture2D" uid="uid://diapsx8y3pdo" path="res://Art/Resources/Gold Mine.png" id="1_ldtuu"]
@@ -24,6 +24,9 @@ fill = 1
 fill_from = Vector2(0.431193, 0.522936)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qpwti"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dxkw0"]
+radius = 8.0
 
 [node name="Resource" type="Sprite2D"]
 y_sort_enabled = true
@@ -61,7 +64,14 @@ texture = SubResource("GradientTexture2D_j52u4")
 scale = Vector2(140, 90)
 shape = SubResource("RectangleShape2D_qpwti")
 
+[node name="Discovery Area Collider" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Discovery Area Collider"]
+scale = Vector2(100, 100)
+shape = SubResource("CircleShape2D_dxkw0")
+
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
 [connection signal="area_entered" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_entered"]
 [connection signal="area_exited" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_exited"]
+[connection signal="area_entered" from="Discovery Area Collider" to="." method="OnDiscoveryColliderEnter"]

@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 public partial class ResourceDiscoveries : Node2D
 {
@@ -41,8 +42,8 @@ public partial class ResourceDiscoveries : Node2D
 
 	public override void _Ready()
 	{
-	    
-		GD.Randomize();
+
+        GD.Randomize();
 		//Place resource discoveries
 		PlaceResourceDiscoveries();	
 
@@ -54,8 +55,8 @@ public partial class ResourceDiscoveries : Node2D
 			UpdateResourceGUI();
 		}
 
-		// offset resourcediscoveries position to put player in middle of array
-		Position=new Vector2(-(Globals.gridSizeX* Globals.subGridSizeX)/2*pixelSizeX,-(Globals.gridSizeY * Globals.subGridSizeY)/2*pixelSizeY);
+        // offset resourcediscoveries position to put player in middle of array
+        Position = new Vector2(-(Globals.gridSizeX* Globals.subGridSizeX)/2*pixelSizeX,-(Globals.gridSizeY * Globals.subGridSizeY)/2*pixelSizeY);
         Node2D nodStruct = (Node2D)GetNode(Globals.NodeStructures);
 		nodStruct.Position = Position;
 
@@ -191,7 +192,7 @@ private void PlaceResourceDiscoveries()
         rdp = (ResourceDiscovery)GetNode(resourceDiscovery.GetPath());
         rdp.gridXPos = x * Globals.subGridSizeX + px;
         rdp.gridYPos = y * Globals.subGridSizeY + py;
-
+        resourceDiscovery.Name=(rdp.gridXPos.ToString())+", "+(rdp.gridYPos.ToString());
         string myType = rdp.RDResource.resourceType.ToString();
 
 		//Debug.Print("x:" + x + " y:" + y + " px:" + px + " py:" + py);

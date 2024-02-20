@@ -36,11 +36,17 @@ public partial class Globals : Node
 
     static public resourceGUI rG2; // use for updating Resource Discoveries GUI (includes timer)
 
+    static public int windowSizeY;
+    static public int headerOffset;
 
     public override void _Ready()
     {
         worldArray = new int[gridSizeX * subGridSizeX, gridSizeY * subGridSizeY];
-        Debug.Print("Globals: gridsizex:"+gridSizeX);
+        // windowSizeY
+        // 1071 - without header
+        // 1009 - with
+        windowSizeY = (int)GetViewport().GetVisibleRect().Size.Y;
+        headerOffset = windowSizeY - 1009;
     }
 
 }

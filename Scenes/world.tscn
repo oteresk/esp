@@ -84,7 +84,9 @@ script = ExtResource("2_dtpe5")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_h8lsd")
 
-[node name="AmbientLight" type="DirectionalLight2D" parent="."]
+[node name="Fog" parent="WorldEnvironment" instance=ExtResource("31_3wxrh")]
+
+[node name="AmbientLight" type="DirectionalLight2D" parent="WorldEnvironment"]
 energy = 0.2
 blend_mode = 1
 
@@ -147,7 +149,7 @@ rotation = 3.06112
 [node name="StructureGUI" type="CanvasLayer" parent="GUI"]
 
 [node name="CanvasGroup" type="CanvasGroup" parent="GUI/StructureGUI" node_paths=PackedStringArray("btnNode0", "btnNode1", "btnNode2", "btnNode3", "lblIron", "lblWood", "redStroke", "lblCurStruct")]
-position = Vector2(848, 533)
+position = Vector2(854, 546)
 script = ExtResource("12_cg3fo")
 btnNode0 = NodePath("btn0")
 btnNode1 = NodePath("btn1")
@@ -163,30 +165,37 @@ redStroke = NodePath("RedStroke")
 lblCurStruct = NodePath("Label")
 
 [node name="btn0" type="TextureRect" parent="GUI/StructureGUI/CanvasGroup"]
+z_index = 1
 offset_left = -118.0
-offset_top = -13.0
+offset_top = 85.0
 offset_right = 74.0
-offset_bottom = 168.0
+offset_bottom = 266.0
 scale = Vector2(0.5, 0.5)
+mouse_filter = 0
+mouse_force_pass_scroll_events = false
 texture = ExtResource("18_qjudb")
 metadata/_edit_use_anchors_ = true
 
 [node name="btn1" type="TextureRect" parent="GUI/StructureGUI/CanvasGroup"]
+z_index = 1
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("13_56blb")
 metadata/_edit_use_anchors_ = true
 
 [node name="btn2" type="TextureRect" parent="GUI/StructureGUI/CanvasGroup"]
+z_index = 1
 offset_left = 212.0
-offset_top = -13.0
+offset_top = 85.0
 offset_right = 404.0
-offset_bottom = 168.0
+offset_bottom = 266.0
 scale = Vector2(0.5, 0.5)
+mouse_force_pass_scroll_events = false
 texture = ExtResource("17_ycron")
 metadata/_edit_use_anchors_ = true
 
 [node name="btn3" type="TextureRect" parent="GUI/StructureGUI/CanvasGroup"]
+z_index = 1
 offset_left = -118.0
 offset_top = -13.0
 offset_right = 74.0
@@ -196,6 +205,7 @@ texture = ExtResource("20_vu2nf")
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="GUI/StructureGUI/CanvasGroup"]
+visible = false
 offset_left = 47.0
 offset_top = 232.0
 offset_right = 110.0
@@ -238,12 +248,10 @@ label_settings = SubResource("LabelSettings_56d7c")
 
 [node name="RedStroke" type="TextureRect" parent="GUI/StructureGUI/CanvasGroup"]
 visible = false
+z_index = 2
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("30_w6xib")
-
-[node name="Fog" parent="." instance=ExtResource("31_3wxrh")]
-visible = false
 
 [node name="FogOfWar" parent="." node_paths=PackedStringArray("fog", "Player") instance=ExtResource("31_aslyk")]
 visible = true

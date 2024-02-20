@@ -212,6 +212,7 @@ public partial class SettlementSelect : CanvasGroup
                             rdp.gridXPos = sX;
                             rdp.gridYPos = sY;
                             structure.Name = scnStruct[curStruct].ResourceName+" "+sX.ToString()+" "+sY.ToString();
+                            rdp.discovered = true;
 
                             structure.Visible = true;
 

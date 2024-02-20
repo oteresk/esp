@@ -91,40 +91,43 @@ public partial class MiniMap : Node2D
                 ResourceDiscovery rdp = (ResourceDiscovery)GetNode(childNode.GetPath());
                 if (rdp != null)
                 {
-                    string myType = rdp.RDResource.resourceType.ToString();
-
-                    switch (myType)
-                    {
-                        case "Iron": // iron mine
-                            pS = icon[0];
-                            break;
-
-                        case "Gold": // gold mine
-                            pS = icon[1];
-                            break;
-                        case "Mana": // mana well
-                            pS = icon[2];
-                            break;
-                        case "Wood": // tree
-                            pS = icon[3];
-                            break;
-                        case "None": // Platform
-                            pS = icon[4];
-                            break;
-                    }
-
-                    mapIcon = (Node2D)pS.Instantiate();
-                    GetNode(Globals.NodeMiniMapContainer).AddChild((Node2D)mapIcon);
-                    mapIcon.Scale = new Vector2(iconScale, iconScale);
-                    mapIcon.Position = new Vector2(rdp.gridXPos * posRatioX, rdp.gridYPos * posRatioY);
-                    mapIcon.Name = myType + " " + rdp.gridXPos + ", " + rdp.gridYPos;
-
-                    // make monochrome if already discovered
                     if ((bool)childNode.Get("discovered") == true)
                     {
-                        Color curColor = mapIcon.Modulate;
-                        Debug.Print("time - found: " + rdp.RDResource.resourceType.ToString());
-                        mapIcon.Modulate = new Color(curColor.R, curColor.G, curColor.B, .5f);
+                        string myType = rdp.RDResource.resourceType.ToString();
+
+                        switch (myType)
+                        {
+                            case "Iron": // iron mine
+                                pS = icon[0];
+                                break;
+
+                            case "Gold": // gold mine
+                                pS = icon[1];
+                                break;
+                            case "Mana": // mana well
+                                pS = icon[2];
+                                break;
+                            case "Wood": // tree
+                                pS = icon[3];
+                                break;
+                            case "None": // Platform
+                                pS = icon[4];
+                                break;
+                        }
+
+                        mapIcon = (Node2D)pS.Instantiate();
+                        GetNode(Globals.NodeMiniMapContainer).AddChild((Node2D)mapIcon);
+                        mapIcon.Scale = new Vector2(iconScale, iconScale);
+                        mapIcon.Position = new Vector2(rdp.gridXPos * posRatioX, rdp.gridYPos * posRatioY + (Globals.headerOffset / 2));
+                        mapIcon.Name = myType + " " + rdp.gridXPos + ", " + rdp.gridYPos;
+
+                        // make monochrome if already discovered
+                        if ((bool)childNode.Get("captured") == true)
+                        {
+                            Color curColor = mapIcon.Modulate;
+                            Debug.Print("time - found: " + rdp.RDResource.resourceType.ToString());
+                            mapIcon.Modulate = new Color(curColor.R, curColor.G, curColor.B, .5f);
+                        }
                     }
                 }
 
@@ -157,7 +160,7 @@ public partial class MiniMap : Node2D
                     mapIcon.Name = myType + " " + rdp.gridXPos + ", " + rdp.gridYPos;
 
                     // make monochrome if already discovered
-                    if ((bool)childNode.Get("discovered") == true)
+                    if ((bool)childNode.Get("captured") == true)
                     {
                         Color curColor = mapIcon.Modulate;
                         Debug.Print("time - found: " + rdp.RDResource.resourceType.ToString());
