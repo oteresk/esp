@@ -33,7 +33,7 @@ public partial class ResourceDiscoveries : Node2D
 	private Node2D capTimer;
 
 // resource tracking
-	private static float gold; // how much gold you have
+    private static float gold; // how much gold you have
 	static private int goldResourceCount; // how many gold mine resources you have discovered
 	public static float iron;
 	private static int ironResourceCount;
@@ -49,8 +49,12 @@ public partial class ResourceDiscoveries : Node2D
 	static private resourceGUI rG2;
 	public override void _Ready()
 	{
+<<<<<<< Updated upstream
 	    worldArray = new int[gridSizeX*subGridSizeX, gridSizeY*subGridSizeY];
 		GD.Randomize();
+=======
+        GD.Randomize();
+>>>>>>> Stashed changes
 		//Place resource discoveries
 		PlaceResourceDiscoveries();	
 
@@ -134,6 +138,10 @@ private void PlaceResourceDiscoveries()
 			}
 	// place some discoveries
 		PlaceDiscovery(5, 5, 1, 1, 4);
+<<<<<<< Updated upstream
+=======
+        PlaceDiscovery(5, 5, 2, 2, 11);
+>>>>>>> Stashed changes
         //PlaceDiscovery(5, 5, 1, 0, 1);
         //PlaceDiscovery(5, 5, 0, 1, 1);
         //PlaceDiscovery(5, 5, 1, 1, 1);
@@ -162,6 +170,12 @@ private void PlaceResourceDiscoveries()
             case 4:
                 resourceDiscovery = (Node2D)rTemplatePlatform.Instantiate();
                 worldArray[x * subGridSizeX + px, y * subGridSizeY + py] = 5;
+                break;
+            case 11: // tower
+                resourceDiscovery = (Node2D)rTemplatePlatform.Instantiate();
+                Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 5;
+                SettlementSelect settle = (SettlementSelect)GetNode(Globals.NodeStructureGUICanvas);
+				settle.CreateStructure(5, resourceDiscovery);
                 break;
         }
 

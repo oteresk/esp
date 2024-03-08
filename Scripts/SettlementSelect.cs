@@ -16,7 +16,11 @@ public partial class SettlementSelect : CanvasGroup
     [Export] public TextureRect btnNode3;
 
     [Export] public Texture2D[] txStructBut;
+<<<<<<< Updated upstream
     [Export] public Texture2D[] txStruct;
+=======
+    [Export] public PackedScene[] scnStruct;
+>>>>>>> Stashed changes
 
     [Export] public Label lblIron;
     [Export] public Label lblWood;
@@ -205,6 +209,50 @@ public partial class SettlementSelect : CanvasGroup
             }
 				
         }
+    }
+
+    public void CreateStructure(int strucNum, Node2D plat)
+    {
+        Debug.Print("Createstruct: " + strucNum);
+        // build structure
+        Vector2 strPos = plat.Position;
+        ResourceDiscovery platformRD = (ResourceDiscovery)plat;
+        int sX = platformRD.gridXPos;
+        int sY = platformRD.gridYPos;
+
+        // load structure scene
+        Node2D structure;
+        structure = (Node2D)scnStruct[strucNum].Instantiate();
+
+        Node2D nodRD = (Node2D)GetNode(Globals.NodeStructures);
+        nodRD.AddChild(structure);
+
+        structure.Position = new Vector2(sX * ResourceDiscoveries.pixelSizeX, sY * ResourceDiscoveries.pixelSizeY);
+
+        ResourceDiscovery rdp = (ResourceDiscovery)GetNode(structure.GetPath()); // get resourceDiscovery of structure
+        rdp.gridXPos = sX;
+        rdp.gridYPos = sY;
+        structure.Name = scnStruct[strucNum].ResourceName + " " + sX.ToString() + " " + sY.ToString();
+        rdp.discovered = true;
+
+        structure.Visible = true;
+
+        Globals.worldArray[sX, sY] = strucNum + 5;
+
+        // hide structure select canvas
+        CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
+        nodStruct.Visible = false;
+
+        // destroy platform ********call last
+        //Debug.Print("Remove child: " + Globals.NodeResourceDiscoveries+"/"+plat.Name);
+        Node rdNode = (Node)GetNode(Globals.NodeResourceDiscoveries);
+        //rdNode.RemoveChild(plat);
+
+        plat.QueueFree();
+
+        // refresh Minimap
+        Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+        miniMap.Call("DisplayMap");
     }
 
     private void ResetButtonsLeft()
