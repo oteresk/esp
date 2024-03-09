@@ -255,6 +255,8 @@ blend_mode = 1
 
 [node name="Bullets" type="Node2D" parent="."]
 
+[node name="Bullets" type="Node2D" parent="."]
+
 [connection signal="timeout" from="ResourceDiscoveries/Timer" to="ResourceDiscoveries" method="OnTimer"]
 [connection signal="timeout" from="EnemyTimer" to="." method="_on_enemy_timer_timeout"]
 [connection signal="visibility_changed" from="StructureGUI/CanvasGroup" to="StructureGUI/CanvasGroup" method="_on_visibility_changed"]

@@ -32,6 +32,9 @@ window/size/initial_position=Vector2i(1920, 0)
 =======
 window/size/resizable=false
 window/size/borderless=true
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 window/stretch/aspect="ignore"
 window/vsync/vsync_mode=0
