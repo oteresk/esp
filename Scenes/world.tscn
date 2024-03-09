@@ -1,14 +1,14 @@
-[gd_scene load_steps=42 format=3 uid="uid://bw42fu76r4bsv"]
+[gd_scene load_steps=42 format=3 uid="uid://bc02f0ml8l03k"]
 
 [ext_resource type="PackedScene" uid="uid://dv81swjibar3c" path="res://Scenes/parallax_background.tscn" id="1_3b8vd"]
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_cnane"]
 [ext_resource type="PackedScene" uid="uid://ykihvlu1ew8a" path="res://Scenes/player.tscn" id="3_eiu3v"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="4_egxe6"]
-[ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/Resource-IronMine.tscn" id="5_wtxxp"]
-[ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/Resource-GoldMine.tscn" id="6_xv0gn"]
-[ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/Resource-ManaWell.tscn" id="7_vq3li"]
-[ext_resource type="PackedScene" uid="uid://ctcv7jmln8o34" path="res://Scenes/Resource-Wood.tscn" id="8_lwsre"]
-[ext_resource type="PackedScene" uid="uid://djjmkb3mx4ata" path="res://Scenes/Resource-Platform.tscn" id="9_woq83"]
+[ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/resource_template-GoldMine.tscn" id="4_ikssv"]
+[ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/resource_template-IronMine.tscn" id="5_y1y6w"]
+[ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/resource_template-ManaWell.tscn" id="7_h85bg"]
+[ext_resource type="PackedScene" uid="uid://ctcv7jmln8o34" path="res://Scenes/resource_template-Wood.tscn" id="8_6fy56"]
+[ext_resource type="PackedScene" uid="uid://djjmkb3mx4ata" path="res://Scenes/resource_template-Platform.tscn" id="9_nb6ux"]
 [ext_resource type="PackedScene" uid="uid://bhl4p70uusacn" path="res://Scenes/fps.tscn" id="10_2xbt4"]
 [ext_resource type="PackedScene" uid="uid://d0rs3cdjkjukh" path="res://Scenes/gui.tscn" id="10_px18i"]
 [ext_resource type="Script" path="res://Scripts/SettlementSelect.cs" id="12_cg3fo"]
@@ -19,18 +19,18 @@
 [ext_resource type="Texture2D" uid="uid://3uf26qhnwybg" path="res://Art/GUI/btnSettlement.png" id="17_ycron"]
 [ext_resource type="Texture2D" uid="uid://boifd3b0kaqav" path="res://Art/GUI/btnTower.png" id="18_qjudb"]
 [ext_resource type="Texture2D" uid="uid://b3gh0i468gumr" path="res://Art/GUI/btnTrainingCenter.png" id="19_r8ow7"]
-[ext_resource type="PackedScene" uid="uid://b7cdceuynn4co" path="res://Scenes/Structure-AlchemyLab.tscn" id="20_dtrsa"]
+[ext_resource type="Texture2D" uid="uid://cgm3rv2kfrffc" path="res://Art/Resources/Alchemy Lab.png" id="20_ncgdp"]
 [ext_resource type="Texture2D" uid="uid://dq7yb4v644n7e" path="res://Art/GUI/Button.png" id="20_vu2nf"]
-[ext_resource type="PackedScene" uid="uid://cx15v303xmpy6" path="res://Scenes/Structure-Blacksmith.tscn" id="21_xq308"]
-[ext_resource type="PackedScene" uid="uid://ckakgnegnrlvf" path="res://Scenes/Structure-Herbalist.tscn" id="22_xxl8y"]
-[ext_resource type="PackedScene" uid="uid://b2e4ek01eon7f" path="res://Scenes/Structure-Lodestone.tscn" id="23_w70wf"]
-[ext_resource type="PackedScene" uid="uid://cs70lx50ngyvy" path="res://Scenes/Structure-Settlement.tscn" id="24_ek7ss"]
-[ext_resource type="PackedScene" uid="uid://pv0fpyslcgie" path="res://Scenes/Structure-Tower.tscn" id="25_d0kw3"]
-[ext_resource type="PackedScene" uid="uid://bcn0ebog5s0ps" path="res://Scenes/Structure-TrainingCenter.tscn" id="26_e2j4s"]
+[ext_resource type="Texture2D" uid="uid://d0qalqfl6foic" path="res://Art/Resources/Blacksmith.png" id="21_g0gov"]
+[ext_resource type="Texture2D" uid="uid://c5w17xtni46jo" path="res://Art/Resources/Herbalist.png" id="22_ri83h"]
+[ext_resource type="Texture2D" uid="uid://chuvyp41e1pvh" path="res://Art/Resources/Lodestone.png" id="23_k8mu6"]
+[ext_resource type="Texture2D" uid="uid://doi3etxku6hg7" path="res://Art/Resources/Settlement.png" id="24_lu2ef"]
+[ext_resource type="Texture2D" uid="uid://swedahiogmgi" path="res://Art/Resources/Tower.png" id="25_8wllh"]
+[ext_resource type="Texture2D" uid="uid://dj56og1qltf0m" path="res://Art/Resources/Training Center.png" id="26_svjtm"]
 [ext_resource type="Texture2D" uid="uid://bq4pom8h1qihh" path="res://Art/GUI/IronOre.png" id="28_mqoqv"]
 [ext_resource type="Texture2D" uid="uid://ke85s64nnx0g" path="res://Art/GUI/Wood.png" id="29_eowbu"]
 [ext_resource type="Texture2D" uid="uid://bkjl0vf4gs5nm" path="res://Art/GUI/RedStroke.png" id="30_w6xib"]
-[ext_resource type="PackedScene" uid="uid://bgvm1ptpi8lca" path="res://Scenes/fog.tscn" id="31_3wxrh"]
+[ext_resource type="PackedScene" path="res://Scenes/fog.tscn" id="31_3wxrh"]
 [ext_resource type="PackedScene" uid="uid://03rf0tmt2nd5" path="res://Scenes/FogOfWar.tscn" id="31_aslyk"]
 [ext_resource type="Script" path="res://Scripts/FogOfWar.cs" id="32_f36kf"]
 [ext_resource type="Texture2D" uid="uid://dw6baw0ypmyb0" path="res://Art/Light.png" id="33_0wlbc"]
@@ -83,13 +83,12 @@ transform = Transform2D(1, 0, 0, 1, 0, 0)
 
 [node name="ResourceDiscoveries" type="Node2D" parent="."]
 y_sort_enabled = true
-position = Vector2(142, -55)
 script = ExtResource("4_egxe6")
-rTemplateIronMine = ExtResource("5_wtxxp")
-rTemplateGoldMine = ExtResource("6_xv0gn")
-rTemplateManaWell = ExtResource("7_vq3li")
-rTemplateWood = ExtResource("8_lwsre")
-rTemplatePlatform = ExtResource("9_woq83")
+rTemplateIronMine = ExtResource("5_y1y6w")
+rTemplateGoldMine = ExtResource("4_ikssv")
+rTemplateManaWell = ExtResource("7_h85bg")
+rTemplateWood = ExtResource("8_6fy56")
+rTemplatePlatform = ExtResource("9_nb6ux")
 resourcesPerCell = 3
 resourceUpdateFreq = 60
 
@@ -144,7 +143,7 @@ btnNode1 = NodePath("btn1")
 btnNode2 = NodePath("btn2")
 btnNode3 = NodePath("btn3")
 txStructBut = Array[Texture2D]([ExtResource("13_56blb"), ExtResource("14_pyxf8"), ExtResource("15_vdli0"), ExtResource("16_2nuhw"), ExtResource("17_ycron"), ExtResource("18_qjudb"), ExtResource("19_r8ow7")])
-scnStruct = Array[PackedScene]([ExtResource("20_dtrsa"), ExtResource("21_xq308"), ExtResource("22_xxl8y"), ExtResource("23_w70wf"), ExtResource("24_ek7ss"), ExtResource("25_d0kw3"), ExtResource("26_e2j4s")])
+txStruct = Array[Texture]([ExtResource("20_ncgdp"), ExtResource("21_g0gov"), ExtResource("22_ri83h"), ExtResource("23_k8mu6"), ExtResource("24_lu2ef"), ExtResource("25_8wllh"), ExtResource("26_svjtm")])
 lblIron = NodePath("lblIron")
 lblWood = NodePath("lblWood")
 costIron = PackedInt32Array(1, 2, 3, 2, 4, 4, 3)
@@ -233,29 +232,26 @@ offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("30_w6xib")
 
-[node name="AmbientLight" type="DirectionalLight2D" parent="."]
-energy = 0.2
-blend_mode = 1
-
 [node name="Fog" parent="." instance=ExtResource("31_3wxrh")]
-visible = false
 
 [node name="FogOfWar" parent="." node_paths=PackedStringArray("fog", "Player") instance=ExtResource("31_aslyk")]
 visible = true
 z_index = 10
-scale = Vector2(14, 14)
 script = ExtResource("32_f36kf")
 fog = NodePath("FoWfog")
-fogWidth = 4200
-fogHeight = 2600
+fogWidth = 16000
+fogHeight = 16000
 LightTexture = ExtResource("33_0wlbc")
-lightWidth = 100
-lightHeight = 100
+lightWidth = 2048
+lightHeight = 2048
 Player = NodePath("../Player")
-debounce_time = 0.2
+debounce_time = 0.6
 
 [node name="FoWfog" parent="FogOfWar" instance=ExtResource("35_p0u56")]
-position = Vector2(-1949, -1206)
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+energy = 0.2
+blend_mode = 1
 
 [connection signal="timeout" from="ResourceDiscoveries/Timer" to="ResourceDiscoveries" method="OnTimer"]
 [connection signal="timeout" from="EnemyTimer" to="." method="_on_enemy_timer_timeout"]
