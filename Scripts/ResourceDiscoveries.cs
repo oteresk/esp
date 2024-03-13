@@ -33,7 +33,7 @@ public partial class ResourceDiscoveries : Node2D
 	private Node2D capTimer;
 
 // resource tracking
-	private static float gold; // how much gold you have
+    private static float gold; // how much gold you have
 	static private int goldResourceCount; // how many gold mine resources you have discovered
 	public static float iron;
 	private static int ironResourceCount;
@@ -49,8 +49,15 @@ public partial class ResourceDiscoveries : Node2D
 	static private resourceGUI rG2;
 	public override void _Ready()
 	{
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	    worldArray = new int[gridSizeX*subGridSizeX, gridSizeY*subGridSizeY];
 		GD.Randomize();
+=======
+=======
+>>>>>>> Stashed changes
+        GD.Randomize();
+>>>>>>> Stashed changes
 		//Place resource discoveries
 		PlaceResourceDiscoveries();	
 
@@ -134,6 +141,14 @@ private void PlaceResourceDiscoveries()
 			}
 	// place some discoveries
 		PlaceDiscovery(5, 5, 1, 1, 4);
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+        PlaceDiscovery(5, 5, 2, 2, 11);
+>>>>>>> Stashed changes
+=======
+        PlaceDiscovery(5, 5, 0, 0, 11);
+>>>>>>> Stashed changes
         //PlaceDiscovery(5, 5, 1, 0, 1);
         //PlaceDiscovery(5, 5, 0, 1, 1);
         //PlaceDiscovery(5, 5, 1, 1, 1);
@@ -163,19 +178,54 @@ private void PlaceResourceDiscoveries()
                 resourceDiscovery = (Node2D)rTemplatePlatform.Instantiate();
                 worldArray[x * subGridSizeX + px, y * subGridSizeY + py] = 5;
                 break;
+            case 11: // tower
+                resourceDiscovery = (Node2D)rTemplatePlatform.Instantiate();
+                Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 5;
+                SettlementSelect settle = (SettlementSelect)GetNode(Globals.NodeStructureGUICanvas);
+				settle.CreateStructure(5, resourceDiscovery);
+                break;
+            case 11: // tower
+                resourceDiscovery = (Node2D)rTemplatePlatform.Instantiate();
+                Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 5;
+
+                AddChild(resourceDiscovery);
+                resourceDiscovery.Position = new Vector2(x * Globals.subGridSizeX * pixelSizeX + px * pixelSizeX, y * Globals.subGridSizeY * pixelSizeY + py * pixelSizeY);
+                rdp = (ResourceDiscovery)GetNode(resourceDiscovery.GetPath());
+                rdp.gridXPos = x * Globals.subGridSizeX + px;
+                rdp.gridYPos = y * Globals.subGridSizeY + py;
+                resourceDiscovery.Name = (rdp.gridXPos.ToString()) + ", " + (rdp.gridYPos.ToString());
+				// convert to structure
+                SettlementSelect settle = (SettlementSelect)GetNode(Globals.NodeStructureGUICanvas);
+                settle.CreateStructure(5, resourceDiscovery);
+                break;
         }
 
-        AddChild(resourceDiscovery);
+		if (rdType != 11) // skip this if creating structure directly
+		{
+			AddChild(resourceDiscovery);
 
+			Debug.Print("rd px:" + px + " py:" + py);
+			resourceDiscovery.Position = new Vector2(x * Globals.subGridSizeX * pixelSizeX + px * pixelSizeX, y * Globals.subGridSizeY * pixelSizeY + py * pixelSizeY);
 
+<<<<<<< Updated upstream
         resourceDiscovery.Position = new Vector2(x*subGridSizeX * pixelSizeX + px * pixelSizeX, y*subGridSizeY * pixelSizeY + py * pixelSizeY);
         ResourceDiscovery rdp = (ResourceDiscovery)GetNode(resourceDiscovery.GetPath());
 
         string myType = rdp.RDResource.resourceType.ToString();
+=======
+			rdp = (ResourceDiscovery)GetNode(resourceDiscovery.GetPath());
+			rdp.gridXPos = x * Globals.subGridSizeX + px;
+			rdp.gridYPos = y * Globals.subGridSizeY + py;
+			resourceDiscovery.Name = (rdp.gridXPos.ToString()) + ", " + (rdp.gridYPos.ToString());
 
-		//Debug.Print("x:" + x + " y:" + y + " px:" + px + " py:" + py);
+			string myType = rdp.RDResource.resourceType.ToString();
+>>>>>>> Stashed changes
 
-        Debug.Print("pos:" + resourceDiscovery.Position + " type:" + myType);
+			//Debug.Print("x:" + x + " y:" + y + " px:" + px + " py:" + py);
+
+			Debug.Print("rd pos:" + resourceDiscovery.Position + " type:" + myType);
+		}
+		
     }
 
 	// returns a random x and y pos between 0-9

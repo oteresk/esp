@@ -1,0 +1,77 @@
+[gd_scene load_steps=12 format=3 uid="uid://rk1pgtdhjx8m"]
+
+[ext_resource type="Texture2D" uid="uid://4l5jcpkylm6v" path="res://Art/energyBallImpact.png" id="1_q2667"]
+[ext_resource type="Script" path="res://Scenes/AnimatedSprite2D.gd" id="2_xjtm1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vgc4g"]
+atlas = ExtResource("1_q2667")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1kol7"]
+atlas = ExtResource("1_q2667")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5xmfc"]
+atlas = ExtResource("1_q2667")
+region = Rect2(0, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c5tm8"]
+atlas = ExtResource("1_q2667")
+region = Rect2(0, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vshmq"]
+atlas = ExtResource("1_q2667")
+region = Rect2(0, 512, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rqsqr"]
+atlas = ExtResource("1_q2667")
+region = Rect2(0, 640, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_71i1s"]
+atlas = ExtResource("1_q2667")
+region = Rect2(0, 768, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vrwut"]
+atlas = ExtResource("1_q2667")
+region = Rect2(0, 896, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hdnqx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vgc4g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1kol7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5xmfc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c5tm8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vshmq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rqsqr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_71i1s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vrwut")
+}],
+"loop": false,
+"name": &"Explode",
+"speed": 5.0
+}]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_hdnqx")
+animation = &"Explode"
+speed_scale = 3.0
+script = ExtResource("2_xjtm1")
