@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://g831m1tsg61h"]
+
+[ext_resource type="Script" path="res://Scripts/MapIcon.cs" id="1_1m401"]
+[ext_resource type="Texture2D" uid="uid://8mddwhh12gnr" path="res://Art/GUI/Map/Tree.png" id="2_7m1l2"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ij8g1"]
+light_mode = 1
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_1m401")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_ij8g1")
+offset_top = -1.0
+offset_right = 245.0
+offset_bottom = 244.0
+texture = ExtResource("2_7m1l2")
+metadata/_edit_use_anchors_ = true

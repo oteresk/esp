@@ -6,7 +6,6 @@
 [resource]
 script = ExtResource("1_ofoip")
 sprImage = ExtResource("2_gdcis")
-timeToCapture = 5.0
 resourceType = 1
 amount = 1.0
 amountMax = 0.0

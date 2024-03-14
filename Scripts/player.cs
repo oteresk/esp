@@ -1,6 +1,12 @@
 using Godot;
 using System;
+<<<<<<< Updated upstream
 using System.Diagnostics;
+=======
+using System.Collections;
+using System.Diagnostics;
+using System.Threading.Tasks;
+>>>>>>> Stashed changes
 
 public partial class player : Area2D
 {
@@ -16,6 +22,7 @@ public partial class player : Area2D
 	public Vector2 ScreenSize;
 	Vector2 velocity; 
 	AnimatedSprite2D animatedSprite2D;
+	[Export] public CollisionShape2D magnetismShape;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -24,6 +31,12 @@ public partial class player : Area2D
 		animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		animatedSprite2D.Animation = "idle";
 		animatedSprite2D.Play();
+<<<<<<< Updated upstream
+=======
+
+        // set magnetism size
+        magnetismShape.Scale= new Vector2(Globals.magnetism,Globals.magnetism);
+>>>>>>> Stashed changes
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -108,4 +121,21 @@ public partial class player : Area2D
 	
 	}
 	
+
+    public void OnMagnetismEntered(Area2D area)
+    {
+        if (area.IsInGroup("Pickups"))
+        {
+			GemScript gs = (GemScript)area;
+			if (gs != null) 
+			{
+				gs.collected = true; // start magnetism
+			}
+        }
+
+    }
+
+
+
+
 }

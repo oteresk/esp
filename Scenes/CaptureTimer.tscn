@@ -21,6 +21,7 @@ shader_parameter/bg_texture = ExtResource("4_2j6nb")
 [sub_resource type="CircleShape2D" id="CircleShape2D_48rac"]
 
 [node name="CaptureTimer" type="Node2D"]
+z_index = -1
 scale = Vector2(2, 2)
 
 [node name="Progress" type="Sprite2D" parent="."]

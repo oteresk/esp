@@ -18,7 +18,11 @@ public partial class SettlementSelect : CanvasGroup
     [Export] public Texture2D[] txStructBut;
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     [Export] public Texture2D[] txStruct;
+=======
+    [Export] public PackedScene[] scnStruct;
+>>>>>>> Stashed changes
 =======
     [Export] public PackedScene[] scnStruct;
 >>>>>>> Stashed changes
@@ -190,10 +194,12 @@ public partial class SettlementSelect : CanvasGroup
                 if (btn1) // build new structure
                 {
                     GD.Print("Select");
+                    GD.Print("Build structure");
 
                     // check if you can afford it
                     if (ResourceDiscoveries.iron >= costIron[curStruct] && ResourceDiscoveries.wood >= costWood[curStruct])
                     {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
                         platform.Texture = txStruct[curStruct];
                         platform.Offset = new Vector2(0, 0);
@@ -218,6 +224,17 @@ public partial class SettlementSelect : CanvasGroup
                             // update ResourceGUI
                             ResourceDiscoveries.UpdateResourceGUI();
 
+=======
+                        if (platform != null && buildDelay>1)
+                        {
+                            buildDelay = 0;
+                            // subtract resources
+                            ResourceDiscoveries.iron -= costIron[curStruct];
+                            ResourceDiscoveries.wood -= costWood[curStruct];
+                            // update ResourceGUI
+                            ResourceDiscoveries.UpdateResourceGUI();
+
+>>>>>>> Stashed changes
                             // build structure
                             CreateStructure(curStruct, platform);
 
@@ -263,6 +280,9 @@ public partial class SettlementSelect : CanvasGroup
                             */
 
                         }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
                     }
@@ -281,7 +301,11 @@ public partial class SettlementSelect : CanvasGroup
         ResourceDiscovery platformRD = (ResourceDiscovery)plat;
         int sX = platformRD.gridXPos;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         int sY = platformRD.gridYPos;
+=======
+        int sY = platformRD.gridYPos+2;
+>>>>>>> Stashed changes
 =======
         int sY = platformRD.gridYPos+2;
 >>>>>>> Stashed changes
@@ -294,7 +318,11 @@ public partial class SettlementSelect : CanvasGroup
         nodRD.AddChild(structure);
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         structure.Position = new Vector2(sX * ResourceDiscoveries.pixelSizeX, sY * ResourceDiscoveries.pixelSizeY);
+=======
+        structure.Position = new Vector2(sX * ResourceDiscoveries.pixelSizeX, sY * ResourceDiscoveries.pixelSizeY-700);
+>>>>>>> Stashed changes
 =======
         structure.Position = new Vector2(sX * ResourceDiscoveries.pixelSizeX, sY * ResourceDiscoveries.pixelSizeY-700);
 >>>>>>> Stashed changes
@@ -384,6 +412,7 @@ public partial class SettlementSelect : CanvasGroup
 
     // update iron and wood cost
     private void UpdateCost()
+    public void UpdateCost()
     {
         lblIron.Text = costIron[curStruct].ToString();
         lblWood.Text = costWood[curStruct].ToString();

@@ -13,11 +13,7 @@ public partial class resourceGUI : CanvasLayer
 
     public override void _Ready()
 	{
-        //lblTimer = (Label)GetNode("TimerLabel");
-        //lblTimer = GetNode("TimerLabel") as Label;
-
-        lblTimer.Text = "Start";
-
+        lblTimer.Text = "00:00";
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
