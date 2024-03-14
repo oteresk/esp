@@ -10,20 +10,28 @@ public partial class ResourceDiscoveries : Node2D
 	[Export] private PackedScene rTemplateManaWell;
 	[Export] private PackedScene rTemplateWood;
     [Export] private PackedScene rTemplatePlatform;
+<<<<<<< Updated upstream
     static private int gridSizeX=10;
 	static private int gridSizeY=10;
 	const int subGridSizeX = 10;
     const int subGridSizeY = 10;
+=======
+
+>>>>>>> Stashed changes
     [Export] public static int pixelSizeX=192*3;
 	[Export] public static int pixelSizeY=108*3;
 	[Export] public int resourcesPerCell;
 
+<<<<<<< Updated upstream
 	static private int[,] worldArray; // two-dimensional array
 	// 1 = Iron Mine
 	// 2 = Gold Mine
 	// 3 = Mana Well
 	// 4 = Tree
 	// 5 = Platform
+=======
+	private bool mapNotPressed = true; // prevents spamming map key
+>>>>>>> Stashed changes
 
 // resource timer
 	[Export] public int resourceUpdateFreq;
@@ -46,7 +54,11 @@ public partial class ResourceDiscoveries : Node2D
 
 // GUI node
 	private Node rGUI;
+<<<<<<< Updated upstream
 	static private resourceGUI rG2;
+=======
+
+>>>>>>> Stashed changes
 	public override void _Ready()
 	{
 	    worldArray = new int[gridSizeX*subGridSizeX, gridSizeY*subGridSizeY];
@@ -55,6 +67,7 @@ public partial class ResourceDiscoveries : Node2D
 		PlaceResourceDiscoveries();	
 
 		// get GUI nodes
+<<<<<<< Updated upstream
 		rGUI = GetNode("../GUI");
         rG2 = (resourceGUI)GetNode(rGUI.GetPath());
         UpdateResourceGUI();
@@ -66,12 +79,47 @@ public partial class ResourceDiscoveries : Node2D
         CanvasLayer nodStruct = (CanvasLayer)GetNode("/root/World/StructureGUI");
         nodStruct.Visible = false;
 		Debug.Print("********************* " + nodStruct.GetPath());
+=======
+		rGUI = GetNodeOrNull("../GUI");
+		if (rGUI != null)
+		{
+			Globals.rG2 = (resourceGUI)GetNodeOrNull(rGUI.GetPath());
+			UpdateResourceGUI();
+		}
+
+        // offset resourcediscoveries position to put player in middle of array
+        Position = new Vector2(-(Globals.gridSizeX* Globals.subGridSizeX)/2*pixelSizeX,-(Globals.gridSizeY * Globals.subGridSizeY)/2*pixelSizeY);
+        Node2D nodStruct = (Node2D)GetNode(Globals.NodeStructures);
+		nodStruct.Position = Position;
+
+        // hide structure select canvas
+        CanvasLayer nodStructGUI = (CanvasLayer)GetNodeOrNull(Globals.NodeStructureGUI);
+		if (nodStructGUI != null)
+		{
+            nodStructGUI.Visible = false;
+			//Debug.Print("********************* " + nodStruct.GetPath());
+		}
+>>>>>>> Stashed changes
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+<<<<<<< Updated upstream
 	}
+=======
+        if (Input.IsActionPressed("map") && mapNotPressed)
+		{
+			mapNotPressed = false;
+            Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+            miniMap.Call("ShowMiniMap");
+        }
+
+		if (Input.IsActionJustReleased("map"))
+			mapNotPressed = true;
+
+    }
+>>>>>>> Stashed changes
 
 // Game Timer - also updates resources every minute
 	public void OnTimer()
@@ -92,9 +140,7 @@ public partial class ResourceDiscoveries : Node2D
         if (minutes < 10)
             strMinutes = "0" + strMinutes;
 
-		
 
-		rG2.lblTimer.Text = strMinutes+":"+strSeconds;
 
 		// update resources
 		curResourceTimer++;
@@ -109,6 +155,7 @@ public partial class ResourceDiscoveries : Node2D
 		}
 
         //Debug.Print("Timer: " + minutes+":"+seconds);
+<<<<<<< Updated upstream
 	}
 
 	static public void UpdateResourceGUI()
@@ -117,13 +164,28 @@ public partial class ResourceDiscoveries : Node2D
         rG2.lblIron.Text = iron.ToString();
         rG2.lblMana.Text = mana.ToString();
         rG2.lblWood.Text = wood.ToString();
+=======
+    }
+
+	static public void UpdateResourceGUI()
+	{
+        Globals.rG2.lblGold.Text = gold.ToString();
+        Globals.rG2.lblIron.Text = iron.ToString();
+        Globals.rG2.lblMana.Text = mana.ToString();
+        Globals.rG2.lblWood.Text = wood.ToString();
+>>>>>>> Stashed changes
     }
 private void PlaceResourceDiscoveries()
 {
 	uint rdType;
 
+<<<<<<< Updated upstream
 	for (int y=0;y<gridSizeY;y++)
 		for (int x=0;x<gridSizeX;x++)
+=======
+	for (int y=0;y< Globals.gridSizeY;y++)
+		for (int x=0;x< Globals.gridSizeX;x++)
+>>>>>>> Stashed changes
 			for (int i=1;i<=resourcesPerCell;i++)
 			{
 				//Debug.Print("RD Len: " + GetChildCount());
@@ -140,11 +202,18 @@ private void PlaceResourceDiscoveries()
     }
 
 	private void PlaceDiscovery(int x, int y, int px, int py, uint rdType)
+<<<<<<< Updated upstream
 	{ 
+=======
+	{
+		ResourceDiscovery rdp;
+
+>>>>>>> Stashed changes
         switch (rdType)
         {
             case 0:
                 resourceDiscovery = (Node2D)rTemplateIronMine.Instantiate();
+<<<<<<< Updated upstream
                 worldArray[x * subGridSizeX + px, y * subGridSizeY +py] = 1;
                 break;
             case 1:
@@ -162,6 +231,59 @@ private void PlaceResourceDiscoveries()
             case 4:
                 resourceDiscovery = (Node2D)rTemplatePlatform.Instantiate();
                 worldArray[x * subGridSizeX + px, y * subGridSizeY + py] = 5;
+=======
+                Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY +py] = 1;
+                break;
+            case 1:
+                resourceDiscovery = (Node2D)rTemplateGoldMine.Instantiate();
+                Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 2;
+                break;
+            case 2:
+                resourceDiscovery = (Node2D)rTemplateManaWell.Instantiate();
+                Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 3;
+                break;
+            case 3:
+                resourceDiscovery = (Node2D)rTemplateWood.Instantiate();
+                Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 4;
+                break;
+            case 4:
+                resourceDiscovery = (Node2D)rTemplatePlatform.Instantiate();
+                Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 5;
+                break;
+            case 11: // tower
+                resourceDiscovery = (Node2D)rTemplatePlatform.Instantiate();
+                Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 5;
+
+                AddChild(resourceDiscovery);
+                resourceDiscovery.Position = new Vector2(x * Globals.subGridSizeX * pixelSizeX + px * pixelSizeX, y * Globals.subGridSizeY * pixelSizeY + py * pixelSizeY);
+                rdp = (ResourceDiscovery)GetNode(resourceDiscovery.GetPath());
+                rdp.gridXPos = x * Globals.subGridSizeX + px;
+                rdp.gridYPos = y * Globals.subGridSizeY + py;
+                resourceDiscovery.Name = (rdp.gridXPos.ToString()) + ", " + (rdp.gridYPos.ToString());
+				// convert to structure
+                SettlementSelect settle = (SettlementSelect)GetNode(Globals.NodeStructureGUICanvas);
+                settle.CreateStructure(5, resourceDiscovery);
+                break;
+            case 11: // tower
+                resourceDiscovery = (Node2D)rTemplatePlatform.Instantiate();
+                Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 5;
+                SettlementSelect settle = (SettlementSelect)GetNode(Globals.NodeStructureGUICanvas);
+				settle.CreateStructure(5, resourceDiscovery);
+                break;
+            case 11: // tower
+                resourceDiscovery = (Node2D)rTemplatePlatform.Instantiate();
+                Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 5;
+
+                AddChild(resourceDiscovery);
+                resourceDiscovery.Position = new Vector2(x * Globals.subGridSizeX * pixelSizeX + px * pixelSizeX, y * Globals.subGridSizeY * pixelSizeY + py * pixelSizeY);
+                rdp = (ResourceDiscovery)GetNode(resourceDiscovery.GetPath());
+                rdp.gridXPos = x * Globals.subGridSizeX + px;
+                rdp.gridYPos = y * Globals.subGridSizeY + py;
+                resourceDiscovery.Name = (rdp.gridXPos.ToString()) + ", " + (rdp.gridYPos.ToString());
+				// convert to structure
+                SettlementSelect settle = (SettlementSelect)GetNode(Globals.NodeStructureGUICanvas);
+                settle.CreateStructure(5, resourceDiscovery);
+>>>>>>> Stashed changes
                 break;
         }
 
@@ -188,13 +310,22 @@ private void PlaceResourceDiscoveries()
         do
 		{
 			// get random x and y pos 
+<<<<<<< Updated upstream
 			xPos = GD.RandRange(0, subGridSizeX-1);
             yPos = GD.RandRange(0, subGridSizeY-1);
+=======
+			xPos = GD.RandRange(0, Globals.subGridSizeX -1);
+            yPos = GD.RandRange(0, Globals.subGridSizeY -1);
+>>>>>>> Stashed changes
 
             //Debug.Print("xRand=" + xPos + " yRand=" + yPos+" curX:"+curX+" curY:"+curY);
 			//Debug.Print("worldArray[" + (curX * gridSizeX + xPos) + ", " + (curY * gridSizeY + yPos) +"]");
 		}
+<<<<<<< Updated upstream
 		while (worldArray[curX*gridSizeX+xPos, curY*gridSizeY + yPos] != 0);
+=======
+		while (Globals.worldArray[curX* Globals.gridSizeX +xPos, curY* Globals.gridSizeY + yPos] != 0);
+>>>>>>> Stashed changes
 
         return new Vector2I(xPos,yPos);
 	}

@@ -106,5 +106,25 @@ public partial class player : Area2D
 //		ZIndex=(int)Position.Y;
 	
 	}
+<<<<<<< Updated upstream
 	
+=======
+
+    public void OnMagnetismEntered(Area2D area)
+    {
+        if (area.IsInGroup("Pickups"))
+        {
+			GemScript gs = (GemScript)area;
+			if (gs != null) 
+			{
+				gs.collected = true; // start magnetism
+			}
+        }
+
+    }
+
+
+
+
+>>>>>>> Stashed changes
 }

@@ -180,7 +180,11 @@ public partial class SettlementSelect : CanvasGroup
 
                 if (btn1) // build new structure
                 {
+<<<<<<< Updated upstream
                     GD.Print("Select");
+=======
+                    GD.Print("Build structure");
+>>>>>>> Stashed changes
 
                     // check if you can afford it
                     if (ResourceDiscoveries.iron >= costIron[curStruct] && ResourceDiscoveries.wood >= costWood[curStruct])
@@ -265,7 +269,11 @@ public partial class SettlementSelect : CanvasGroup
     }
 
     // update iron and wood cost
+<<<<<<< Updated upstream
     private void UpdateCost()
+=======
+    public void UpdateCost()
+>>>>>>> Stashed changes
     {
         lblIron.Text = costIron[curStruct].ToString();
         lblWood.Text = costWood[curStruct].ToString();
