@@ -16,7 +16,7 @@ public partial class SettlementSelect : CanvasGroup
     [Export] public TextureRect btnNode3;
 
     [Export] public Texture2D[] txStructBut;
-    [Export] public Texture2D[] txStruct;
+    [Export] public PackedScene[] scnStruct;
 
     [Export] public Label lblIron;
     [Export] public Label lblWood;
@@ -32,6 +32,7 @@ public partial class SettlementSelect : CanvasGroup
     private bool buttonsEnabled = true;
 
     static public ResourceDiscovery platform;
+    private double buildDelay = 0;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -46,8 +47,8 @@ public partial class SettlementSelect : CanvasGroup
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-
-	}
+        buildDelay += delta;
+    }
 
     public void _on_btn_0_mouse_entered()
 	{
@@ -180,28 +181,65 @@ public partial class SettlementSelect : CanvasGroup
 
                 if (btn1) // build new structure
                 {
-<<<<<<< Updated upstream
-                    GD.Print("Select");
-=======
                     GD.Print("Build structure");
->>>>>>> Stashed changes
 
                     // check if you can afford it
                     if (ResourceDiscoveries.iron >= costIron[curStruct] && ResourceDiscoveries.wood >= costWood[curStruct])
                     {
-                        platform.Texture = txStruct[curStruct];
-                        platform.Offset = new Vector2(0, 0);
-                        // disable GUI for this platform
-                        platform.structureIsBuilt = true;
-                        // hide structure select canvas
-                        CanvasLayer nodStruct = (CanvasLayer)GetNode("/root/World/StructureGUI");
-                        nodStruct.Visible = false;
+                        if (platform != null && buildDelay>1)
+                        {
+                            buildDelay = 0;
+                            // subtract resources
+                            ResourceDiscoveries.iron -= costIron[curStruct];
+                            ResourceDiscoveries.wood -= costWood[curStruct];
+                            // update ResourceGUI
+                            ResourceDiscoveries.UpdateResourceGUI();
 
-                        // subtract resources
-                        ResourceDiscoveries.iron -= costIron[curStruct];
-                        ResourceDiscoveries.wood -= costWood[curStruct];
-                        // update ResourceGUI
-                        ResourceDiscoveries.UpdateResourceGUI();
+                            // build structure
+                            CreateStructure(curStruct, platform);
+
+                            /*
+                            Vector2 strPos = platform.Position;
+                            ResourceDiscovery platformRD = (ResourceDiscovery)platform;
+                            int sX = platformRD.gridXPos;
+                            int sY = platformRD.gridYPos+2;
+
+                            // load structure scene
+                            Node2D structure;
+                            structure = (Node2D)scnStruct[curStruct].Instantiate();
+
+                            Node2D nodRD = (Node2D)GetNode(Globals.NodeStructures);
+                            nodRD.AddChild(structure);
+
+                            structure.Position = new Vector2(sX * ResourceDiscoveries.pixelSizeX, sY * ResourceDiscoveries.pixelSizeY);
+
+                            ResourceDiscovery rdp = (ResourceDiscovery)GetNode(structure.GetPath()); // get resourceDiscovery of structure
+                            rdp.gridXPos = sX;
+                            rdp.gridYPos = sY;
+                            structure.Name = scnStruct[curStruct].ResourceName+" "+sX.ToString()+" "+sY.ToString();
+                            rdp.discovered = true;
+
+                            structure.Visible = true;
+
+                            Globals.worldArray[sX, sY] = curStruct + 5;
+
+                            // hide structure select canvas
+                            CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
+                            nodStruct.Visible = false;
+
+                            // destroy platform ********call last
+                            Node rdNode=(Node)GetNode(Globals.NodeResourceDiscoveries);
+                            rdNode.RemoveChild(platform);
+
+                            platform.QueueFree();
+
+                            // refresh Minimap
+                            Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+                            miniMap.Call("DisplayMap");
+
+                            */
+
+                        }
 
                     }
 
@@ -209,6 +247,50 @@ public partial class SettlementSelect : CanvasGroup
             }
 				
         }
+    }
+
+    public void CreateStructure(int strucNum, Node2D plat)
+    {
+        Debug.Print("Createstruct: " + strucNum);
+        // build structure
+        Vector2 strPos = plat.Position;
+        ResourceDiscovery platformRD = (ResourceDiscovery)plat;
+        int sX = platformRD.gridXPos;
+        int sY = platformRD.gridYPos+2;
+
+        // load structure scene
+        Node2D structure;
+        structure = (Node2D)scnStruct[strucNum].Instantiate();
+
+        Node2D nodRD = (Node2D)GetNode(Globals.NodeStructures);
+        nodRD.AddChild(structure);
+
+        structure.Position = new Vector2(sX * ResourceDiscoveries.pixelSizeX, sY * ResourceDiscoveries.pixelSizeY-700);
+
+        ResourceDiscovery rdp = (ResourceDiscovery)GetNode(structure.GetPath()); // get resourceDiscovery of structure
+        rdp.gridXPos = sX;
+        rdp.gridYPos = sY;
+        structure.Name = scnStruct[strucNum].ResourceName + " " + sX.ToString() + " " + sY.ToString();
+        rdp.discovered = true;
+
+        structure.Visible = true;
+
+        Globals.worldArray[sX, sY] = strucNum + 5;
+
+        // hide structure select canvas
+        CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
+        nodStruct.Visible = false;
+
+        // destroy platform ********call last
+        //Debug.Print("Remove child: " + Globals.NodeResourceDiscoveries+"/"+plat.Name);
+        Node rdNode = (Node)GetNode(Globals.NodeResourceDiscoveries);
+        //rdNode.RemoveChild(plat);
+
+        plat.QueueFree();
+
+        // refresh Minimap
+        Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+        miniMap.Call("DisplayMap");
     }
 
     private void ResetButtonsLeft()
@@ -269,11 +351,7 @@ public partial class SettlementSelect : CanvasGroup
     }
 
     // update iron and wood cost
-<<<<<<< Updated upstream
-    private void UpdateCost()
-=======
     public void UpdateCost()
->>>>>>> Stashed changes
     {
         lblIron.Text = costIron[curStruct].ToString();
         lblWood.Text = costWood[curStruct].ToString();

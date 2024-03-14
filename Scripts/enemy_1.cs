@@ -7,6 +7,8 @@ public partial class enemy_1 : RigidBody2D
 	private const float Speed = 45;
 	Vector2 velocity;
 	AnimatedSprite2D enemySprite;
+
+	[Export] public PackedScene gemScene;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -33,7 +35,13 @@ public partial class enemy_1 : RigidBody2D
 		health -= 1;
 		if(health == 0) 
 		{
-			QueueFree();
+            // spawn gem
+            Area2D gem = (Area2D)gemScene.Instantiate();
+			gem.Position = Position;
+            Node2D nodGems = (Node2D)GetNode(Globals.NodeGems);
+            nodGems.AddChild(gem);
+
+            QueueFree();
 		}
 	}
 }

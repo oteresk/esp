@@ -1,0 +1,103 @@
+[gd_scene load_steps=16 format=3 uid="uid://dfcendwn41quo"]
+
+[ext_resource type="Script" path="res://Scripts/MiniMap.cs" id="1_4v5yl"]
+[ext_resource type="PackedScene" uid="uid://d28wt05wvwlax" path="res://Scenes/MapIcon_Iron Mine.tscn" id="2_ofpii"]
+[ext_resource type="PackedScene" uid="uid://b5mdyytg2otaa" path="res://Scenes/MapIcon_Gold Mine.tscn" id="3_lsf5b"]
+[ext_resource type="PackedScene" uid="uid://dojepf4aqn0s7" path="res://Scenes/MapIcon_Mana Well.tscn" id="4_y0cox"]
+[ext_resource type="PackedScene" uid="uid://g831m1tsg61h" path="res://Scenes/MapIcon_Tree.tscn" id="5_8jtkd"]
+[ext_resource type="PackedScene" uid="uid://cxg7lh7gbj46k" path="res://Scenes/MapIcon_Platform.tscn" id="5_22ehr"]
+[ext_resource type="Texture2D" uid="uid://cqialo1j2f0p2" path="res://Art/GUI/Map/Player.png" id="6_0gq13"]
+[ext_resource type="PackedScene" uid="uid://dskgr1lddfxo6" path="res://Scenes/MapIcon_AlchemyLab.tscn" id="6_q7tne"]
+[ext_resource type="PackedScene" uid="uid://bql3e0hm74u55" path="res://Scenes/MapIcon_Blacksmith.tscn" id="7_d4dec"]
+[ext_resource type="PackedScene" uid="uid://dr4caq2rcw305" path="res://Scenes/MapIcon_Herbalist.tscn" id="8_geoeh"]
+[ext_resource type="PackedScene" uid="uid://dxlxpngvgy1yw" path="res://Scenes/MapIcon_Lodestone.tscn" id="9_viiap"]
+[ext_resource type="PackedScene" uid="uid://bx4msrh6mcptr" path="res://Scenes/MapIcon_Settlement.tscn" id="10_31en8"]
+[ext_resource type="PackedScene" uid="uid://s18o75ni28kt" path="res://Scenes/MapIcon_Tower.tscn" id="11_16v6b"]
+[ext_resource type="PackedScene" uid="uid://c0h8hydyf0lpm" path="res://Scenes/MapIcon_TrainingCenter.tscn" id="12_15bfy"]
+
+[sub_resource type="Environment" id="Environment_vpbp4"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 0.59
+glow_strength = 1.41
+glow_bloom = 1.0
+glow_blend_mode = 4
+glow_hdr_threshold = 2.39
+glow_hdr_scale = 0.95
+glow_hdr_luminance_cap = 237.24
+
+[node name="SubViewportContainer" type="SubViewportContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 10
+size_flags_vertical = 10
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+handle_input_locally = false
+screen_space_aa = 1
+canvas_item_default_texture_filter = 0
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="Node2D" type="Node2D" parent="SubViewport"]
+modulate = Color(1, 1, 1, 0)
+script = ExtResource("1_4v5yl")
+icon = Array[PackedScene]([ExtResource("2_ofpii"), ExtResource("3_lsf5b"), ExtResource("4_y0cox"), ExtResource("5_8jtkd"), ExtResource("5_22ehr"), ExtResource("6_q7tne"), ExtResource("7_d4dec"), ExtResource("8_geoeh"), ExtResource("9_viiap"), ExtResource("10_31en8"), ExtResource("11_16v6b"), ExtResource("12_15bfy")])
+iconScale = 0.1
+offset = Vector2(-1200, -630)
+
+[node name="Map Bg" type="TextureRect" parent="SubViewport/Node2D"]
+visible = false
+modulate = Color(1, 1, 1, 0.690196)
+z_index = -1
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PlayerIcon" type="Node2D" parent="SubViewport/Node2D"]
+position = Vector2(-40, -40)
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/Node2D/PlayerIcon"]
+modulate = Color(1, 1, 1, 0)
+top_level = true
+z_index = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -18.0
+offset_top = -40.0
+offset_right = 15.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+auto_translate = false
+texture = ExtResource("6_0gq13")
+expand_mode = 1
+
+[node name="MiniMap" type="MarginContainer" parent="SubViewport/Node2D"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 10
+size_flags_vertical = 10
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewport/Node2D"]
+environment = SubResource("Environment_vpbp4")

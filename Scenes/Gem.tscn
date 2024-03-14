@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://bvystran431rm"]
+
+[ext_resource type="Texture2D" uid="uid://iyvaicfhln5" path="res://Art/Gems.png" id="1_mp8bl"]
+[ext_resource type="Script" path="res://Scenes/GemScript.cs" id="1_u2qxb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_31pjl"]
+
+[node name="Area2D" type="Area2D"]
+script = ExtResource("1_u2qxb")
+XP = 1.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 5)
+texture = ExtResource("1_mp8bl")
+hframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(6, 8)
+shape = SubResource("CircleShape2D_31pjl")
+
+[connection signal="area_entered" from="." to="." method="OnAreaEntered"]

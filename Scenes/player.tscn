@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://ykihvlu1ew8a"]
+[gd_scene load_steps=16 format=3 uid="uid://ykihvlu1ew8a"]
 
 [ext_resource type="Script" path="res://Scripts/player.cs" id="1_kjyyd"]
 [ext_resource type="Texture2D" uid="uid://chdl1s1uscao4" path="res://Art/Hero-sprites/tile000.png" id="2_1trhb"]
@@ -65,12 +65,16 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Player" type="Area2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_tac1t"]
+
+[node name="Player" type="Area2D" node_paths=PackedStringArray("magnetismShape")]
 y_sort_enabled = true
 script = ExtResource("1_kjyyd")
+magnetismShape = NodePath("MagnetismArea2D/CollisionShape2D")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(-2, -81)
 scale = Vector2(4, 3)
 shape = SubResource("CapsuleShape2D_538jq")
@@ -84,6 +88,7 @@ animation = &"dash"
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="Area2D" type="Area2D" parent="." groups=["Players"]]
+visible = false
 position = Vector2(0, -85)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
@@ -92,8 +97,17 @@ scale = Vector2(4, 3)
 shape = SubResource("CapsuleShape2D_538jq")
 
 [node name="AttackRange" parent="." instance=ExtResource("12_wtvyp")]
+visible = false
 
 [node name="ShootingPoint" parent="AttackRange" index="1"]
 position = Vector2(0, -95)
+
+[node name="MagnetismArea2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MagnetismArea2D"]
+position = Vector2(0, -82)
+shape = SubResource("CircleShape2D_tac1t")
+
+[connection signal="area_entered" from="MagnetismArea2D" to="." method="OnMagnetismEntered"]
 
 [editable path="AttackRange"]

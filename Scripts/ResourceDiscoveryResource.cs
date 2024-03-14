@@ -6,7 +6,6 @@ using System.Net;
 public partial class ResourceDiscoveryResource : Resource
 {
 	[Export] public Texture2D sprImage;
-	[Export] public float timeToCapture;
 	[Export] public ResourceType resourceType;
 
 	[Export] public float amount;

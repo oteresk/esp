@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bql3e0hm74u55"]
+
+[ext_resource type="Script" path="res://Scripts/MapIcon.cs" id="1_ge4ev"]
+[ext_resource type="Texture2D" uid="uid://ikkpndgn0kx5" path="res://Art/GUI/Map/Blacksmith.png" id="2_ypjsy"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ij8g1"]
+light_mode = 1
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_ge4ev")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_ij8g1")
+offset_top = -1.0
+offset_right = 245.0
+offset_bottom = 244.0
+texture = ExtResource("2_ypjsy")
+metadata/_edit_use_anchors_ = true

@@ -6,8 +6,8 @@ public partial class CaptureTimer : Sprite2D
 {
 	public CollisionObject2D col; 
 
-	[Export] public float timer=0;
-	private float captureSpeed=.0002f;
+	[Export] public double timer=0;
+    [Export] public float captureSpeed =.2f;
 	
 	private bool inCapture=false;
 //[Export] public ResourceDiscovery rd;
@@ -24,9 +24,17 @@ public partial class CaptureTimer : Sprite2D
 
 		if (inCapture==true && Visible==true)
 		{
-			timer+=captureSpeed;
+			timer+=captureSpeed*delta;
 			(Material as ShaderMaterial).SetShaderParameter("fill_ratio", timer);
 		}
+		else
+		{
+			timer -= captureSpeed * delta*2; 
+			if (timer < 0)
+				timer = 0;
+			else
+                (Material as ShaderMaterial).SetShaderParameter("fill_ratio", timer);
+        }
 
 
 	}
@@ -37,7 +45,6 @@ public void _on_area_2d_area_exited(Area2D area)
 		{
 			inCapture=false;
 			Debug.Print("Player out of CaptureTimer");
-			timer=0;
 			(Material as ShaderMaterial).SetShaderParameter("fill_ratio", timer);
 		}
 	}
@@ -47,7 +54,7 @@ public void _on_area_2d_area_entered(Area2D area)
 	{
 		if (area.IsInGroup("Players"))
 		{
-			inCapture=true;
+			inCapture =true;
 			// Player in CaptureTimer
 			Debug.Print("Player in CaptureTimer");
 

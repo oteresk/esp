@@ -1,5 +1,8 @@
 using Godot;
 using System;
+using System.Collections;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 public partial class player : Area2D
 {
@@ -15,6 +18,7 @@ public partial class player : Area2D
 	public Vector2 ScreenSize;
 	Vector2 velocity; 
 	AnimatedSprite2D animatedSprite2D;
+	[Export] public CollisionShape2D magnetismShape;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -23,7 +27,10 @@ public partial class player : Area2D
 		animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		animatedSprite2D.Animation = "idle";
 		animatedSprite2D.Play();
-	}
+
+        // set magnetism size
+        magnetismShape.Scale= new Vector2(Globals.magnetism,Globals.magnetism);
+    }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
@@ -106,9 +113,6 @@ public partial class player : Area2D
 //		ZIndex=(int)Position.Y;
 	
 	}
-<<<<<<< Updated upstream
-	
-=======
 
     public void OnMagnetismEntered(Area2D area)
     {
@@ -126,5 +130,4 @@ public partial class player : Area2D
 
 
 
->>>>>>> Stashed changes
 }
