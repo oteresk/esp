@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://ykihvlu1ew8a"]
+[gd_scene load_steps=34 format=3 uid="uid://bj68a1718682m"]
 
 [ext_resource type="Script" path="res://Scripts/player.cs" id="1_kjyyd"]
 [ext_resource type="Texture2D" uid="uid://chdl1s1uscao4" path="res://Art/Hero-sprites/tile000.png" id="2_1trhb"]
@@ -12,6 +12,17 @@
 [ext_resource type="Texture2D" uid="uid://chqowx2lfuhk2" path="res://Art/Hero-sprites/tile009.png" id="9_7ytke"]
 [ext_resource type="Texture2D" uid="uid://c3y1qv5ui8njn" path="res://Art/Hero-sprites/tile010.png" id="10_0ly30"]
 [ext_resource type="PackedScene" uid="uid://bpjxrp2i6uiq3" path="res://Scenes/attack_range.tscn" id="12_wtvyp"]
+[ext_resource type="Texture2D" uid="uid://366lea2n5sn5" path="res://Art/GUI/Icon-Speed.png" id="13_cyfdm"]
+[ext_resource type="Texture2D" uid="uid://d3rfbgy8uuv76" path="res://Art/GUI/Icon-AttackSpeed.png" id="14_88udm"]
+[ext_resource type="Texture2D" uid="uid://bn2o73dhbvbdv" path="res://Art/GUI/Icon-AOE.png" id="15_scnna"]
+[ext_resource type="Texture2D" uid="uid://bh3vo0tkn8d5v" path="res://Art/GUI/Icon-Damage.png" id="15_v00jr"]
+[ext_resource type="Texture2D" uid="uid://cilyao1o3umb4" path="res://Art/GUI/txtSpeed.png" id="16_jpnqh"]
+[ext_resource type="Texture2D" uid="uid://1yp0nnsbnjfk" path="res://Art/GUI/txtDamage.png" id="17_aa1pv"]
+[ext_resource type="Texture2D" uid="uid://c3s835y4qd62u" path="res://Art/GUI/Icon-Shield.png" id="17_r6l0q"]
+[ext_resource type="Texture2D" uid="uid://c6801te61mn4j" path="res://Art/GUI/txtAtkSpeed.png" id="18_ul67r"]
+[ext_resource type="Texture2D" uid="uid://p05xt8ei6pi1" path="res://Art/GUI/txtAoE.png" id="21_j0tp6"]
+[ext_resource type="Texture2D" uid="uid://d3rg7vmtkjn7b" path="res://Art/GUI/txtShield.png" id="22_e1mk8"]
+[ext_resource type="Texture2D" uid="uid://cs66oq87kfbyn" path="res://Art/Shield.png" id="23_ir632"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_538jq"]
 radius = 6.75
@@ -67,10 +78,72 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tac1t"]
 
-[node name="Player" type="Area2D" node_paths=PackedStringArray("magnetismShape")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5nqbr"]
+atlas = ExtResource("23_ir632")
+region = Rect2(480, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6uonw"]
+atlas = ExtResource("23_ir632")
+region = Rect2(384, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p2w23"]
+atlas = ExtResource("23_ir632")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yw10x"]
+atlas = ExtResource("23_ir632")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5a2mr"]
+atlas = ExtResource("23_ir632")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u33e7"]
+atlas = ExtResource("23_ir632")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ul1vv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5nqbr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6uonw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p2w23")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yw10x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5a2mr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u33e7")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Player" type="Area2D" node_paths=PackedStringArray("magnetismShape", "tmrAttackSpeed", "itemIconSpeed", "itemIconAttackSpeed", "itemIconDamage", "itemIconAoE", "itemIconShield", "txtSpeed", "txtAtkSpeed", "txtDamage", "txtAoE", "txtShield", "shield")]
 y_sort_enabled = true
 script = ExtResource("1_kjyyd")
 magnetismShape = NodePath("MagnetismArea2D/CollisionShape2D")
+tmrAttackSpeed = NodePath("AttackRange/BulletTimer")
+itemIconSpeed = NodePath("ItemIcons/ItemIconSpeed")
+itemIconAttackSpeed = NodePath("ItemIcons/ItemIconAttackSpeed")
+itemIconDamage = NodePath("ItemIcons/ItemIconDamage")
+itemIconAoE = NodePath("ItemIcons/ItemIconAreaOfEffect")
+itemIconShield = NodePath("ItemIcons/ItemShield")
+txtSpeed = NodePath("ItemIcons/txtSpeed")
+txtAtkSpeed = NodePath("ItemIcons/txtAtkSpeed")
+txtDamage = NodePath("ItemIcons/txtDamage")
+txtAoE = NodePath("ItemIcons/txtAoE")
+txtShield = NodePath("ItemIcons/txtShield")
+shield = NodePath("Shield")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
@@ -98,6 +171,7 @@ shape = SubResource("CapsuleShape2D_538jq")
 
 [node name="AttackRange" parent="." instance=ExtResource("12_wtvyp")]
 visible = false
+scale = Vector2(1.7, 1.7)
 
 [node name="ShootingPoint" parent="AttackRange" index="1"]
 position = Vector2(0, -95)
@@ -107,6 +181,72 @@ position = Vector2(0, -95)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MagnetismArea2D"]
 position = Vector2(0, -82)
 shape = SubResource("CircleShape2D_tac1t")
+
+[node name="ItemIcons" type="Node2D" parent="."]
+
+[node name="ItemIconSpeed" type="Sprite2D" parent="ItemIcons"]
+visible = false
+position = Vector2(0, -221)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("13_cyfdm")
+
+[node name="ItemIconAttackSpeed" type="Sprite2D" parent="ItemIcons"]
+visible = false
+position = Vector2(0, -221)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("14_88udm")
+
+[node name="ItemIconAreaOfEffect" type="Sprite2D" parent="ItemIcons"]
+visible = false
+position = Vector2(0, -221)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("15_scnna")
+
+[node name="ItemIconDamage" type="Sprite2D" parent="ItemIcons"]
+visible = false
+position = Vector2(0, -221)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("15_v00jr")
+
+[node name="ItemShield" type="Sprite2D" parent="ItemIcons"]
+visible = false
+position = Vector2(0, -221)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_r6l0q")
+
+[node name="txtSpeed" type="Sprite2D" parent="ItemIcons"]
+visible = false
+position = Vector2(0, -196)
+texture = ExtResource("16_jpnqh")
+
+[node name="txtDamage" type="Sprite2D" parent="ItemIcons"]
+visible = false
+position = Vector2(0, -196)
+texture = ExtResource("17_aa1pv")
+
+[node name="txtAtkSpeed" type="Sprite2D" parent="ItemIcons"]
+visible = false
+position = Vector2(0, -196)
+texture = ExtResource("18_ul67r")
+
+[node name="txtAoE" type="Sprite2D" parent="ItemIcons"]
+visible = false
+position = Vector2(0, -196)
+texture = ExtResource("21_j0tp6")
+
+[node name="txtShield" type="Sprite2D" parent="ItemIcons"]
+visible = false
+position = Vector2(0, -196)
+texture = ExtResource("22_e1mk8")
+
+[node name="Shield" type="AnimatedSprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.541176)
+position = Vector2(0, -82)
+scale = Vector2(4.4, 4.4)
+sprite_frames = SubResource("SpriteFrames_ul1vv")
+frame_progress = 0.267013
+speed_scale = 2.0
 
 [connection signal="area_entered" from="MagnetismArea2D" to="." method="OnMagnetismEntered"]
 

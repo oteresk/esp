@@ -1,7 +1,10 @@
 # Godot 4+ specific ignores
 .godot/
+
 Builds/
-.vs/ProjectEvaluation/endless-survival-project.projects.v7.bin
-.vs/ProjectEvaluation/endless-survival-project.metadata.v7.bin
-.vs/ENDLESS-SURVIVAL-PROJECT/v17/.suo
-.vs/ENDLESS-SURVIVAL-PROJECT/v17/.futdcache.v2
+
+/.vs
+/.vs/ENDLESS-SURVIVAL-PROJECT
+/.vs
+/.vs/ENDLESS-SURVIVAL-PROJECT/FileContentIndex
+*.vsidx

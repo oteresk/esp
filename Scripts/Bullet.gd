@@ -26,9 +26,11 @@ func _on_body_entered(body):
 		body.take_damage()
 
 func explode_bullet():
-	const BULLET = preload("res://Scenes/ExplodeBullet.tscn")
-	var new_bullet = BULLET.instantiate()
-	self.add_child(new_bullet)
+	const EXPBULLET = preload("res://Scenes/ExplodeBullet.tscn")
+	var new_bullet = EXPBULLET.instantiate()
+	self.get_parent().add_child(new_bullet)
 	new_bullet.name="Explosion"
+	new_bullet.position=position
 	get_node("AnimatedSprite2D").visible=false;
+	
 

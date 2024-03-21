@@ -1,5 +1,8 @@
 using Godot;
 using System;
+using System.Diagnostics;
+using static ItemScript;
+using System.Threading.Tasks;
 
 public partial class enemy_1 : RigidBody2D
 {
@@ -8,7 +11,9 @@ public partial class enemy_1 : RigidBody2D
 	Vector2 velocity;
 	AnimatedSprite2D enemySprite;
 
-	[Export] public PackedScene gemScene;
+	private int potionFreq = 20; // how often enemy drops a potion instead of gem
+
+    [Export] public PackedScene itemScene;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -35,13 +40,26 @@ public partial class enemy_1 : RigidBody2D
 		health -= 1;
 		if(health == 0) 
 		{
-            // spawn gem
-            Area2D gem = (Area2D)gemScene.Instantiate();
-			gem.Position = Position;
-            Node2D nodGems = (Node2D)GetNode(Globals.NodeGems);
-            nodGems.AddChild(gem);
-
-            QueueFree();
+			EnemyDrop();
+            
 		}
 	}
+
+    async void EnemyDrop()
+	{
+		// wait a second for enemy to explode
+        await Task.Delay(TimeSpan.FromMilliseconds(10));
+
+        // spawn item
+        Area2D item = (Area2D)itemScene.Instantiate();
+        ItemScript iScript = (ItemScript)item;
+		iScript.CreateItem();
+
+        item.Position = Position;
+        Node2D nodItems = (Node2D)GetNode(Globals.NodeItems);
+        nodItems.AddChild(item);
+
+		// remove enemy
+        QueueFree();
+    }
 }

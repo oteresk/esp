@@ -1,18 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://bawa8t27en58k"]
+[gd_scene load_steps=4 format=3 uid="uid://dncl3kxfnxxyi"]
 
-[ext_resource type="Script" path="res://Scenes/GemScript.cs" id="1_w4xty"]
-[ext_resource type="Texture2D" uid="uid://iyvaicfhln5" path="res://Art/Gems.png" id="2_tpap3"]
+[ext_resource type="Script" path="res://Scripts/ItemScript.cs" id="1_qsaxc"]
+[ext_resource type="Texture2D" uid="uid://crt0akhnurhmj" path="res://Art/Items.png" id="2_0dm5p"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_31pjl"]
 
 [node name="Area2D" type="Area2D" groups=["Pickups"]]
-script = ExtResource("1_w4xty")
+scale = Vector2(0.3, 0.3)
+script = ExtResource("1_qsaxc")
 XP = 1.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, 5)
-texture = ExtResource("2_tpap3")
-hframes = 4
+texture = ExtResource("2_0dm5p")
+hframes = 9
+frame = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(1, 1.5)

@@ -12,7 +12,7 @@ public partial class Globals : Node
     static public string NodeResourceDiscoveries = "/root/World/ResourceDiscoveries";
     static public string NodePlayer = "/root/World/Player";
     static public string NodeStructures = "/root/World/Structures";
-    static public string NodeGems = "/root/World/Gems";
+    static public string NodeItems = "/root/World/Items";
 
     static public int gridSizeX = 10;
     static public int gridSizeY = 10;
