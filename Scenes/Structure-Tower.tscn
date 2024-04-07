@@ -17,7 +17,6 @@ radius = 329.156
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c286w"]
 
 [node name="Resource" type="Sprite2D"]
-top_level = true
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_d03md")
 position = Vector2(-1, -153)

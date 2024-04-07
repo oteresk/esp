@@ -42,7 +42,7 @@ public partial class MiniMap : Node2D
 	{
 		
 
-        if (Player.Position != lastPos)
+        if (Player.Position != lastPos) // only calculate zoom hen player moves
         {
             CalculateZoom();
             // position map reletive to player

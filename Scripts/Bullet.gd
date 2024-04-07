@@ -3,7 +3,7 @@ extends Area2D
 var travel_dist = 0
 
 func _ready():
-	name = "bullet"
+	call_deferred("set_name","bullet");
 	
 func _physics_process(delta):
 	const SPEED = 1000
@@ -20,15 +20,17 @@ func _physics_process(delta):
 		queue_free()
 
 func _on_body_entered(body):
-	#queue_free()
+	queue_free()
 	explode_bullet()
 	if body.has_method("take_damage"):
 		body.take_damage()
 
 func explode_bullet():
-	const BULLET = preload("res://Scenes/ExplodeBullet.tscn")
-	var new_bullet = BULLET.instantiate()
-	self.add_child(new_bullet)
+	const EXPBULLET = preload("res://Scenes/ExplodeBullet.tscn")
+	var new_bullet = EXPBULLET.instantiate()
+	self.get_parent().add_child(new_bullet)
 	new_bullet.name="Explosion"
+	new_bullet.position=position
 	get_node("AnimatedSprite2D").visible=false;
+	
 

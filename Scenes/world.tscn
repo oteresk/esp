@@ -1,9 +1,9 @@
-[gd_scene load_steps=48 format=3 uid="uid://bw42fu76r4bsv"]
+[gd_scene load_steps=47 format=3 uid="uid://bw42fu76r4bsv"]
 
 [ext_resource type="PackedScene" uid="uid://dv81swjibar3c" path="res://Scenes/parallax_background.tscn" id="1_3b8vd"]
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_cnane"]
 [ext_resource type="Script" path="res://Scripts/Globals.cs" id="2_dtpe5"]
-[ext_resource type="PackedScene" uid="uid://ykihvlu1ew8a" path="res://Scenes/player.tscn" id="3_eiu3v"]
+[ext_resource type="PackedScene" uid="uid://bj68a1718682m" path="res://Scenes/player.tscn" id="3_eiu3v"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="4_egxe6"]
 [ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/Resource-IronMine.tscn" id="5_wtxxp"]
 [ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/resource_template-GoldMine.tscn" id="6_xv0gn"]
@@ -79,29 +79,12 @@ bg_color = Color(0.462745, 0.329412, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ndxlt"]
 bg_color = Color(1, 0.737255, 0.0980392, 1)
 
-[sub_resource type="CSharpScript" id="CSharpScript_1lje0"]
-script/source = "using Godot;
-using System;
-
-public partial class HealthBar : ProgressBar
-{
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
-}
-"
-
 [sub_resource type="LabelSettings" id="LabelSettings_7qdhh"]
 font_size = 20
 outline_size = 2
 
 [node name="World" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_cnane")
 
 [node name="Globals" type="Node2D" parent="."]
@@ -138,6 +121,7 @@ resourceUpdateFreq = 60
 autostart = true
 
 [node name="Structures" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="EnemyTimer" type="Timer" parent="."]
 wait_time = 0.5
@@ -296,7 +280,6 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_ndxlt")
 max_value = 1.0
 value = 1.0
 show_percentage = false
-script = SubResource("CSharpScript_1lje0")
 
 [node name="Label" type="Label" parent="GUI/XPBar"]
 layout_mode = 1
@@ -350,11 +333,7 @@ offset_bottom = 467.998
 
 [node name="Bullets" type="Node2D" parent="."]
 
-[node name="Gems" type="Node2D" parent="."]
-
-[node name="Bullets" type="Node2D" parent="."]
-
-[node name="Bullets" type="Node2D" parent="."]
+[node name="Items" type="Node2D" parent="."]
 
 [connection signal="timeout" from="ResourceDiscoveries/Timer" to="ResourceDiscoveries" method="OnTimer"]
 [connection signal="timeout" from="EnemyTimer" to="." method="_on_enemy_timer_timeout"]
