@@ -50,6 +50,9 @@ public partial class Globals : Node
     static private float XPGoalIncrease = 1.5f;
     static public float magnetism = 30;
 
+    static public Area2D player;
+//    GDScript saveStateSystem;
+//    GodotObject nodSaveStateSystem;
 
     public override void _Ready()
     {
@@ -67,6 +70,25 @@ public partial class Globals : Node
 
         xpBar.Value = XP;
         UpdateLevel();
+
+        // initiate save_state system
+//        saveStateSystem = GD.Load<GDScript>("res://addons/save_system/save_system.gd");
+//        nodSaveStateSystem = (GodotObject)saveStateSystem.New();
+    }
+
+    public override void _Process(double delta)
+    {
+        if (Input.IsActionJustReleased("save"))
+        {
+            Debug.Print("Save");
+            SaveGameState();
+        }
+
+        if (Input.IsActionJustReleased("load"))
+        {
+            Debug.Print("Load");
+            LoadGameState();
+        }
     }
 
     static public void AddXP(float xAdd)
@@ -95,6 +117,20 @@ public partial class Globals : Node
         lblLevel.Text = "LVL: " + level.ToString();
     }
 
+    private void SaveGameState()
+    {
+        // Player
+        //nodSaveStateSystem.Call("set_var", "Player:PosX",player.Position.X.ToString()); 
+        //nodSaveStateSystem.Call("set_var", "Player:PosY", player.Position.Y.ToString());
+    }
 
+    private void LoadGameState()
+    {
+        // Player
+        //float nX= (float)nodSaveStateSystem.Call("get_var", "Player:PosX");
+        //float nY = (float)nodSaveStateSystem.Call("get_var", "Player:PosY");
+        //Debug.Print("Load: PlayerPos: " + nXS.ToString() + ", " + nYS.ToString());
+        //player.Position = new Vector2(nX, nY);
+    }
 
 }

@@ -57,6 +57,9 @@ public partial class player : Area2D
 		itemIcons[2] = itemIconDamage;
         itemIcons[3] = itemIconAoE;
         itemIcons[4] = itemIconShield;
+
+        // set player in Globals
+        Globals.player = (Area2D)GetNode(Globals.NodePlayer);
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

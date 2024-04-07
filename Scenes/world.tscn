@@ -84,6 +84,7 @@ font_size = 20
 outline_size = 2
 
 [node name="World" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_cnane")
 
 [node name="Globals" type="Node2D" parent="."]
@@ -120,6 +121,7 @@ resourceUpdateFreq = 60
 autostart = true
 
 [node name="Structures" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="EnemyTimer" type="Timer" parent="."]
 wait_time = 0.5
