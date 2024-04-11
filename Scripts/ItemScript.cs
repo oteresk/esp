@@ -46,7 +46,7 @@ public partial class ItemScript : Area2D
 
     public void OnAreaEntered(Area2D area)
 	{
-        if (area.IsInGroup("Players")) // picked up by player
+        if (area.IsInGroup("Players") && Globals.playerAlive) // picked up by player
         {
             Visible = false;
 
@@ -83,41 +83,45 @@ public partial class ItemScript : Area2D
     {
         // start item effect
         player ps = (player)Player;
-        items++;
-        if (itemType == ItemType.SpeedPotion)
-            ps.IncreaseSpeed(3);
-        if (itemType == ItemType.AttackSpeedPotion)
-            ps.IncreaseAttackSpeed(.35f);
-        if (itemType == ItemType.ShieldPotion)
-            ps.EnableShield();
-        
-        // adjust item icon positions
-        ps.AdjustItemIcons(items);
 
-        // wait
-        await Task.Delay(TimeSpan.FromMilliseconds(10000));
-
-        items--;
-
-        // disable item effect
-        if (itemType == ItemType.SpeedPotion)
+        if (Globals.playerAlive)
         {
-            ps.ResetSpeed();
-            itemSpeedExists = false;
-        }
-        if (itemType == ItemType.AttackSpeedPotion)
-        {
-            ps.ResetAttackSpeed();
-            itemAttackSpeedExists = false;
-        }
-        if (itemType == ItemType.ShieldPotion)
-        {
-            ps.DisableShield();
-            itemShieldExists = false;
-        }
+            items++;
+            if (itemType == ItemType.SpeedPotion)
+                ps.IncreaseSpeed(3);
+            if (itemType == ItemType.AttackSpeedPotion)
+                ps.IncreaseAttackSpeed(.35f);
+            if (itemType == ItemType.ShieldPotion)
+                ps.EnableShield();
 
             // adjust item icon positions
             ps.AdjustItemIcons(items);
+
+            // wait
+            await Task.Delay(TimeSpan.FromMilliseconds(10000));
+
+            items--;
+
+            // disable item effect
+            if (itemType == ItemType.SpeedPotion)
+            {
+                ps.ResetSpeed();
+                itemSpeedExists = false;
+            }
+            if (itemType == ItemType.AttackSpeedPotion)
+            {
+                ps.ResetAttackSpeed();
+                itemAttackSpeedExists = false;
+            }
+            if (itemType == ItemType.ShieldPotion)
+            {
+                ps.DisableShield();
+                itemShieldExists = false;
+            }
+
+            // adjust item icon positions
+            ps.AdjustItemIcons(items);
+        }
     }
 
     // used to simulate coroutines

@@ -1,18 +1,19 @@
 using Godot;
 using System;
 using System.Diagnostics;
-
 public partial class Globals : Node
 {
-	static public string NodeMiniMap = "/root/World/MiniMapCanvas/Control/SubViewportContainer/SubViewport/Node2D";
+    static public string NodeMiniMap = "/root/World/MiniMapCanvas/Control/SubViewportContainer/SubViewport/Node2D";
     static public string NodeMiniMapContainer = "/root/World/MiniMapCanvas/Control/SubViewportContainer/SubViewport/Node2D/MiniMap";
     static public string NodeMiniMapPlayer = "/root/World/MiniMapCanvas/Control/SubViewportContainer/SubViewport/Node2D/PlayerIcon/TextureRect";
     static public string NodeStructureGUI = "/root/World/GUI/StructureGUI";
+    static public string NodeGUI = "/root/World/GUI";
     static public string NodeStructureGUICanvas = "/root/World/GUI/StructureGUI/CanvasGroup";
     static public string NodeResourceDiscoveries = "/root/World/ResourceDiscoveries";
     static public string NodePlayer = "/root/World/Player";
     static public string NodeStructures = "/root/World/Structures";
     static public string NodeItems = "/root/World/Items";
+    static public string NodeEnemies = "/root/World/Enemies";
 
     static public int gridSizeX = 10;
     static public int gridSizeY = 10;
@@ -40,19 +41,27 @@ public partial class Globals : Node
     static public int windowSizeY;
     static public int headerOffset; // used for fullscreen and not
 
+    static public ProgressBar hpBar;
     static private ProgressBar xpBar;
 
     // player attributes and stats
     static public float XP = 0;
     static public float XPGoal;
+    static public float HP = 100;
+    static public float MaxHP = 100;
     static private Label lblLevel;
     static public int level = 1;
     static private float XPGoalIncrease = 1.5f;
     static public float magnetism = 30;
 
-    static public Area2D player;
-//    GDScript saveStateSystem;
-//    GodotObject nodSaveStateSystem;
+    static public bool playerAlive = true;
+    static public bool playerShieldActive = false;
+
+    static public Area2D pl;
+
+    static public Sprite2D black;
+    //    GDScript saveStateSystem;
+    //    GodotObject nodSaveStateSystem;
 
     public override void _Ready()
     {
@@ -67,13 +76,17 @@ public partial class Globals : Node
         XPGoal = 20;
         xpBar = (ProgressBar)GetNodeOrNull("../GUI/XPBar");
         lblLevel = (Label)GetNodeOrNull("../GUI/XPBar/Label");
-
         xpBar.Value = XP;
         UpdateLevel();
 
+        hpBar = (ProgressBar)GetNodeOrNull("../Player/HPBar");
+        hpBar.Value = HP / MaxHP;
+
+        black = (Sprite2D)GetNodeOrNull("../Black");
+
         // initiate save_state system
-//        saveStateSystem = GD.Load<GDScript>("res://addons/save_system/save_system.gd");
-//        nodSaveStateSystem = (GodotObject)saveStateSystem.New();
+        //        saveStateSystem = GD.Load<GDScript>("res://addons/save_system/save_system.gd");
+        //        nodSaveStateSystem = (GodotObject)saveStateSystem.New();
     }
 
     public override void _Process(double delta)
@@ -97,13 +110,32 @@ public partial class Globals : Node
 
         CheckNextLevel();
 
-        xpBar.Value = XP/XPGoal;
+        xpBar.Value = XP / XPGoal;
         //Debug.Print("XP: " + XP + " XPGoal: " + XPGoal + " final: " + xpBar.Value);
+    }
+
+    static public void DamagePlayer(float xDmg)
+    {
+        if (playerShieldActive == false)
+        {
+            HP -= xDmg;
+
+            if (HP < 0)
+            {
+                Debug.Print("dmg");
+                HP = 0;
+                playerAlive = false;
+                player p = (player)pl;
+                p.PlayDeathAnim();
+            }
+
+            hpBar.Value = HP / MaxHP;
+        }
     }
 
     static private void CheckNextLevel()
     {
-        if (XP>=XPGoal)
+        if (XP >= XPGoal)
         {
             XP = (XP - XPGoal);
             level++;

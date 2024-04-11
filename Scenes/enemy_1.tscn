@@ -1,14 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://c0r7oxe41obm7"]
+[gd_scene load_steps=7 format=3 uid="uid://cdrscq745gfam"]
 
 [ext_resource type="Script" path="res://Scripts/enemy_1.cs" id="1_je1u7"]
-[ext_resource type="Texture2D" uid="uid://dwbt8yg032un1" path="res://Art/Enemy-sprites/enemy_01.png" id="2_s1cgv"]
 [ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_unw20"]
+[ext_resource type="Texture2D" uid="uid://dwbt8yg032un1" path="res://Art/Enemy-sprites/Spider1.png" id="3_8ha6m"]
+[ext_resource type="Texture2D" uid="uid://wc1jabkdsc2f" path="res://Art/Enemy-sprites/Spider2.png" id="4_t8xt0"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_s1cgv")
+"texture": ExtResource("3_8ha6m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_t8xt0")
 }],
 "loop": true,
 "name": &"default",
@@ -30,8 +34,18 @@ itemScene = ExtResource("2_unw20")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_7y2m0")
+frame_progress = 0.599144
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(6, 4)
 rotation = -1.0844
 shape = SubResource("CapsuleShape2D_j3bk0")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(6, 4)
+rotation = -1.0844
+shape = SubResource("CapsuleShape2D_j3bk0")
+
+[connection signal="area_entered" from="Area2D" to="." method="OnBodyEntered"]

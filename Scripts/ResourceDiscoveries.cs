@@ -148,8 +148,8 @@ private void PlaceResourceDiscoveries()
                 PlaceDiscovery(x,y,pos.X,pos.Y,rdType);
 			}
 	// place some discoveries
-		PlaceDiscovery(5, 5, 1, 1, 4);
-        PlaceDiscovery(5, 5, 0, 0, 11);
+		//PlaceDiscovery(5, 5, 1, 1, 4);
+        //PlaceDiscovery(5, 5, 0, 0, 11);
         //PlaceDiscovery(5, 5, 1, 0, 1);
         //PlaceDiscovery(5, 5, 0, 1, 1);
         //PlaceDiscovery(5, 5, 1, 1, 1);

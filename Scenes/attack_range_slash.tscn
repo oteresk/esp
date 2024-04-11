@@ -1,17 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://bpjxrp2i6uiq3"]
+[gd_scene load_steps=3 format=3 uid="uid://d4dpgatxn044q"]
 
-[ext_resource type="Script" path="res://Scripts/AttackRange.cs" id="1_2n557"]
+[ext_resource type="Script" path="res://Scripts/AttackRange.cs" id="1_pfhhr"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mk5pp"]
 radius = 521.0
 
-[node name="AttackRange" type="Area2D"]
+[node name="AttackRangeSlash" type="Area2D"]
 position = Vector2(1, 0)
 collision_layer = 0
 collision_mask = 2
-script = ExtResource("1_2n557")
+script = ExtResource("1_pfhhr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.4, 0.2)
 shape = SubResource("CircleShape2D_mk5pp")
 
 [node name="ShootingPoint" type="Marker2D" parent="."]

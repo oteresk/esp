@@ -1,7 +1,7 @@
-[gd_scene load_steps=47 format=3 uid="uid://bw42fu76r4bsv"]
+[gd_scene load_steps=48 format=3 uid="uid://tjt3wkjp0i5t"]
 
 [ext_resource type="PackedScene" uid="uid://dv81swjibar3c" path="res://Scenes/parallax_background.tscn" id="1_3b8vd"]
-[ext_resource type="Script" path="res://Scripts/world.gd" id="1_cnane"]
+[ext_resource type="Script" path="res://Scripts/world.cs" id="1_rvwjb"]
 [ext_resource type="Script" path="res://Scripts/Globals.cs" id="2_dtpe5"]
 [ext_resource type="PackedScene" uid="uid://bj68a1718682m" path="res://Scenes/player.tscn" id="3_eiu3v"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="4_egxe6"]
@@ -37,6 +37,7 @@
 [ext_resource type="Texture2D" uid="uid://dw6baw0ypmyb0" path="res://Art/Light.png" id="33_0wlbc"]
 [ext_resource type="PackedScene" uid="uid://1xxnq480idry" path="res://Scenes/fo_wfog.tscn" id="35_p0u56"]
 [ext_resource type="PackedScene" uid="uid://dfcendwn41quo" path="res://Scenes/MiniMap.tscn" id="36_hw51v"]
+[ext_resource type="PackedScene" uid="uid://bpukysafnurai" path="res://black.tscn" id="38_b7fsk"]
 
 [sub_resource type="Environment" id="Environment_h8lsd"]
 background_mode = 3
@@ -83,9 +84,10 @@ bg_color = Color(1, 0.737255, 0.0980392, 1)
 font_size = 20
 outline_size = 2
 
-[node name="World" type="Node2D"]
+[node name="World" type="Node2D" node_paths=PackedStringArray("EnemySpawnPath")]
 y_sort_enabled = true
-script = ExtResource("1_cnane")
+script = ExtResource("1_rvwjb")
+EnemySpawnPath = NodePath("Player/Path2D/EnemySpawnPath")
 
 [node name="Globals" type="Node2D" parent="."]
 script = ExtResource("2_dtpe5")
@@ -134,6 +136,9 @@ Speed = 300
 DashSpeed = 1200.0
 DashDuration = 0.3
 
+[node name="AnimatedSprite2D" parent="Player" index="1"]
+frame_progress = 0.275089
+
 [node name="AttackRange" parent="Player" index="4"]
 position = Vector2(0, -96)
 
@@ -148,7 +153,7 @@ energy = 0.2
 texture = SubResource("GradientTexture2D_bih6r")
 
 [node name="Path2D" type="Path2D" parent="Player"]
-visible = false
+scale = Vector2(2, 2)
 curve = SubResource("Curve2D_obham")
 
 [node name="EnemySpawnPath" type="PathFollow2D" parent="Player/Path2D"]
@@ -334,6 +339,10 @@ offset_bottom = 467.998
 [node name="Bullets" type="Node2D" parent="."]
 
 [node name="Items" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Black" parent="." instance=ExtResource("38_b7fsk")]
 
 [connection signal="timeout" from="ResourceDiscoveries/Timer" to="ResourceDiscoveries" method="OnTimer"]
 [connection signal="timeout" from="EnemyTimer" to="." method="_on_enemy_timer_timeout"]

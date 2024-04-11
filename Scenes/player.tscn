@@ -1,16 +1,24 @@
-[gd_scene load_steps=34 format=3 uid="uid://bj68a1718682m"]
+[gd_scene load_steps=44 format=3 uid="uid://bj68a1718682m"]
 
 [ext_resource type="Script" path="res://Scripts/player.cs" id="1_kjyyd"]
 [ext_resource type="Texture2D" uid="uid://chdl1s1uscao4" path="res://Art/Hero-sprites/tile000.png" id="2_1trhb"]
 [ext_resource type="Texture2D" uid="uid://bboih6d0wcpjc" path="res://Art/Hero-sprites/tile012.png" id="2_pw2lt"]
+[ext_resource type="Texture2D" uid="uid://6bpqkh2sgk3j" path="res://Art/Hero-sprites/Attack1.png" id="2_wqypy"]
+[ext_resource type="Texture2D" uid="uid://s0so3q0h5tn8" path="res://Art/Hero-sprites/Attack2.png" id="3_67ubd"]
 [ext_resource type="Texture2D" uid="uid://ds1akqdacl2no" path="res://Art/Hero-sprites/tile001.png" id="3_gok1e"]
 [ext_resource type="Texture2D" uid="uid://d0ecyklv7him" path="res://Art/Hero-sprites/tile002.png" id="4_o5std"]
+[ext_resource type="Texture2D" uid="uid://bbe75kyok76pc" path="res://Art/Hero-sprites/HeroDeath1.png" id="5_secep"]
 [ext_resource type="Texture2D" uid="uid://tsmm2fpa6hxl" path="res://Art/Hero-sprites/tile011.png" id="5_yc0qp"]
+[ext_resource type="Texture2D" uid="uid://dqncgrskjloqn" path="res://Art/Hero-sprites/HeroDeath2.png" id="6_6rf70"]
 [ext_resource type="Texture2D" uid="uid://ckf3kur5q25er" path="res://Art/Hero-sprites/tile006.png" id="6_puj2a"]
+[ext_resource type="Texture2D" uid="uid://bduh025cpadt0" path="res://Art/Hero-sprites/HeroDeath3.png" id="7_shdr2"]
 [ext_resource type="Texture2D" uid="uid://b5e1fan7bhgs" path="res://Art/Hero-sprites/tile007.png" id="7_tems3"]
 [ext_resource type="Texture2D" uid="uid://dbg0wdh3r2lyl" path="res://Art/Hero-sprites/tile008.png" id="8_dwljk"]
+[ext_resource type="Texture2D" uid="uid://b75wurtjucc6a" path="res://Art/Hero-sprites/HeroDeath4.png" id="8_ryv1n"]
 [ext_resource type="Texture2D" uid="uid://chqowx2lfuhk2" path="res://Art/Hero-sprites/tile009.png" id="9_7ytke"]
+[ext_resource type="Texture2D" uid="uid://ccflyuge26mjg" path="res://Art/Hero-sprites/HeroDeath5.png" id="9_cyuy3"]
 [ext_resource type="Texture2D" uid="uid://c3y1qv5ui8njn" path="res://Art/Hero-sprites/tile010.png" id="10_0ly30"]
+[ext_resource type="Texture2D" uid="uid://brq052xms3mu4" path="res://Art/Hero-sprites/HeroDeath6.png" id="10_ep3ea"]
 [ext_resource type="PackedScene" uid="uid://bpjxrp2i6uiq3" path="res://Scenes/attack_range.tscn" id="12_wtvyp"]
 [ext_resource type="Texture2D" uid="uid://366lea2n5sn5" path="res://Art/GUI/Icon-Speed.png" id="13_cyfdm"]
 [ext_resource type="Texture2D" uid="uid://d3rfbgy8uuv76" path="res://Art/GUI/Icon-AttackSpeed.png" id="14_88udm"]
@@ -32,10 +40,44 @@ height = 34.0
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("2_wqypy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_67ubd")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("2_pw2lt")
 }],
 "loop": true,
 "name": &"dash",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_secep")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_6rf70")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_shdr2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ryv1n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_cyuy3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_ep3ea")
+}],
+"loop": false,
+"name": &"death",
 "speed": 5.0
 }, {
 "frames": [{
@@ -50,7 +92,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 4.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -128,6 +170,12 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_evnss"]
+bg_color = Color(0.462745, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lc6ir"]
+bg_color = Color(1, 0, 0.0980392, 1)
+
 [node name="Player" type="Area2D" node_paths=PackedStringArray("magnetismShape", "tmrAttackSpeed", "itemIconSpeed", "itemIconAttackSpeed", "itemIconDamage", "itemIconAoE", "itemIconShield", "txtSpeed", "txtAtkSpeed", "txtDamage", "txtAoE", "txtShield", "shield")]
 y_sort_enabled = true
 script = ExtResource("1_kjyyd")
@@ -156,7 +204,7 @@ shape = SubResource("CapsuleShape2D_538jq")
 texture_filter = 1
 position = Vector2(0, -85)
 sprite_frames = SubResource("SpriteFrames_7cwag")
-animation = &"dash"
+animation = &"death"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -248,6 +296,23 @@ sprite_frames = SubResource("SpriteFrames_ul1vv")
 frame_progress = 0.267013
 speed_scale = 2.0
 
+[node name="HPBar" type="ProgressBar" parent="."]
+z_index = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -50.0
+offset_top = 13.0
+offset_right = 50.0
+offset_bottom = 19.0
+grow_horizontal = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_evnss")
+theme_override_styles/fill = SubResource("StyleBoxFlat_lc6ir")
+max_value = 1.0
+value = 1.0
+show_percentage = false
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="AnimationFinished"]
 [connection signal="area_entered" from="MagnetismArea2D" to="." method="OnMagnetismEntered"]
 
 [editable path="AttackRange"]

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 public partial class player : Area2D
 {
@@ -59,88 +60,95 @@ public partial class player : Area2D
         itemIcons[4] = itemIconShield;
 
         // set player in Globals
-        Globals.player = (Area2D)GetNode(Globals.NodePlayer);
+        Globals.pl = (Area2D)GetNode(Globals.NodePlayer);
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		velocity = Vector2.Zero;
-		
-		// Basic movement handlers
-		if (Input.IsActionPressed("move_right"))
-			velocity.X += 0.1f;
-		if (Input.IsActionPressed("move_left"))
-			velocity.X -= 0.1f;
-		if (Input.IsActionPressed("move_down"))
-			velocity.Y += 0.1f;
-		if (Input.IsActionPressed("move_up"))
-			velocity.Y -= 0.1f;
-		
-		velocity = velocity.Normalized();
-		
-		// If the dash cooldown is currently up, then subtract delta time from it
-		if(dashCooldownTimer > 0)
-			dashCooldownTimer -= (float)delta;
-		
-		// Check if dash needs to be set
-		if (Input.IsActionPressed("dash") && !isDashing && dashCooldownTimer <= 0 && (velocity.X != 0 || velocity.Y != 0))
-		{
-			isDashing = true;
-			dashTimer = DashDuration;
-			dashCooldownTimer = DashCooldown;
-		}
 
-		// If player is dashing, multiply velocity by dash speed and check dash cooldown
-		if(isDashing)
+		if (Globals.playerAlive)
 		{
-			velocity *= DashSpeed;
-			dashTimer -= (float)delta;
-				
-			if(dashTimer <= 0)
+
+			velocity = Vector2.Zero;
+
+			// Basic movement handlers
+			if (Input.IsActionPressed("move_right"))
+				velocity.X += 0.1f;
+			if (Input.IsActionPressed("move_left"))
+				velocity.X -= 0.1f;
+			if (Input.IsActionPressed("move_down"))
+				velocity.Y += 0.1f;
+			if (Input.IsActionPressed("move_up"))
+				velocity.Y -= 0.1f;
+
+			velocity = velocity.Normalized();
+
+			// If the dash cooldown is currently up, then subtract delta time from it
+			if (dashCooldownTimer > 0)
+				dashCooldownTimer -= (float)delta;
+
+			// Check if dash needs to be set
+			if (Input.IsActionPressed("dash") && !isDashing && dashCooldownTimer <= 0 && (velocity.X != 0 || velocity.Y != 0))
 			{
-				isDashing = false;
+				isDashing = true;
+				dashTimer = DashDuration;
+				dashCooldownTimer = DashCooldown;
 			}
-		}
-		// If the player is moving then multiply the velocity by speed variable
-		else if (velocity.Length() > 0)
-		{
-			velocity *= Speed*speedMultiplier;
-		}	
-	
-		// Moving the character around the screen
-		Position += velocity * (float)delta;
-		// Position = new Vector2( x: Position.X, y: Position.Y);
-		
-	
-		// Setting the animations for the character
-		if (velocity.X != 0)
-		{
+
+			// If player is dashing, multiply velocity by dash speed and check dash cooldown
 			if (isDashing)
-				animatedSprite2D.Animation = "dash";
+			{
+				velocity *= DashSpeed;
+				dashTimer -= (float)delta;
+
+				if (dashTimer <= 0)
+				{
+					isDashing = false;
+				}
+			}
+			// If the player is moving then multiply the velocity by speed variable
+			else if (velocity.Length() > 0)
+			{
+				velocity *= Speed * speedMultiplier;
+			}
+
+			// Moving the character around the screen
+			Position += velocity * (float)delta;
+			// Position = new Vector2( x: Position.X, y: Position.Y);
+
+
+			// Setting the animations for the character
+			if (velocity.X != 0)
+			{
+				if (isDashing && animatedSprite2D.Animation != "attack")
+					animatedSprite2D.Animation = "dash";
+				else
+				{
+					if (animatedSprite2D.Animation != "attack")
+					{
+						animatedSprite2D.Animation = "walk";
+						animatedSprite2D.FlipV = false;
+						animatedSprite2D.FlipH = velocity.X < 0;
+					}
+				}
+			}
+			else if (velocity.Y != 0)
+			{
+				if (isDashing && animatedSprite2D.Animation != "attack")
+					animatedSprite2D.Animation = "dash";
+				else
+				{
+					if (animatedSprite2D.Animation != "attack")
+						animatedSprite2D.Animation = "walk";
+				}
+			}
 			else
 			{
-				animatedSprite2D.Animation = "walk";
-				animatedSprite2D.FlipV = false;
-				animatedSprite2D.FlipH = velocity.X < 0;
+				if (animatedSprite2D.Animation != "attack")
+					animatedSprite2D.Animation = "idle";
 			}
 		}
-		else if (velocity.Y != 0)
-		{
-			if (isDashing)
-				animatedSprite2D.Animation = "dash";
-			else
-			{
-				animatedSprite2D.Animation = "walk";
-			}
-		}
-		else 
-		{
-			animatedSprite2D.Animation = "idle";
-		}
-
-		// set order to y pos
-//		ZIndex=(int)Position.Y;
 	
 	}
 
@@ -169,6 +177,7 @@ public partial class player : Area2D
         itemIconShield.Visible = true;
         ShowText(txtShield);
         shield.Visible = true;
+		Globals.playerShieldActive = true;
 		shield.Play();
 	}
 
@@ -176,6 +185,7 @@ public partial class player : Area2D
     {
         itemIconShield.Visible = false;
         shield.Visible = false;
+        Globals.playerShieldActive = false;
     }
 
     private void ShowText(Sprite2D txt)
@@ -298,5 +308,63 @@ public partial class player : Area2D
 		}
         
 	}
+
+	public void PlayAttackAnim()
+	{
+		//Debug.Print("Play attack anim");
+        animatedSprite2D.Animation = "attack";
+		animatedSprite2D.Play();
+    }
+
+	public void AnimationFinished()
+	{
+		if (Globals.playerAlive)
+		{
+			animatedSprite2D.Animation = "idle";
+			animatedSprite2D.Play();
+			//Debug.Print("Attack over");
+		}
+    }
+
+    public void PlayDeathAnim()
+    {
+        //Debug.Print("Play attack anim");
+        animatedSprite2D.Animation = "death";
+        animatedSprite2D.Play();
+		FadeToBlack();
+        // hide mini map
+        Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+        miniMap.Visible = false;
+        // hide GUI
+        CanvasLayer gui = (CanvasLayer)GetNode(Globals.NodeGUI);
+        gui.Visible = false;
+        itemIconSpeed.Visible = false;
+		itemIconAoE.Visible = false;
+		itemIconAttackSpeed.Visible = false;
+		itemIconDamage.Visible = false;
+		itemIconShield.Visible = false;
+
+		Globals.hpBar.Visible = false;
+
+        GameOver();
+
+    }
+
+    private void FadeToBlack()
+    {
+        ZIndex = 1000;
+        Tween tween = GetTree().CreateTween();
+        tween.TweenProperty(Globals.black, "modulate:a", 1f, 3.0f);
+
+    }
+
+    private async void GameOver()
+    {
+        // wait 3 seconds
+        await Task.Delay(TimeSpan.FromMilliseconds(7000));
+		GetTree().ReloadCurrentScene();
+
+    }
+
 
 }

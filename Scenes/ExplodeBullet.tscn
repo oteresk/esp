@@ -1,7 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://rk1pgtdhjx8m"]
+[gd_scene load_steps=12 format=3 uid="uid://cda1yy5svsdas"]
 
 [ext_resource type="Texture2D" uid="uid://4l5jcpkylm6v" path="res://Art/energyBallImpact.png" id="1_q2667"]
-[ext_resource type="Script" path="res://Scenes/AnimatedSprite2D.gd" id="2_xjtm1"]
+[ext_resource type="Script" path="res://Scripts/ExplodeAnim.cs" id="2_xjveo"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vgc4g"]
 atlas = ExtResource("1_q2667")
@@ -74,6 +74,6 @@ texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_hdnqx")
 animation = &"Explode"
 speed_scale = 3.0
-script = ExtResource("2_xjtm1")
+script = ExtResource("2_xjveo")
 
-[connection signal="animation_finished" from="AnimatedSprite2D" to="AnimatedSprite2D" method="on_finished"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="AnimatedSprite2D" method="OnFinished"]

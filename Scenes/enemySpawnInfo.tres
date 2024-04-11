@@ -1,12 +1,11 @@
-[gd_resource type="Resource" script_class="spawn_info" load_steps=3 format=3 uid="uid://dyg3ao764wdjr"]
+[gd_resource type="Resource" script_class="spawn_info" load_steps=2 format=3 uid="uid://dyg3ao764wdjr"]
 
 [ext_resource type="Script" path="res://Scripts/spawn_info.cs" id="1_nubtx"]
-[ext_resource type="PackedScene" uid="uid://c0r7oxe41obm7" path="res://Scenes/enemy_1.tscn" id="1_w8ekv"]
 
 [resource]
 script = ExtResource("1_nubtx")
 time_start = 0
 time_end = 60
-enemy = ExtResource("1_w8ekv")
 enemy_num = 10
 enemy_spawn_delay = 2
+spawn_delay_counter = 0
