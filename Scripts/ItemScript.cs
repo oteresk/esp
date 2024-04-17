@@ -86,6 +86,9 @@ public partial class ItemScript : Area2D
 
         if (Globals.playerAlive)
         {
+            // remove poison
+            Globals.RemoveAllPoison();
+
             items++;
             if (itemType == ItemType.SpeedPotion)
                 ps.IncreaseSpeed(3);
@@ -123,21 +126,10 @@ public partial class ItemScript : Area2D
             ps.AdjustItemIcons(items);
         }
     }
-
-    // used to simulate coroutines
-    public static async void StartCoroutine(IEnumerable objects)
-    {
-        var mainLoopTree = Engine.GetMainLoop();
-        foreach (var _ in objects)
-        {
-            await mainLoopTree.ToSignal(mainLoopTree, SceneTree.SignalName.ProcessFrame);
-        }
-    }
-
     public void CreateItem()
     {
         // randomly get temp potion 
-        int rPotion = GD.RandRange(1, 20);
+        int rPotion = GD.RandRange(1, Globals.potionFreq);
 
         if (rPotion == 1)
         {

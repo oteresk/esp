@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://cea8np42epeyx"]
+
+[ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_q6scr"]
+[ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_jcdqm"]
+[ext_resource type="Texture2D" uid="uid://din0xr1ekf7g2" path="res://Art/Enemy-sprites/Bat1.png" id="3_btq2l"]
+[ext_resource type="Texture2D" uid="uid://dxanla26yhvl2" path="res://Art/Enemy-sprites/Bat2.png" id="4_ssqse"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_btq2l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ssqse")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
+radius = 19.9795
+height = 39.9591
+
+[node name="en_Bat" type="RigidBody2D"]
+collision_layer = 2
+collision_mask = 3
+mass = 0.01
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_q6scr")
+speed = 90.0
+itemScene = ExtResource("2_jcdqm")
+damage = 3
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_7y2m0")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 3)
+rotation = -0.0174251
+shape = SubResource("CapsuleShape2D_j3bk0")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(4.76837e-07, 3)
+rotation = 0.00420356
+scale = Vector2(0.919833, 1)
+shape = SubResource("CapsuleShape2D_j3bk0")
+
+[connection signal="area_entered" from="Area2D" to="." method="OnBodyEntered"]

@@ -1,6 +1,9 @@
 using Godot;
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 public partial class Globals : Node
 {
     static public string NodeMiniMap = "/root/World/MiniMapCanvas/Control/SubViewportContainer/SubViewport/Node2D";
@@ -14,6 +17,8 @@ public partial class Globals : Node
     static public string NodeStructures = "/root/World/Structures";
     static public string NodeItems = "/root/World/Items";
     static public string NodeEnemies = "/root/World/Enemies";
+    static public string NodePoison = "/root/World/GUI/Control/MarginContainer/PoisonGUINode";
+    static public string NodeGlobals = "/root/World/Globals";
 
     static public int gridSizeX = 10;
     static public int gridSizeY = 10;
@@ -42,26 +47,35 @@ public partial class Globals : Node
     static public int headerOffset; // used for fullscreen and not
 
     static public ProgressBar hpBar;
-    static private ProgressBar xpBar;
+    static public ProgressBar xpBar;
 
     // player attributes and stats
     static public float XP = 0;
     static public float XPGoal;
     static public float HP = 100;
     static public float MaxHP = 100;
-    static private Label lblLevel;
+    static public Label lblLevel;
     static public int level = 1;
-    static private float XPGoalIncrease = 1.5f;
+    static public float XPGoalIncrease = 1.5f;
     static public float magnetism = 30;
 
     static public bool playerAlive = true;
     static public bool playerShieldActive = false;
 
     static public Area2D pl;
+    static public HBoxContainer poisonEffect;
+    static public bool isPoisoned=false;
+    static public int poisonCount;
+    static public List <Node> poisonNodes;
 
     static public Sprite2D black;
     //    GDScript saveStateSystem;
     //    GodotObject nodSaveStateSystem;
+
+    static public int potionFreq = 26; // how often enemy drops a potion instead of gem
+
+    const int MAXPOISONS= 3;
+
 
     public override void _Ready()
     {
@@ -72,6 +86,12 @@ public partial class Globals : Node
         windowSizeY = (int)GetViewport().GetVisibleRect().Size.Y;
         headerOffset = windowSizeY - 1009;
 
+        ResetGame();
+    }
+
+    public void ResetGame()
+    {
+        playerAlive = true;
         level = 1;
         XPGoal = 20;
         xpBar = (ProgressBar)GetNodeOrNull("../GUI/XPBar");
@@ -84,9 +104,100 @@ public partial class Globals : Node
 
         black = (Sprite2D)GetNodeOrNull("../Black");
 
+        // hide poison effect
+        poisonEffect = (HBoxContainer)GetNode(NodePoison);
+
+        poisonNodes = new List<Node>();
+
+        Globals.XP = 0;
+        Globals.HP = 100;
+        Globals.MaxHP = 100;
+        Globals.XPGoalIncrease = 1.5f;
+        Globals.magnetism = 30;
+
+        //ResourceDiscoveries.seconds = 0;
+        //ResourceDiscoveries.minutes = 0;
+
         // initiate save_state system
         //        saveStateSystem = GD.Load<GDScript>("res://addons/save_system/save_system.gd");
         //        nodSaveStateSystem = (GodotObject)saveStateSystem.New();
+    }
+
+    static public void PoisonPlayer(float dmg, float dmgTime)
+    {
+        if (poisonCount<MAXPOISONS)
+        {
+            Debug.Print("Poison player");
+            var poisonGUIScene = (PackedScene)ResourceLoader.Load("res://Scenes/PoisonGUI.tscn");
+            var newPoisonGUI = (Control)poisonGUIScene.Instantiate();
+            poisonEffect.AddChild(newPoisonGUI);
+
+
+            isPoisoned = true;
+            poisonCount++;
+
+            player p = (player)pl;
+            p.poisonSpeed = .5f;
+
+            // instantiate poison object on player
+            var poisonScene = (PackedScene)ResourceLoader.Load("res://Scenes/poison.tscn");
+            var newPoison = (AnimatedSprite2D)poisonScene.Instantiate();
+            newPoison.Play();
+            pl.AddChild(newPoison);
+            var pScript = (Poison)newPoison;
+            pScript.poisonTime = dmgTime;
+            pScript.poisonDamage = dmg;
+            poisonNodes.Add(newPoison);
+        }
+    }
+
+    public static void PoisonEnded()
+    {
+        poisonCount--;
+
+        // remove first GUI poisin effect
+        Control pe = (Control)poisonEffect.GetChild(0);
+        pe.QueueFree();
+
+        poisonNodes.RemoveAt(0); // remove first node in array/list
+
+        if (poisonCount == 0)
+        {
+            isPoisoned = false;
+
+            player p = (player)pl;
+            p.poisonSpeed = 1;
+        }
+    }
+
+    public static void RemoveAllPoison()
+    {
+        poisonCount = 0;
+        isPoisoned = false;
+        Control peCont;
+        Control pe;
+
+        if (poisonEffect.GetChildCount() > 0)
+        {
+            for (int iter = 1; iter <= MAXPOISONS; iter++)
+            {
+                peCont = (Control)poisonEffect;
+                if (peCont.GetChildCount() > 0)
+                {
+                    pe = (Control)poisonEffect.GetChild(0);
+                    pe.Free();
+                }
+            }
+        }
+
+        player p = (player)pl;
+        p.poisonSpeed = 1;
+
+        foreach (var poi in poisonNodes)
+        {
+            poi.QueueFree();
+        }
+        poisonNodes.Clear();
     }
 
     public override void _Process(double delta)
@@ -119,10 +230,11 @@ public partial class Globals : Node
         if (playerShieldActive == false)
         {
             HP -= xDmg;
+            PlayerDamage();
 
-            if (HP < 0)
+            if (HP < 0 && playerAlive)
             {
-                Debug.Print("dmg");
+                //Debug.Print("dmg");
                 HP = 0;
                 playerAlive = false;
                 player p = (player)pl;
@@ -133,6 +245,13 @@ public partial class Globals : Node
         }
     }
 
+    static async void PlayerDamage()
+    {
+        pl.Modulate = new Color(1, 0, 0, 1);
+        // wait a bit
+        await Task.Delay(TimeSpan.FromMilliseconds(100));
+        pl.Modulate = new Color(1, 1, 1, 1);
+    }
     static private void CheckNextLevel()
     {
         if (XP >= XPGoal)
@@ -144,7 +263,7 @@ public partial class Globals : Node
         }
     }
 
-    static private void UpdateLevel()
+    static public void UpdateLevel()
     {
         lblLevel.Text = "LVL: " + level.ToString();
     }

@@ -34,8 +34,8 @@ public partial class ResourceDiscoveries : Node2D
 	private static int manaResourceCount;
 	public static float wood;
 
-    private int seconds = 0;
-	private int minutes = 0;
+    static public int seconds = 0;
+	static public int minutes = 0;
 
 // GUI node
 	private Node rGUI;
@@ -91,6 +91,7 @@ public partial class ResourceDiscoveries : Node2D
 		{
 			seconds = 0;
 			minutes++;
+
 		}
 
 		string strSeconds = seconds.ToString();
@@ -264,9 +265,12 @@ private void PlaceResourceDiscoveries()
             int rAmount = (int)(GD.Randi() % (amountMax+1));
 			wood += (int)(rAmount+amount);
 		}
-
-
         UpdateResourceGUI();
     }
+
+	public static int GetMinutes() // gets the number of minutes passed
+	{
+		return minutes;
+	}
 
 }

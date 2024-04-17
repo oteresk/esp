@@ -1,18 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://cdrscq745gfam"]
+[gd_scene load_steps=7 format=3 uid="uid://d2a0fxvts185s"]
 
-[ext_resource type="Script" path="res://Scripts/enemy_1.cs" id="1_je1u7"]
-[ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_unw20"]
-[ext_resource type="Texture2D" uid="uid://dwbt8yg032un1" path="res://Art/Enemy-sprites/Spider1.png" id="3_8ha6m"]
-[ext_resource type="Texture2D" uid="uid://wc1jabkdsc2f" path="res://Art/Enemy-sprites/Spider2.png" id="4_t8xt0"]
+[ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_ic4x6"]
+[ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_xbo67"]
+[ext_resource type="Texture2D" uid="uid://dwbt8yg032un1" path="res://Art/Enemy-sprites/Spider1.png" id="3_gqysb"]
+[ext_resource type="Texture2D" uid="uid://wc1jabkdsc2f" path="res://Art/Enemy-sprites/Spider2.png" id="4_bghpl"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_8ha6m")
+"texture": ExtResource("3_gqysb")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_t8xt0")
+"texture": ExtResource("4_bghpl")
 }],
 "loop": true,
 "name": &"default",
@@ -23,13 +23,20 @@ animations = [{
 radius = 7.0
 height = 28.331
 
-[node name="enemy_1" type="RigidBody2D"]
+[node name="en_Spider" type="RigidBody2D"]
+scale = Vector2(1.6, 1.6)
 collision_layer = 2
 collision_mask = 3
 mass = 0.01
 gravity_scale = 0.0
-script = ExtResource("1_je1u7")
-itemScene = ExtResource("2_unw20")
+lock_rotation = true
+script = ExtResource("1_ic4x6")
+health = 3
+speed = 45.0
+itemScene = ExtResource("2_xbo67")
+damageType = 1
+damage = 1
+damageTime = 4
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1

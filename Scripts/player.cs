@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -10,6 +11,7 @@ public partial class player : Area2D
 {
 	[Export] public int Speed {get; set; } = 200;
 	private float speedMultiplier = 1;
+	public float poisonSpeed = 1;
     [Export] public float DashSpeed = 600;
     [Export] public float DashDuration = 0.2f;
     [Export] public float DashCooldown = 1.0f;
@@ -110,7 +112,7 @@ public partial class player : Area2D
 			// If the player is moving then multiply the velocity by speed variable
 			else if (velocity.Length() > 0)
 			{
-				velocity *= Speed * speedMultiplier;
+				velocity *= Speed * speedMultiplier* poisonSpeed;
 			}
 
 			// Moving the character around the screen
@@ -364,7 +366,11 @@ public partial class player : Area2D
         await Task.Delay(TimeSpan.FromMilliseconds(7000));
 		GetTree().ReloadCurrentScene();
 
-    }
+		Node glN = GetNode(Globals.NodeGlobals);
+		Globals g = (Globals)glN;
+        g.ResetGame();
+	}
+
 
 
 }

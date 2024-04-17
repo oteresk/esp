@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3 uid="uid://sce3c63oeymh"]
+
+[ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_v5eqe"]
+[ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_3ipyh"]
+[ext_resource type="Texture2D" uid="uid://srarilrxdb4e" path="res://Art/Enemy-sprites/Slime1.png" id="3_ypocd"]
+[ext_resource type="Texture2D" uid="uid://dr306sle8dsrf" path="res://Art/Enemy-sprites/Slime2.png" id="4_hhxdw"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_ypocd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_hhxdw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
+radius = 25.0124
+height = 52.0246
+
+[node name="en_Slime" type="RigidBody2D"]
+collision_layer = 2
+collision_mask = 3
+mass = 0.01
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_v5eqe")
+health = 3
+speed = 30.0
+itemScene = ExtResource("2_3ipyh")
+damage = 5
+leavesTrail = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_7y2m0")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(1, 2)
+rotation = -0.230347
+scale = Vector2(0.990924, 0.781274)
+shape = SubResource("CapsuleShape2D_j3bk0")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(1, 1)
+rotation = -0.342306
+scale = Vector2(1.00107, 0.76671)
+shape = SubResource("CapsuleShape2D_j3bk0")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="area_entered" from="Area2D" to="." method="OnBodyEntered"]
+[connection signal="timeout" from="Timer" to="." method="LeaveTrail"]

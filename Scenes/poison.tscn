@@ -1,0 +1,67 @@
+[gd_scene load_steps=10 format=3 uid="uid://ch48rlr71vn5d"]
+
+[ext_resource type="Texture2D" uid="uid://c8nuq66605y4i" path="res://Art/Poison.png" id="1_rsqe2"]
+[ext_resource type="Script" path="res://Scripts/Poison.cs" id="2_p0mq6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_auupr"]
+atlas = ExtResource("1_rsqe2")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nvfrk"]
+atlas = ExtResource("1_rsqe2")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_37d4q"]
+atlas = ExtResource("1_rsqe2")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7287s"]
+atlas = ExtResource("1_rsqe2")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wpes7"]
+atlas = ExtResource("1_rsqe2")
+region = Rect2(384, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4lmn2"]
+atlas = ExtResource("1_rsqe2")
+region = Rect2(480, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_75l5q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_auupr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nvfrk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_37d4q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7287s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wpes7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4lmn2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Poison" type="AnimatedSprite2D"]
+modulate = Color(1, 1, 1, 0.403922)
+position = Vector2(0, -90)
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_75l5q")
+frame_progress = 0.0545613
+script = ExtResource("2_p0mq6")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="PoisonOver"]

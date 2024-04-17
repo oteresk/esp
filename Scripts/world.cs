@@ -18,7 +18,19 @@ public partial class world : Node2D
 	public void SpawnMob()
 	{
 		//Debug.Print("preloading mob");
-        PackedScene newMobScene = (PackedScene)ResourceLoader.Load("res://Scenes/enemy_1.tscn");
+
+        string[] enemyString = new string[] 
+		{
+            "res://Scenes/en_Bat.tscn",
+            "res://Scenes/en_Slime.tscn",
+            "res://Scenes/en_Spider.tscn",
+            "res://Scenes/en_Bat.tscn",
+            "res://Scenes/en_Slime.tscn",
+            "res://Scenes/en_Spider.tscn",
+        };
+
+
+        PackedScene newMobScene = (PackedScene)ResourceLoader.Load(enemyString[ResourceDiscoveries.GetMinutes()]);
         Node2D newMob = (Node2D)newMobScene.Instantiate();
 
         EnemySpawnPath.ProgressRatio = (float)GD.Randf();
