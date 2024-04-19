@@ -1,0 +1,80 @@
+[gd_scene load_steps=12 format=3 uid="uid://d4dpgatxn044q"]
+
+[ext_resource type="Script" path="res://Scripts/AttackSlash.cs" id="1_xluy4"]
+[ext_resource type="Texture2D" uid="uid://8slun2ft54ld" path="res://Art/Attacks/Swipe1.png" id="2_7wuqw"]
+[ext_resource type="Texture2D" uid="uid://4e1txslsaqp2" path="res://Art/Attacks/Swipe2.png" id="3_xypu0"]
+[ext_resource type="Texture2D" uid="uid://drsdpxlu1olgv" path="res://Art/Attacks/Swipe3.png" id="4_e0qtp"]
+[ext_resource type="Texture2D" uid="uid://c0dm1hfqvtbyh" path="res://Art/Attacks/Swipe4.png" id="5_42884"]
+[ext_resource type="Texture2D" uid="uid://plc8coiyejt" path="res://Art/Attacks/Swipe5.png" id="6_hmjt3"]
+[ext_resource type="Texture2D" uid="uid://ce88n7hlmciea" path="res://Art/Attacks/Swipe6.png" id="7_n5nws"]
+[ext_resource type="Texture2D" uid="uid://7h1wdat8n3xx" path="res://Art/Attacks/Swipe7.png" id="8_4jxvi"]
+[ext_resource type="Texture2D" uid="uid://db665rqbgdq1j" path="res://Art/Attacks/Swipe8.png" id="9_181uk"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_seomp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_7wuqw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_xypu0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_e0qtp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_42884")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_hmjt3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_n5nws")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_4jxvi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_181uk")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mk5pp"]
+radius = 521.0
+
+[node name="AttackSlash" type="Area2D"]
+modulate = Color(1, 1, 1, 0.501961)
+position = Vector2(0, -120)
+scale = Vector2(3, 3)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_xluy4")
+
+[node name="ShootingPoint" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(2, 26)
+
+[node name="BulletTimer" type="Timer" parent="."]
+wait_time = 0.75
+autostart = true
+
+[node name="Slash" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_seomp")
+frame = 8
+frame_progress = 1.0
+
+[node name="SlashArea2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlashArea2D"]
+position = Vector2(80, -9)
+rotation = 0.00482192
+scale = Vector2(0.216453, 0.18553)
+shape = SubResource("CircleShape2D_mk5pp")
+
+[connection signal="timeout" from="BulletTimer" to="." method="OnBulletTimerTimeout"]

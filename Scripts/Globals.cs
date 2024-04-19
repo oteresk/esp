@@ -143,6 +143,7 @@ public partial class Globals : Node
             var poisonScene = (PackedScene)ResourceLoader.Load("res://Scenes/poison.tscn");
             var newPoison = (AnimatedSprite2D)poisonScene.Instantiate();
             newPoison.Play();
+            Debug.Print("pl: "+pl.Name);
             pl.AddChild(newPoison);
             var pScript = (Poison)newPoison;
             pScript.poisonTime = dmgTime;
@@ -230,7 +231,7 @@ public partial class Globals : Node
         if (playerShieldActive == false)
         {
             HP -= xDmg;
-            PlayerDamage();
+            ShowPlayerDamage();
 
             if (HP < 0 && playerAlive)
             {
@@ -245,7 +246,7 @@ public partial class Globals : Node
         }
     }
 
-    static async void PlayerDamage()
+    static async void ShowPlayerDamage()
     {
         pl.Modulate = new Color(1, 0, 0, 1);
         // wait a bit

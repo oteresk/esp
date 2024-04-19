@@ -139,12 +139,6 @@ DashDuration = 0.3
 [node name="AnimatedSprite2D" parent="Player" index="1"]
 frame_progress = 0.275089
 
-[node name="AttackRange" parent="Player" index="4"]
-position = Vector2(0, -96)
-
-[node name="ShootingPoint" parent="Player/AttackRange" index="1"]
-position = Vector2(-2, 0)
-
 [node name="PointLight2D" type="PointLight2D" parent="Player"]
 position = Vector2(0, -84)
 scale = Vector2(8, 8)
@@ -357,4 +351,3 @@ offset_bottom = 467.998
 [connection signal="mouse_exited" from="GUI/StructureGUI/CanvasGroup/btn3" to="GUI/StructureGUI/CanvasGroup" method="_on_btn_0_mouse_exited"]
 
 [editable path="Player"]
-[editable path="Player/AttackRange"]

@@ -1,6 +1,8 @@
 using Godot;
 using System;
+using System.Diagnostics;
 
+// Projectile Attack
 public partial class AttackRange : Area2D
 {
     public enum BulletSource { Player, Tower }
@@ -8,6 +10,25 @@ public partial class AttackRange : Area2D
     [Export] public BulletSource bSource;
 
     private player ps;
+    public float damage;
+    public float AOE;
+    public float attackSpeed;
+    private int dmgLevel = 2;
+    private int AOELevel = 1;
+    private int attchSpeedLevel = 1;
+    private float dmgInc = 1.2f;
+    private float AOEInc = 1.2f;
+    private float attackSpeedInc = .9f;
+
+    public override void _Ready()
+    {
+        UpdateAttributes();
+    }
+
+    private void UpdateAttributes()
+    {
+        damage = dmgLevel * dmgLevel * dmgInc;
+    }
 
     public override void _PhysicsProcess(double delta)
     {
@@ -33,6 +54,12 @@ public partial class AttackRange : Area2D
             case BulletSource.Player:
                 newBullet.GetNode<AnimatedSprite2D>("AnimatedSprite2D").Scale = new Vector2(0.3f, 0.3f);
                 newBullet.Modulate = new Color(0.2f, 0.2f, 1, 1);
+                BulletScript bScript = (BulletScript)newBullet;
+                bScript.damage = GetDamage();
+                bScript.bType = BulletScript.BulletType.Homing;
+                bScript.range = 1200;
+
+                //Debug.Print("dam: " + GetDamage());
                 // play player attack anim
                 ps = (player)Globals.pl;
                 ps.PlayAttackAnim();
@@ -54,6 +81,12 @@ public partial class AttackRange : Area2D
                 Shoot();
             }
         }
+    }
+
+    public float GetDamage()
+    {
+        UpdateAttributes();
+        return damage;
     }
 
 }

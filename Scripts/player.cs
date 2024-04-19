@@ -22,9 +22,9 @@ public partial class player : Area2D
 	
 	public Vector2 ScreenSize;
 	Vector2 velocity; 
-	AnimatedSprite2D animatedSprite2D;
+	public AnimatedSprite2D animatedSprite2D;
 	[Export] public CollisionShape2D magnetismShape;
-	[Export] public Timer tmrAttackSpeed;
+	private Timer tmrAttackSpeed;
 	[Export] public Sprite2D itemIconSpeed;
     [Export] public Sprite2D itemIconAttackSpeed;
     [Export] public Sprite2D itemIconDamage;
@@ -38,6 +38,11 @@ public partial class player : Area2D
 	[Export] public AnimatedSprite2D shield;
     private float defaultAttackSpeed = 0.75f;
 	private Sprite2D[] itemIcons;
+	private Node2D newAttack;
+
+	private PackedScene attackSceneProjectile;
+    private PackedScene attackSceneSlash;
+    private PackedScene attackSceneCross;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -46,6 +51,14 @@ public partial class player : Area2D
 		animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		animatedSprite2D.Animation = "idle";
 		animatedSprite2D.Play();
+
+        // load attack
+        attackSceneProjectile = (PackedScene)ResourceLoader.Load("res://Scenes/attack_projectile.tscn");
+        attackSceneSlash = (PackedScene)ResourceLoader.Load("res://Scenes/attack_slash.tscn");
+        attackSceneCross = (PackedScene)ResourceLoader.Load("res://Scenes/attack_Cross.tscn");
+        newAttack = (Node2D)attackSceneSlash.Instantiate();
+		AddChild(newAttack);
+		tmrAttackSpeed = (Timer)newAttack.GetNode("BulletTimer");
 
         // set magnetism size
         magnetismShape.Scale= new Vector2(Globals.magnetism,Globals.magnetism);
@@ -84,7 +97,27 @@ public partial class player : Area2D
 			if (Input.IsActionPressed("move_up"))
 				velocity.Y -= 0.1f;
 
-			velocity = velocity.Normalized();
+            // testing
+            if (Input.IsKeyPressed(Key.Key1))
+            {
+                newAttack.QueueFree();
+                newAttack = (Node2D)attackSceneSlash.Instantiate();
+                AddChild(newAttack);
+            }
+            if (Input.IsKeyPressed(Key.Key2))
+			{
+                newAttack.QueueFree();
+                newAttack = (Node2D)attackSceneProjectile.Instantiate();
+                AddChild(newAttack);
+            }
+            if (Input.IsKeyPressed(Key.Key3))
+            {
+                newAttack.QueueFree();
+                newAttack = (Node2D)attackSceneCross.Instantiate();
+                AddChild(newAttack);
+            }
+
+            velocity = velocity.Normalized();
 
 			// If the dash cooldown is currently up, then subtract delta time from it
 			if (dashCooldownTimer > 0)

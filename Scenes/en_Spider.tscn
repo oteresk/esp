@@ -1,9 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://d2a0fxvts185s"]
+[gd_scene load_steps=9 format=3 uid="uid://d2a0fxvts185s"]
 
 [ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_ic4x6"]
 [ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_xbo67"]
 [ext_resource type="Texture2D" uid="uid://dwbt8yg032un1" path="res://Art/Enemy-sprites/Spider1.png" id="3_gqysb"]
+[ext_resource type="Shader" path="res://Shaders/ColorFlash.gdshader" id="3_uds4y"]
 [ext_resource type="Texture2D" uid="uid://wc1jabkdsc2f" path="res://Art/Enemy-sprites/Spider2.png" id="4_bghpl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fb7vb"]
+resource_local_to_scene = true
+shader = ExtResource("3_uds4y")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 0, 0, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
 animations = [{
@@ -31,7 +38,7 @@ mass = 0.01
 gravity_scale = 0.0
 lock_rotation = true
 script = ExtResource("1_ic4x6")
-health = 3
+health = 4.0
 speed = 45.0
 itemScene = ExtResource("2_xbo67")
 damageType = 1
@@ -40,6 +47,7 @@ damageTime = 4
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
+material = SubResource("ShaderMaterial_fb7vb")
 sprite_frames = SubResource("SpriteFrames_7y2m0")
 frame_progress = 0.599144
 
