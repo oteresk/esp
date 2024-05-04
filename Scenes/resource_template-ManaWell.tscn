@@ -29,6 +29,7 @@ material = SubResource("ShaderMaterial_d03md")
 texture = ExtResource("2_31y2h")
 script = ExtResource("1_bdwio")
 RDResource = ExtResource("2_ro3pi")
+resourceCaptureSpeed = 0.6
 
 [node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
 visible = false

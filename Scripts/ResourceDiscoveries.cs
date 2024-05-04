@@ -25,14 +25,14 @@ public partial class ResourceDiscoveries : Node2D
 	private Node2D resourceDiscovery;
 	private Node2D capTimer;
 
-// resource tracking
-    private static float gold; // how much gold you have
-	static private int goldResourceCount; // how many gold mine resources you have discovered
-	public static float iron;
-	private static int ironResourceCount;
-	public static float mana;
-	private static int manaResourceCount;
-	public static float wood;
+    // resource tracking
+    static public float gold; // how much gold you have
+	static public int goldResourceCount; // how many gold mine resources you have discovered
+	static public float iron;
+	static public int ironResourceCount;
+    static public float mana;
+    static public int manaResourceCount;
+    static public float wood;
 
     static public int seconds = 0;
 	static public int minutes = 0;

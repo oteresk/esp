@@ -33,6 +33,7 @@ texture = ExtResource("1_4rjnv")
 offset = Vector2(0, -30)
 script = ExtResource("1_iewui")
 RDResource = ExtResource("2_txmhu")
+resourceCaptureSpeed = 0.5
 
 [node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
 visible = false

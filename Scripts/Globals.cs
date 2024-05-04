@@ -11,7 +11,7 @@ public partial class Globals : Node
     static public string NodeMiniMapPlayer = "/root/World/MiniMapCanvas/Control/SubViewportContainer/SubViewport/Node2D/PlayerIcon/TextureRect";
     static public string NodeStructureGUI = "/root/World/GUI/StructureGUI";
     static public string NodeGUI = "/root/World/GUI";
-    static public string NodeStructureGUICanvas = "/root/World/GUI/StructureGUI/CanvasGroup";
+    static public string NodeStructureGUICanvas = "/root/World/GUI/StructureGUI/SettlementSelect";
     static public string NodeResourceDiscoveries = "/root/World/ResourceDiscoveries";
     static public string NodePlayer = "/root/World/Player";
     static public string NodeStructures = "/root/World/Structures";
@@ -19,6 +19,8 @@ public partial class Globals : Node
     static public string NodeEnemies = "/root/World/Enemies";
     static public string NodePoison = "/root/World/GUI/Control/MarginContainer/PoisonGUINode";
     static public string NodeGlobals = "/root/World/Globals";
+
+    static Node rootNode;
 
     static public int gridSizeX = 10;
     static public int gridSizeY = 10;
@@ -63,10 +65,17 @@ public partial class Globals : Node
     static public bool playerShieldActive = false;
 
     static public Area2D pl;
+    static public player ps;
+
     static public HBoxContainer poisonEffect;
     static public bool isPoisoned=false;
     static public int poisonCount;
     static public List <Node> poisonNodes;
+
+    static public float itemAtkSpd; // 1 (default) .5 (with item)
+    static public float permItemAtkSpd = 0; // 0-25
+
+    static public resourceGUI GUINode;
 
     static public Sprite2D black;
     //    GDScript saveStateSystem;
@@ -76,7 +85,6 @@ public partial class Globals : Node
 
     const int MAXPOISONS= 3;
 
-
     public override void _Ready()
     {
         worldArray = new int[gridSizeX * subGridSizeX, gridSizeY * subGridSizeY];
@@ -85,12 +93,24 @@ public partial class Globals : Node
         // 1009 - with
         windowSizeY = (int)GetViewport().GetVisibleRect().Size.Y;
         headerOffset = windowSizeY - 1009;
-
         ResetGame();
+
+        DelayedStart();
+
+        rootNode = GetNode("..");
+    }
+
+    async void DelayedStart()
+    {
+        // wait a bit
+        await Task.Delay(TimeSpan.FromMilliseconds(200));
+        
     }
 
     public void ResetGame()
     {
+        GUINode = (resourceGUI)GetNode(NodeGUI);
+
         playerAlive = true;
         level = 1;
         XPGoal = 20;
@@ -98,6 +118,7 @@ public partial class Globals : Node
         lblLevel = (Label)GetNodeOrNull("../GUI/XPBar/Label");
         xpBar.Value = XP;
         UpdateLevel();
+        itemAtkSpd = 1; // attackSpeed modifier for temp items
 
         hpBar = (ProgressBar)GetNodeOrNull("../Player/HPBar");
         hpBar.Value = HP / MaxHP;
@@ -115,8 +136,16 @@ public partial class Globals : Node
         Globals.XPGoalIncrease = 1.5f;
         Globals.magnetism = 30;
 
-        //ResourceDiscoveries.seconds = 0;
-        //ResourceDiscoveries.minutes = 0;
+        ResourceDiscoveries.seconds = 0;
+        ResourceDiscoveries.minutes = 0;
+
+        ResourceDiscoveries.iron = 0;
+        ResourceDiscoveries.mana = 0;
+        ResourceDiscoveries.wood = 0;
+        ResourceDiscoveries.gold = 0;
+        ResourceDiscoveries.goldResourceCount = 0;
+        ResourceDiscoveries.ironResourceCount = 0;
+        ResourceDiscoveries.manaResourceCount = 0;
 
         // initiate save_state system
         //        saveStateSystem = GD.Load<GDScript>("res://addons/save_system/save_system.gd");
@@ -125,7 +154,7 @@ public partial class Globals : Node
 
     static public void PoisonPlayer(float dmg, float dmgTime)
     {
-        if (poisonCount<MAXPOISONS)
+        if (poisonCount<MAXPOISONS && playerShieldActive == false)
         {
             Debug.Print("Poison player");
             var poisonGUIScene = (PackedScene)ResourceLoader.Load("res://Scenes/PoisonGUI.tscn");
@@ -136,17 +165,18 @@ public partial class Globals : Node
             isPoisoned = true;
             poisonCount++;
 
-            player p = (player)pl;
-            p.poisonSpeed = .5f;
+            ps.poisonSpeed = .5f;
 
             // instantiate poison object on player
             var poisonScene = (PackedScene)ResourceLoader.Load("res://Scenes/poison.tscn");
             var newPoison = (AnimatedSprite2D)poisonScene.Instantiate();
             newPoison.Play();
+            Debug.Print("pl: "+pl.Name);
             pl.AddChild(newPoison);
             var pScript = (Poison)newPoison;
             pScript.poisonTime = dmgTime;
             pScript.poisonDamage = dmg;
+            pScript.pTarget = Poison.PoisonTarget.Player;
             poisonNodes.Add(newPoison);
         }
     }
@@ -213,6 +243,20 @@ public partial class Globals : Node
             Debug.Print("Load");
             LoadGameState();
         }
+
+        // For testing
+        if (Input.IsKeyPressed(Key.U)) // energy
+        {
+            Globals.ShowUpgrades();
+            
+            PackedScene upgradeScene = (PackedScene)ResourceLoader.Load("res://Scenes/upgrade_gui.tscn");
+            var upgrade1 = upgradeScene.Instantiate();
+            //GUINode.AddChild(upgrade1);
+            Upgrade ug = (Upgrade)upgrade1;
+            upgrade1.QueueFree();
+            ug.RandomizeUpgrade();
+        }
+
     }
 
     static public void AddXP(float xAdd)
@@ -230,7 +274,7 @@ public partial class Globals : Node
         if (playerShieldActive == false)
         {
             HP -= xDmg;
-            PlayerDamage();
+            ShowPlayerDamage();
 
             if (HP < 0 && playerAlive)
             {
@@ -245,12 +289,33 @@ public partial class Globals : Node
         }
     }
 
-    static async void PlayerDamage()
+    static public void HealPlayer(float amount)
     {
-        pl.Modulate = new Color(1, 0, 0, 1);
+
+        HP += amount;
+        ShowPlayerHeal();
+
+        if (HP > MaxHP)
+        {
+            HP = MaxHP;
+        }
+
+        hpBar.Value = HP / MaxHP;
+    }
+    static async void ShowPlayerHeal()
+    {
+        ps.animatedSprite2D.Modulate = new Color(0, 0, 1, 1);
         // wait a bit
         await Task.Delay(TimeSpan.FromMilliseconds(100));
-        pl.Modulate = new Color(1, 1, 1, 1);
+        ps.animatedSprite2D.Modulate = new Color(1, 1, 1, 1);
+    }
+
+    static async void ShowPlayerDamage()
+    {
+        ps.animatedSprite2D.Modulate = new Color(1, 0, 0, 1);
+        // wait a bit
+        await Task.Delay(TimeSpan.FromMilliseconds(100));
+        ps.animatedSprite2D.Modulate = new Color(1, 1, 1, 1);
     }
     static private void CheckNextLevel()
     {
@@ -259,13 +324,72 @@ public partial class Globals : Node
             XP = (XP - XPGoal);
             level++;
             XPGoal = XPGoal * XPGoalIncrease;
+
             UpdateLevel();
+            ShowUpgrades();
         }
     }
 
-    static public void UpdateLevel()
+    public static void UpdateLevel()
     {
         lblLevel.Text = "LVL: " + level.ToString();
+    }
+
+    static public void ShowUpgrades()
+    {
+        // show Upgrades
+        PackedScene upgradeScene = (PackedScene)ResourceLoader.Load("res://Scenes/upgrade_gui.tscn");
+
+        var upgrade1 = upgradeScene.Instantiate();
+        GUINode.AddChild(upgrade1);
+        CanvasLayer nUpgrade1 = (CanvasLayer)upgrade1;
+        nUpgrade1.Offset = new Vector2(60, 90);
+        // get name of upgrade1 to prevent duplicates
+        Upgrade ug = (Upgrade)upgrade1;
+        string UGname1 = ug.GetName();
+        Debug.Print("up1:" + UGname1);
+
+        var upgrade2 = upgradeScene.Instantiate();
+        GUINode.AddChild(upgrade2);
+        CanvasLayer nUpgrade2 = (CanvasLayer)upgrade2;
+        nUpgrade2.Offset = new Vector2(700, 90);
+        // get name of upgrade2 to prevent duplicates
+        ug = (Upgrade)upgrade2;
+        string UGname2 = ug.GetName();
+        // repeat until name doesn't match upgrade1
+        while (UGname2 == UGname1)
+        {
+            ug.RandomizeUpgrade();
+            UGname2 = ug.GetName();
+        }
+
+        Debug.Print("up1:" + UGname1+" up2:"+UGname2);
+
+
+        var upgrade3 = upgradeScene.Instantiate();
+        GUINode.AddChild(upgrade3);
+        CanvasLayer nUpgrade3 = (CanvasLayer)upgrade3;
+        nUpgrade3.Offset = new Vector2(1330, 90);
+        // get name of upgrade2 to prevent duplicates
+        ug = (Upgrade)upgrade3;
+        string UGname3 = ug.GetName();
+        // repeat until name doesn't match upgrade1
+        while (UGname3 == UGname1 || UGname3 == UGname2)
+        {
+            ug.RandomizeUpgrade();
+            UGname3 = ug.GetName();
+        }
+
+        Debug.Print("up1:" + UGname1 + " up2:" + UGname2 + " up3:"+ UGname3);
+
+        // pause game
+        rootNode.GetTree().Paused = true;
+    }
+
+    static public void UnPauseGame()
+    {
+        // unpause game
+        rootNode.GetTree().Paused = false;
     }
 
     private void SaveGameState()

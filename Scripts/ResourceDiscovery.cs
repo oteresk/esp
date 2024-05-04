@@ -37,7 +37,7 @@ public partial class ResourceDiscovery : Sprite2D
 			{
 				if (RDResource.resourceType.ToString() != "None") // if not a platform
 				{
-					Debug.Print("RType:" + RDResource.resourceType.ToString());
+					//Debug.Print("RType:" + RDResource.resourceType.ToString());
 					capTimer = (Node2D)GetNode("CaptureTimer");
 					captureTimer = (CaptureTimer)GetNode("CaptureTimer/Progress");
 

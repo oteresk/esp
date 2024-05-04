@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://bj68a1718682m"]
+[gd_scene load_steps=43 format=3 uid="uid://bj68a1718682m"]
 
 [ext_resource type="Script" path="res://Scripts/player.cs" id="1_kjyyd"]
 [ext_resource type="Texture2D" uid="uid://chdl1s1uscao4" path="res://Art/Hero-sprites/tile000.png" id="2_1trhb"]
@@ -19,7 +19,6 @@
 [ext_resource type="Texture2D" uid="uid://ccflyuge26mjg" path="res://Art/Hero-sprites/HeroDeath5.png" id="9_cyuy3"]
 [ext_resource type="Texture2D" uid="uid://c3y1qv5ui8njn" path="res://Art/Hero-sprites/tile010.png" id="10_0ly30"]
 [ext_resource type="Texture2D" uid="uid://brq052xms3mu4" path="res://Art/Hero-sprites/HeroDeath6.png" id="10_ep3ea"]
-[ext_resource type="PackedScene" uid="uid://bpjxrp2i6uiq3" path="res://Scenes/attack_range.tscn" id="12_wtvyp"]
 [ext_resource type="Texture2D" uid="uid://366lea2n5sn5" path="res://Art/GUI/Icon-Speed.png" id="13_cyfdm"]
 [ext_resource type="Texture2D" uid="uid://d3rfbgy8uuv76" path="res://Art/GUI/Icon-AttackSpeed.png" id="14_88udm"]
 [ext_resource type="Texture2D" uid="uid://bn2o73dhbvbdv" path="res://Art/GUI/Icon-AOE.png" id="15_scnna"]
@@ -176,11 +175,10 @@ bg_color = Color(0.462745, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lc6ir"]
 bg_color = Color(1, 0, 0.0980392, 1)
 
-[node name="Player" type="Area2D" node_paths=PackedStringArray("magnetismShape", "tmrAttackSpeed", "itemIconSpeed", "itemIconAttackSpeed", "itemIconDamage", "itemIconAoE", "itemIconShield", "txtSpeed", "txtAtkSpeed", "txtDamage", "txtAoE", "txtShield", "shield")]
+[node name="Player" type="Area2D" node_paths=PackedStringArray("magnetismShape", "itemIconSpeed", "itemIconAttackSpeed", "itemIconDamage", "itemIconAoE", "itemIconShield", "txtSpeed", "txtAtkSpeed", "txtDamage", "txtAoE", "txtShield", "shield")]
 y_sort_enabled = true
 script = ExtResource("1_kjyyd")
 magnetismShape = NodePath("MagnetismArea2D/CollisionShape2D")
-tmrAttackSpeed = NodePath("AttackRange/BulletTimer")
 itemIconSpeed = NodePath("ItemIcons/ItemIconSpeed")
 itemIconAttackSpeed = NodePath("ItemIcons/ItemIconAttackSpeed")
 itemIconDamage = NodePath("ItemIcons/ItemIconDamage")
@@ -216,13 +214,6 @@ position = Vector2(0, -85)
 position = Vector2(0, 34)
 scale = Vector2(4, 3)
 shape = SubResource("CapsuleShape2D_538jq")
-
-[node name="AttackRange" parent="." instance=ExtResource("12_wtvyp")]
-visible = false
-scale = Vector2(1.7, 1.7)
-
-[node name="ShootingPoint" parent="AttackRange" index="1"]
-position = Vector2(0, -95)
 
 [node name="MagnetismArea2D" type="Area2D" parent="."]
 
@@ -314,5 +305,3 @@ show_percentage = false
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="AnimationFinished"]
 [connection signal="area_entered" from="MagnetismArea2D" to="." method="OnMagnetismEntered"]
-
-[editable path="AttackRange"]

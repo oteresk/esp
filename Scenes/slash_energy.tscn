@@ -1,0 +1,50 @@
+[gd_scene load_steps=10 format=3 uid="uid://ddpmln8fdebnl"]
+
+[ext_resource type="Texture2D" uid="uid://8slun2ft54ld" path="res://Art/Attacks/Swipe_Energy1.png" id="1_yu8gb"]
+[ext_resource type="Texture2D" uid="uid://4e1txslsaqp2" path="res://Art/Attacks/Swipe_Energy2.png" id="2_wxm0w"]
+[ext_resource type="Texture2D" uid="uid://drsdpxlu1olgv" path="res://Art/Attacks/Swipe_Energy3.png" id="3_oxitp"]
+[ext_resource type="Texture2D" uid="uid://c0dm1hfqvtbyh" path="res://Art/Attacks/Swipe_Energy4.png" id="4_fkba5"]
+[ext_resource type="Texture2D" uid="uid://plc8coiyejt" path="res://Art/Attacks/Swipe_Energy5.png" id="5_plpx1"]
+[ext_resource type="Texture2D" uid="uid://ce88n7hlmciea" path="res://Art/Attacks/Swipe_Energy6.png" id="6_isi30"]
+[ext_resource type="Texture2D" uid="uid://7h1wdat8n3xx" path="res://Art/Attacks/Swipe_Energy7.png" id="7_h4jtb"]
+[ext_resource type="Texture2D" uid="uid://db665rqbgdq1j" path="res://Art/Attacks/Swipe_Energy8.png" id="8_8ox0u"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_seomp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_yu8gb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_wxm0w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_oxitp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_fkba5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_plpx1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_isi30")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_h4jtb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_8ox0u")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Slash" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_seomp")
+frame = 8
+frame_progress = 1.0

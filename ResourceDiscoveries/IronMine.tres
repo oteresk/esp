@@ -6,9 +6,9 @@
 [resource]
 script = ExtResource("1_frdow")
 sprImage = ExtResource("2_vh543")
-timeToCapture = 5.0
 resourceType = 0
 amount = 1.0
+amountMax = 0.0
 freq = 1.0
 recoverType = 0
 spriteScale = 0.2

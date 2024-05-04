@@ -1,9 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://sce3c63oeymh"]
+[gd_scene load_steps=9 format=3 uid="uid://sce3c63oeymh"]
 
 [ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_v5eqe"]
 [ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_3ipyh"]
+[ext_resource type="Shader" path="res://Shaders/ColorFlash.gdshader" id="3_c2f5d"]
 [ext_resource type="Texture2D" uid="uid://srarilrxdb4e" path="res://Art/Enemy-sprites/Slime1.png" id="3_ypocd"]
 [ext_resource type="Texture2D" uid="uid://dr306sle8dsrf" path="res://Art/Enemy-sprites/Slime2.png" id="4_hhxdw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j2qla"]
+resource_local_to_scene = true
+shader = ExtResource("3_c2f5d")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 0, 0, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
 animations = [{
@@ -30,7 +37,6 @@ mass = 0.01
 gravity_scale = 0.0
 lock_rotation = true
 script = ExtResource("1_v5eqe")
-health = 3
 speed = 30.0
 itemScene = ExtResource("2_3ipyh")
 damage = 5
@@ -38,6 +44,7 @@ leavesTrail = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
+material = SubResource("ShaderMaterial_j2qla")
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_7y2m0")
 

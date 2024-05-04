@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://diwutmassctal"]
+
+[ext_resource type="Script" path="res://Scripts/BulletScript.cs" id="1_87lpf"]
+[ext_resource type="Texture2D" uid="uid://dogd725wgxf2x" path="res://Art/Element_Ice.png" id="2_571v4"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7u7nq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_571v4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fxxtb"]
+radius = 13.0
+
+[node name="Bullet" type="Area2D"]
+top_level = true
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("1_87lpf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_7u7nq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.4, 0.4)
+shape = SubResource("CircleShape2D_fxxtb")
+
+[connection signal="body_entered" from="." to="." method="_OnBodyEntered"]

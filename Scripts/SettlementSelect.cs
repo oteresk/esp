@@ -101,151 +101,111 @@ public partial class SettlementSelect : CanvasGroup
 
     public override void _Input(InputEvent @event)
     {
-        if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
+        if (buttonsEnabled)
         {
-			if (mouseEvent.ButtonIndex== MouseButton.Left)
-			{
-                Debug.Print("Button");
-                if (btn0 && buttonsEnabled)
+            if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
+            {
+                if (mouseEvent.ButtonIndex == MouseButton.Left)
                 {
-                    buttonsEnabled = false;
-                    curStruct -= 1;
-                    UpdateCurStruct();
-                    GD.Print("Rotate Right");
-
-                    // set texture for new structure button
-                    int newStruct = curStruct - 1;
-                    if (newStruct < 0 )
-                        newStruct = txStructBut.Length - 1;
-                    btnNode3.Texture = txStructBut[newStruct];
-
-                    btnNode2.ZIndex = 0; // reset sort index
-
-                    btnNode3.Position = btnNode0.Position;
-                    btnNode3.ZIndex = -1; // put node to back of sort
-                    Tween tween = GetTree().CreateTween();
-
-                    tween.TweenProperty(GetNode("btn0"), "position", btnNode1.Position, rotateSpeed);
-                    tween.Parallel().TweenProperty(GetNode("btn0"), "scale", btnNode1.Scale, rotateSpeed);
-
-                    tween.Parallel().TweenProperty(GetNode("btn1"), "position", btnNode2.Position, rotateSpeed);
-                    tween.Parallel().TweenProperty(GetNode("btn1"), "scale", btnNode2.Scale, rotateSpeed);
-
-                    tween.Parallel().TweenProperty(GetNode("btn2"), "scale", new Vector2(0,0), rotateSpeed);
-                    btnNode2.ZIndex = -1; // put node to back of sort
-
-                    btnNode3.Visible = true;
-                    btnNode3.Scale=new Vector2(0,0);
-                    tween.Parallel().TweenProperty(GetNode("btn3"), "scale", new Vector2(.5f, .5f), rotateSpeed);
-
-                    // reset positions
-                    tween.TweenCallback(Callable.From(this.ResetButtonsLeft));
-                    redStroke.Visible = false;
-                }
-
-                if (btn2 && buttonsEnabled)
-                {
-                    buttonsEnabled = false;
-                    curStruct += 1;
-                    UpdateCurStruct();
-                    GD.Print("Rotate Left");
-
-                    // set texture for new structure button
-                    int newStruct = curStruct + 1;
-                    if (newStruct > txStructBut.Length - 1)
-                        newStruct = 0;
-                    btnNode3.Texture = txStructBut[newStruct];
-
-                    btnNode0.ZIndex = 0; // reset sort index
-                    btnNode3.ZIndex = -1; // put node to back of sort
-                    btnNode3.Position = btnNode2.Position;
-                    Tween tween = GetTree().CreateTween();
-
-                    tween.TweenProperty(GetNode("btn2"), "position", btnNode1.Position, rotateSpeed);
-                    tween.Parallel().TweenProperty(GetNode("btn2"), "scale", btnNode1.Scale, rotateSpeed);
-
-                    tween.Parallel().TweenProperty(GetNode("btn1"), "position", btnNode0.Position, rotateSpeed);
-                    tween.Parallel().TweenProperty(GetNode("btn1"), "scale", btnNode0.Scale, rotateSpeed);
-
-                    tween.Parallel().TweenProperty(GetNode("btn0"), "scale", new Vector2(0, 0), rotateSpeed);
-                    btnNode0.ZIndex = -1; // put node to back of sort
-
-                    btnNode3.Visible = true;
-                    btnNode3.Scale = new Vector2(0, 0);
-                    tween.Parallel().TweenProperty(GetNode("btn3"), "scale", new Vector2(.5f, .5f), rotateSpeed);
-
-                    // reset positions
-                    tween.TweenCallback(Callable.From(this.ResetButtonsRight));
-                    redStroke.Visible = false;
-                }
-
-                if (btn1) // build new structure
-                {
-                    GD.Print("Build structure");
-
-                    // check if you can afford it
-                    if (ResourceDiscoveries.iron >= costIron[curStruct] && ResourceDiscoveries.wood >= costWood[curStruct])
+                    if (btn0)
                     {
-                        if (platform != null && buildDelay>1)
+                        buttonsEnabled = false;
+                        curStruct -= 1;
+                        UpdateCurStruct();
+                        GD.Print("Rotate Right");
+
+                        // set texture for new structure button
+                        int newStruct = curStruct - 1;
+                        if (newStruct < 0)
+                            newStruct = txStructBut.Length - 1;
+                        btnNode3.Texture = txStructBut[newStruct];
+
+                        btnNode2.ZIndex = 0; // reset sort index
+
+                        btnNode3.Position = btnNode0.Position;
+                        btnNode3.ZIndex = -1; // put node to back of sort
+                        Tween tween = GetTree().CreateTween();
+
+                        tween.TweenProperty(GetNode("btn0"), "position", btnNode1.Position, rotateSpeed);
+                        tween.Parallel().TweenProperty(GetNode("btn0"), "scale", btnNode1.Scale, rotateSpeed);
+
+                        tween.Parallel().TweenProperty(GetNode("btn1"), "position", btnNode2.Position, rotateSpeed);
+                        tween.Parallel().TweenProperty(GetNode("btn1"), "scale", btnNode2.Scale, rotateSpeed);
+
+                        tween.Parallel().TweenProperty(GetNode("btn2"), "scale", new Vector2(0, 0), rotateSpeed);
+                        btnNode2.ZIndex = -1; // put node to back of sort
+
+                        btnNode3.Visible = true;
+                        btnNode3.Scale = new Vector2(0, 0);
+                        tween.Parallel().TweenProperty(GetNode("btn3"), "scale", new Vector2(.5f, .5f), rotateSpeed);
+
+                        // reset positions
+                        tween.TweenCallback(Callable.From(this.ResetButtonsLeft));
+                        redStroke.Visible = false;
+                    }
+
+                    if (btn2)
+                    {
+                        buttonsEnabled = false;
+                        curStruct += 1;
+                        UpdateCurStruct();
+                        GD.Print("Rotate Left");
+
+                        // set texture for new structure button
+                        int newStruct = curStruct + 1;
+                        if (newStruct > txStructBut.Length - 1)
+                            newStruct = 0;
+                        btnNode3.Texture = txStructBut[newStruct];
+
+                        btnNode0.ZIndex = 0; // reset sort index
+                        btnNode3.ZIndex = -1; // put node to back of sort
+                        btnNode3.Position = btnNode2.Position;
+                        Tween tween = GetTree().CreateTween();
+
+                        tween.TweenProperty(GetNode("btn2"), "position", btnNode1.Position, rotateSpeed);
+                        tween.Parallel().TweenProperty(GetNode("btn2"), "scale", btnNode1.Scale, rotateSpeed);
+
+                        tween.Parallel().TweenProperty(GetNode("btn1"), "position", btnNode0.Position, rotateSpeed);
+                        tween.Parallel().TweenProperty(GetNode("btn1"), "scale", btnNode0.Scale, rotateSpeed);
+
+                        tween.Parallel().TweenProperty(GetNode("btn0"), "scale", new Vector2(0, 0), rotateSpeed);
+                        btnNode0.ZIndex = -1; // put node to back of sort
+
+                        btnNode3.Visible = true;
+                        btnNode3.Scale = new Vector2(0, 0);
+                        tween.Parallel().TweenProperty(GetNode("btn3"), "scale", new Vector2(.5f, .5f), rotateSpeed);
+
+                        // reset positions
+                        tween.TweenCallback(Callable.From(this.ResetButtonsRight));
+                        redStroke.Visible = false;
+                    }
+
+                    if (btn1) // build new structure
+                    {
+                        GD.Print("Build structure");
+
+                        // check if you can afford it
+                        if (ResourceDiscoveries.iron >= costIron[curStruct] && ResourceDiscoveries.wood >= costWood[curStruct])
                         {
-                            buildDelay = 0;
-                            // subtract resources
-                            ResourceDiscoveries.iron -= costIron[curStruct];
-                            ResourceDiscoveries.wood -= costWood[curStruct];
-                            // update ResourceGUI
-                            ResourceDiscoveries.UpdateResourceGUI();
+                            if (platform != null && buildDelay > 1)
+                            {
+                                buildDelay = 0;
+                                // subtract resources
+                                ResourceDiscoveries.iron -= costIron[curStruct];
+                                ResourceDiscoveries.wood -= costWood[curStruct];
+                                // update ResourceGUI
+                                ResourceDiscoveries.UpdateResourceGUI();
 
-                            // build structure
-                            CreateStructure(curStruct, platform);
-
-                            /*
-                            Vector2 strPos = platform.Position;
-                            ResourceDiscovery platformRD = (ResourceDiscovery)platform;
-                            int sX = platformRD.gridXPos;
-                            int sY = platformRD.gridYPos+2;
-
-                            // load structure scene
-                            Node2D structure;
-                            structure = (Node2D)scnStruct[curStruct].Instantiate();
-
-                            Node2D nodRD = (Node2D)GetNode(Globals.NodeStructures);
-                            nodRD.AddChild(structure);
-
-                            structure.Position = new Vector2(sX * ResourceDiscoveries.pixelSizeX, sY * ResourceDiscoveries.pixelSizeY);
-
-                            ResourceDiscovery rdp = (ResourceDiscovery)GetNode(structure.GetPath()); // get resourceDiscovery of structure
-                            rdp.gridXPos = sX;
-                            rdp.gridYPos = sY;
-                            structure.Name = scnStruct[curStruct].ResourceName+" "+sX.ToString()+" "+sY.ToString();
-                            rdp.discovered = true;
-
-                            structure.Visible = true;
-
-                            Globals.worldArray[sX, sY] = curStruct + 5;
-
-                            // hide structure select canvas
-                            CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
-                            nodStruct.Visible = false;
-
-                            // destroy platform ********call last
-                            Node rdNode=(Node)GetNode(Globals.NodeResourceDiscoveries);
-                            rdNode.RemoveChild(platform);
-
-                            platform.QueueFree();
-
-                            // refresh Minimap
-                            Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
-                            miniMap.Call("DisplayMap");
-
-                            */
+                                // build structure
+                                CreateStructure(curStruct, platform);
+                            }
 
                         }
 
                     }
-
                 }
+
             }
-				
         }
     }
 

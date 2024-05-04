@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://swedahiogmgi" path="res://Art/Resources/Tower.png" id="2_pk38l"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="3_tvdb5"]
 [ext_resource type="Texture2D" uid="uid://3fsglyijtxuk" path="res://Art/PlatformLight.png" id="4_irnqh"]
-[ext_resource type="PackedScene" uid="uid://bpjxrp2i6uiq3" path="res://Scenes/attack_range.tscn" id="5_8jjvb"]
+[ext_resource type="PackedScene" uid="uid://bpjxrp2i6uiq3" path="res://Scenes/attack_Projectile.tscn" id="5_8jjvb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d03md"]
 resource_local_to_scene = true

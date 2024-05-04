@@ -36,6 +36,7 @@ centered = false
 offset = Vector2(-280, -120)
 script = ExtResource("1_mu2uf")
 RDResource = ExtResource("2_x2ovg")
+resourceCaptureSpeed = 0.4
 
 [node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
 visible = false

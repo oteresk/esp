@@ -93,7 +93,7 @@ public partial class ItemScript : Area2D
             if (itemType == ItemType.SpeedPotion)
                 ps.IncreaseSpeed(3);
             if (itemType == ItemType.AttackSpeedPotion)
-                ps.IncreaseAttackSpeed(.35f);
+                ps.SetAllAttackSpeed(.5f);
             if (itemType == ItemType.ShieldPotion)
                 ps.EnableShield();
 
@@ -113,7 +113,7 @@ public partial class ItemScript : Area2D
             }
             if (itemType == ItemType.AttackSpeedPotion)
             {
-                ps.ResetAttackSpeed();
+                ps.ResetAllAttackSpeed();
                 itemAttackSpeedExists = false;
             }
             if (itemType == ItemType.ShieldPotion)

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 public partial class enemy : RigidBody2D
 {
-	[Export] public int health {get; set; } = 1;
+	[Export] public float health {get; set; } = 1;
+    private float maxHealth;
     [Export] public float speed;
+    public float poisonSpeed = 1f;
     Vector2 velocity;
 	AnimatedSprite2D enemySprite;
 
@@ -24,6 +26,12 @@ public partial class enemy : RigidBody2D
     private player pl;
 	Vector2 playerPosition;
 
+    public bool isDead = false;
+
+    private Callable OnBodyEnteredCallable; // used to disconnect signal when enemy dies
+
+    public bool frozen = false;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
@@ -38,16 +46,21 @@ public partial class enemy : RigidBody2D
 
         enemySprite.FlipV = false;
 
+        OnBodyEnteredCallable = (Callable)this.GetNode("Area2D").Get("area_entered");// get signal callable
+
+        maxHealth = health;
+
     }
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _PhysicsProcess(double delta)
+
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _PhysicsProcess(double delta)
 	{
-		if (Globals.playerAlive)
+		if (Globals.playerAlive && !frozen)
 		{
             curTime += delta;
             Vector2 direction = GlobalTransform.Origin.DirectionTo(pl.GlobalPosition);
-			velocity = direction * speed;
+			velocity = direction * speed*poisonSpeed;
 
             if (direction.X<0) // if facing left
             {
@@ -65,15 +78,39 @@ public partial class enemy : RigidBody2D
         Normal, Poison
     }
 
-    public void take_damage() 
+    public void take_damage(float dmg) 
 	{
-		health -= 1;
-		if(health <= 0) 
+		health -= dmg;
+        DamageBlink();
+
+        if (health <= 0) 
 		{
 			EnemyDrop();
-            
 		}
 	}
+
+    private async void DamageBlink()
+    {
+        if (enemySprite != null && !isDead)
+        {
+            ShaderMaterial enemyMat = (ShaderMaterial)enemySprite.Material;
+            if (enemyMat!=null)
+                enemyMat.SetShaderParameter("active", true);
+            else
+                Debug.Print("*** enemy.NotificationEnterCanvas DamageBlink shader not found on AnimatedSprite2D ***");
+        }
+            
+        // wait a bit
+        await Task.Delay(TimeSpan.FromMilliseconds(100));
+        if (enemySprite != null && !isDead)
+        {
+            ShaderMaterial enemyMat = (ShaderMaterial)enemySprite.Material;
+            if (enemyMat != null)
+                enemyMat.SetShaderParameter("active", false);
+            else
+                Debug.Print("*** enemy.NotificationEnterCanvas DamageBlink shader not found on AnimateSprite2D ***");
+        }
+    }
 
     async void EnemyDrop()
 	{
@@ -85,20 +122,26 @@ public partial class enemy : RigidBody2D
         Area2D item = (Area2D)itemScene.Instantiate();
         ItemScript iScript = (ItemScript)item;
 		iScript.CreateItem();
+        if (!isDead)
+        {
+            item.Position = Position;
+            Node2D nodItems = (Node2D)GetNode(Globals.NodeItems);
+            nodItems.AddChild(item);
 
-        item.Position = Position;
-        Node2D nodItems = (Node2D)GetNode(Globals.NodeItems);
-        nodItems.AddChild(item);
+            // remove enemy
+            //Debug.Print("queuefree:" + Name);
+            isDead = true;
+            QueueFree();
+        }
 
-		// remove enemy
-		//Debug.Print("queuefree:" + Name);
-        QueueFree();
     }
 
-	public void OnBodyEntered(Node2D col) // hit player
+    public void OnBodyEntered(Node2D col) // hit player
 	{
+        //Debug.Print("Enemy col:" + col.Name);
         if (curTime > .9f) // only allow enemy to hit player every 0.9 seconds
         {
+            // enemy collide with player
             if (col.Name == "Player" && Globals.playerAlive)
             {
                 //Debug.Print("Hit: " + col.Name);
@@ -120,6 +163,36 @@ public partial class enemy : RigidBody2D
                 curTime = 0;
             }
         }
+        // enemy collide with attack slash
+        if (col.Name == "SlashArea2D" && Globals.playerAlive)
+        {
+            AttackSlash aSlash= (AttackSlash)GetNode(col.GetParent().GetPath());
+
+            take_damage(aSlash.GetDamage());
+
+            Node nodAtk = col.GetParent();
+            AttackSlash atk = (AttackSlash)nodAtk;
+            if (atk.element == "ice")
+            {
+                FreezeEnemy(atk.freezeTime);
+            }
+
+        }
+    }
+
+    public async void FreezeEnemy(float fTime)
+    {
+        frozen = true;
+        enemySprite.Modulate = new Color(0, 0, 1, 1);
+        enemySprite.Stop();
+        await Task.Delay(TimeSpan.FromMilliseconds(fTime*1000));
+        frozen = false;
+        if (IsInstanceValid(enemySprite)) // don't access disposed nodes
+        {
+            enemySprite.Modulate = new Color(1, 1, 1, 1);
+            enemySprite.Play();
+        }
+
     }
 
     public void LeaveTrail()
@@ -133,6 +206,5 @@ public partial class enemy : RigidBody2D
         Timer tmrTrail = (Timer)GetNode("Timer");
         tmrTrail.WaitTime = GD.RandRange(2.2f, 3.9f);
     }
-
 
 }

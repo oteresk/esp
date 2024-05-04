@@ -26,9 +26,9 @@ public partial class SlimeTrail : AnimatedSprite2D
 	{
         if (hitPlayer) 
         {
-            Vector2 pos = Globals.pl.GlobalPosition + new Vector2(0, -50);
-            GlobalPosition = GlobalPosition.MoveToward(pos, (float)speed);
-            speed += 3 * delta;
+            //Vector2 pos = Globals.pl.GlobalPosition + new Vector2(0, -50);
+            //GlobalPosition = GlobalPosition.MoveToward(pos, (float)speed);
+            //speed += 3 * delta;
 
             if (GlobalPosition.DistanceTo(Globals.pl.Position)<1)
             {
@@ -80,7 +80,7 @@ public partial class SlimeTrail : AnimatedSprite2D
 
     private void DeleteThis()
     {
-        if (!this.IsQueuedForDeletion())
+        if (IsInstanceValid(this))
             QueueFree();
     }
     async void FadeOut(float fadeTime)
@@ -89,7 +89,7 @@ public partial class SlimeTrail : AnimatedSprite2D
         Tween tween = GetTree().CreateTween();
         tween.TweenProperty(this, "modulate:a", 0f, fadeTime);
         await Task.Delay(TimeSpan.FromMilliseconds(fadeTime * 1000));
-        if (!this.IsQueuedForDeletion())
+        if (IsInstanceValid(this)) // don't access disposed nodes
             QueueFree();
     }
 

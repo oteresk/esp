@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://c7bq35upggnvr"]
+
+[ext_resource type="Texture2D" uid="uid://tp4w4iiwmcly" path="res://Art/Enemy-sprites/SlimeTrail.png" id="1_wj732"]
+[ext_resource type="Script" path="res://Scripts/SlimeTrail.cs" id="2_vbyoa"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pypvl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_wj732")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
+radius = 25.0124
+height = 52.0246
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D"]
+modulate = Color(0.054902, 1, 0.301961, 1)
+z_index = -1
+z_as_relative = false
+scale = Vector2(0.8, 0.8)
+sprite_frames = SubResource("SpriteFrames_pypvl")
+script = ExtResource("2_vbyoa")
+damage = 1
+
+[node name="Area2D" type="Area2D" parent="."]
+scale = Vector2(0.6, 0.6)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-2.77778, 0)
+rotation = -0.230347
+scale = Vector2(3.36207, 2.80419)
+shape = SubResource("CapsuleShape2D_j3bk0")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(-1.66667, -1.19209e-07)
+rotation = -0.342306
+scale = Vector2(0.972391, 0.675133)
+shape = SubResource("CapsuleShape2D_j3bk0")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="area_entered" from="Area2D" to="." method="OnBodyEntered"]
+[connection signal="timeout" from="Timer" to="." method="OnTimeOver"]
