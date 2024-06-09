@@ -39,7 +39,6 @@ RDResource = ExtResource("2_x2ovg")
 resourceCaptureSpeed = 0.4
 
 [node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 visible = false

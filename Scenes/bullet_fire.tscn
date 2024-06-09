@@ -1,17 +1,33 @@
-[gd_scene load_steps=5 format=3 uid="uid://piw3o0wfn2so"]
+[gd_scene load_steps=9 format=3 uid="uid://piw3o0wfn2so"]
 
 [ext_resource type="Script" path="res://Scripts/BulletScript.cs" id="1_7pchr"]
-[ext_resource type="Texture2D" uid="uid://u26upd3sqf5o" path="res://Art/Element_Fire.png" id="2_dkd5k"]
+[ext_resource type="Texture2D" uid="uid://dodjbu2a11hmn" path="res://Art/Attacks/Fire1.png" id="2_5147q"]
+[ext_resource type="Texture2D" uid="uid://cby7aecqyap3g" path="res://Art/Attacks/Fire2.png" id="3_lqyyt"]
+[ext_resource type="Texture2D" uid="uid://d3k0jwlj2svuf" path="res://Art/Attacks/Fire3.png" id="4_3lgdi"]
+[ext_resource type="Texture2D" uid="uid://b3kv6s1tgcedk" path="res://Art/Attacks/Fire4.png" id="5_y8n37"]
+[ext_resource type="Texture2D" uid="uid://ogcrman44hw" path="res://Art/Attacks/Fire5.png" id="6_bj57d"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7u7nq"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_dkd5k")
+"texture": ExtResource("2_5147q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_lqyyt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_3lgdi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_y8n37")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_bj57d")
 }],
 "loop": true,
 "name": &"default",
-"speed": 5.0
+"speed": 11.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fxxtb"]
@@ -24,10 +40,14 @@ collision_mask = 3
 script = ExtResource("1_7pchr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(18, -1.90735e-06)
+rotation = 1.5708
+scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_7u7nq")
+frame_progress = 0.842755
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(0.4, 0.4)
+scale = Vector2(0.5, 0.5)
 shape = SubResource("CircleShape2D_fxxtb")
 
 [connection signal="body_entered" from="." to="." method="_OnBodyEntered"]

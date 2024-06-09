@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://b8i7vebrht51m"]
+
+[ext_resource type="Texture2D" uid="uid://dodjbu2a11hmn" path="res://Art/Attacks/Fire1.png" id="2_0sc7s"]
+[ext_resource type="Texture2D" uid="uid://cby7aecqyap3g" path="res://Art/Attacks/Fire2.png" id="3_lyoy7"]
+[ext_resource type="Texture2D" uid="uid://d3k0jwlj2svuf" path="res://Art/Attacks/Fire3.png" id="4_3tek4"]
+[ext_resource type="Texture2D" uid="uid://b3kv6s1tgcedk" path="res://Art/Attacks/Fire4.png" id="5_p0owu"]
+[ext_resource type="Texture2D" uid="uid://ogcrman44hw" path="res://Art/Attacks/Fire5.png" id="6_wd6qk"]
+[ext_resource type="Script" path="res://Scripts/Flame.cs" id="6_yh45l"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_75l5q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_0sc7s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_lyoy7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_3tek4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_p0owu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_wd6qk")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Flame" type="AnimatedSprite2D"]
+modulate = Color(1, 1, 1, 0.729412)
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_75l5q")
+offset = Vector2(0, -80)
+script = ExtResource("6_yh45l")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="FlameOver"]

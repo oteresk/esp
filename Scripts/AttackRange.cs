@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 // Projectile Attack
 public partial class AttackRange : Area2D
 {
-    public enum BulletSource { Player, Tower }
+    public enum BulletSource { Player, Tower}
 
     [Export] public BulletSource bSource;
 
@@ -14,10 +14,10 @@ public partial class AttackRange : Area2D
     public float damage;
     public float AOE;
     private int dmgLevel = 1;
-    private float dmgBase = 1;
+    private float dmgBase = 1.5f;
     private int AOELevel = 1;
     private int attackSpeedLevel = 1;
-    private float dmgInc = 1.2f;
+    private float dmgInc = .5f;
     private float AOEInc = .05f;
     public float baseAOE = .1f;
     private float attackSpeedInc = .9f;
@@ -34,9 +34,12 @@ public partial class AttackRange : Area2D
     public float atkSpdRndOffset; // 0.0-.5
     public float baseAtkSpd = 1.2f; // can be different for each attack type (must be no less than 1)
 
+    public Node2D targetEnemy;
+
     public override void _Ready()
     {
-        bulletTimer = (Timer)GetNode("BulletTimer");
+        if (GetNodeOrNull("BulletTimer")!=null)
+            bulletTimer = (Timer)GetNode("BulletTimer");
         atkSpdRndOffset = (float)GD.RandRange(0.0, 0.5);
         UpdateAttributes();
         DelayAtkSpdStart();
@@ -56,13 +59,14 @@ public partial class AttackRange : Area2D
         finalAtkSpd = baseAtkSpd * Globals.itemAtkSpd - (Globals.permItemAtkSpd / 50f) - (attackSpeedLevel / 13f);
         if (finalAtkSpd < .01f)
             finalAtkSpd = .01f;
-        bulletTimer.WaitTime = finalAtkSpd;
+        if (bulletTimer != null)
+            bulletTimer.WaitTime = finalAtkSpd;
     }
 
     public void SetAOE()
     {
         AOE = baseAOE + AOELevel * AOEInc;
-        Debug.Print("AOR: " + AOE);
+        //Debug.Print("AOE: " + AOE);
         //Scale = new Vector2(AOE, AOE);
     }
 
@@ -79,10 +83,8 @@ public partial class AttackRange : Area2D
 
     public override void _PhysicsProcess(double delta)
     {
-        var enemiesInRange = GetOverlappingBodies();
-        if (enemiesInRange.Count > 0)
+        if (targetEnemy!=null && (IsInstanceValid(targetEnemy)))
         {
-            var targetEnemy = (Node2D)enemiesInRange[0];
             LookAt(targetEnemy.GlobalPosition);
         }
     }
@@ -100,32 +102,39 @@ public partial class AttackRange : Area2D
         var bullets = GetNode("/root/World/Bullets");
         bullets.AddChild(newBullet);
 
+
         BulletScript bScript = (BulletScript)newBullet;
         bScript.bType = BulletScript.BulletType.Homing;
         bScript.element = element;
         bScript.poisonTime = poisonTime;
 
-        switch (bSource)
+        var enemiesInRange = GetOverlappingBodies();
+        if (enemiesInRange.Count > 0)
         {
-            case BulletSource.Player:
-                //newBullet.GetNode<AnimatedSprite2D>("AnimatedSprite2D").Scale = new Vector2(0.3f, 0.3f);
-                //newBullet.Modulate = new Color(0.2f, 0.2f, 1, 1);
-                bScript.damage = GetDamage();
-                bScript.range = 1200;
+            targetEnemy = (Node2D)enemiesInRange[0];
 
-                //Debug.Print("dam: " + GetDamage());
-                // play player attack anim
-                ps = (player)Globals.pl;
-                ps.PlayAttackAnim();
-                break;
-            case BulletSource.Tower:
-                bScript.damage = 2;
-                bScript.range = 1000;
-                newBullet.GetNode<AnimatedSprite2D>("AnimatedSprite2D").Scale = new Vector2(3, 3);
-                newBullet.Modulate = new Color(1, 0.3f, 0.8f, 1);
-                newBullet.Name = "Tower bullet";
-                dmgBase = 1f; // TODO: make this increase when you upgrade tower
-                break;
+            switch (bSource)
+            {
+                case BulletSource.Player:
+                    //newBullet.GetNode<AnimatedSprite2D>("AnimatedSprite2D").Scale = new Vector2(0.3f, 0.3f);
+                    //newBullet.Modulate = new Color(0.2f, 0.2f, 1, 1);
+                    bScript.damage = GetDamage();
+                    bScript.range = 1200;
+
+                    //Debug.Print("dam: " + GetDamage());
+                    // play player attack anim
+                    ps = (player)Globals.pl;
+                    ps.PlayAttackAnim();
+                    break;
+                case BulletSource.Tower:
+                    bScript.damage = 2;
+                    bScript.range = 1000;
+                    newBullet.GetNode<AnimatedSprite2D>("AnimatedSprite2D").Scale = new Vector2(3, 3);
+                    newBullet.Modulate = new Color(1, 0.3f, 0.8f, 1);
+                    newBullet.Name = "Tower bullet";
+                    dmgBase = 1f; // TODO: make this increase when you upgrade tower
+                    break;
+            }
         }
     }
 

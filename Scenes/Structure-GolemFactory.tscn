@@ -1,0 +1,257 @@
+[gd_scene load_steps=26 format=3 uid="uid://wm58i7j3apso"]
+
+[ext_resource type="Shader" path="res://Shaders/SaturationShader.gdshader" id="1_dkrt5"]
+[ext_resource type="Texture2D" uid="uid://86w0m0ro3rxa" path="res://Art/Resources/GolemFactory.png" id="2_1moex"]
+[ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="3_ge0ho"]
+[ext_resource type="Texture2D" uid="uid://defdkddg6pkrb" path="res://Art/SmokeParticles.png" id="4_qf6ga"]
+[ext_resource type="Script" path="res://Scripts/GolemFactoryProgress.cs" id="5_dys1s"]
+[ext_resource type="Texture2D" uid="uid://bapmlgyxxuv6l" path="res://Art/GUI/Switch2.png" id="5_xn2gh"]
+[ext_resource type="Texture2D" uid="uid://cdh06nupdjnwp" path="res://Art/GUI/Switch1.png" id="6_psncj"]
+[ext_resource type="AudioStream" uid="uid://c0btcjshuxwyw" path="res://Audio/SFX/TurnFactoryOn.ogg" id="7_8484m"]
+[ext_resource type="AudioStream" uid="uid://ctcier3ltcvxg" path="res://Audio/SFX/TurnFactoryOff.ogg" id="8_c2dfk"]
+[ext_resource type="AudioStream" uid="uid://bv24uj2etgv2h" path="res://Audio/SFX/Disabled.mp3" id="10_xxmr8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d03md"]
+resource_local_to_scene = true
+shader = ExtResource("1_dkrt5")
+shader_parameter/saturation = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_s0u15"]
+radius = 329.156
+
+[sub_resource type="Gradient" id="Gradient_myxqj"]
+offsets = PackedFloat32Array(0, 0.703226, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.451613, 0.451613, 0.451613, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yon0d"]
+gradient = SubResource("Gradient_myxqj")
+width = 270
+height = 150
+fill = 1
+fill_from = Vector2(0.504587, 0.509174)
+fill_to = Vector2(0.857798, 0.155963)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c286w"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ek7si"]
+particles_animation = true
+particles_anim_h_frames = 2
+particles_anim_v_frames = 3
+particles_anim_loop = true
+
+[sub_resource type="Gradient" id="Gradient_sv0r5"]
+offsets = PackedFloat32Array(0, 0.645455, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.868182, 0.868182, 0.868182, 0.868182, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gwq8g"]
+gradient = SubResource("Gradient_sv0r5")
+
+[sub_resource type="Curve" id="Curve_lbw64"]
+_data = [Vector2(0, 0.178947), 0.0, 0.0, 0, 0, Vector2(1, 0.757895), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ssmh1"]
+curve = SubResource("Curve_lbw64")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rsoxb"]
+lifetime_randomness = 0.31
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+particle_flag_disable_z = true
+direction = Vector3(-1, -1, 0)
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 20.01
+initial_velocity_max = 20.01
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+damping_min = 15.0
+damping_max = 15.0
+scale_min = 2.0
+scale_max = 22.0
+scale_curve = SubResource("CurveTexture_ssmh1")
+color_ramp = SubResource("GradientTexture1D_gwq8g")
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+anim_offset_min = 0.4964
+anim_offset_max = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cytaw"]
+bg_color = Color(0, 0, 0.439216, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_883pf"]
+bg_color = Color(0.150753, 0.385058, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4hxhq"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eip8i"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="Golem Factory" type="Sprite2D" node_paths=PackedStringArray("sndTurnOn", "sndTurnOff", "sndDisabled", "smoke", "progressBar", "light1", "light2", "light3")]
+y_sort_enabled = true
+material = SubResource("ShaderMaterial_d03md")
+position = Vector2(2, -236)
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("2_1moex")
+offset = Vector2(0, -20)
+script = ExtResource("3_ge0ho")
+sndTurnOn = NodePath("Switch/sndTurnOn")
+sndTurnOff = NodePath("Switch/sndTurnOff")
+sndDisabled = NodePath("Switch/sndDisabled")
+smoke = NodePath("Smoke")
+progressBar = NodePath("Progress")
+light1 = NodePath("Light1")
+light2 = NodePath("Light2")
+light3 = NodePath("Light3")
+
+[node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
+scale = Vector2(0.520001, 0.28)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-12.8205, 706.349)
+shape = SubResource("CircleShape2D_s0u15")
+
+[node name="Light1" type="PointLight2D" parent="."]
+position = Vector2(-31, 159)
+scale = Vector2(1.4, 2)
+color = Color(0.580392, 0.0823529, 0, 1)
+energy = 1.89
+range_layer_min = -200
+texture = SubResource("GradientTexture2D_yon0d")
+height = 333.0
+
+[node name="Light2" type="PointLight2D" parent="."]
+position = Vector2(16, -140)
+scale = Vector2(0.4, 0.4)
+color = Color(0.580392, 0.0823529, 0, 1)
+energy = 1.89
+range_layer_min = -200
+texture = SubResource("GradientTexture2D_yon0d")
+height = 333.0
+
+[node name="Light3" type="PointLight2D" parent="."]
+position = Vector2(-96, -99)
+scale = Vector2(0.2, 0.4)
+color = Color(0.580392, 0.0823529, 0, 1)
+energy = 1.89
+range_layer_min = -200
+texture = SubResource("GradientTexture2D_yon0d")
+height = 333.0
+
+[node name="Occlusion Area Collider" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
+visible = false
+scale = Vector2(140, 90)
+shape = SubResource("RectangleShape2D_c286w")
+
+[node name="Smoke" type="GPUParticles2D" parent="."]
+modulate = Color(1, 1, 1, 0.501961)
+material = SubResource("CanvasItemMaterial_ek7si")
+position = Vector2(-35.5555, -256.667)
+scale = Vector2(1, 4)
+amount = 22
+process_material = SubResource("ParticleProcessMaterial_rsoxb")
+texture = ExtResource("4_qf6ga")
+lifetime = 39.3
+preprocess = 136.17
+speed_scale = 2.81
+randomness = 0.63
+fixed_fps = 8
+
+[node name="Progress" type="ProgressBar" parent="." node_paths=PackedStringArray("tmrProgress", "curProgBar")]
+modulate = Color(1, 1, 1, 0.521569)
+z_index = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -550.0
+offset_top = 265.556
+offset_right = -450.0
+offset_bottom = 271.556
+grow_horizontal = 2
+scale = Vector2(4, 4)
+theme_override_styles/background = SubResource("StyleBoxFlat_cytaw")
+theme_override_styles/fill = SubResource("StyleBoxFlat_883pf")
+max_value = 1.0
+value = 0.8
+show_percentage = false
+script = ExtResource("5_dys1s")
+tmrProgress = NodePath("ProgressBar/Timer")
+curProgBar = NodePath("ProgressBar")
+
+[node name="ProgressBar" type="ProgressBar" parent="Progress"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 0.33
+offset_bottom = 17.33
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 0.26)
+theme_override_styles/background = SubResource("StyleBoxFlat_4hxhq")
+theme_override_styles/fill = SubResource("StyleBoxFlat_eip8i")
+max_value = 1.0
+value = 0.5
+show_percentage = false
+
+[node name="Timer" type="Timer" parent="Progress/ProgressBar"]
+wait_time = 5.0
+autostart = true
+
+[node name="Switch" type="CanvasGroup" parent="."]
+position = Vector2(-240, 114.444)
+scale = Vector2(0.4, 0.4)
+
+[node name="Control" type="Control" parent="Switch"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureButton" type="TextureButton" parent="Switch/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -186.0
+offset_top = -199.0
+offset_right = 104.0
+offset_bottom = 161.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(185, 200)
+focus_mode = 0
+toggle_mode = true
+button_pressed = true
+texture_normal = ExtResource("5_xn2gh")
+texture_pressed = ExtResource("6_psncj")
+texture_disabled = ExtResource("5_xn2gh")
+metadata/_edit_use_anchors_ = true
+
+[node name="sndTurnOn" type="AudioStreamPlayer2D" parent="Switch"]
+stream = ExtResource("7_8484m")
+autoplay = true
+panning_strength = 3.0
+bus = &"SFX"
+
+[node name="sndTurnOff" type="AudioStreamPlayer2D" parent="Switch"]
+stream = ExtResource("8_c2dfk")
+panning_strength = 3.0
+bus = &"SFX"
+
+[node name="sndDisabled" type="AudioStreamPlayer2D" parent="Switch"]
+stream = ExtResource("10_xxmr8")
+bus = &"SFX"
+
+[connection signal="texture_changed" from="." to="." method="ToggleSwitch"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
+[connection signal="area_entered" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_entered"]
+[connection signal="area_exited" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_exited"]
+[connection signal="timeout" from="Progress/ProgressBar/Timer" to="Progress" method="OnTimeOver"]
+[connection signal="toggled" from="Switch/Control/TextureButton" to="." method="ToggleSwitch"]

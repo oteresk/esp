@@ -88,7 +88,8 @@ public partial class Upgrade : CanvasLayer
         tween.Parallel().TweenProperty(btnUpgrade, "modulate:a", 0f, animTime);
 
         await Task.Delay(TimeSpan.FromMilliseconds(animTime * 1000));
-        this.QueueFree();
+        if (IsInstanceValid(this)) // don't access disposed nodes
+            this.QueueFree();
     }
     private async void ShrinkSelected()
     {
@@ -109,14 +110,14 @@ public partial class Upgrade : CanvasLayer
         curUpgrade = this;
         Tween tween = GetTree().CreateTween();
         tween.SetPauseMode(Tween.TweenPauseMode.Process);
-        tween.TweenProperty(ctlUpgrade, "scale", new Vector2(1.1f, 1.1f), .2f);
+        tween.TweenProperty(ctlUpgrade, "scale", new Vector2(1.1f, 1.1f), .4f).SetEase(Tween.EaseType.InOut).SetTrans(Tween.TransitionType.Circ);
     }
     public void OnMouseExited()
     {
         //Debug.Print("Exited");
         Tween tween = GetTree().CreateTween();
         tween.SetPauseMode(Tween.TweenPauseMode.Process);
-        tween.TweenProperty(ctlUpgrade, "scale", new Vector2(1, 1), .2f);
+        tween.TweenProperty(ctlUpgrade, "scale", new Vector2(1, 1), .4f).SetEase(Tween.EaseType.InOut).SetTrans(Tween.TransitionType.Circ);
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -156,7 +157,7 @@ public partial class Upgrade : CanvasLayer
         r = GD.RandRange(1, 100);
         switch (r)
         {
-            case < 86:
+            case < 82:
                 rarity = RARITYTYPE.Common;
                 rarityMult = 1;
                 break;

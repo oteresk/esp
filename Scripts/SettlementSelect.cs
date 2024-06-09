@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 public partial class SettlementSelect : CanvasGroup
 {
-	private bool btn0;
-	private bool btn1;
-	private bool btn2;
+    private bool btn0;
+    private bool btn1;
+    private bool btn2;
     [Export] public TextureRect btnNode0;
     [Export] public TextureRect btnNode1;
     [Export] public TextureRect btnNode2;
@@ -36,7 +36,7 @@ public partial class SettlementSelect : CanvasGroup
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
-	{
+    {
         btnNode3.Visible = false;
         UpdateCurStruct();
 
@@ -44,20 +44,20 @@ public partial class SettlementSelect : CanvasGroup
         UpdateCost();
     }
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(double delta)
+    {
         buildDelay += delta;
     }
 
     public void _on_btn_0_mouse_entered()
-	{
+    {
         if (buttonsEnabled)
         {
             Debug.Print("btn0 entered");
             btn0 = true;
         }
-	}
+    }
     public void _on_btn_0_mouse_exited()
     {
         if (buttonsEnabled)
@@ -213,45 +213,69 @@ public partial class SettlementSelect : CanvasGroup
     {
         Debug.Print("Createstruct: " + strucNum);
         // build structure
-        Vector2 strPos = plat.Position;
-        ResourceDiscovery platformRD = (ResourceDiscovery)plat;
-        int sX = platformRD.gridXPos;
-        int sY = platformRD.gridYPos+2;
+        if (IsInstanceValid(this))
+        {
+            Vector2 strPos = plat.Position;
+            ResourceDiscovery platformRD = (ResourceDiscovery)plat;
+            int sX = platformRD.gridXPos;
+            int sY = platformRD.gridYPos + 2;
 
-        // load structure scene
-        Node2D structure;
-        structure = (Node2D)scnStruct[strucNum].Instantiate();
+            // load structure scene
+            Node2D structure;
+            structure = (Node2D)scnStruct[strucNum].Instantiate();
 
-        Node2D nodRD = (Node2D)GetNode(Globals.NodeStructures);
-        nodRD.AddChild(structure);
+            Node2D nodRD = (Node2D)GetNode(Globals.NodeStructures);
+            nodRD.AddChild(structure);
 
-        structure.Position = new Vector2(sX * ResourceDiscoveries.pixelSizeX, sY * ResourceDiscoveries.pixelSizeY-700);
+            structure.Position = new Vector2(sX * ResourceDiscoveries.pixelSizeX, sY * ResourceDiscoveries.pixelSizeY - 700);
 
-        ResourceDiscovery rdp = (ResourceDiscovery)GetNode(structure.GetPath()); // get resourceDiscovery of structure
-        rdp.gridXPos = sX;
-        rdp.gridYPos = sY;
-        structure.Name = scnStruct[strucNum].ResourceName + " " + sX.ToString() + " " + sY.ToString();
-        rdp.discovered = true;
+            ResourceDiscovery rdp = (ResourceDiscovery)GetNode(structure.GetPath()); // get resourceDiscovery of structure
+            rdp.gridXPos = sX;
+            rdp.gridYPos = sY;
+            structure.Name = scnStruct[strucNum].ResourceName + " " + sX.ToString() + " " + sY.ToString();
+            rdp.discovered = true;
 
-        structure.Visible = true;
+            structure.Visible = true;
 
-        Globals.worldArray[sX, sY] = strucNum + 5;
+            Globals.worldArray[sX, sY] = strucNum + 5;
 
-        // hide structure select canvas
-        CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
-        nodStruct.Visible = false;
+            // hide structure select canvas
 
-        // destroy platform ********call last
-        //Debug.Print("Remove child: " + Globals.NodeResourceDiscoveries+"/"+plat.Name);
-        Node rdNode = (Node)GetNode(Globals.NodeResourceDiscoveries);
-        //rdNode.RemoveChild(plat);
+            CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
+            nodStruct.Visible = false;
+            // disable buttons
+            btnNode0.MouseFilter = Control.MouseFilterEnum.Ignore;
+            btnNode1.MouseFilter = Control.MouseFilterEnum.Ignore;
+            btnNode2.MouseFilter = Control.MouseFilterEnum.Ignore;
+            btnNode3.MouseFilter = Control.MouseFilterEnum.Ignore;
+            btn0 = false;
+            btn1 = false;
+            btn2 = false;
 
-        plat.QueueFree();
+            // destroy platform ********call last
+            //Debug.Print("Remove child: " + Globals.NodeResourceDiscoveries+"/"+plat.Name);
+            Node rdNode = (Node)GetNode(Globals.NodeResourceDiscoveries);
+            rdNode.RemoveChild(plat);
 
-        // refresh Minimap
-        Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
-        miniMap.Call("DisplayMap");
+            if (IsInstanceValid(this))
+                plat.QueueFree();
+
+            // refresh Minimap
+            Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+            miniMap.Call("DisplayMap");
+
+            AdjustStats(strucNum);
+        }
     }
+
+    private void AdjustStats(int strucNum) // adjust player stats for structures that increase stats
+    {
+        if (strucNum==6) // Training Center - inc player speed
+        {
+            Globals.ps.speedLevel++;
+        }
+    }
+
 
     private void ResetButtonsLeft()
     {
@@ -334,6 +358,27 @@ public partial class SettlementSelect : CanvasGroup
         PopulateTextures();
         UpdateCurStruct();
         UpdateCost();
+
+        if (btnNode1.Visible)
+        {
+            // enable buttons
+            btnNode0.MouseFilter = Control.MouseFilterEnum.Stop;
+            btnNode1.MouseFilter = Control.MouseFilterEnum.Stop;
+            btnNode2.MouseFilter = Control.MouseFilterEnum.Stop;
+            btnNode3.MouseFilter = Control.MouseFilterEnum.Stop;
+        }
+        else
+        {
+            // disable buttons
+            btnNode0.MouseFilter = Control.MouseFilterEnum.Ignore;
+            btnNode1.MouseFilter = Control.MouseFilterEnum.Ignore;
+            btnNode2.MouseFilter = Control.MouseFilterEnum.Ignore;
+            btnNode3.MouseFilter = Control.MouseFilterEnum.Ignore;
+            btn0 = false;
+            btn1 = false;
+            btn2 = false;
+        }
+
     }
 
 }

@@ -9,26 +9,52 @@ using System.Threading.Tasks;
 public partial class ResourceDiscovery : Sprite2D
 {
 	[Export] public ResourceDiscoveryResource RDResource;
-	public bool nearResource = false;
+	[Export] public AudioStreamPlayer2D sndTurnOn;
+	[Export] public AudioStreamPlayer2D sndTurnOff;
+    [Export] public AudioStreamPlayer2D sndDisabled;
+    public bool nearResource = false;
 	private ShaderMaterial mat;
 	private Node2D capTimer;
 	private CaptureTimer captureTimer;
 	[Export] public float resourceCaptureSpeed=.2f;
 
-    [Export] public bool captured = false;
-    [Export] public bool discovered = false;
-    PackedScene scnStructureSelectGUI;
+	[Export] public bool captured = false;
+	[Export] public bool discovered = false;
+	PackedScene scnStructureSelectGUI;
 	[Export] public CanvasLayer structureSelect;
 	//public bool structureIsBuilt = false;   No longer needed because platform gets deleted when structure is built
 	public int gridXPos;
 	public int gridYPos;
+	[Export] public GpuParticles2D smoke;
+	public bool factoryisOn = true;
+	[Export] public ProgressBar progressBar;
+	[Export] public Light2D light1;
+	[Export] public Light2D light2;
+	[Export] public Light2D light3;
+	private bool factoryPaused = false;
+	public bool switchEnabled = true;
+
 
     public override void _Ready()
 	{
+		if (Name== "Golem Factory")
+		{
+			if (progressBar != null)
+				progressBar.Value = 0;
+
+			if (!factoryisOn)
+			{
+				smoke.Visible = false;
+				light1.Visible = false;
+				light2.Visible = false;
+				light3.Visible = false;
+			}
+		}
+		
 		if (RDResource != null)
 		{
-            Texture2D tx = (Texture2D)RDResource.sprImage;
-            this.Texture = tx;
+			Texture2D tx = (Texture2D)RDResource.sprImage;
+			this.Texture = tx;
 
 			mat = (ShaderMaterial)this.Material;
 			nearResource = false;
@@ -53,7 +79,7 @@ public partial class ResourceDiscovery : Sprite2D
 		}
 		if (Globals.useOcclusion)
 			Visible = false;
-    }
+	}
 
 	public void MakeSaturated()
 	{
@@ -85,10 +111,10 @@ public partial class ResourceDiscovery : Sprite2D
 								Debug.Print("Add RD: " + RDResource.resourceType);
 								ResourceDiscoveries.AddRD(RDResource.resourceType.ToString(), 1);
 								// update minimap
-                                Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
-                                miniMap.Call("DisplayMap");
+								Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+								miniMap.Call("DisplayMap");
 
-                            }
+							}
 							else
 							{ // wood or platform
 								if (RDResource.resourceType.ToString()=="Wood") // if tree
@@ -97,10 +123,10 @@ public partial class ResourceDiscovery : Sprite2D
 									capTimer.Visible = false;
 									captured = true;
 									StartCoroutine(MakeTreeFall());
-                                    // update minimap
-                                    Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
-                                    miniMap.Call("DisplayMap");
-                                }
+									// update minimap
+									Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+									miniMap.Call("DisplayMap");
+								}
 							}
 						}
 					}
@@ -113,7 +139,7 @@ public partial class ResourceDiscovery : Sprite2D
 					}
 				}
 
-            }
+			}
 		}
 	}
 
@@ -134,11 +160,11 @@ public partial class ResourceDiscovery : Sprite2D
 			}
 		}
 		// not near resource
-        if (area.IsInGroup("Players") && captured == false && nearResource == true)
-        {
-            nearResource = false;
-        }
-    }
+		if (area.IsInGroup("Players") && captured == false && nearResource == true)
+		{
+			nearResource = false;
+		}
+	}
 
 	public void _on_area_2d_area_entered(Area2D area)
 	{
@@ -156,65 +182,141 @@ public partial class ResourceDiscovery : Sprite2D
 				// let Structure Select know which platform you are on
 				SettlementSelect.platform = this;
 
-            }
+			}
 		}
 		// player near resource
-        if (area.IsInGroup("Players") && captured == false && nearResource == false)
-        {
-            nearResource = true;
+		if (area.IsInGroup("Players") && captured == false && nearResource == false)
+		{
+			nearResource = true;
 			// set capture speed
 			if (captureTimer!=null)
 				captureTimer.captureSpeed = resourceCaptureSpeed;
-        }
+		}
 
-    }
+	}
 
-    IEnumerable MakeTreeFall()
-    {
+	IEnumerable MakeTreeFall()
+	{
 		for (int iter = 1; iter <= 90; iter++)
 		{
 			RotationDegrees = RotationDegrees + 1;
 			yield return null;
 		}
-    }
+	}
 
-    public static async void StartCoroutine(IEnumerable objects)
-    {
-        var mainLoopTree = Engine.GetMainLoop();
-        foreach (var _ in objects)
-        {
-            await mainLoopTree.ToSignal(mainLoopTree, SceneTree.SignalName.ProcessFrame);
-        }
-    }
+	public static async void StartCoroutine(IEnumerable objects)
+	{
+		var mainLoopTree = Engine.GetMainLoop();
+		foreach (var _ in objects)
+		{
+			await mainLoopTree.ToSignal(mainLoopTree, SceneTree.SignalName.ProcessFrame);
+		}
+	}
 
-    public void _on_occlusion_area_collider_area_entered(Area2D area)
-    {
+	public void _on_occlusion_area_collider_area_entered(Area2D area)
+	{
 		if (area.IsInGroup("Players") && Globals.useOcclusion)
 		{
 			Visible = true;
-            //Debug.Print("occlusion: enter:" + RDResource.ToString());
-            
-        }
-    }
+			//Debug.Print("occlusion: enter:" + RDResource.ToString());
+			
+		}
+	}
 
-    public void _on_occlusion_area_collider_area_exited(Area2D area)
-    {
+	public void _on_occlusion_area_collider_area_exited(Area2D area)
+	{
 		if (area.IsInGroup("Players") && Globals.useOcclusion)
-        {
+		{
 			Visible = false;
 			//Debug.Print("occlusion: exit" + RDResource.ToString());
 		}
-    }
+	}
 
 	public void OnDiscoveryColliderEnter(Area2D area)
 	{
-        if (area.IsInGroup("Players") && discovered == false)
-        {
-            discovered = true;
-            // update minimap
-            Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
-            miniMap.Call("DisplayMap");
+		if (area.IsInGroup("Players") && discovered == false)
+		{
+			discovered = true;
+			// update minimap
+			Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+			miniMap.Call("DisplayMap");
+		}
+	}
+
+	public void ToggleSwitch(bool button_pressed)
+	{
+		if (switchEnabled)
+		{
+            if (button_pressed)
+            {
+                //smoke.Emitting = true;
+                light1.Visible = true;
+                light2.Visible = true;
+                light3.Visible = true;
+                factoryisOn = true;
+                sndTurnOn.Play();
+            }
+            else
+            {
+                //smoke.Emitting = false;
+                light1.Visible = false;
+                light2.Visible = false;
+                light3.Visible = false;
+                factoryisOn = false;
+                sndTurnOff.Play();
+            }
         }
+		else
+		{
+			sndDisabled.Play();
+		}
+	}
+
+	// shut off smoke and flash lights when you don't have any mana to operate factory
+	public void PauseFactory()
+	{
+		factoryPaused = true;
+        smoke.Emitting = false;
+		FlashLight();
+    }
+
+    public void CompleteFactory()
+    {
+        factoryPaused = false;
+        smoke.Emitting = false;
+        light1.Visible = false;
+        light2.Visible = false;
+        light3.Visible = false;
+    }
+
+    private async void FlashLight()
+	{
+        await Task.Delay(TimeSpan.FromMilliseconds(2 * 1000));
+		if (factoryPaused && factoryisOn)
+		{
+            light1.Visible = false;
+            light2.Visible = false;
+            light3.Visible = false;
+        }
+        await Task.Delay(TimeSpan.FromMilliseconds(2 * 1000));
+		if (factoryisOn)
+		{
+            light1.Visible = true;
+            light2.Visible = true;
+            light3.Visible = true;
+            if (factoryPaused)
+                FlashLight();
+        }
+
+    }
+
+    public void StartFactory()
+    {
+		factoryPaused = false;
+        smoke.Emitting = true;
+        light1.Visible = true;
+        light2.Visible = true;
+        light3.Visible = true;
     }
 
 }

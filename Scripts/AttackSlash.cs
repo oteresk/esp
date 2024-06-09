@@ -10,8 +10,8 @@ public partial class AttackSlash : Area2D
     public float damage;
     public float AOE;
     private int dmgLevel = 1;
-    private float dmgBase = 1;
-    private float dmgInc = .9f;
+    private float dmgBase = 1.5f;
+    private float dmgInc = .5f;
     private int AOELevel = 1; // (1-12)
     private int attackSpeedLevel = 1; // max 12
     private float healingModifier = .2f; // the percentage of damage done by leeches that goes towards healing 

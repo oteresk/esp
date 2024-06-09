@@ -26,6 +26,9 @@ public partial class MiniMap : Node2D
     private Vector2 lastPos;
     private bool isVisible = false;
 
+    private PackedScene golemIcon;
+    private Node2D golemMapIcon;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
@@ -35,7 +38,22 @@ public partial class MiniMap : Node2D
 
         CalculateZoom();
         DisplayMap();
+
+
+        DelayedStart();
     }
+
+    private async void DelayedStart()
+    {
+        await Task.Delay(TimeSpan.FromMilliseconds(200));
+
+        golemIcon = icon[13];
+        golemMapIcon = (Node2D)golemIcon.Instantiate();
+        GetNode(Globals.NodeMiniMapContainer).AddChild((Node2D)golemMapIcon);
+        golemMapIcon.Scale = new Vector2(iconScale, iconScale);
+        DisplayGolem();
+    }
+
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
@@ -62,7 +80,7 @@ public partial class MiniMap : Node2D
 
     public void DisplayMap()
     {
-//        Debug.Print("************ Display Map **********");
+        //Debug.Print("************ Display Map **********");
 
         // delete child nodes if they exist
         Node rdNode = GetNode(Globals.NodeMiniMapContainer);
@@ -70,12 +88,14 @@ public partial class MiniMap : Node2D
         {
             for (int iter= rdNode.GetChildCount()-1; iter>=0; iter--)
             {
-                rdNode.GetChild(iter).QueueFree();
+                if (rdNode.GetChild(iter).Name!= "Golem")
+                    rdNode.GetChild(iter).QueueFree();
             }
         }
 
         DisplayResourceDiscoveries();
         DisplayStructures();
+        DisplayGolem();
     }
 
     private void DisplayResourceDiscoveries()
@@ -117,6 +137,7 @@ public partial class MiniMap : Node2D
 
                         mapIcon = (Node2D)pS.Instantiate();
                         GetNode(Globals.NodeMiniMapContainer).AddChild((Node2D)mapIcon);
+
                         mapIcon.Scale = new Vector2(iconScale, iconScale);
                         mapIcon.Position = new Vector2(rdp.gridXPos * posRatioX, rdp.gridYPos * posRatioY + (Globals.headerOffset / 2));
                         mapIcon.Name = myType + " " + rdp.gridXPos + ", " + rdp.gridYPos;
@@ -171,6 +192,30 @@ public partial class MiniMap : Node2D
             }
         }
     }
+
+    async void DisplayGolem()
+    {
+        await Task.Delay(TimeSpan.FromMilliseconds(200));
+
+        if (Globals.golem!=null)
+        {
+           
+            int pixelSizeX = 192 * 3;
+            int pixelSizeY = 108 * 3;
+
+            float golemGridXPos = Globals.golem.Position.X/ pixelSizeX * posRatioX + 1600;
+            float golemGridYPos = Globals.golem.Position.Y/ pixelSizeY * posRatioY + 931;
+
+            if (golemMapIcon!=null)
+            {
+                golemMapIcon.Position = new Vector2(golemGridXPos, golemGridYPos);
+                golemMapIcon.Name = "Golem";
+            }
+
+        }
+        DisplayGolem();
+    }
+
 
     public void ShowMiniMap()
     {

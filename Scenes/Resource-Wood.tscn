@@ -15,8 +15,8 @@ shader_parameter/saturation = 1.0
 script = ExtResource("2_l2fjf")
 sprImage = ExtResource("3_hgklo")
 resourceType = 3
-amount = 6.0
-amountMax = 10.0
+amount = 2.0
+amountMax = 4.0
 freq = 0.0
 recoverType = 0
 spriteScale = 0.0
@@ -50,7 +50,6 @@ RDResource = SubResource("Resource_2r7ac")
 resourceCaptureSpeed = 0.8
 
 [node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 visible = false
@@ -71,7 +70,7 @@ texture = SubResource("GradientTexture2D_ajq7n")
 [node name="Occlusion Area Collider" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
-scale = Vector2(140, 90)
+scale = Vector2(140, 140)
 shape = SubResource("RectangleShape2D_llrr6")
 
 [node name="Discovery Area Collider" type="Area2D" parent="."]

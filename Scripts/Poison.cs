@@ -12,10 +12,13 @@ public partial class Poison : AnimatedSprite2D
     public PoisonTarget pTarget;
     public Node2D enemy;
     public Vector2 enemyScale;
+    public bool slowDown = true;
+    public Vector2 scaleMod;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
+        scaleMod = new Vector2(1, 1);
         DelayedStart();
     }
 
@@ -27,9 +30,13 @@ public partial class Poison : AnimatedSprite2D
             if (IsInstanceValid(this))
             {
                 Position = new Vector2(0, 0);
+                Scale = Scale * scaleMod;
                 // slow down enemy when poisoned
-                enemy enScript = (enemy)enemy;
-                enScript.poisonSpeed = .5f;
+                if (slowDown)
+                {
+                    enemy enScript = (enemy)enemy;
+                    enScript.poisonSpeed = .5f;
+                }
             }
         }
     }
@@ -58,9 +65,12 @@ public partial class Poison : AnimatedSprite2D
                 Globals.PoisonEnded();
             else
             {
-                // return enemy speed to normal when poison is over
-                enemy enScript = (enemy)enemy;
-                enScript.poisonSpeed = 1f;
+                if (slowDown)
+                {
+                    // return enemy speed to normal when poison is over
+                    enemy enScript = (enemy)enemy;
+                    enScript.poisonSpeed = 1f;
+                }
             }
 
 

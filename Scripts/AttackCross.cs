@@ -10,16 +10,17 @@ public partial class AttackCross : Area2D
     public float damage;
     public float AOE;
     private int dmgLevel = 1;
-    private float dmgBase = 1;
+    private float dmgBase = 1.5f;
     private int AOELevel = 1;
     private int attackSpeedLevel = 1;
-    private float dmgInc = 1.2f;
+    private float dmgInc = .5f;
     private float AOEInc = 1.2f;
     public float baseAOE = .1f;
     private float attackSpeedInc = .9f;
     private float healingModifier = .2f; // the percentage of damage done by leeches that goes towards healing 
     public float freezeTime = 3.0f;
     public int poisonTime = 3;
+    public int flameTime = 3;
 
     private PackedScene bulletScene;
     private string element; // attack element (energy, fire, etc)
@@ -111,6 +112,7 @@ public partial class AttackCross : Area2D
             bScript.range = 450;
             bScript.freezeTime = freezeTime;
             bScript.element = element;
+            bScript.flameTime = flameTime;
 
             a2D.GlobalPosition = GetNode<Node2D>("ShootingPoint").GlobalPosition;
             //a2D.GlobalRotation = GetNode<Node2D>("ShootingPoint").GlobalRotation;

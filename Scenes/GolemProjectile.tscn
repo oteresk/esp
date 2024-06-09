@@ -1,0 +1,108 @@
+[gd_scene load_steps=15 format=3 uid="uid://b1lw0cqdf1uqy"]
+
+[ext_resource type="Script" path="res://Scripts/GolemProjectile.cs" id="1_0ho76"]
+[ext_resource type="Texture2D" uid="uid://d216t3ta1jfth" path="res://Art/FriendlyGolem/Projectile.png" id="2_al1dq"]
+[ext_resource type="AudioStream" uid="uid://6nagqn6nh3us" path="res://Audio/SFX/Whoosh.ogg" id="3_hcapg"]
+[ext_resource type="AudioStream" uid="uid://de8bxuth0fp07" path="res://Audio/SFX/BoulderLand.ogg" id="5_j3q0h"]
+[ext_resource type="Texture2D" uid="uid://wi5hjidwpq4x" path="res://Art/FX/ImpactShock/frame0000.png" id="5_s3g6c"]
+[ext_resource type="Texture2D" uid="uid://857cqotpsh11" path="res://Art/FX/ImpactShock/frame0001.png" id="6_tdust"]
+[ext_resource type="Texture2D" uid="uid://bhmyii2nm8ofx" path="res://Art/FX/ImpactShock/frame0002.png" id="7_n452k"]
+[ext_resource type="Texture2D" uid="uid://b5qt74wvcub7r" path="res://Art/FX/ImpactShock/frame0003.png" id="8_7idx3"]
+[ext_resource type="Texture2D" uid="uid://4xpbr1muumsl" path="res://Art/FX/ImpactShock/frame0004.png" id="9_hbk61"]
+[ext_resource type="Texture2D" uid="uid://5rgu75vcwwdl" path="res://Art/FX/ImpactShock/frame0005.png" id="10_613r6"]
+[ext_resource type="Texture2D" uid="uid://bs8nk730btmqx" path="res://Art/FX/ImpactShock/frame0006.png" id="11_nb8a6"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7u7nq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_al1dq")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fxxtb"]
+radius = 84.0387
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ggj3j"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_s3g6c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_tdust")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_n452k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_7idx3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_hbk61")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_613r6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_nb8a6")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Bullet" type="Area2D" node_paths=PackedStringArray("shadow", "projectile", "sndWhoosh", "sndBoulderLandh", "explosion", "colShape")]
+process_mode = 1
+top_level = true
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("1_0ho76")
+shadow = NodePath("Shadow")
+projectile = NodePath("AnimatedSprite2D")
+sndWhoosh = NodePath("BoulderThrow")
+sndBoulderLandh = NodePath("BoulderLand")
+explosion = NodePath("Explosion")
+colShape = NodePath("CollisionShape2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
+sprite_frames = SubResource("SpriteFrames_7u7nq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -118)
+scale = Vector2(4.47548, 1.88433)
+shape = SubResource("CircleShape2D_fxxtb")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 0.592157)
+z_index = -1
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_al1dq")
+
+[node name="BoulderThrow" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_hcapg")
+bus = &"SFX"
+
+[node name="BoulderLand" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_j3q0h")
+bus = &"SFX"
+
+[node name="Explosion" type="AnimatedSprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.521569)
+z_index = -1
+position = Vector2(0, -197)
+scale = Vector2(7, 8)
+sprite_frames = SubResource("SpriteFrames_ggj3j")
+frame = 2
+speed_scale = 2.0
+
+[connection signal="body_entered" from="." to="." method="_OnBodyEntered"]

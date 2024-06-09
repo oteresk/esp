@@ -1,19 +1,21 @@
-[gd_scene load_steps=16 format=3 uid="uid://dfcendwn41quo"]
+[gd_scene load_steps=18 format=3 uid="uid://binn46axhlqni"]
 
 [ext_resource type="Script" path="res://Scripts/MiniMap.cs" id="1_4v5yl"]
-[ext_resource type="PackedScene" uid="uid://d28wt05wvwlax" path="res://Scenes/MapIcon_Iron Mine.tscn" id="2_ofpii"]
-[ext_resource type="PackedScene" uid="uid://b5mdyytg2otaa" path="res://Scenes/MapIcon_Gold Mine.tscn" id="3_lsf5b"]
-[ext_resource type="PackedScene" uid="uid://dojepf4aqn0s7" path="res://Scenes/MapIcon_Mana Well.tscn" id="4_y0cox"]
-[ext_resource type="PackedScene" uid="uid://g831m1tsg61h" path="res://Scenes/MapIcon_Tree.tscn" id="5_8jtkd"]
-[ext_resource type="PackedScene" uid="uid://cxg7lh7gbj46k" path="res://Scenes/MapIcon_Platform.tscn" id="5_22ehr"]
+[ext_resource type="PackedScene" uid="uid://d28wt05wvwlax" path="res://Scenes/Map/MapIcon_Iron Mine.tscn" id="2_5ab15"]
+[ext_resource type="PackedScene" uid="uid://b5mdyytg2otaa" path="res://Scenes/Map/MapIcon_Gold Mine.tscn" id="3_chvyf"]
+[ext_resource type="PackedScene" uid="uid://dojepf4aqn0s7" path="res://Scenes/Map/MapIcon_Mana Well.tscn" id="4_pj7pk"]
+[ext_resource type="PackedScene" uid="uid://g831m1tsg61h" path="res://Scenes/Map/MapIcon_Tree.tscn" id="5_8hhcj"]
 [ext_resource type="Texture2D" uid="uid://cqialo1j2f0p2" path="res://Art/GUI/Map/Player.png" id="6_0gq13"]
-[ext_resource type="PackedScene" uid="uid://dskgr1lddfxo6" path="res://Scenes/MapIcon_AlchemyLab.tscn" id="6_q7tne"]
-[ext_resource type="PackedScene" uid="uid://bql3e0hm74u55" path="res://Scenes/MapIcon_Blacksmith.tscn" id="7_d4dec"]
-[ext_resource type="PackedScene" uid="uid://dr4caq2rcw305" path="res://Scenes/MapIcon_Herbalist.tscn" id="8_geoeh"]
-[ext_resource type="PackedScene" uid="uid://dxlxpngvgy1yw" path="res://Scenes/MapIcon_Lodestone.tscn" id="9_viiap"]
-[ext_resource type="PackedScene" uid="uid://bx4msrh6mcptr" path="res://Scenes/MapIcon_Settlement.tscn" id="10_31en8"]
-[ext_resource type="PackedScene" uid="uid://s18o75ni28kt" path="res://Scenes/MapIcon_Tower.tscn" id="11_16v6b"]
-[ext_resource type="PackedScene" uid="uid://c0h8hydyf0lpm" path="res://Scenes/MapIcon_TrainingCenter.tscn" id="12_15bfy"]
+[ext_resource type="PackedScene" uid="uid://cxg7lh7gbj46k" path="res://Scenes/Map/MapIcon_Platform.tscn" id="6_o7hxm"]
+[ext_resource type="PackedScene" uid="uid://dskgr1lddfxo6" path="res://Scenes/Map/MapIcon_AlchemyLab.tscn" id="7_6whpy"]
+[ext_resource type="PackedScene" uid="uid://bql3e0hm74u55" path="res://Scenes/Map/MapIcon_Blacksmith.tscn" id="8_uecrb"]
+[ext_resource type="PackedScene" uid="uid://dr4caq2rcw305" path="res://Scenes/Map/MapIcon_Herbalist.tscn" id="9_3lv5s"]
+[ext_resource type="PackedScene" uid="uid://dxlxpngvgy1yw" path="res://Scenes/Map/MapIcon_Lodestone.tscn" id="10_jwisb"]
+[ext_resource type="PackedScene" uid="uid://bx4msrh6mcptr" path="res://Scenes/Map/MapIcon_Settlement.tscn" id="11_ssm7w"]
+[ext_resource type="PackedScene" uid="uid://s18o75ni28kt" path="res://Scenes/Map/MapIcon_Tower.tscn" id="12_d3dt4"]
+[ext_resource type="PackedScene" uid="uid://c0h8hydyf0lpm" path="res://Scenes/Map/MapIcon_TrainingCenter.tscn" id="13_fb1br"]
+[ext_resource type="PackedScene" uid="uid://4utyyeshd8lp" path="res://Scenes/Map/MapIcon_GolemFactory.tscn" id="14_8u8vh"]
+[ext_resource type="PackedScene" uid="uid://7256vn7kwf8s" path="res://Scenes/Map/MapIcon_FriendlyGolem.tscn" id="15_1yd5h"]
 
 [sub_resource type="Environment" id="Environment_vpbp4"]
 background_mode = 3
@@ -47,7 +49,7 @@ render_target_update_mode = 4
 [node name="Node2D" type="Node2D" parent="SubViewport"]
 modulate = Color(1, 1, 1, 0)
 script = ExtResource("1_4v5yl")
-icon = Array[PackedScene]([ExtResource("2_ofpii"), ExtResource("3_lsf5b"), ExtResource("4_y0cox"), ExtResource("5_8jtkd"), ExtResource("5_22ehr"), ExtResource("6_q7tne"), ExtResource("7_d4dec"), ExtResource("8_geoeh"), ExtResource("9_viiap"), ExtResource("10_31en8"), ExtResource("11_16v6b"), ExtResource("12_15bfy")])
+icon = Array[PackedScene]([ExtResource("2_5ab15"), ExtResource("3_chvyf"), ExtResource("4_pj7pk"), ExtResource("5_8hhcj"), ExtResource("6_o7hxm"), ExtResource("7_6whpy"), ExtResource("8_uecrb"), ExtResource("9_3lv5s"), ExtResource("10_jwisb"), ExtResource("11_ssm7w"), ExtResource("12_d3dt4"), ExtResource("13_fb1br"), ExtResource("14_8u8vh"), ExtResource("15_1yd5h")])
 iconScale = 0.1
 offset = Vector2(-1200, -630)
 

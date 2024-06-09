@@ -27,6 +27,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+focus_mode = 1
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Control"]
 layout_mode = 1
@@ -35,6 +37,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
@@ -43,18 +46,22 @@ theme_override_constants/margin_bottom = 32
 [node name="PoisonGUINode" type="HBoxContainer" parent="Control/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
+mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
+mouse_filter = 2
 
 [node name="ResourceGUI" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer/ResourceGUI"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
@@ -62,12 +69,14 @@ theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/ResourceGUI/MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="Control/MarginContainer/VBoxContainer/ResourceGUI/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(49, 30)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 texture = ExtResource("1_87d6c")
 expand_mode = 1
 
@@ -78,6 +87,7 @@ label_settings = SubResource("LabelSettings_7hke4")
 
 [node name="MarginContainer2" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer/ResourceGUI"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
@@ -85,12 +95,14 @@ theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/ResourceGUI/MarginContainer2"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="TextureRect2" type="TextureRect" parent="Control/MarginContainer/VBoxContainer/ResourceGUI/MarginContainer2/VBoxContainer2"]
 custom_minimum_size = Vector2(49, 30)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 texture = ExtResource("2_4bd53")
 expand_mode = 1
 
@@ -100,6 +112,7 @@ text = "999999"
 
 [node name="MarginContainer3" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer/ResourceGUI"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
@@ -107,12 +120,14 @@ theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/ResourceGUI/MarginContainer3"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="TextureRect3" type="TextureRect" parent="Control/MarginContainer/VBoxContainer/ResourceGUI/MarginContainer3/VBoxContainer2"]
 custom_minimum_size = Vector2(49, 30)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 texture = ExtResource("3_4v4i4")
 expand_mode = 1
 
@@ -122,6 +137,7 @@ text = "999999"
 
 [node name="MarginContainer4" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer/ResourceGUI"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
@@ -129,12 +145,14 @@ theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/ResourceGUI/MarginContainer4"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="TextureRect2" type="TextureRect" parent="Control/MarginContainer/VBoxContainer/ResourceGUI/MarginContainer4/VBoxContainer2"]
 custom_minimum_size = Vector2(49, 30)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 texture = ExtResource("4_oc4na")
 expand_mode = 1
 
@@ -149,6 +167,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
@@ -157,6 +176,7 @@ theme_override_constants/margin_bottom = 32
 [node name="TLVertBox" type="HBoxContainer" parent="Control/MarginContainer2"]
 layout_mode = 2
 size_flags_vertical = 0
+mouse_filter = 2
 alignment = 1
 
 [node name="TimerLabel" type="Label" parent="Control/MarginContainer2/TLVertBox"]

@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://dx4w3x2cieaxp"]
+
+[ext_resource type="Script" path="res://Scripts/AttackCross.cs" id="1_g4r6n"]
+
+[node name="AttackCross" type="Area2D"]
+modulate = Color(1, 1, 1, 0.501961)
+position = Vector2(-100, -120)
+scale = Vector2(3, 3)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_g4r6n")
+
+[node name="ShootingPoint" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(34.6667, 24)
+
+[node name="BulletTimer" type="Timer" parent="."]
+wait_time = 0.75
+autostart = true
+
+[connection signal="timeout" from="BulletTimer" to="." method="OnBulletTimerTimeout"]

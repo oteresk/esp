@@ -32,6 +32,8 @@ public partial class enemy : RigidBody2D
 
     public bool frozen = false;
 
+    [Export] public int XP;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
@@ -121,6 +123,7 @@ public partial class enemy : RigidBody2D
         // spawn item
         Area2D item = (Area2D)itemScene.Instantiate();
         ItemScript iScript = (ItemScript)item;
+        iScript.XP = XP;
 		iScript.CreateItem();
         if (!isDead)
         {
@@ -142,7 +145,7 @@ public partial class enemy : RigidBody2D
         if (curTime > .9f) // only allow enemy to hit player every 0.9 seconds
         {
             // enemy collide with player
-            if (col.Name == "Player" && Globals.playerAlive)
+            if (col.Name == "Player" && Globals.playerAlive && pl.canBeDamaged)
             {
                 //Debug.Print("Hit: " + col.Name);
 
@@ -192,7 +195,6 @@ public partial class enemy : RigidBody2D
             enemySprite.Modulate = new Color(1, 1, 1, 1);
             enemySprite.Play();
         }
-
     }
 
     public void LeaveTrail()

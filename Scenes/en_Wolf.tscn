@@ -41,6 +41,7 @@ health = 12.0
 speed = 140.0
 itemScene = ExtResource("2_584q2")
 damage = 9
+XP = 10
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -49,7 +50,7 @@ position = Vector2(-12, -2)
 scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_7y2m0")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." groups=["Enemies"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, 1)

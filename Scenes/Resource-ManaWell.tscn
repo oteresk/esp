@@ -37,15 +37,12 @@ RDResource = ExtResource("2_ro3pi")
 resourceCaptureSpeed = 0.6
 
 [node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
-visible = false
 scale = Vector2(0.520001, 0.28)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-visible = false
 shape = SubResource("CircleShape2D_s0u15")
 
 [node name="CaptureTimer" parent="." instance=ExtResource("5_rvxdf")]
-visible = false
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(-166, -18)

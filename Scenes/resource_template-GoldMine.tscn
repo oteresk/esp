@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c410fmb2oa282"]
+[gd_scene load_steps=11 format=3 uid="uid://c410fmb2oa282"]
 
 [ext_resource type="Shader" path="res://Scenes/SaturationShader.gdshader" id="1_am5oi"]
 [ext_resource type="Texture2D" uid="uid://diapsx8y3pdo" path="res://Art/Resources/Gold Mine.png" id="1_ldtuu"]
@@ -23,6 +23,9 @@ gradient = SubResource("Gradient_qjkvu")
 fill = 1
 fill_from = Vector2(0.431193, 0.522936)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_k62f3"]
+radius = 7.0
+
 [node name="Resource" type="Sprite2D"]
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_0g3ol")
@@ -33,7 +36,6 @@ script = ExtResource("1_mu2uf")
 RDResource = ExtResource("2_x2ovg")
 
 [node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 visible = false
@@ -52,6 +54,12 @@ energy = 2.71
 range_z_min = -3
 range_z_max = 3
 texture = SubResource("GradientTexture2D_j52u4")
+
+[node name="Discovery Area Collider" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Discovery Area Collider"]
+scale = Vector2(100, 100)
+shape = SubResource("CircleShape2D_k62f3")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

@@ -1,0 +1,59 @@
+[gd_scene load_steps=9 format=3 uid="uid://8fs0u0qollqy"]
+
+[ext_resource type="Script" path="res://Scripts/Fire.cs" id="1_2gsyh"]
+[ext_resource type="Texture2D" uid="uid://dodjbu2a11hmn" path="res://Art/Attacks/Fire1.png" id="1_u0ehf"]
+[ext_resource type="Texture2D" uid="uid://cby7aecqyap3g" path="res://Art/Attacks/Fire2.png" id="2_50sr0"]
+[ext_resource type="Texture2D" uid="uid://d3k0jwlj2svuf" path="res://Art/Attacks/Fire3.png" id="3_luymb"]
+[ext_resource type="Texture2D" uid="uid://b3kv6s1tgcedk" path="res://Art/Attacks/Fire4.png" id="4_5ud46"]
+[ext_resource type="Texture2D" uid="uid://ogcrman44hw" path="res://Art/Attacks/Fire5.png" id="5_uodl0"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7u7nq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_u0ehf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_50sr0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_luymb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_5ud46")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_uodl0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 11.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jfkn0"]
+radius = 8.0
+
+[node name="Fire" type="Area2D"]
+modulate = Color(1, 1, 1, 0.737255)
+top_level = true
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("1_2gsyh")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1.90735e-06, -18)
+rotation = -1.58548e-05
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_7u7nq")
+frame_progress = 0.497213
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+scale = Vector2(1, 0.6)
+shape = SubResource("CircleShape2D_jfkn0")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="area_entered" from="." to="." method="OnAreaEntered"]
+[connection signal="timeout" from="Timer" to="." method="TimerOver"]

@@ -23,6 +23,10 @@ public partial class ItemScript : Area2D
     static private bool itemAoEExists = false;
     static private bool itemShieldExists = false;
 
+    Tween fadeTween;
+
+    public float aliveTime = 10; // item will fade away after time
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
@@ -30,6 +34,8 @@ public partial class ItemScript : Area2D
 
         Sprite2D sprItem = (Sprite2D)GetNode("Sprite2D");
         sprItem.Frame = frame;
+
+        StartAliveTimer(aliveTime);
 
     }
 
@@ -71,11 +77,19 @@ public partial class ItemScript : Area2D
         Gem, SpeedPotion, AttackSpeedPotion, DamagePotion, AoEPotion, ShieldPotion
     }
 
-    public void OnVisibilityChanged()
+    public void OnVisibilityChanged() // if player picks up item
     {
         if(!IsVisibleInTree())
         {
-            QueueFree();
+            if (fadeTween!=null)
+            {
+                fadeTween.Stop();
+                fadeTween.Kill();
+            }
+            if (IsInstanceValid(this))
+            {
+                QueueFree();
+            }
         }
     }
 
@@ -142,6 +156,7 @@ public partial class ItemScript : Area2D
                     itemType = ItemScript.ItemType.SpeedPotion;
                     itemSpeedExists = true;
                     frame = 5;
+                    XP = 0;
                 }
                 else
                     CreateGem();
@@ -153,6 +168,7 @@ public partial class ItemScript : Area2D
                     itemType = ItemScript.ItemType.AttackSpeedPotion;
                     itemAttackSpeedExists = true;
                     frame = 4;
+                    XP = 0;
                 }
                 else
                     CreateGem();
@@ -164,6 +180,7 @@ public partial class ItemScript : Area2D
                     itemType = ItemScript.ItemType.ShieldPotion;
                     itemShieldExists = true;
                     frame = 8;
+                    XP = 0;
                 }
                 else
                     CreateGem();
@@ -176,8 +193,53 @@ public partial class ItemScript : Area2D
     private void CreateGem()
     {
         itemType = ItemScript.ItemType.Gem;
-        XP = 1; // TODO: when we have multiple enemies, this will need to be a switch case for enemy tpe and amount of XP
-        frame = 0;
+        //XP = 1; // TODO: when we have multiple enemies, this will need to be a switch case for enemy tpe and amount of XP
+        int rndXP = (int)GD.RandRange(1, XP);
+        if (rndXP == 1)
+        {
+            frame = 0;
+            XP = 1;
+        }
+        else
+            if (rndXP < 5) 
+            {
+                frame = 1;
+                XP = 5;
+            }
+            else
+                if (rndXP < 10)
+                {
+                    frame = 2;
+                    XP = 10;
+                }
+
+
     }
+
+    public async void Fade(float fadeTime)
+    {
+        if (IsInstanceValid(this))
+        {
+            fadeTween = GetTree().CreateTween();
+            fadeTween.TweenProperty(this, "modulate:a", 0f, fadeTime);
+
+            await Task.Delay(TimeSpan.FromMilliseconds(fadeTime*1000));
+            if (IsInstanceValid(this))
+            {
+                fadeTween.Stop();
+                fadeTween.Kill();
+                QueueFree();
+            }
+        }
+    }
+
+    public async void StartAliveTimer(float aliveTime)
+    {
+        await Task.Delay(TimeSpan.FromMilliseconds(aliveTime * 1000));
+
+        Fade(2.2f);
+    }
+    
+
 
 }

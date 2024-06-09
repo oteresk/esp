@@ -6,7 +6,7 @@ public partial class world : Node2D
 {
 	[Export] public PathFollow2D EnemySpawnPath;
 
-    public override void _Ready()
+	public override void _Ready()
 	{
 	}
 
@@ -19,28 +19,28 @@ public partial class world : Node2D
 	{
 		//Debug.Print("preloading mob");
 
-        string[] enemyString = new string[] 
+		string[] enemyString = new string[] 
 		{
-            "res://Scenes/en_Bat.tscn",
-            "res://Scenes/en_Slime.tscn",
-            "res://Scenes/en_Spider.tscn",
-            "res://Scenes/en_Scorp.tscn",
-            "res://Scenes/en_Wolf.tscn",
-            "res://Scenes/en_Bat2.tscn",
-            "res://Scenes/en_Slime2.tscn",
-        };
+			"res://Scenes/en_Bat.tscn",
+			"res://Scenes/en_Slime.tscn",
+			"res://Scenes/en_Spider.tscn",
+			"res://Scenes/en_Scorp.tscn",
+			"res://Scenes/en_Wolf.tscn",
+			"res://Scenes/en_Bat2.tscn",
+			"res://Scenes/en_Slime2.tscn",
+		};
 
 		if (ResourceDiscoveries.GetMinutes() < enemyString.Length)
 		{
-            PackedScene newMobScene = (PackedScene)ResourceLoader.Load(enemyString[ResourceDiscoveries.GetMinutes()]);
-            Node2D newMob = (Node2D)newMobScene.Instantiate();
+			PackedScene newMobScene = (PackedScene)ResourceLoader.Load(enemyString[ResourceDiscoveries.GetMinutes()]);
+			Node2D newMob = (Node2D)newMobScene.Instantiate();
 
-            EnemySpawnPath.ProgressRatio = (float)GD.Randf();
-            newMob.GlobalPosition = ((PathFollow2D)GetNode("Player/Path2D/EnemySpawnPath")).GlobalPosition;
-            AddChild(newMob);
-        }
+			EnemySpawnPath.ProgressRatio = (float)GD.Randf();
+			newMob.GlobalPosition = ((PathFollow2D)GetNode("Player/Path2D/EnemySpawnPath")).GlobalPosition;
+			AddChild(newMob);
+		}
 
-    }
+	}
 
 	// this is just a rudimentary way of spawning enemies; a more detailed wave-like spawning system will replace this
 	public void _on_enemy_timer_timeout()
