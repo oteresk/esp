@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://tjt3wkjp0i5t"]
+[gd_scene load_steps=52 format=3 uid="uid://tjt3wkjp0i5t"]
 
 [ext_resource type="PackedScene" uid="uid://dv81swjibar3c" path="res://Scenes/parallax_background.tscn" id="1_3b8vd"]
 [ext_resource type="Script" path="res://Scripts/world.cs" id="1_rvwjb"]
@@ -28,6 +28,7 @@
 [ext_resource type="PackedScene" uid="uid://b2e4ek01eon7f" path="res://Scenes/Structure-Lodestone.tscn" id="23_w70wf"]
 [ext_resource type="PackedScene" uid="uid://cs70lx50ngyvy" path="res://Scenes/Structure-Settlement.tscn" id="24_ek7ss"]
 [ext_resource type="PackedScene" uid="uid://pv0fpyslcgie" path="res://Scenes/Structure-Tower.tscn" id="25_d0kw3"]
+[ext_resource type="FontFile" uid="uid://cmd8giqpdr2nh" path="res://Daydream.ttf" id="25_u0xec"]
 [ext_resource type="PackedScene" uid="uid://bcn0ebog5s0ps" path="res://Scenes/Structure-TrainingCenter.tscn" id="26_e2j4s"]
 [ext_resource type="Texture2D" uid="uid://bq4pom8h1qihh" path="res://Art/GUI/IronOre.png" id="28_mqoqv"]
 [ext_resource type="Texture2D" uid="uid://ke85s64nnx0g" path="res://Art/GUI/Wood.png" id="29_eowbu"]
@@ -58,11 +59,20 @@ glow_hdr_luminance_cap = 0.04
 glow_map_strength = 0.0
 adjustment_enabled = true
 
-[sub_resource type="LabelSettings" id="LabelSettings_lonnw"]
-font_size = 32
+[sub_resource type="LabelSettings" id="LabelSettings_mv3iy"]
+font = ExtResource("25_u0xec")
+font_size = 26
+font_color = Color(0.14902, 0.294118, 1, 1)
+outline_size = 3
+
+[sub_resource type="LabelSettings" id="LabelSettings_kkfxo"]
+shadow_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_56d7c"]
-font_size = 28
+font = ExtResource("25_u0xec")
+font_size = 26
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hvd18"]
 bg_color = Color(0.462745, 0.329412, 0, 1)
@@ -118,7 +128,7 @@ transform = Transform2D(1, 0, 0, 1, 0, 0)
 
 [node name="StructureGUI" type="CanvasLayer" parent="GUI"]
 
-[node name="SettlementSelect" type="CanvasGroup" parent="GUI/StructureGUI" node_paths=PackedStringArray("btnNode0", "btnNode1", "btnNode2", "btnNode3", "lblIron", "lblWood", "redStroke", "lblCurStruct")]
+[node name="SettlementSelect" type="CanvasGroup" parent="GUI/StructureGUI" node_paths=PackedStringArray("btnNode0", "btnNode1", "btnNode2", "btnNode3", "lblIron", "lblWood", "lblStructName", "lblStructDescription", "redStroke")]
 position = Vector2(854, 546)
 script = ExtResource("12_cg3fo")
 btnNode0 = NodePath("btn0")
@@ -130,9 +140,12 @@ scnStruct = Array[PackedScene]([ExtResource("20_dtrsa"), ExtResource("21_xq308")
 lblIron = NodePath("lblIron")
 lblWood = NodePath("lblWood")
 costIron = PackedInt32Array(1, 2, 3, 2, 4, 4, 1, 0)
-costWood = PackedInt32Array(1, 2, 0, 4, 2, 6, 2, 0)
+costWood = PackedInt32Array(1, 2, 0, 0, 2, 6, 2, 0)
+structName = PackedStringArray("Alchemy Lab", "Armory", "Herbalist", "Lode Stone", "Settlement", "Tower", "Training Center", "Golem Factory")
+structDescription = PackedStringArray("Generates research points to be used to upgrade weapons, towers and golems.", "Increases your armor so you take less damage from enemies.", "Increases your max health.", "Increases magnetism(the area around player that sucks in items).", "Nothing Yet.", "Shoots nearby enemies", "Increases player speed.", "Creates a golem. You may only have one.")
+lblStructName = NodePath("lblStructName")
+lblStructDescription = NodePath("lblStructDescription")
 redStroke = NodePath("RedStroke")
-lblCurStruct = NodePath("Label")
 
 [node name="btn0" type="TextureRect" parent="GUI/StructureGUI/SettlementSelect"]
 z_index = 1
@@ -178,36 +191,58 @@ mouse_filter = 2
 texture = ExtResource("20_vu2nf")
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="GUI/StructureGUI/SettlementSelect"]
-visible = false
-offset_left = 47.0
-offset_top = 232.0
-offset_right = 110.0
-offset_bottom = 280.0
-text = "Cur:"
-label_settings = SubResource("LabelSettings_lonnw")
-metadata/_edit_use_anchors_ = true
+[node name="lblStructName" type="Label" parent="GUI/StructureGUI/SettlementSelect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 35.0
+offset_top = -51.0
+offset_right = 167.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 1
+text = "Name"
+label_settings = SubResource("LabelSettings_mv3iy")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lblStructDescription" type="Label" parent="GUI/StructureGUI/SettlementSelect"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -38.0
+offset_top = 240.0
+offset_right = 282.0
+offset_bottom = 340.0
+grow_horizontal = 2
+size_flags_vertical = 1
+text = "Description"
+label_settings = SubResource("LabelSettings_kkfxo")
+horizontal_alignment = 1
+autowrap_mode = 3
+justification_flags = 0
 
 [node name="Iron" type="TextureRect" parent="GUI/StructureGUI/SettlementSelect"]
-offset_left = -38.0
-offset_top = 187.0
-offset_right = 96.0
-offset_bottom = 285.0
+offset_left = -47.0
+offset_top = 188.0
+offset_right = 87.0
+offset_bottom = 286.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("28_mqoqv")
 
 [node name="lblIron" type="Label" parent="GUI/StructureGUI/SettlementSelect"]
-offset_left = 34.0
+offset_left = 24.0
 offset_top = 194.0
-offset_right = 82.0
+offset_right = 96.0
 offset_bottom = 236.0
 text = "999"
 label_settings = SubResource("LabelSettings_56d7c")
 
 [node name="Wood" type="TextureRect" parent="GUI/StructureGUI/SettlementSelect"]
-offset_left = 103.0
+offset_left = 112.0
 offset_top = 188.0
-offset_right = 237.0
+offset_right = 256.0
 offset_bottom = 286.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("29_eowbu")
@@ -225,6 +260,7 @@ visible = false
 z_index = 2
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 2
 texture = ExtResource("30_w6xib")
 
 [node name="XPBar" type="ProgressBar" parent="GUI"]

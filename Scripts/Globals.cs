@@ -56,12 +56,19 @@ public partial class Globals : Node
 	// player attributes and stats
 	static public float XP = 0;
 	static public float XPGoal;
-	static public float HP = 100;
-	static public float MaxHP = 100;
-	static public Label lblLevel;
+	static public float HP;
+	static public float MaxHP;
+	static public int HPLevel = 1;
+	static public float HPInc = 10;
+
+    static public Label lblLevel;
 	static public int level = 1;
 	static public float XPGoalIncrease = 1.5f;
-	static public float magnetism = 30;
+	static public float magnetism;
+	static public int magenetismLevel;
+	static public float magenetismInc = 10;
+
+	static public int armorLevel;
 
 	static public bool playerAlive = true;
 	static public bool playerShieldActive = false;
@@ -70,6 +77,7 @@ public partial class Globals : Node
 	static public player ps;
 
 	static public Node2D golem;
+	static public bool golemAlive = false;
 
 	static public HBoxContainer poisonEffect;
 	static public bool isPoisoned=false;
@@ -81,7 +89,14 @@ public partial class Globals : Node
 
 	static public resourceGUI GUINode;
 
-	static public Sprite2D black;
+	static private Label lblMaxHealth;
+    static private Label lblMovementSpeed;
+    static private Label lblMagnetism;
+    static private Label lblArmor;
+    static private Label lblTowerLevel;
+    static private Label lblGolemLevel;
+
+    static public Sprite2D black;
 	//    GDScript saveStateSystem;
 	//    GodotObject nodSaveStateSystem;
 
@@ -97,19 +112,30 @@ public partial class Globals : Node
 		// 1009 - with
 		windowSizeY = (int)GetViewport().GetVisibleRect().Size.Y;
 		headerOffset = windowSizeY - 1009;
-		ResetGame();
 
 		DelayedStart();
 
 		rootNode = GetNode("..");
-	}
+        // "GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth"
+        // get stat labels     GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed
+        Node lbl = GetNode("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth");
+		lblMaxHealth = (Label)lbl;
+        lbl = GetNode("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed");
+        lblMovementSpeed=(Label)lbl;
+        lbl = GetNode("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/Magnetism/VBoxContainer/lblMagnetism");
+        lblMagnetism = (Label)lbl;
+        lbl = GetNode("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/Armor/VBoxContainer/lblArmor");
+        lblArmor = (Label)lbl;
+
+        ResetGame();
+    }
 
 	async void DelayedStart()
 	{
 		// wait a bit
 		await Task.Delay(TimeSpan.FromMilliseconds(200));
-		
-	}
+        UpdateStatsGUI();
+    }
 
 	public void ResetGame()
 	{
@@ -124,9 +150,6 @@ public partial class Globals : Node
 		UpdateLevel();
 		itemAtkSpd = 1; // attackSpeed modifier for temp items
 
-		hpBar = (ProgressBar)GetNodeOrNull("../Player/HPBar");
-		hpBar.Value = HP / MaxHP;
-
 		black = (Sprite2D)GetNodeOrNull("../Black");
 
 		// hide poison effect
@@ -135,17 +158,25 @@ public partial class Globals : Node
 		poisonNodes = new List<Node>();
 
 		Globals.XP = 0;
-		Globals.HP = 100;
-		Globals.MaxHP = 100;
-		Globals.XPGoalIncrease = 1.5f;
-		Globals.magnetism = 30;
+
+		SetMaxHP();
+		Debug.Print("maxHP:" + MaxHP);
+		Globals.HP = MaxHP;
+        hpBar = (ProgressBar)GetNodeOrNull("../Player/HPBar");
+        hpBar.Value = HP / MaxHP;
+
+        XPGoalIncrease = 1.5f;
+		magnetism = 30;
+        magenetismLevel = 1;
+
+        armorLevel = 1;
 
 		ResourceDiscoveries.seconds = 0;
 		ResourceDiscoveries.minutes = 0;
 
-		ResourceDiscoveries.iron = 0;
+		ResourceDiscoveries.iron = 10;
 		ResourceDiscoveries.mana = 0;
-		ResourceDiscoveries.wood = 0;
+		ResourceDiscoveries.wood = 10;
 		ResourceDiscoveries.gold = 0;
 		ResourceDiscoveries.goldResourceCount = 0;
 		ResourceDiscoveries.ironResourceCount = 0;
@@ -155,13 +186,34 @@ public partial class Globals : Node
 		if (fG != null)
 		{
 			Globals.golem = fG;
-			Debug.Print("Golem not null");
+			golemAlive = true;
+
+            Debug.Print("Golem not null");
 		}
 
+		magenetismLevel = 1;
+		SetMagnetism();
+		if (ps !=null)
+			ps.SetMagnetismShape();
 
         // initiate save_state system
         //        saveStateSystem = GD.Load<GDScript>("res://addons/save_system/save_system.gd");
         //        nodSaveStateSystem = (GodotObject)saveStateSystem.New();
+    }
+
+	static public void SetMaxHP()
+	{
+		Globals.MaxHP = 90 + HPInc * HPLevel*HPLevel;
+		if (hpBar!=null)
+			if (IsInstanceValid(hpBar))
+				hpBar.Value = HP / MaxHP;
+    }
+
+	static public void SetMagnetism()
+	{
+		magnetism = 20 + magenetismLevel * magenetismInc;
+        if (ps != null)
+            ps.SetMagnetismShape();
     }
 
 	static public void PoisonPlayer(float dmg, float dmgTime)
@@ -285,19 +337,25 @@ public partial class Globals : Node
 	{
 		if (playerShieldActive == false)
 		{
-			HP -= xDmg;
-			ShowPlayerDamage();
 
-			if (HP < 0 && playerAlive)
+			xDmg = xDmg - GD.RandRange(0, armorLevel);
+
+			if (xDmg > 0)
 			{
-				//Debug.Print("dmg");
-				HP = 0;
-				playerAlive = false;
-				player p = (player)pl;
-				p.PlayDeathAnim();
-			}
+				HP -= xDmg;
+				ShowPlayerDamage();
 
-			hpBar.Value = HP / MaxHP;
+				if (HP < 0 && playerAlive)
+				{
+					//Debug.Print("dmg");
+					HP = 0;
+					playerAlive = false;
+					player p = (player)pl;
+					p.PlayDeathAnim();
+				}
+
+				hpBar.Value = HP / MaxHP;
+			}
 		}
 	}
 
@@ -404,7 +462,16 @@ public partial class Globals : Node
 		rootNode.GetTree().Paused = false;
 	}
 
-	private void SaveGameState()
+    public static void UpdateStatsGUI()
+    {
+		lblMaxHealth.Text = HPLevel.ToString();
+		lblMovementSpeed.Text = ps.speedLevel.ToString();
+		lblMagnetism.Text = magenetismLevel.ToString();
+        lblArmor.Text = armorLevel.ToString();
+    }
+
+
+    private void SaveGameState()
 	{
 		// Player
 		//nodSaveStateSystem.Call("set_var", "Player:PosX",player.Position.X.ToString()); 

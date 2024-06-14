@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d4cgrsns2jj4f"]
+[gd_scene load_steps=10 format=3 uid="uid://d4cgrsns2jj4f"]
 
 [ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_hvoxu"]
 [ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_ovr2j"]
@@ -29,6 +29,8 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
 radius = 25.0124
 height = 52.0246
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bxtip"]
 
 [node name="en_Slime2" type="RigidBody2D"]
 modulate = Color(0.054902, 1, 0.301961, 1)
@@ -71,5 +73,13 @@ shape = SubResource("CapsuleShape2D_j3bk0")
 [node name="Timer" type="Timer" parent="."]
 autostart = true
 
+[node name="Occlusion Area Collider" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
+scale = Vector2(140, 90)
+shape = SubResource("RectangleShape2D_bxtip")
+
 [connection signal="area_entered" from="Area2D" to="." method="OnBodyEntered"]
 [connection signal="timeout" from="Timer" to="." method="LeaveTrail"]
+[connection signal="area_entered" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_entered"]
+[connection signal="area_exited" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_exited"]

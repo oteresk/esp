@@ -23,16 +23,23 @@ public partial class SettlementSelect : CanvasGroup
 
     [Export] public int[] costIron;
     [Export] public int[] costWood;
+
+    [Export] public string[] structName;
+    [Export] public string[] structDescription;
+    [Export] public Label lblStructName;
+    [Export] public Label lblStructDescription;
+
     [Export] public TextureRect redStroke;
 
     private float rotateSpeed = .2f;
 
-    [Export] Label lblCurStruct;
+    //[Export] Label lblCurStruct;
     private int curStruct = 0;
     private bool buttonsEnabled = true;
 
     static public ResourceDiscovery platform;
     private double buildDelay = 0;
+    private bool golemFactoryExists = false;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -189,15 +196,22 @@ public partial class SettlementSelect : CanvasGroup
                         {
                             if (platform != null && buildDelay > 1)
                             {
-                                buildDelay = 0;
-                                // subtract resources
-                                ResourceDiscoveries.iron -= costIron[curStruct];
-                                ResourceDiscoveries.wood -= costWood[curStruct];
-                                // update ResourceGUI
-                                ResourceDiscoveries.UpdateResourceGUI();
+                                if (curStruct == 7 && golemFactoryExists)
+                                {
+                                    // only allow 1 golem factory
+                                }
+                                else
+                                {
+                                    buildDelay = 0;
+                                    // subtract resources
+                                    ResourceDiscoveries.iron -= costIron[curStruct];
+                                    ResourceDiscoveries.wood -= costWood[curStruct];
+                                    // update ResourceGUI
+                                    ResourceDiscoveries.UpdateResourceGUI();
 
-                                // build structure
-                                CreateStructure(curStruct, platform);
+                                    // build structure
+                                    CreateStructure(curStruct, platform);
+                                }
                             }
 
                         }
@@ -264,17 +278,46 @@ public partial class SettlementSelect : CanvasGroup
             Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
             miniMap.Call("DisplayMap");
 
+            if (strucNum == 7)
+                golemFactoryExists = true;
+
             AdjustStats(strucNum);
+            Globals.UpdateStatsGUI();
         }
     }
 
     private void AdjustStats(int strucNum) // adjust player stats for structures that increase stats
     {
-        if (strucNum==6) // Training Center - inc player speed
+        if (strucNum == 0) // alchemy lab - inc research
+        {
+            ResourceDiscoveries.research++;
+            ResourceDiscoveries.UpdateResourceGUI();
+        }
+
+        if (strucNum == 1) // armory - inc armor
+        {
+            Globals.armorLevel++;
+        }
+
+        if (strucNum == 2) // Herbalist - inc max HP
+        {
+            Globals.HPLevel++;
+            Globals.SetMaxHP();
+        }
+
+        if (strucNum == 3) // lode stone - inc magnetism
+        {
+            Globals.magenetismLevel++;
+            Globals.SetMagnetism();
+        }
+        
+        if (strucNum == 6) // Training Center - inc player speed
         {
             Globals.ps.speedLevel++;
         }
+
     }
+
 
 
     private void ResetButtonsLeft()
@@ -324,7 +367,9 @@ public partial class SettlementSelect : CanvasGroup
             curStruct = txStructBut.Length-1;
         if (curStruct > txStructBut.Length-1)
             curStruct = 0;
-        lblCurStruct.Text="Cur: "+curStruct.ToString();
+
+        lblStructName.Text = structName[curStruct];
+        lblStructDescription.Text = structDescription[curStruct];
     }
 
     private void PopulateTextures()
@@ -340,7 +385,7 @@ public partial class SettlementSelect : CanvasGroup
         lblIron.Text = costIron[curStruct].ToString();
         lblWood.Text = costWood[curStruct].ToString();
 
-        if (costIron[curStruct] > ResourceDiscoveries.iron || costWood[curStruct] > ResourceDiscoveries.wood)
+        if (costIron[curStruct] > ResourceDiscoveries.iron || costWood[curStruct] > ResourceDiscoveries.wood || (curStruct ==7 && golemFactoryExists))
         {
             // can't afford it
             redStroke.Visible = true;

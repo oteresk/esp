@@ -33,8 +33,9 @@ public partial class ResourceDiscoveries : Node2D
 	static public float mana;
 	static public int manaResourceCount;
 	static public float wood;
+    static public int research;
 
-	static public int seconds = 0;
+    static public int seconds = 0;
 	static public int minutes = 0;
 
 	// GUI node
@@ -133,7 +134,8 @@ public partial class ResourceDiscoveries : Node2D
 		Globals.rG2.lblIron.Text = iron.ToString();
 		Globals.rG2.lblMana.Text = mana.ToString();
 		Globals.rG2.lblWood.Text = wood.ToString();
-	}
+        Globals.rG2.lblResearch.Text = research.ToString();
+    }
 private void PlaceResourceDiscoveries()
 {
 	uint rdType;

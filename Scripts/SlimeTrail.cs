@@ -93,4 +93,22 @@ public partial class SlimeTrail : AnimatedSprite2D
             QueueFree();
     }
 
+    public void _on_occlusion_area_collider_area_entered(Area2D area)
+    {
+        if (area.IsInGroup("Players") && Globals.useOcclusion)
+        {
+            Visible = true;
+            //Debug.Print("occlusion: enter:" + this);
+
+        }
+    }
+
+    public void _on_occlusion_area_collider_area_exited(Area2D area)
+    {
+        if (area.IsInGroup("Players") && Globals.useOcclusion)
+        {
+            Visible = false;
+            //Debug.Print("occlusion: exit" + this);
+        }
+    }
 }

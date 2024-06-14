@@ -292,22 +292,24 @@ public partial class ResourceDiscovery : Sprite2D
     private async void FlashLight()
 	{
         await Task.Delay(TimeSpan.FromMilliseconds(2 * 1000));
-		if (factoryPaused && factoryisOn)
+		if (IsInstanceValid(light1) && IsInstanceValid(light2) && IsInstanceValid(light3))
 		{
-            light1.Visible = false;
-            light2.Visible = false;
-            light3.Visible = false;
+            if (factoryPaused && factoryisOn)
+            {
+                light1.Visible = false;
+                light2.Visible = false;
+                light3.Visible = false;
+            }
+            await Task.Delay(TimeSpan.FromMilliseconds(2 * 1000));
+            if (factoryisOn)
+            {
+                light1.Visible = true;
+                light2.Visible = true;
+                light3.Visible = true;
+                if (factoryPaused)
+                    FlashLight();
+            }
         }
-        await Task.Delay(TimeSpan.FromMilliseconds(2 * 1000));
-		if (factoryisOn)
-		{
-            light1.Visible = true;
-            light2.Visible = true;
-            light3.Visible = true;
-            if (factoryPaused)
-                FlashLight();
-        }
-
     }
 
     public void StartFactory()

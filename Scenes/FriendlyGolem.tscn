@@ -1,4 +1,4 @@
-[gd_scene load_steps=182 format=3 uid="uid://c0tk30dn0hj48"]
+[gd_scene load_steps=252 format=3 uid="uid://c0tk30dn0hj48"]
 
 [ext_resource type="Script" path="res://Scripts/Golem.cs" id="1_tqyrp"]
 [ext_resource type="Texture2D" uid="uid://coulvov3te8pd" path="res://Art/FriendlyGolem/FriendlyGolem-Death_00.png" id="2_0qdpl"]
@@ -175,6 +175,75 @@
 [ext_resource type="Texture2D" uid="uid://d24wof8et6iuk" path="res://Art/FriendlyGolem/FriendlyGolem-Walk_31.png" id="73_tx80q"]
 [ext_resource type="AudioStream" uid="uid://b5r4qadukg4u5" path="res://Audio/SFX/GolemFootstep.ogg" id="106_e4ix4"]
 [ext_resource type="AudioStream" uid="uid://bs4mq6qktxt2v" path="res://Audio/SFX/GolemDeath.ogg" id="175_230eu"]
+[ext_resource type="Texture2D" uid="uid://ckprt2y08h3as" path="res://Art/Bird/skeleton-FlyUp_00.png" id="176_py2eu"]
+[ext_resource type="Texture2D" uid="uid://u0lqijm4hmc5" path="res://Art/Bird/skeleton-FlyUp_01.png" id="177_dyars"]
+[ext_resource type="Texture2D" uid="uid://b7iw8go36e7jo" path="res://Art/Bird/skeleton-FlyUp_02.png" id="178_j58r2"]
+[ext_resource type="Texture2D" uid="uid://dtjj0wtg115fx" path="res://Art/Bird/skeleton-FlyUp_03.png" id="179_8vdbh"]
+[ext_resource type="Texture2D" uid="uid://b7vaseegxsoat" path="res://Art/Bird/skeleton-FlyUp_04.png" id="180_qvsg2"]
+[ext_resource type="Texture2D" uid="uid://ddjd2yx67dq73" path="res://Art/Bird/skeleton-FlyUp_05.png" id="181_28lih"]
+[ext_resource type="Texture2D" uid="uid://dcjbu0gko440t" path="res://Art/Bird/skeleton-FlyUp_06.png" id="182_rwd6e"]
+[ext_resource type="Texture2D" uid="uid://ds4x3klw5210i" path="res://Art/Bird/skeleton-FlyUp_07.png" id="183_sbig3"]
+[ext_resource type="Texture2D" uid="uid://pmaqu67ngj4r" path="res://Art/Bird/skeleton-FlyUp_08.png" id="184_4fhlg"]
+[ext_resource type="Texture2D" uid="uid://dxt03wsfc0aqc" path="res://Art/Bird/skeleton-FlyUp_09.png" id="185_mn807"]
+[ext_resource type="Texture2D" uid="uid://e23dstaeh3w8" path="res://Art/Bird/skeleton-FlyUp_10.png" id="186_moyp1"]
+[ext_resource type="Texture2D" uid="uid://csim8pha85bc1" path="res://Art/Bird/skeleton-FlyUp_11.png" id="187_joeh5"]
+[ext_resource type="Texture2D" uid="uid://ckgmgext6v1aa" path="res://Art/Bird/skeleton-FlyUp_12.png" id="188_5mipe"]
+[ext_resource type="Texture2D" uid="uid://bpr8chlbi5xqn" path="res://Art/Bird/skeleton-FlyUp_13.png" id="189_4ud2l"]
+[ext_resource type="Texture2D" uid="uid://vil6ixshn273" path="res://Art/Bird/skeleton-FlyUp_14.png" id="190_wr2je"]
+[ext_resource type="Texture2D" uid="uid://cess61rggow0x" path="res://Art/Bird/skeleton-FlyUp_15.png" id="191_bngbv"]
+[ext_resource type="Texture2D" uid="uid://bma4056546j86" path="res://Art/Bird/skeleton-Hover_0.png" id="192_jpwwg"]
+[ext_resource type="Texture2D" uid="uid://lfajn6q8ym2" path="res://Art/Bird/skeleton-Hover_1.png" id="193_qodl6"]
+[ext_resource type="Texture2D" uid="uid://qve1hrwnr3jd" path="res://Art/Bird/skeleton-Hover_2.png" id="194_bgebr"]
+[ext_resource type="Texture2D" uid="uid://bmp0v25g0wpil" path="res://Art/Bird/skeleton-Hover_3.png" id="195_5c65n"]
+[ext_resource type="Texture2D" uid="uid://py7f2vjcnong" path="res://Art/Bird/skeleton-Hover_4.png" id="196_85hvb"]
+[ext_resource type="Texture2D" uid="uid://xtvxd7suuuw5" path="res://Art/Bird/skeleton-Idle_00.png" id="196_rnqlp"]
+[ext_resource type="Texture2D" uid="uid://bdraranoxtkdq" path="res://Art/Bird/skeleton-Hover_5.png" id="197_r3jve"]
+[ext_resource type="Texture2D" uid="uid://t53ya7ri412w" path="res://Art/Bird/skeleton-Idle_01.png" id="197_u8n72"]
+[ext_resource type="Texture2D" uid="uid://eewr0ows3mvt" path="res://Art/Bird/skeleton-Hover_6.png" id="198_b0kgd"]
+[ext_resource type="Texture2D" uid="uid://bwgthryxo6i1r" path="res://Art/Bird/skeleton-Idle_02.png" id="198_lybas"]
+[ext_resource type="Texture2D" uid="uid://dtnrracarhdug" path="res://Art/Bird/skeleton-Idle_03.png" id="199_qnjjo"]
+[ext_resource type="Texture2D" uid="uid://bhgx0f5pcwsmj" path="res://Art/Bird/skeleton-Idle_04.png" id="200_5mx6c"]
+[ext_resource type="Texture2D" uid="uid://cua4ys1j4ppgq" path="res://Art/Bird/skeleton-Idle_05.png" id="201_qokii"]
+[ext_resource type="Texture2D" uid="uid://br328ikkm81a6" path="res://Art/Bird/skeleton-Idle_06.png" id="202_fcy8l"]
+[ext_resource type="Texture2D" uid="uid://beua4ijebkwvm" path="res://Art/Bird/skeleton-Idle_07.png" id="203_wrfh0"]
+[ext_resource type="Texture2D" uid="uid://c87smj8bxac4g" path="res://Art/Bird/skeleton-Idle_08.png" id="204_uxkdk"]
+[ext_resource type="Texture2D" uid="uid://d00y2ntksdice" path="res://Art/Bird/skeleton-Idle_09.png" id="205_7adeo"]
+[ext_resource type="Texture2D" uid="uid://ckttd0ongqf05" path="res://Art/Bird/skeleton-Idle_10.png" id="206_dc22u"]
+[ext_resource type="Texture2D" uid="uid://bvf26noey7b3e" path="res://Art/Bird/skeleton-Idle_11.png" id="207_ed4hr"]
+[ext_resource type="Texture2D" uid="uid://bwlttcfks3ii4" path="res://Art/Bird/skeleton-Idle_12.png" id="208_rhawe"]
+[ext_resource type="Texture2D" uid="uid://dhsp6qbvbus6a" path="res://Art/Bird/skeleton-Idle_13.png" id="209_ijeqj"]
+[ext_resource type="Texture2D" uid="uid://1t4uv55mnjn8" path="res://Art/Bird/skeleton-Idle_14.png" id="210_ckx6p"]
+[ext_resource type="Texture2D" uid="uid://btbrjk48uwjdc" path="res://Art/Bird/skeleton-Idle_15.png" id="211_5nqau"]
+[ext_resource type="Texture2D" uid="uid://rt560ataujwk" path="res://Art/Bird/skeleton-Idle_16.png" id="212_a3vm2"]
+[ext_resource type="Texture2D" uid="uid://dgged20v7rla8" path="res://Art/Bird/skeleton-Idle_17.png" id="213_dgcw0"]
+[ext_resource type="Texture2D" uid="uid://c67m500xlhsrn" path="res://Art/Bird/skeleton-Idle_18.png" id="214_m6q4g"]
+[ext_resource type="Texture2D" uid="uid://bo24n1rpbl0xj" path="res://Art/Bird/skeleton-Idle_19.png" id="215_bmgkr"]
+[ext_resource type="Texture2D" uid="uid://dg1ulgfppqttx" path="res://Art/Bird/skeleton-Idle_20.png" id="216_4dyta"]
+[ext_resource type="Texture2D" uid="uid://bqua0boo7lawx" path="res://Art/Bird/skeleton-Idle_21.png" id="217_0k241"]
+[ext_resource type="Texture2D" uid="uid://inb6jmtqeqkf" path="res://Art/Bird/skeleton-Idle_22.png" id="218_w1brq"]
+[ext_resource type="Texture2D" uid="uid://dla08u1a2jkg8" path="res://Art/Bird/skeleton-Idle_23.png" id="219_qbjc7"]
+[ext_resource type="Texture2D" uid="uid://lht2oqimin0l" path="res://Art/Bird/skeleton-Idle_24.png" id="220_jybi8"]
+[ext_resource type="Texture2D" uid="uid://cnf1pu2edghbs" path="res://Art/Bird/skeleton-Idle_25.png" id="221_llff6"]
+[ext_resource type="Texture2D" uid="uid://b0hiuln4ekb3i" path="res://Art/Bird/skeleton-Idle_26.png" id="222_orsrb"]
+[ext_resource type="Texture2D" uid="uid://dbdmtu7num30c" path="res://Art/Bird/skeleton-Idle_27.png" id="223_wb0bf"]
+[ext_resource type="Texture2D" uid="uid://ttckkcinjxao" path="res://Art/Bird/skeleton-Idle_28.png" id="224_572l4"]
+[ext_resource type="Texture2D" uid="uid://84aiwk8r22bd" path="res://Art/Bird/skeleton-Idle_29.png" id="225_2cvoo"]
+[ext_resource type="Texture2D" uid="uid://b2ubix0q2dxf8" path="res://Art/Bird/skeleton-Idle_30.png" id="226_2rk5d"]
+[ext_resource type="Texture2D" uid="uid://bb0lga2t6nrrl" path="res://Art/Bird/skeleton-Idle_31.png" id="227_qgqbb"]
+[ext_resource type="Texture2D" uid="uid://b4r3e4ywxphgm" path="res://Art/Bird/skeleton-Land_0.png" id="228_4bn8y"]
+[ext_resource type="Texture2D" uid="uid://dg34jefqph4vg" path="res://Art/Bird/skeleton-Idle_32.png" id="228_8a7ml"]
+[ext_resource type="Texture2D" uid="uid://bbi664xa4yava" path="res://Art/Bird/skeleton-Idle_33.png" id="229_epdax"]
+[ext_resource type="Texture2D" uid="uid://boir07o8l8jq2" path="res://Art/Bird/skeleton-Land_1.png" id="229_ww718"]
+[ext_resource type="Texture2D" uid="uid://1ctfstahwa7b" path="res://Art/Bird/skeleton-Idle_34.png" id="230_02sqv"]
+[ext_resource type="Texture2D" uid="uid://foxtly5l0qqg" path="res://Art/Bird/skeleton-Land_2.png" id="230_uwnri"]
+[ext_resource type="Texture2D" uid="uid://c6p7i4ou7862q" path="res://Art/Bird/skeleton-Land_3.png" id="231_qoscp"]
+[ext_resource type="Texture2D" uid="uid://cnboll0dhij8s" path="res://Art/Bird/skeleton-Idle_35.png" id="231_qryes"]
+[ext_resource type="Texture2D" uid="uid://do618p2sbmenl" path="res://Art/Bird/skeleton-Land_4.png" id="232_bbrrt"]
+[ext_resource type="Texture2D" uid="uid://b38spvltuc61a" path="res://Art/Bird/skeleton-Idle_36.png" id="232_fw45l"]
+[ext_resource type="Texture2D" uid="uid://c0rs6kub6xc7q" path="res://Art/Bird/skeleton-Land_5.png" id="233_56auw"]
+[ext_resource type="Texture2D" uid="uid://cqkrbnbq3bn6" path="res://Art/Bird/skeleton-Idle_37.png" id="233_misbi"]
+[ext_resource type="Texture2D" uid="uid://cscpada7p4woj" path="res://Art/Bird/skeleton-Idle_38.png" id="234_f8cg3"]
+[ext_resource type="Texture2D" uid="uid://bdlxtlv4xiumw" path="res://Art/Bird/skeleton-Idle_39.png" id="235_d0aah"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cr0xe"]
 
@@ -729,11 +798,243 @@ bg_color = Color(1, 0, 0.0980392, 1)
 [sub_resource type="CircleShape2D" id="CircleShape2D_leb0a"]
 radius = 78.72
 
-[node name="FriendlyGolem" type="RigidBody2D" node_paths=PackedStringArray("sndFootStep", "sndGolemDeathp")]
+[sub_resource type="SpriteFrames" id="SpriteFrames_mkxi0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("176_py2eu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("177_dyars")
+}, {
+"duration": 1.0,
+"texture": ExtResource("178_j58r2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("179_8vdbh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("180_qvsg2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("181_28lih")
+}, {
+"duration": 1.0,
+"texture": ExtResource("182_rwd6e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("183_sbig3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("184_4fhlg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("185_mn807")
+}, {
+"duration": 1.0,
+"texture": ExtResource("186_moyp1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("187_joeh5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("188_5mipe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("189_4ud2l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("190_wr2je")
+}, {
+"duration": 1.0,
+"texture": ExtResource("191_bngbv")
+}],
+"loop": false,
+"name": &"FlyUp",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("192_jpwwg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("193_qodl6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("194_bgebr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("195_5c65n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("196_85hvb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("197_r3jve")
+}, {
+"duration": 1.0,
+"texture": ExtResource("198_b0kgd")
+}],
+"loop": true,
+"name": &"Hover",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("196_rnqlp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("197_u8n72")
+}, {
+"duration": 1.0,
+"texture": ExtResource("198_lybas")
+}, {
+"duration": 1.0,
+"texture": ExtResource("199_qnjjo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("200_5mx6c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("201_qokii")
+}, {
+"duration": 1.0,
+"texture": ExtResource("202_fcy8l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("203_wrfh0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("204_uxkdk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("205_7adeo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("206_dc22u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("207_ed4hr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("208_rhawe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("209_ijeqj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("210_ckx6p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("211_5nqau")
+}, {
+"duration": 1.0,
+"texture": ExtResource("212_a3vm2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("213_dgcw0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("214_m6q4g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("215_bmgkr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("216_4dyta")
+}, {
+"duration": 1.0,
+"texture": ExtResource("217_0k241")
+}, {
+"duration": 1.0,
+"texture": ExtResource("218_w1brq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("219_qbjc7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("220_jybi8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("221_llff6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("222_orsrb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("223_wb0bf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("224_572l4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("225_2cvoo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("226_2rk5d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("227_qgqbb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("228_8a7ml")
+}, {
+"duration": 1.0,
+"texture": ExtResource("229_epdax")
+}, {
+"duration": 1.0,
+"texture": ExtResource("230_02sqv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("231_qryes")
+}, {
+"duration": 1.0,
+"texture": ExtResource("232_fw45l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("233_misbi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("234_f8cg3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("235_d0aah")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("228_4bn8y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("229_ww718")
+}, {
+"duration": 1.0,
+"texture": ExtResource("230_uwnri")
+}, {
+"duration": 1.0,
+"texture": ExtResource("231_qoscp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("232_bbrrt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("233_56auw")
+}],
+"loop": false,
+"name": &"Land",
+"speed": 10.0
+}]
+
+[node name="FriendlyGolem" type="RigidBody2D" node_paths=PackedStringArray("sndFootStep", "sndGolemDeathp", "bird")]
 gravity_scale = 0.0
+lock_rotation = true
 script = ExtResource("1_tqyrp")
 sndFootStep = NodePath("Footstep")
 sndGolemDeathp = NodePath("sndGolemDeath")
+bird = NodePath("Bird")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 14)
@@ -743,7 +1044,9 @@ shape = SubResource("CircleShape2D_cr0xe")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(-9, -144)
 sprite_frames = SubResource("SpriteFrames_jtl1q")
-animation = &"Idle"
+animation = &"Death"
+frame = 67
+frame_progress = 1.0
 speed_scale = 2.0
 
 [node name="AttackProjectile" type="Area2D" parent="."]
@@ -791,6 +1094,14 @@ shape = SubResource("CircleShape2D_leb0a")
 stream = ExtResource("175_230eu")
 bus = &"SFX"
 
+[node name="Bird" type="AnimatedSprite2D" parent="."]
+position = Vector2(-64, -289)
+sprite_frames = SubResource("SpriteFrames_mkxi0")
+animation = &"Hover"
+frame_progress = 0.377172
+speed_scale = 2.0
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="OnAnimFinished"]
 [connection signal="frame_changed" from="AnimatedSprite2D" to="." method="FrameChanged"]
 [connection signal="body_entered" from="HitByEnemyArea" to="." method="OnBodyEntered"]
+[connection signal="animation_finished" from="Bird" to="." method="BirdAnimDone"]

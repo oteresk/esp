@@ -19,7 +19,6 @@ public partial class player : Area2D
 	[Export] public float DashDuration = 0.2f;
 	[Export] public float DashCooldown = 1.0f;
 	public float dashTimer = 0;
-
 	private float dashCooldownTimer = 0;
 	private bool isDashing = false;
 
@@ -68,8 +67,7 @@ public partial class player : Area2D
 		animatedSprite2D.Animation = "idle";
 		animatedSprite2D.Play();
 
-		// set magnetism size
-		magnetismShape.Scale = new Vector2(Globals.magnetism, Globals.magnetism);
+		SetMagnetismShape();
 
 		// setup itemIcons List
 		itemIcons = new Sprite2D[5];
@@ -113,6 +111,13 @@ public partial class player : Area2D
 		newAttack.Call("SetWeaponElement", "energy");
 		*/
 	}
+
+	public void SetMagnetismShape()
+	{
+        // set magnetism size
+		if (IsInstanceValid(magnetismShape))
+	        magnetismShape.Scale = new Vector2(Globals.magnetism, Globals.magnetism);
+    }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)

@@ -9,6 +9,7 @@ public partial class resourceGUI : CanvasLayer
     [Export] public Label lblIron;
     [Export] public Label lblMana;
     [Export] public Label lblWood;
+    [Export] public Label lblResearch;
     [Export] public Label lblTimer;
 
     public override void _Ready()

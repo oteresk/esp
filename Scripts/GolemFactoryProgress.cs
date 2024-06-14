@@ -80,6 +80,7 @@ public partial class GolemFactoryProgress : ProgressBar
 			fG.Position = curRD.GlobalPosition+new Vector2(-30,250);
 
 			Globals.golem = fG;
+            Globals.golemAlive = true;
 
             curProgBar.Visible = false;
 			this.Visible = false;

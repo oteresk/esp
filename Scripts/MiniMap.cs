@@ -184,7 +184,7 @@ public partial class MiniMap : Node2D
                     if ((bool)childNode.Get("captured") == true)
                     {
                         Color curColor = mapIcon.Modulate;
-                        Debug.Print("time - found: " + rdp.RDResource.resourceType.ToString());
+                        //Debug.Print("time - found: " + rdp.RDResource.resourceType.ToString());
                         mapIcon.Modulate = new Color(curColor.R, curColor.G, curColor.B, .5f);
                     }
                 }
@@ -203,17 +203,28 @@ public partial class MiniMap : Node2D
             int pixelSizeX = 192 * 3;
             int pixelSizeY = 108 * 3;
 
-            float golemGridXPos = Globals.golem.Position.X/ pixelSizeX * posRatioX + 1600;
-            float golemGridYPos = Globals.golem.Position.Y/ pixelSizeY * posRatioY + 931;
-
-            if (golemMapIcon!=null)
+            if (IsInstanceValid(Globals.golem))
             {
-                golemMapIcon.Position = new Vector2(golemGridXPos, golemGridYPos);
-                golemMapIcon.Name = "Golem";
+                float golemGridXPos = Globals.golem.Position.X / pixelSizeX * posRatioX + 1600;
+                float golemGridYPos = Globals.golem.Position.Y / pixelSizeY * posRatioY + 931;
+
+                if (golemMapIcon != null)
+                {
+                    if (IsInstanceValid(golemMapIcon))
+                    {
+                        golemMapIcon.Position = new Vector2(golemGridXPos, golemGridYPos);
+                        golemMapIcon.Name = "Golem";
+                    }
+                }
             }
 
         }
-        DisplayGolem();
+
+        if (Globals.golemAlive)
+            DisplayGolem();
+        else
+            if (IsInstanceValid(golemMapIcon))
+                golemMapIcon.QueueFree();
     }
 
 

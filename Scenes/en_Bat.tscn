@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cea8np42epeyx"]
+[gd_scene load_steps=10 format=3 uid="uid://cea8np42epeyx"]
 
 [ext_resource type="Shader" path="res://Shaders/ColorFlash.gdshader" id="1_l2bn1"]
 [ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_q6scr"]
@@ -30,6 +30,8 @@ animations = [{
 radius = 19.9795
 height = 39.9591
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vifxa"]
+
 [node name="en_Bat" type="RigidBody2D"]
 collision_layer = 2
 collision_mask = 3
@@ -49,16 +51,27 @@ material = SubResource("ShaderMaterial_71tgv")
 sprite_frames = SubResource("SpriteFrames_7y2m0")
 
 [node name="Area2D" type="Area2D" parent="." groups=["Enemies"]]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visible = false
 position = Vector2(0, 3)
 rotation = -0.0174251
 shape = SubResource("CapsuleShape2D_j3bk0")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(4.76837e-07, 3)
 rotation = 0.00420356
 scale = Vector2(0.919833, 1)
 shape = SubResource("CapsuleShape2D_j3bk0")
 
+[node name="Occlusion Area Collider" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
+scale = Vector2(140, 90)
+shape = SubResource("RectangleShape2D_vifxa")
+
 [connection signal="area_entered" from="Area2D" to="." method="OnBodyEntered"]
+[connection signal="area_entered" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_entered"]
+[connection signal="area_exited" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_exited"]

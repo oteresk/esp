@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://6jlkl7t8tree"]
+[gd_scene load_steps=10 format=3 uid="uid://6jlkl7t8tree"]
 
 [ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_ksm67"]
 [ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_b7f3c"]
@@ -29,6 +29,8 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
 radius = 19.474
 height = 58.9003
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7tu5e"]
 
 [node name="en_Scorp" type="RigidBody2D"]
 collision_layer = 2
@@ -67,4 +69,12 @@ rotation = -0.731414
 scale = Vector2(2.31274, 1.6825)
 shape = SubResource("CapsuleShape2D_j3bk0")
 
+[node name="Occlusion Area Collider" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
+scale = Vector2(140, 90)
+shape = SubResource("RectangleShape2D_7tu5e")
+
 [connection signal="area_entered" from="Area2D" to="." method="OnBodyEntered"]
+[connection signal="area_entered" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_entered"]
+[connection signal="area_exited" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_exited"]

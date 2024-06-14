@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using static AttackRange;
 using System.Xml.Linq;
+using static Godot.TextServer;
 
 public partial class Golem : RigidBody2D
 {
@@ -15,6 +16,7 @@ public partial class Golem : RigidBody2D
     public float ThrowFreq = 5000; // in milliseconds
     private float dist;
     private float minDistance = 700;
+    private float runDistance = 1000;
     private float walkToDistance = 400;
     public string mode = "stand";
     public float moveSpeed = 50f;
@@ -32,6 +34,8 @@ public partial class Golem : RigidBody2D
     public float maxHP = 4000;
     public float HP;
 
+    [Export] public AnimatedSprite2D bird;
+
     public override void _Ready()
 	{
         animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
@@ -47,8 +51,12 @@ public partial class Golem : RigidBody2D
         HP = maxHP;
         HPBar.Value = HP;
 
+        bird.Play("Idle");
+        //Debug.Print("play idle");
+
         CheckDistanceToPlayer();
         ThrowProjectile();
+
     }
 
 
@@ -64,9 +72,15 @@ public partial class Golem : RigidBody2D
                 if (direction.X < 0) // if facing left
                 {
                     animatedSprite2D.FlipH = true;
+                    bird.FlipH = true;
+                    bird.Position=new Vector2(34,bird.Position.Y);
                 }
                 else
+                {
                     animatedSprite2D.FlipH = false;
+                    bird.FlipH= false;
+                    bird.Position = new Vector2(-64, bird.Position.Y);
+                }
 
                 Position += velocity * (float)delta;
 
@@ -80,19 +94,71 @@ public partial class Golem : RigidBody2D
             }
         }
 
-	}
+        if (mode == "run")
+        {
+            if (dist > walkToDistance)
+            {
+                Vector2 direction = GlobalTransform.Origin.DirectionTo(Globals.ps.GlobalPosition);
+                velocity = direction * moveSpeed * poisonSpeed*3;
+
+                if (direction.X < 0) // if facing left
+                {
+                    animatedSprite2D.FlipH = true;
+                }
+                else
+                    animatedSprite2D.FlipH = false;
+
+                Position += velocity * (float)delta;
+            }
+        }
+
+        // sync bird frames with golem
+        if (animatedSprite2D.Animation == "Idle" && bird.Animation=="Idle")
+        {
+            bird.Frame = animatedSprite2D.Frame;
+            //Debug.Print("frame:" + animatedSprite2D.Frame + " bird:" + bird.Frame);
+        }
+
+
+    }
 
     private async void CheckDistanceToPlayer()
     {
-        dist = GlobalPosition.DistanceTo(Globals.ps.GlobalPosition);
-        if (mode=="stand")
+        if (IsInstanceValid(Globals.ps))
+            dist = GlobalPosition.DistanceTo(Globals.ps.GlobalPosition);
+        if (mode=="stand" || mode=="run")
         {
-            if (dist > minDistance)
+            if (dist > minDistance && dist<=runDistance)
             {
                 mode = "walk";
                 animatedSprite2D.Animation = "Walk";
                 animatedSprite2D.Play();
-                //Debug.Print("mode: walk");
+                animatedSprite2D.SpeedScale = 2;
+                //Debug.Print("mode = walk");
+                bird.Play("FlyUp");
+                //Debug.Print("FlyUp");
+                //Debug.Print("bird mode: walk");
+            }
+        }
+
+        if (dist > runDistance && mode!="dead" && mode=="walk")
+        {
+            mode = "run";
+            animatedSprite2D.Animation = "Walk";
+            animatedSprite2D.Play();
+            animatedSprite2D.SpeedScale = 5;
+            //Debug.Print("mode = run");
+            bird.Play("FlyUp");
+            //Debug.Print("FlyUp");
+        }
+
+        if (dist < minDistance && mode!="throw")
+        {
+            if (mode == "walk" || mode == "run")
+            {
+                mode = "stand";
+                animatedSprite2D.Animation = "Idle";
+                animatedSprite2D.Play();
             }
         }
 
@@ -121,10 +187,6 @@ public partial class Golem : RigidBody2D
             //Debug.Print("Hit Golem: " + dmg);
         }
 
-
-
-        
-
         HPBar.Value = HP;
 
         if (HP < 1 && mode!="dead")
@@ -132,11 +194,22 @@ public partial class Golem : RigidBody2D
             mode = "dead";
             animatedSprite2D.Animation = "Death";
             animatedSprite2D.Play();
+            bird.Play("FlyUp");
+            //Debug.Print("FlyUp");
             // play golem death sound
             sndGolemDeathp.Play();
+            HPBar.Visible = false;
+            DeleteGolem();
+            Globals.golemAlive = false;
         }
         
 
+    }
+
+    private async void DeleteGolem()
+    {
+        await Task.Delay(TimeSpan.FromMilliseconds(10));
+        QueueFree();
     }
 
         private async void ThrowProjectile()
@@ -156,10 +229,72 @@ public partial class Golem : RigidBody2D
                 animatedSprite2D.Play();
                 targetEnemy=enemiesInRange[0];
                 targetEnemyPos = targetEnemy.GlobalPosition;
-                Debug.Print("TargetEnemy:" + targetEnemy + " pos:" + targetEnemy.Position);
+                if (bird.Animation=="Idle")
+                    bird.Play("FlyUp");
+
+
+                if (targetEnemy.GlobalPosition.X < Position.X) // if facing left
+                {
+                    animatedSprite2D.FlipH = true;
+                    bird.FlipH = true;
+                    bird.Position = new Vector2(34, bird.Position.Y);
+                }
+                else
+                {
+                    animatedSprite2D.FlipH = false;
+                    bird.FlipH = false;
+                    bird.Position = new Vector2(-64, bird.Position.Y);
+                }
+
+
+
+                //Debug.Print("throw");
+                //Debug.Print("TargetEnemy:" + targetEnemy + " pos:" + targetEnemy.Position);
             }
         }
         ThrowProjectile();
+    }
+
+    public void BirdAnimDone()
+    {
+        //Debug.Print("Bird anim done:" + bird.Animation);
+        if (bird.Animation=="FlyUp")
+        {
+            CheckLand();
+        }
+        else
+            if (bird.Animation == "Land")
+            {
+                if (animatedSprite2D.Animation == "Idle")
+                    bird.Animation = "Idle";
+                else
+                    bird.Animation = "FlyUp";
+            }
+            else
+                if (bird.Animation == "Hover")
+                {
+                    CheckLand();
+                }
+    }
+
+    private async void CheckLand()
+    {
+        //Debug.Print("CheckLand:" + mode+ " bird.Animation="+ bird.Animation);
+        if (IsInstanceValid(bird))
+        {
+            if (mode == "stand")
+            {
+                bird.Play("Land");
+                Debug.Print("Land");
+            }
+            else
+            {
+                bird.Play("Hover");
+                await Task.Delay(TimeSpan.FromMilliseconds(350));
+                CheckLand();
+            }
+        }
+
     }
 
     public void OnAnimFinished()
@@ -169,6 +304,7 @@ public partial class Golem : RigidBody2D
             animatedSprite2D.Animation = "Idle";
             animatedSprite2D.Play();
             mode = "stand";
+            //Debug.Print("mode=stand");
         }
     }
 

@@ -55,16 +55,16 @@ public partial class enemy : RigidBody2D
     }
 
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _PhysicsProcess(double delta)
-	{
-		if (Globals.playerAlive && !frozen)
-		{
+
+    public override void _Process(double delta)
+    {
+        if (Globals.playerAlive && !frozen && Visible)
+        {
             curTime += delta;
             Vector2 direction = GlobalTransform.Origin.DirectionTo(pl.GlobalPosition);
-			velocity = direction * speed*poisonSpeed;
+            velocity = direction * speed * poisonSpeed;
 
-            if (direction.X<0) // if facing left
+            if (direction.X < 0) // if facing left
             {
                 enemySprite.FlipH = true;
             }
@@ -72,8 +72,9 @@ public partial class enemy : RigidBody2D
                 enemySprite.FlipH = false;
 
             Position += velocity * (float)delta;
-		}
-	}
+        }
+    }
+
 
     public enum DamageType
     {
@@ -199,14 +200,36 @@ public partial class enemy : RigidBody2D
 
     public void LeaveTrail()
     {
-        var trailScene = (PackedScene)ResourceLoader.Load("res://Scenes/SlimeTrail.tscn");
-        var newSlimeTrail = (AnimatedSprite2D)trailScene.Instantiate();
-        Node2D nodEnemies = (Node2D)GetNode(Globals.NodeEnemies);
-        nodEnemies.AddChild(newSlimeTrail);
-        newSlimeTrail.GlobalPosition = GlobalPosition;
+        if (Visible)
+        {
+            var trailScene = (PackedScene)ResourceLoader.Load("res://Scenes/SlimeTrail.tscn");
+            var newSlimeTrail = (AnimatedSprite2D)trailScene.Instantiate();
+            Node2D nodEnemies = (Node2D)GetNode(Globals.NodeEnemies);
+            nodEnemies.AddChild(newSlimeTrail);
+            newSlimeTrail.GlobalPosition = GlobalPosition;
 
-        Timer tmrTrail = (Timer)GetNode("Timer");
-        tmrTrail.WaitTime = GD.RandRange(2.2f, 3.9f);
+            Timer tmrTrail = (Timer)GetNode("Timer");
+            tmrTrail.WaitTime = GD.RandRange(2.2f, 3.9f);
+        }
+    }
+
+    public void _on_occlusion_area_collider_area_entered(Area2D area)
+    {
+        if (area.IsInGroup("Players") && Globals.useOcclusion)
+        {
+            Visible = true;
+            //Debug.Print("occlusion: enter:" + RDResource.ToString());
+
+        }
+    }
+
+    public void _on_occlusion_area_collider_area_exited(Area2D area)
+    {
+        if (area.IsInGroup("Players") && Globals.useOcclusion)
+        {
+            Visible = false;
+            //Debug.Print("occlusion: exit" + RDResource.ToString());
+        }
     }
 
 }

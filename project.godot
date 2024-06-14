@@ -87,6 +87,7 @@ load={
 
 [physics]
 
+2d/run_on_separate_thread=true
 common/physics_ticks_per_second=120
 
 [rendering]
