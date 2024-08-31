@@ -1,0 +1,95 @@
+[gd_scene load_steps=16 format=3 uid="uid://6jlkl7t8tree"]
+
+[ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_ksm67"]
+[ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_b7f3c"]
+[ext_resource type="Shader" path="res://Shaders/ColorFlash.gdshader" id="3_xy34p"]
+[ext_resource type="Texture2D" uid="uid://tp6ytj4lw5p1" path="res://Art/Enemy-sprites/Scorpion/Scorpion-animation_0.png" id="4_oy7se"]
+[ext_resource type="Texture2D" uid="uid://b005hs87onlus" path="res://Art/Enemy-sprites/Scorpion/Scorpion-animation_1.png" id="5_42fol"]
+[ext_resource type="Texture2D" uid="uid://b38fl03fap474" path="res://Art/Enemy-sprites/Scorpion/Scorpion-animation_2.png" id="6_u0wa7"]
+[ext_resource type="Texture2D" uid="uid://bvjoiyannkhxv" path="res://Art/Enemy-sprites/Scorpion/Scorpion-animation_3.png" id="7_2lp2c"]
+[ext_resource type="Texture2D" uid="uid://cbv76pfy3ifm" path="res://Art/Enemy-sprites/Scorpion/Scorpion-animation_4.png" id="8_fenhy"]
+[ext_resource type="Texture2D" uid="uid://tin6eb61i8a6" path="res://Art/Enemy-sprites/Scorpion/Scorpion-animation_5.png" id="9_xwrb5"]
+[ext_resource type="Texture2D" uid="uid://c6e44k3riuoo" path="res://Art/Enemy-sprites/Scorpion/Scorpion-animation_6.png" id="10_whh7r"]
+[ext_resource type="Texture2D" uid="uid://c7kvcumrxr6j2" path="res://Art/Enemy-sprites/Scorpion/Scorpion-animation_7.png" id="11_ifwkj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fb7vb"]
+resource_local_to_scene = true
+shader = ExtResource("3_xy34p")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_oy7se")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_42fol")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_u0wa7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_2lp2c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_fenhy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_xwrb5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_whh7r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_ifwkj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 16.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
+radius = 19.474
+height = 58.9003
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7tu5e"]
+
+[node name="en_Scorp" type="RigidBody2D" groups=["Enemies"]]
+collision_layer = 2
+collision_mask = 2
+mass = 0.01
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_ksm67")
+health = 10.0
+speed = 45.0
+itemScene = ExtResource("2_b7f3c")
+damageType = 1
+damage = 3
+damageTime = 4
+XP = 9
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_fb7vb")
+position = Vector2(7.5, 4.375)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_7y2m0")
+frame_progress = 0.277755
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(6, 4)
+rotation = -0.731414
+scale = Vector2(2.31274, 1.6825)
+shape = SubResource("CapsuleShape2D_j3bk0")
+
+[node name="Occlusion Area Collider" type="Area2D" parent="." groups=["Occlusion"]]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
+scale = Vector2(140, 90)
+shape = SubResource("RectangleShape2D_7tu5e")

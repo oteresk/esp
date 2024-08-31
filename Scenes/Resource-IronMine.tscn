@@ -40,14 +40,12 @@ resourceCaptureSpeed = 0.6
 [node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-visible = false
 shape = SubResource("CircleShape2D_fvjvk")
 
 [node name="CaptureTimer" parent="." instance=ExtResource("5_xb7x2")]
-visible = false
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(-34, 19)
+position = Vector2(-39, 1)
 scale = Vector2(4, 4)
 color = Color(0.54902, 0.776471, 1, 1)
 energy = 2.16
@@ -62,7 +60,7 @@ shape = SubResource("RectangleShape2D_bmy5u")
 [node name="Discovery Area Collider" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Discovery Area Collider"]
-scale = Vector2(100, 100)
+scale = Vector2(550, 550)
 shape = SubResource("CircleShape2D_7c1gb")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

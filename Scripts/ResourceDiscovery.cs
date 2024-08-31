@@ -33,10 +33,15 @@ public partial class ResourceDiscovery : Sprite2D
 	[Export] public Light2D light3;
 	private bool factoryPaused = false;
 	public bool switchEnabled = true;
-
+	[Export] public Texture2D choppedTrees;
 
     public override void _Ready()
 	{
+
+		if (IsInGroup("Tower"))
+			SetTowerLevel();
+
+
 		if (Name== "Golem Factory")
 		{
 			if (progressBar != null)
@@ -74,7 +79,7 @@ public partial class ResourceDiscovery : Sprite2D
 			if (structureSelect != null)
 			{
 				structureSelect.Visible = false;
-				Debug.Print("Hide Structure Select ready");
+				//Debug.Print("Hide Structure Select ready");
 			}
 		}
 		if (Globals.useOcclusion)
@@ -122,7 +127,7 @@ public partial class ResourceDiscovery : Sprite2D
 									ResourceDiscoveries.AddResource(RDResource.resourceType.ToString(), RDResource.amount, RDResource.amountMax);
 									capTimer.Visible = false;
 									captured = true;
-									StartCoroutine(MakeTreeFall());
+									MakeTreeFall();
 									// update minimap
 									Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
 									miniMap.Call("DisplayMap");
@@ -149,7 +154,7 @@ public partial class ResourceDiscovery : Sprite2D
 		if (RDResource != null)
 		{
 			// exit platform
-			if (RDResource.resourceType.ToString() == "None" && nearResource == true && area.IsInGroup("Players"))
+			if (RDResource.resourceType.ToString() == "None" && nearResource == true && area.IsInGroup("Player"))
 			{
 				// hide structure select canvas
 				CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
@@ -157,10 +162,13 @@ public partial class ResourceDiscovery : Sprite2D
 
 				nearResource = false;
 				Debug.Print("Hide Structure Select");
-			}
-		}
+
+                // unpause game
+                Globals.UnPauseGame();
+            }
+        }
 		// not near resource
-		if (area.IsInGroup("Players") && captured == false && nearResource == true)
+		if (area.IsInGroup("Player") && captured == false && nearResource == true)
 		{
 			nearResource = false;
 		}
@@ -172,7 +180,7 @@ public partial class ResourceDiscovery : Sprite2D
 		// platform
 		if (RDResource != null)
 		{
-			if (RDResource.resourceType.ToString() == "None" && nearResource == false && area.IsInGroup("Players"))
+			if (RDResource.resourceType.ToString() == "None" && nearResource == false && area.IsInGroup("Player"))
 			{
 				CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
 				nodStruct.Visible = true;
@@ -182,10 +190,13 @@ public partial class ResourceDiscovery : Sprite2D
 				// let Structure Select know which platform you are on
 				SettlementSelect.platform = this;
 
-			}
-		}
+                // pause game
+                Globals.PauseGame();
+
+            }
+        }
 		// player near resource
-		if (area.IsInGroup("Players") && captured == false && nearResource == false)
+		if (area.IsInGroup("Player") && captured == false && nearResource == false)
 		{
 			nearResource = true;
 			// set capture speed
@@ -195,13 +206,9 @@ public partial class ResourceDiscovery : Sprite2D
 
 	}
 
-	IEnumerable MakeTreeFall()
+	private void MakeTreeFall()
 	{
-		for (int iter = 1; iter <= 90; iter++)
-		{
-			RotationDegrees = RotationDegrees + 1;
-			yield return null;
-		}
+		this.Texture = choppedTrees;
 	}
 
 	public static async void StartCoroutine(IEnumerable objects)
@@ -215,7 +222,7 @@ public partial class ResourceDiscovery : Sprite2D
 
 	public void _on_occlusion_area_collider_area_entered(Area2D area)
 	{
-		if (area.IsInGroup("Players") && Globals.useOcclusion)
+		if (area.IsInGroup("Player") && Globals.useOcclusion)
 		{
 			Visible = true;
 			//Debug.Print("occlusion: enter:" + RDResource.ToString());
@@ -225,7 +232,7 @@ public partial class ResourceDiscovery : Sprite2D
 
 	public void _on_occlusion_area_collider_area_exited(Area2D area)
 	{
-		if (area.IsInGroup("Players") && Globals.useOcclusion)
+		if (area.IsInGroup("Player") && Globals.useOcclusion)
 		{
 			Visible = false;
 			//Debug.Print("occlusion: exit" + RDResource.ToString());
@@ -234,7 +241,7 @@ public partial class ResourceDiscovery : Sprite2D
 
 	public void OnDiscoveryColliderEnter(Area2D area)
 	{
-		if (area.IsInGroup("Players") && discovered == false)
+		if (area.IsInGroup("Player") && discovered == false)
 		{
 			discovered = true;
 			// update minimap
@@ -292,23 +299,21 @@ public partial class ResourceDiscovery : Sprite2D
     private async void FlashLight()
 	{
         await Task.Delay(TimeSpan.FromMilliseconds(2 * 1000));
-		if (IsInstanceValid(light1) && IsInstanceValid(light2) && IsInstanceValid(light3))
-		{
-            if (factoryPaused && factoryisOn)
-            {
-                light1.Visible = false;
-                light2.Visible = false;
-                light3.Visible = false;
-            }
-            await Task.Delay(TimeSpan.FromMilliseconds(2 * 1000));
-            if (factoryisOn)
-            {
-                light1.Visible = true;
-                light2.Visible = true;
-                light3.Visible = true;
-                if (factoryPaused)
-                    FlashLight();
-            }
+
+        if (factoryPaused && factoryisOn && IsInstanceValid(light1) && IsInstanceValid(light2) && IsInstanceValid(light3))
+        {
+            light1.Visible = false;
+            light2.Visible = false;
+            light3.Visible = false;
+        }
+        await Task.Delay(TimeSpan.FromMilliseconds(2 * 1000));
+        if (factoryisOn && IsInstanceValid(light1) && IsInstanceValid(light2) && IsInstanceValid(light3))
+        {
+            light1.Visible = true;
+            light2.Visible = true;
+            light3.Visible = true;
+            if (factoryPaused)
+                FlashLight();
         }
     }
 
@@ -319,6 +324,47 @@ public partial class ResourceDiscovery : Sprite2D
         light1.Visible = true;
         light2.Visible = true;
         light3.Visible = true;
+    }
+
+	public void SetTowerLevel()
+	{
+		if (Globals.towerLevel==1)
+		{
+			AttackRange aR = (AttackRange)GetNode("AttackRange");
+
+			aR.attackSpeedLevel = 1;
+			aR.dmgLevel = 1;
+			aR.AOELevel = 4;
+            aR.SetAttackSpeed();
+            aR.SetAOE();
+            aR.SetDamage();
+            aR.SetBulletColor(new Color(0, 0.3f, 0.8f, 1));
+        }
+
+        if (Globals.towerLevel == 2)
+        {
+            AttackRange aR = (AttackRange)GetNode("AttackRange");
+
+            aR.attackSpeedLevel = 5;
+            aR.dmgLevel = 3;
+            aR.AOELevel = 7;
+            aR.SetAttackSpeed();
+            aR.SetAOE();
+            aR.SetDamage();
+			aR.SetBulletColor(new Color(1, .2f, .8f, 1));
+        }
+        if (Globals.towerLevel == 3)
+        {
+            AttackRange aR = (AttackRange)GetNode("AttackRange");
+
+            aR.attackSpeedLevel = 10;
+            aR.dmgLevel = 6;
+            aR.AOELevel = 10;
+            aR.SetAttackSpeed();
+            aR.SetAOE();
+            aR.SetDamage();
+            aR.SetBulletColor(new Color(1, .2f, .2f, 1));
+        }
     }
 
 }

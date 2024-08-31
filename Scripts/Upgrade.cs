@@ -26,7 +26,7 @@ public partial class Upgrade : CanvasLayer
     // enums
     public enum WEAPONTYPE
 	{
-		Swipe, Projectile, Cross, Orbit, Random
+		Slash, Projectile, Cross, Orbit, Random
 	}
     public enum WEAPONELEMENT
     {
@@ -131,8 +131,12 @@ public partial class Upgrade : CanvasLayer
 
     public void RandomizeUpgrade()
     {
-        // set weapon type
-        int r = GD.RandRange(1, 3);
+        // set weapon type (1-3 - unlocked in Globals)
+        int r;
+        do
+        {
+            r = GD.RandRange(1, 4);
+        } while (Globals.weaponTypeUnlocked[r - 1] == false);
         /*
         if (r==3)
             r = 1; // testing
@@ -143,13 +147,16 @@ public partial class Upgrade : CanvasLayer
         switch (r)
         {
             case 1:
-                wType = WEAPONTYPE.Swipe;
+                wType = WEAPONTYPE.Slash;
                 break;
             case 2:
                 wType = WEAPONTYPE.Projectile;
                 break;
             case 3:
                 wType = WEAPONTYPE.Cross;
+                break;
+            case 4:
+                wType = WEAPONTYPE.Orbit;
                 break;
         }
 
@@ -175,13 +182,21 @@ public partial class Upgrade : CanvasLayer
                 break;
         }
 
-        // choose random material
-        r = GD.RandRange(1, 3);
+        // choose random element
+        ChooseElement:
+            r = GD.RandRange(1, 3);
+
+        // if fire is locked
+        if (wType == WEAPONTYPE.Cross && r==1 && Globals.weaponTypeUnlocked[11] == false) // only allow fire if unlocked
+            goto ChooseElement;
+        if (wType == WEAPONTYPE.Orbit && r == 1 && Globals.weaponTypeUnlocked[11] == false) // only allow fire if unlocked
+            goto ChooseElement;
+
 
         description = "";
 
         // *** Swipe ***
-        if (wType == WEAPONTYPE.Swipe)
+        if (wType == WEAPONTYPE.Slash)
         {
             switch (r)
             {
@@ -210,7 +225,7 @@ public partial class Upgrade : CanvasLayer
                     }
                     else
                     {
-                        description = "Creates a swipe of energy.";
+                        description = "Creates a slash of energy.";
                         rarity = RARITYTYPE.New;
                         uType = UPGRADETYPE.None;
                     }
@@ -240,7 +255,7 @@ public partial class Upgrade : CanvasLayer
                     }
                     else // new
                     {
-                        description = "Creates a swipe of Ice shards that freezes the enemy.";
+                        description = "Creates a slash of Ice shards that freezes the enemy.";
                         rarity = RARITYTYPE.New;
                         uType = UPGRADETYPE.None;
                     }
@@ -270,7 +285,7 @@ public partial class Upgrade : CanvasLayer
                     }
                     else // new
                     {
-                        description = "Creates a swipe of leeches that drains the enemy health and give some of it to you.";
+                        description = "Creates a slash of leeches that drains the enemy health and give some of it to you.";
                         rarity = RARITYTYPE.New;
                         uType = UPGRADETYPE.None;
                     }
@@ -376,10 +391,7 @@ public partial class Upgrade : CanvasLayer
             }
         }
 
-
-
-
-
+    // *********** Cross *************
         if (wType == WEAPONTYPE.Cross)
         {
             switch (r)
@@ -476,6 +488,108 @@ public partial class Upgrade : CanvasLayer
                     break;
             }
         }
+
+        // *********** orbit *************
+        if (wType == WEAPONTYPE.Orbit)
+        {
+            //Debug.Print("Orbit Upgrade: en:"+ Globals.ps.atkOrbitEnergy.Count + " fire:"+ Globals.ps.atkOrbitFire.Count+" po: " + Globals.ps.atkOrbitPoison.Count);
+            switch (r)
+            {
+                case 1:
+                    eType = WEAPONELEMENT.Fire;
+                    if (Globals.ps.atkOrbitFire.Count > 0) //not new
+                    {
+                        selectedAttack = Globals.ps.atkOrbitFire[0];
+                        // set upgrade type (DMG, AOE, Speed)
+                        int rand = GD.RandRange(1, 3);
+                        switch (rand)
+                        {
+                            case 1:
+                                uType = UPGRADETYPE.Dmg;
+                                description = "DMG: " + Globals.ps.atkOrbitFire[0].GetDmgLevel().ToString() + " -> " + (Globals.ps.atkOrbitFire[0].GetDmgLevel() + 1 * rarityMult).ToString();
+                                break;
+                            case 2:
+                                uType = UPGRADETYPE.AoE;
+                                description = "AoE: " + Globals.ps.atkOrbitFire[0].GetAOELevel().ToString() + " -> " + (Globals.ps.atkOrbitFire[0].GetAOELevel() + 1 * rarityMult).ToString();
+                                break;
+                            case 3:
+                                uType = UPGRADETYPE.Speed;
+                                description = "Speed: " + Globals.ps.atkOrbitFire[0].GetAttackSpeedLevel().ToString() + " -> " + (Globals.ps.atkOrbitFire[0].GetAttackSpeedLevel() + 1 * rarityMult).ToString();
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        description = "A flame orbits around you.";
+                        rarity = RARITYTYPE.New;
+                        uType = UPGRADETYPE.None;
+                    }
+                    break;
+                case 2:
+                    eType = WEAPONELEMENT.Energy;
+                    if (Globals.ps.atkOrbitEnergy.Count > 0) //not new
+                    {
+                        selectedAttack = Globals.ps.atkOrbitEnergy[0];
+                        // set upgrade type (DMG, AOE, Speed)
+                        int rand = GD.RandRange(1, 3);
+                        switch (rand)
+                        {
+                            case 1:
+                                uType = UPGRADETYPE.Dmg;
+                                description = "DMG: " + Globals.ps.atkOrbitEnergy[0].GetDmgLevel().ToString() + " -> " + (Globals.ps.atkOrbitEnergy[0].GetDmgLevel() + 1 * rarityMult).ToString();
+                                break;
+                            case 2:
+                                uType = UPGRADETYPE.AoE;
+                                description = "AoE: " + Globals.ps.atkOrbitEnergy[0].GetAOELevel().ToString() + " -> " + (Globals.ps.atkOrbitEnergy[0].GetAOELevel() + 1 * rarityMult).ToString();
+                                break;
+                            case 3:
+                                uType = UPGRADETYPE.Speed;
+                                description = "Speed: " + Globals.ps.atkOrbitEnergy[0].GetAttackSpeedLevel().ToString() + " -> " + (Globals.ps.atkOrbitEnergy[0].GetAttackSpeedLevel() + 1 * rarityMult).ToString();
+                                break;
+                        }
+                    }
+                    else // new
+                    {
+                        description = "A ball of energy orbits around you.";
+                        rarity = RARITYTYPE.New;
+                        uType = UPGRADETYPE.None;
+                    }
+                    break;
+                case 3:
+                    eType = WEAPONELEMENT.Poison;
+                    if (Globals.ps.atkOrbitPoison.Count > 0) //not new
+                    {
+                        selectedAttack = Globals.ps.atkOrbitPoison[0];
+                        // set upgrade type (DMG, AOE, Speed)
+                        int rand = GD.RandRange(1, 3);
+                        switch (rand)
+                        {
+                            case 1:
+                                uType = UPGRADETYPE.Dmg;
+                                description = "DMG: " + Globals.ps.atkOrbitPoison[0].GetDmgLevel().ToString() + " -> " + (Globals.ps.atkOrbitPoison[0].GetDmgLevel() + 1 * rarityMult).ToString();
+                                break;
+                            case 2:
+                                uType = UPGRADETYPE.AoE;
+                                description = "AoE: " + Globals.ps.atkOrbitPoison[0].GetAOELevel().ToString() + " -> " + (Globals.ps.atkOrbitPoison[0].GetAOELevel() + 1 * rarityMult).ToString();
+                                break;
+                            case 3:
+                                uType = UPGRADETYPE.Speed;
+                                description = "Speed: " + Globals.ps.atkOrbitPoison[0].GetAttackSpeedLevel().ToString() + " -> " + (Globals.ps.atkOrbitPoison[0].GetAttackSpeedLevel() + 1 * rarityMult).ToString();
+                                break;
+                        }
+                    }
+                    else // new
+                    {
+                        description = "A glob of poison orbits around you.";
+                        rarity = RARITYTYPE.New;
+                        uType = UPGRADETYPE.None;
+                    }
+                    break;
+            }
+        }
+
+
+
 
         SetRarity(rarity);
         SetElement(eType);

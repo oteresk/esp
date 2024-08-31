@@ -1,0 +1,124 @@
+[gd_scene load_steps=21 format=3 uid="uid://d4cgrsns2jj4f"]
+
+[ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_oj8ul"]
+[ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_7c3o3"]
+[ext_resource type="Shader" path="res://Shaders/ColorFlash.gdshader" id="3_kcpqn"]
+[ext_resource type="Texture2D" uid="uid://cxishe15bjg6l" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_00.png" id="4_3rlw4"]
+[ext_resource type="Texture2D" uid="uid://b5tgwtoupxgns" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_01.png" id="5_jpu31"]
+[ext_resource type="Texture2D" uid="uid://ccxpiagmbsnop" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_02.png" id="6_mxxoc"]
+[ext_resource type="Texture2D" uid="uid://dirmr14ai3pol" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_03.png" id="7_td3lj"]
+[ext_resource type="Texture2D" uid="uid://dexa0pnq7rqoq" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_04.png" id="8_g25b7"]
+[ext_resource type="Texture2D" uid="uid://k6jv4lrfmymi" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_05.png" id="9_t4loy"]
+[ext_resource type="Texture2D" uid="uid://cq57e25pfrcyn" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_06.png" id="10_km2ex"]
+[ext_resource type="Texture2D" uid="uid://wdux8ddmtudd" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_07.png" id="11_kv7vc"]
+[ext_resource type="Texture2D" uid="uid://bnldeufg5k1rp" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_08.png" id="12_8yr6w"]
+[ext_resource type="Texture2D" uid="uid://vm2n32lmxktf" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_09.png" id="13_ctt6t"]
+[ext_resource type="Texture2D" uid="uid://bi44e0tsy2koy" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_10.png" id="14_y0afu"]
+[ext_resource type="Texture2D" uid="uid://d36krh4lqqdxp" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_11.png" id="15_0kdcy"]
+[ext_resource type="Texture2D" uid="uid://b2kpswqaptbes" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_12.png" id="16_81i2q"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j2qla"]
+resource_local_to_scene = true
+shader = ExtResource("3_kcpqn")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_3rlw4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_jpu31")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_mxxoc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_td3lj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_g25b7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_t4loy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_km2ex")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_kv7vc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_8yr6w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_ctt6t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_y0afu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_0kdcy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_81i2q")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
+radius = 25.0124
+height = 52.0246
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bxtip"]
+
+[node name="en_PoisonSlime" type="RigidBody2D" groups=["Enemies"]]
+modulate = Color(0.054902, 1, 0.301961, 1)
+light_mask = 2
+visibility_layer = 2
+collision_layer = 2
+collision_mask = 2
+mass = 0.01
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_oj8ul")
+health = 20.0
+speed = 40.0
+itemScene = ExtResource("2_7c3o3")
+damageType = 1
+damage = 7
+damageTime = 3
+leavesTrail = true
+enemyName = "Poison Slime"
+XP = 8
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_j2qla")
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_7y2m0")
+frame_progress = 0.26619
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(1, 1)
+rotation = -0.342306
+shape = SubResource("CapsuleShape2D_j3bk0")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="Occlusion Area Collider" type="Area2D" parent="." groups=["Occlusion"]]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
+scale = Vector2(140, 90)
+shape = SubResource("RectangleShape2D_bxtip")
+
+[connection signal="timeout" from="Timer" to="." method="LeaveTrail"]

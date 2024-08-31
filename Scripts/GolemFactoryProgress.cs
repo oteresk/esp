@@ -50,7 +50,7 @@ public partial class GolemFactoryProgress : ProgressBar
 	async void UpdateProgress() // runs everfy second
 	{
 		await Task.Delay(TimeSpan.FromMilliseconds(updateFreq*1000));
-		if (factoryRunning == true)
+		if (factoryRunning == true && IsInstanceValid(tmrProgress))
 		{
 			curProgress = ((float)(1 - (tmrProgress.TimeLeft / tmrProgress.WaitTime)));
 			Debug.Print("Progress: " + curProgress + "waittime:" + tmrProgress.WaitTime + " timeleft:" + tmrProgress.TimeLeft+" manaCost:"+manaCost+" manaGiven:"+manaGiven);
@@ -70,7 +70,9 @@ public partial class GolemFactoryProgress : ProgressBar
         // give next mana
         if (manaGiven==manaCost && golemComplete==false)
 		{
-			golemComplete = true;
+            Globals.golemAlive = true;
+            Debug.Print("Golem is alive!");
+            golemComplete = true;
 			// create golem
             PackedScene golemScene = (PackedScene)ResourceLoader.Load("res://Scenes/FriendlyGolem.tscn");
             var FriendlyGolem = golemScene.Instantiate();
@@ -78,9 +80,15 @@ public partial class GolemFactoryProgress : ProgressBar
             world.CallDeferred("add_child", FriendlyGolem);
 			Node2D fG = (Node2D)FriendlyGolem;
 			fG.Position = curRD.GlobalPosition+new Vector2(-30,250);
+            Globals.golem = fG;
+			Golem golem=(Golem)fG;
+			golem.SetGolemLevel(Globals.golemLevel);
 
-			Globals.golem = fG;
-            Globals.golemAlive = true;
+			// create minimap golem
+			Node miniMap = GetNode(Globals.NodeMiniMap);
+            MiniMap mm=(MiniMap)miniMap;
+			mm.CreateGolemIcons();
+			mm.DisplayGolem();
 
             curProgBar.Visible = false;
 			this.Visible = false;
@@ -109,7 +117,7 @@ public partial class GolemFactoryProgress : ProgressBar
                 curProgBar.Value = (manaGiven - 1) + curProgress;
                 this.Value = manaGiven;
 
-				Debug.Print("Time over - manaCost:" + manaCost + " manaGiven:" + manaGiven + " totalProgress:" + totalProgress);
+				//Debug.Print("Time over - manaCost:" + manaCost + " manaGiven:" + manaGiven + " totalProgress:" + totalProgress);
 			}
 			else
 			{

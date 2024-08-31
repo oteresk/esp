@@ -1,0 +1,7 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://cioe7t5vpxgkl"]
+
+[ext_resource type="FontFile" uid="uid://87vsquuah57d" path="res://INSECTJARDEMO-REGULAR.OTF" id="1_lqbc2"]
+
+[resource]
+base_font = ExtResource("1_lqbc2")
+spacing_space = 17

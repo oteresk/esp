@@ -1,0 +1,118 @@
+[gd_scene load_steps=21 format=3 uid="uid://sce3c63oeymh"]
+
+[ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_v5eqe"]
+[ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_3ipyh"]
+[ext_resource type="Shader" path="res://Shaders/ColorFlash.gdshader" id="3_c2f5d"]
+[ext_resource type="Texture2D" uid="uid://gbscblo0p46i" path="res://Art/Enemy-sprites/Slime/Slime-animation_00.png" id="4_nbmee"]
+[ext_resource type="Texture2D" uid="uid://bg384vcsvoinv" path="res://Art/Enemy-sprites/Slime/Slime-animation_01.png" id="5_d63rl"]
+[ext_resource type="Texture2D" uid="uid://c3vrxn2acndad" path="res://Art/Enemy-sprites/Slime/Slime-animation_02.png" id="6_uater"]
+[ext_resource type="Texture2D" uid="uid://b575p55i4u5m2" path="res://Art/Enemy-sprites/Slime/Slime-animation_03.png" id="7_qwudc"]
+[ext_resource type="Texture2D" uid="uid://cunom8wr7bb60" path="res://Art/Enemy-sprites/Slime/Slime-animation_04.png" id="8_6vg1v"]
+[ext_resource type="Texture2D" uid="uid://b1fbl3f0rlbui" path="res://Art/Enemy-sprites/Slime/Slime-animation_05.png" id="9_xswbp"]
+[ext_resource type="Texture2D" uid="uid://cbb85tn67dvew" path="res://Art/Enemy-sprites/Slime/Slime-animation_06.png" id="10_d2yap"]
+[ext_resource type="Texture2D" uid="uid://6vfjo0q4e8is" path="res://Art/Enemy-sprites/Slime/Slime-animation_07.png" id="11_r7ay7"]
+[ext_resource type="Texture2D" uid="uid://bksusxitrcnv2" path="res://Art/Enemy-sprites/Slime/Slime-animation_08.png" id="12_4m7qa"]
+[ext_resource type="Texture2D" uid="uid://c0n6r5vb8jvwe" path="res://Art/Enemy-sprites/Slime/Slime-animation_09.png" id="13_y2661"]
+[ext_resource type="Texture2D" uid="uid://3ivmtxradp4x" path="res://Art/Enemy-sprites/Slime/Slime-animation_10.png" id="14_luqet"]
+[ext_resource type="Texture2D" uid="uid://84u3y0wgp7jh" path="res://Art/Enemy-sprites/Slime/Slime-animation_11.png" id="15_trgur"]
+[ext_resource type="Texture2D" uid="uid://csmd4iekkxs5l" path="res://Art/Enemy-sprites/Slime/Slime-animation_12.png" id="16_lg0bb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j2qla"]
+resource_local_to_scene = true
+shader = ExtResource("3_c2f5d")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_nbmee")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_d63rl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_uater")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_qwudc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_6vg1v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_xswbp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_d2yap")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_r7ay7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_4m7qa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_y2661")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_luqet")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_trgur")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_lg0bb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
+radius = 32.17
+height = 71.5
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_afs7g"]
+
+[node name="en_Slime" type="RigidBody2D" groups=["Enemies"]]
+collision_layer = 2
+collision_mask = 2
+mass = 0.01
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_v5eqe")
+speed = 30.0
+itemScene = ExtResource("2_3ipyh")
+damage = 5
+leavesTrail = true
+XP = 5
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_j2qla")
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_7y2m0")
+frame_progress = 0.604678
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(1, 1)
+rotation = -0.342306
+scale = Vector2(1.00107, 0.76671)
+shape = SubResource("CapsuleShape2D_j3bk0")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="Occlusion Area Collider" type="Area2D" parent="." groups=["Occlusion"]]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
+scale = Vector2(140, 90)
+shape = SubResource("RectangleShape2D_afs7g")
+
+[connection signal="timeout" from="Timer" to="." method="LeaveTrail"]

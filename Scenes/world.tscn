@@ -1,10 +1,11 @@
-[gd_scene load_steps=52 format=3 uid="uid://tjt3wkjp0i5t"]
+[gd_scene load_steps=62 format=3 uid="uid://tjt3wkjp0i5t"]
 
 [ext_resource type="PackedScene" uid="uid://dv81swjibar3c" path="res://Scenes/parallax_background.tscn" id="1_3b8vd"]
 [ext_resource type="Script" path="res://Scripts/world.cs" id="1_rvwjb"]
 [ext_resource type="Script" path="res://Scripts/Globals.cs" id="2_dtpe5"]
 [ext_resource type="PackedScene" uid="uid://bj68a1718682m" path="res://Scenes/player.tscn" id="3_eiu3v"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="4_egxe6"]
+[ext_resource type="Shader" path="res://Shaders/Vignette.gdshader" id="5_4ij1c"]
 [ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/Resource-IronMine.tscn" id="5_wtxxp"]
 [ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/resource_template-GoldMine.tscn" id="6_xv0gn"]
 [ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/resource_template-ManaWell.tscn" id="7_vq3li"]
@@ -32,19 +33,25 @@
 [ext_resource type="PackedScene" uid="uid://bcn0ebog5s0ps" path="res://Scenes/Structure-TrainingCenter.tscn" id="26_e2j4s"]
 [ext_resource type="Texture2D" uid="uid://bq4pom8h1qihh" path="res://Art/GUI/IronOre.png" id="28_mqoqv"]
 [ext_resource type="Texture2D" uid="uid://ke85s64nnx0g" path="res://Art/GUI/Wood.png" id="29_eowbu"]
+[ext_resource type="Texture2D" uid="uid://b5yd673bb7ce4" path="res://Art/GUI/btnClose.png" id="29_x1x27"]
 [ext_resource type="PackedScene" uid="uid://wm58i7j3apso" path="res://Scenes/Structure-GolemFactory.tscn" id="30_1qs3c"]
+[ext_resource type="FontFile" uid="uid://blv8i47j34igf" path="res://Fonts/CloisterBlack.ttf" id="30_cb4bq"]
 [ext_resource type="Texture2D" uid="uid://bkjl0vf4gs5nm" path="res://Art/GUI/RedStroke.png" id="30_w6xib"]
 [ext_resource type="PackedScene" uid="uid://bgvm1ptpi8lca" path="res://Scenes/fog.tscn" id="31_3wxrh"]
-[ext_resource type="PackedScene" uid="uid://03rf0tmt2nd5" path="res://Scenes/FogOfWar.tscn" id="31_aslyk"]
-[ext_resource type="Script" path="res://Scripts/FogOfWar.cs" id="32_f36kf"]
-[ext_resource type="Texture2D" uid="uid://dw6baw0ypmyb0" path="res://Art/Light.png" id="33_0wlbc"]
-[ext_resource type="PackedScene" uid="uid://1xxnq480idry" path="res://Scenes/fo_wfog.tscn" id="35_p0u56"]
+[ext_resource type="PackedScene" uid="uid://do5qsqhhmteq3" path="res://Scenes/Relic.tscn" id="36_h5tfx"]
 [ext_resource type="PackedScene" uid="uid://binn46axhlqni" path="res://Scenes/MiniMap.tscn" id="36_hw51v"]
-[ext_resource type="PackedScene" uid="uid://bpukysafnurai" path="res://black.tscn" id="38_b7fsk"]
+[ext_resource type="PackedScene" uid="uid://bpukysafnurai" path="res://Scenes/black.tscn" id="38_b7fsk"]
+[ext_resource type="Shader" path="res://Shaders/MaskShader.gdshader" id="42_acbwv"]
+[ext_resource type="Texture2D" uid="uid://syajwq1wo0tu" path="res://Art/GUI/CircleMask.png" id="43_p5044"]
+[ext_resource type="Texture2D" uid="uid://dfbpjdt4u0v2v" path="res://Art/GUI/MiniMapBorder.png" id="44_7gdg6"]
+[ext_resource type="Script" path="res://Scripts/SaveLoad.cs" id="46_fu320"]
+[ext_resource type="Shader" path="res://Shaders/Wavy.gdshader" id="48_g1v7a"]
 
 [sub_resource type="Environment" id="Environment_h8lsd"]
 background_mode = 3
+background_color = Color(0.6, 0.156863, 0.219608, 1)
 ambient_light_source = 2
+ambient_light_color = Color(0.854902, 0.407843, 0.192157, 1)
 reflected_light_source = 1
 tonemap_mode = 3
 tonemap_exposure = 0.5
@@ -58,6 +65,7 @@ glow_hdr_scale = 0.36
 glow_hdr_luminance_cap = 0.04
 glow_map_strength = 0.0
 adjustment_enabled = true
+adjustment_brightness = 1.17
 
 [sub_resource type="LabelSettings" id="LabelSettings_mv3iy"]
 font = ExtResource("25_u0xec")
@@ -81,8 +89,10 @@ bg_color = Color(0.462745, 0.329412, 0, 1)
 bg_color = Color(1, 0.737255, 0.0980392, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_7qdhh"]
-font_size = 20
-outline_size = 2
+font = ExtResource("30_cb4bq")
+font_size = 25
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Gradient" id="Gradient_bydhu"]
 offsets = PackedFloat32Array(0, 0.63871)
@@ -98,6 +108,34 @@ _data = {
 "points": PackedVector2Array(41.38, -3.3371, -41.38, 3.3371, 1063, 588, 0, 0, 0, 0, -1026, 583, 0, 0, 0, 0, -1030, -616, 0, 0, 0, 0, 1061, -613, -0.0278406, -3.9812, 0.0278406, 3.9812, 1063, 588)
 }
 point_count = 5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qkf6a"]
+shader = ExtResource("5_4ij1c")
+shader_parameter/inner_radius = 0.1
+shader_parameter/outer_radius = 1.0
+shader_parameter/vignette_strength = 0.9
+shader_parameter/dither_strength = 0.03
+shader_parameter/vignette_color = null
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_exeso"]
+resource_local_to_scene = true
+shader = ExtResource("42_acbwv")
+shader_parameter/alpha = 0.0
+shader_parameter/mask = ExtResource("43_p5044")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lbj4q"]
+shader = ExtResource("48_g1v7a")
+shader_parameter/alpha = 1.0
+shader_parameter/scrollAmount = Vector2(0, 0.03)
+shader_parameter/mult = 0.01
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ikso6"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gh7he"]
+width = 1920
+height = 1080
+seamless = true
+noise = SubResource("FastNoiseLite_ikso6")
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("EnemySpawnPath")]
 y_sort_enabled = true
@@ -115,9 +153,9 @@ environment = SubResource("Environment_h8lsd")
 [node name="Fog" parent="WorldEnvironment" instance=ExtResource("31_3wxrh")]
 
 [node name="AmbientLight" type="DirectionalLight2D" parent="WorldEnvironment"]
-visible = false
-energy = 0.2
-blend_mode = 1
+color = Color(0.72549, 0.196078, 0, 1)
+energy = 0.0
+range_layer_min = -100
 shadow_color = Color(0, 0, 0, 0.431373)
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("1_3b8vd")]
@@ -128,24 +166,25 @@ transform = Transform2D(1, 0, 0, 1, 0, 0)
 
 [node name="StructureGUI" type="CanvasLayer" parent="GUI"]
 
-[node name="SettlementSelect" type="CanvasGroup" parent="GUI/StructureGUI" node_paths=PackedStringArray("btnNode0", "btnNode1", "btnNode2", "btnNode3", "lblIron", "lblWood", "lblStructName", "lblStructDescription", "redStroke")]
+[node name="SettlementSelect" type="CanvasGroup" parent="GUI/StructureGUI" node_paths=PackedStringArray("btnNode0", "btnNode1", "btnNode2", "btnNode3", "btnCloseNode", "lblIron", "lblWood", "lblStructName", "lblStructDescription", "redStroke")]
+process_mode = 2
 position = Vector2(854, 546)
 script = ExtResource("12_cg3fo")
 btnNode0 = NodePath("btn0")
 btnNode1 = NodePath("btn1")
 btnNode2 = NodePath("btn2")
 btnNode3 = NodePath("btn3")
+btnCloseNode = NodePath("btnClose")
 txStructBut = Array[Texture2D]([ExtResource("13_56blb"), ExtResource("14_pyxf8"), ExtResource("15_vdli0"), ExtResource("16_2nuhw"), ExtResource("17_ycron"), ExtResource("18_qjudb"), ExtResource("19_r8ow7"), ExtResource("22_bnemk")])
 scnStruct = Array[PackedScene]([ExtResource("20_dtrsa"), ExtResource("21_xq308"), ExtResource("22_xxl8y"), ExtResource("23_w70wf"), ExtResource("24_ek7ss"), ExtResource("25_d0kw3"), ExtResource("26_e2j4s"), ExtResource("30_1qs3c")])
 lblIron = NodePath("lblIron")
 lblWood = NodePath("lblWood")
-costIron = PackedInt32Array(1, 2, 3, 2, 4, 4, 1, 0)
-costWood = PackedInt32Array(1, 2, 0, 0, 2, 6, 2, 0)
-structName = PackedStringArray("Alchemy Lab", "Armory", "Herbalist", "Lode Stone", "Settlement", "Tower", "Training Center", "Golem Factory")
+structName = PackedStringArray("Alchemy Lab", "Blacksmith", "Herbalist", "Lode Stone", "Settlement", "Tower", "Training Center", "Golem Factory")
 structDescription = PackedStringArray("Generates research points to be used to upgrade weapons, towers and golems.", "Increases your armor so you take less damage from enemies.", "Increases your max health.", "Increases magnetism(the area around player that sucks in items).", "Nothing Yet.", "Shoots nearby enemies", "Increases player speed.", "Creates a golem. You may only have one.")
 lblStructName = NodePath("lblStructName")
 lblStructDescription = NodePath("lblStructDescription")
 redStroke = NodePath("RedStroke")
+metadata/_edit_lock_ = true
 
 [node name="btn0" type="TextureRect" parent="GUI/StructureGUI/SettlementSelect"]
 z_index = 1
@@ -157,16 +196,13 @@ scale = Vector2(0.5, 0.5)
 mouse_filter = 2
 mouse_force_pass_scroll_events = false
 texture = ExtResource("18_qjudb")
-metadata/_edit_use_anchors_ = true
 
 [node name="btn1" type="TextureRect" parent="GUI/StructureGUI/SettlementSelect"]
-process_mode = 4
 z_index = 1
 offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2
 texture = ExtResource("13_56blb")
-metadata/_edit_use_anchors_ = true
 
 [node name="btn2" type="TextureRect" parent="GUI/StructureGUI/SettlementSelect"]
 z_index = 1
@@ -178,7 +214,6 @@ scale = Vector2(0.5, 0.5)
 mouse_filter = 2
 mouse_force_pass_scroll_events = false
 texture = ExtResource("17_ycron")
-metadata/_edit_use_anchors_ = true
 
 [node name="btn3" type="TextureRect" parent="GUI/StructureGUI/SettlementSelect"]
 z_index = 1
@@ -189,7 +224,6 @@ offset_bottom = 168.0
 scale = Vector2(0.5, 0.5)
 mouse_filter = 2
 texture = ExtResource("20_vu2nf")
-metadata/_edit_use_anchors_ = true
 
 [node name="lblStructName" type="Label" parent="GUI/StructureGUI/SettlementSelect"]
 anchors_preset = 15
@@ -211,10 +245,10 @@ vertical_alignment = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -38.0
-offset_top = 240.0
-offset_right = 282.0
-offset_bottom = 340.0
+offset_left = -56.0
+offset_top = 250.0
+offset_right = 264.0
+offset_bottom = 350.0
 grow_horizontal = 2
 size_flags_vertical = 1
 text = "Description"
@@ -224,34 +258,34 @@ autowrap_mode = 3
 justification_flags = 0
 
 [node name="Iron" type="TextureRect" parent="GUI/StructureGUI/SettlementSelect"]
-offset_left = -47.0
-offset_top = 188.0
-offset_right = 87.0
-offset_bottom = 286.0
+offset_left = -65.0
+offset_top = 198.0
+offset_right = 69.0
+offset_bottom = 296.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("28_mqoqv")
 
 [node name="lblIron" type="Label" parent="GUI/StructureGUI/SettlementSelect"]
-offset_left = 24.0
-offset_top = 194.0
-offset_right = 96.0
-offset_bottom = 236.0
+offset_left = 6.0
+offset_top = 204.0
+offset_right = 78.0
+offset_bottom = 246.0
 text = "999"
 label_settings = SubResource("LabelSettings_56d7c")
 
 [node name="Wood" type="TextureRect" parent="GUI/StructureGUI/SettlementSelect"]
-offset_left = 112.0
-offset_top = 188.0
-offset_right = 256.0
-offset_bottom = 286.0
+offset_left = 94.0
+offset_top = 198.0
+offset_right = 238.0
+offset_bottom = 296.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("29_eowbu")
 
 [node name="lblWood" type="Label" parent="GUI/StructureGUI/SettlementSelect"]
-offset_left = 181.0
-offset_top = 194.0
-offset_right = 229.0
-offset_bottom = 236.0
+offset_left = 163.0
+offset_top = 204.0
+offset_right = 235.0
+offset_bottom = 246.0
 text = "999"
 label_settings = SubResource("LabelSettings_56d7c")
 
@@ -262,6 +296,13 @@ offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2
 texture = ExtResource("30_w6xib")
+
+[node name="btnClose" type="TextureRect" parent="GUI/StructureGUI/SettlementSelect"]
+offset_left = 238.0
+offset_top = -119.0
+offset_right = 307.0
+offset_bottom = -54.0
+texture = ExtResource("29_x1x27")
 
 [node name="XPBar" type="ProgressBar" parent="GUI"]
 z_index = 1
@@ -284,12 +325,14 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -52.0
-offset_top = -5.0
-offset_bottom = 26.0
+offset_left = -53.0
+offset_top = -6.0
+offset_right = -1.0
+offset_bottom = 27.0
 grow_horizontal = 0
 text = "Level"
 label_settings = SubResource("LabelSettings_7qdhh")
+vertical_alignment = 1
 
 [node name="ResourceDiscoveries" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -300,8 +343,9 @@ rTemplateGoldMine = ExtResource("6_xv0gn")
 rTemplateManaWell = ExtResource("7_vq3li")
 rTemplateWood = ExtResource("8_lwsre")
 rTemplatePlatform = ExtResource("9_woq83")
-resourcesPerCell = 6
+resourcesPerCell = 5
 resourceUpdateFreq = 60
+relicScene = ExtResource("36_h5tfx")
 
 [node name="Timer" type="Timer" parent="ResourceDiscoveries"]
 autostart = true
@@ -313,20 +357,28 @@ y_sort_enabled = true
 wait_time = 0.5
 autostart = true
 
-[node name="Player" parent="." instance=ExtResource("3_eiu3v")]
+[node name="Black" parent="." instance=ExtResource("38_b7fsk")]
+
+[node name="Player" parent="." node_paths=PackedStringArray("wavy", "worldEnvironment", "ambientLight") instance=ExtResource("3_eiu3v")]
+y_sort_enabled = false
 texture_filter = 1
 scale = Vector2(0.5, 0.5)
 DashSpeed = 1200.0
 DashDuration = 0.3
+wavy = NodePath("../Wavy")
+worldEnvironment = NodePath("../WorldEnvironment")
+ambientLight = NodePath("../WorldEnvironment/AmbientLight")
 
-[node name="AnimatedSprite2D" parent="Player" index="1"]
-frame_progress = 0.275089
+[node name="AnimatedSprite2D" parent="Player" index="2"]
+texture_filter = 4
+
+[node name="Camera2D" parent="Player" index="4"]
+zoom = Vector2(1.2, 1.2)
 
 [node name="PointLight2D" type="PointLight2D" parent="Player"]
 position = Vector2(0, -84)
 scale = Vector2(8, 8)
-color = Color(0.988235, 0.984314, 0, 1)
-energy = 0.2
+energy = 0.1
 texture = SubResource("GradientTexture2D_bih6r")
 
 [node name="Path2D" type="Path2D" parent="Player"]
@@ -338,43 +390,65 @@ unique_name_in_owner = true
 position = Vector2(1063, 588)
 rotation = 3.06112
 
-[node name="FogOfWar" parent="." node_paths=PackedStringArray("fog", "Player") instance=ExtResource("31_aslyk")]
-visible = true
-z_index = 10
-scale = Vector2(14, 14)
-script = ExtResource("32_f36kf")
-fog = NodePath("FoWfog")
-fogWidth = 4200
-fogHeight = 2600
-LightTexture = ExtResource("33_0wlbc")
-lightWidth = 100
-lightHeight = 100
-Player = NodePath("../Player")
-debounce_time = 0.2
+[node name="AudioListener2D" type="AudioListener2D" parent="Player"]
 
-[node name="FoWfog" parent="FogOfWar" instance=ExtResource("35_p0u56")]
-position = Vector2(-1949, -1206)
+[node name="Vignette" type="ColorRect" parent="Player"]
+z_index = 110
+z_as_relative = false
+material = SubResource("ShaderMaterial_qkf6a")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1920.0
+offset_top = -1080.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
 
 [node name="MiniMapCanvas" type="CanvasLayer" parent="."]
+offset = Vector2(400, 228)
+transform = Transform2D(1, 0, 0, 1, 400, 228)
 
 [node name="Control" type="Control" parent="MiniMapCanvas"]
+top_level = true
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -80.0
 offset_right = -1120.0
-offset_bottom = -480.0
+offset_bottom = -560.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.8, 0.8)
 size_flags_horizontal = 8
 size_flags_vertical = 8
+mouse_filter = 2
 
 [node name="SubViewportContainer" parent="MiniMapCanvas/Control" instance=ExtResource("36_hw51v")]
+material = SubResource("ShaderMaterial_exeso")
 layout_mode = 1
-offset_left = 1163.0
-offset_top = 468.0
-offset_right = 1111.0
-offset_bottom = 467.998
+offset_left = 1335.19
+offset_top = 440.0
+offset_right = 1075.19
+offset_bottom = 380.0
+scale = Vector2(0.99, 0.99)
+
+[node name="Border" type="TextureRect" parent="MiniMapCanvas/Control"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+offset_left = 1303.83
+offset_top = 358.295
+offset_right = 1803.83
+offset_bottom = 858.292
+scale = Vector2(1.18, 1.28)
+texture = ExtResource("44_7gdg6")
+expand_mode = 2
 
 [node name="Bullets" type="Node2D" parent="."]
 
@@ -382,7 +456,15 @@ offset_bottom = 467.998
 
 [node name="Enemies" type="Node2D" parent="."]
 
-[node name="Black" parent="." instance=ExtResource("38_b7fsk")]
+[node name="SaveLoad" type="Node2D" parent="."]
+script = ExtResource("46_fu320")
+
+[node name="Wavy" type="Sprite2D" parent="."]
+z_index = 21
+texture_repeat = 2
+material = SubResource("ShaderMaterial_lbj4q")
+position = Vector2(-960, -540)
+texture = SubResource("NoiseTexture2D_gh7he")
 
 [connection signal="visibility_changed" from="GUI/StructureGUI/SettlementSelect" to="GUI/StructureGUI/SettlementSelect" method="_on_visibility_changed"]
 [connection signal="mouse_entered" from="GUI/StructureGUI/SettlementSelect/btn0" to="GUI/StructureGUI/SettlementSelect" method="_on_btn_0_mouse_entered"]
@@ -393,6 +475,8 @@ offset_bottom = 467.998
 [connection signal="mouse_exited" from="GUI/StructureGUI/SettlementSelect/btn2" to="GUI/StructureGUI/SettlementSelect" method="_on_btn_2_mouse_exited"]
 [connection signal="mouse_entered" from="GUI/StructureGUI/SettlementSelect/btn3" to="GUI/StructureGUI/SettlementSelect" method="_on_btn_0_mouse_entered"]
 [connection signal="mouse_exited" from="GUI/StructureGUI/SettlementSelect/btn3" to="GUI/StructureGUI/SettlementSelect" method="_on_btn_0_mouse_exited"]
+[connection signal="mouse_entered" from="GUI/StructureGUI/SettlementSelect/btnClose" to="GUI/StructureGUI/SettlementSelect" method="_on_btnclose_mouse_entered"]
+[connection signal="mouse_exited" from="GUI/StructureGUI/SettlementSelect/btnClose" to="GUI/StructureGUI/SettlementSelect" method="_on_btnclose_mouse_exited"]
 [connection signal="timeout" from="ResourceDiscoveries/Timer" to="ResourceDiscoveries" method="OnTimer"]
 [connection signal="timeout" from="EnemyTimer" to="." method="_on_enemy_timer_timeout"]
 

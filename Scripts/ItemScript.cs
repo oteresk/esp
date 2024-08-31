@@ -25,7 +25,7 @@ public partial class ItemScript : Area2D
 
     Tween fadeTween;
 
-    public float aliveTime = 10; // item will fade away after time
+    public float aliveTime = 15; // item will fade away after time
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -51,12 +51,10 @@ public partial class ItemScript : Area2D
     }
 
     public void OnAreaEntered(Area2D area)
-	{
-        if (area.IsInGroup("Players") && Globals.playerAlive) // picked up by player
+    {
+        if (area.IsInGroup("Player") && Globals.playerAlive) // picked up by player
         {
             Visible = false;
-
-
 
             if (itemType == ItemType.Gem)
             {
@@ -195,24 +193,29 @@ public partial class ItemScript : Area2D
         itemType = ItemScript.ItemType.Gem;
         //XP = 1; // TODO: when we have multiple enemies, this will need to be a switch case for enemy tpe and amount of XP
         int rndXP = (int)GD.RandRange(1, XP);
-        if (rndXP == 1)
+        if (rndXP < 5)
         {
             frame = 0;
             XP = 1;
         }
         else
-            if (rndXP < 5) 
+            if (rndXP < 10) 
             {
                 frame = 1;
-                XP = 5;
+                XP = 8;
             }
             else
-                if (rndXP < 10)
+                if (rndXP < 15)
                 {
                     frame = 2;
-                    XP = 10;
+                    XP = 40;
                 }
-
+                else
+                    if (rndXP < 20)
+                    {
+                        frame = 3;
+                        XP = 120;
+                    }
 
     }
 

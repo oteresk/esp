@@ -1,8 +1,9 @@
-[gd_scene load_steps=252 format=3 uid="uid://c0tk30dn0hj48"]
+[gd_scene load_steps=254 format=3 uid="uid://c0tk30dn0hj48"]
 
 [ext_resource type="Script" path="res://Scripts/Golem.cs" id="1_tqyrp"]
 [ext_resource type="Texture2D" uid="uid://coulvov3te8pd" path="res://Art/FriendlyGolem/FriendlyGolem-Death_00.png" id="2_0qdpl"]
 [ext_resource type="Texture2D" uid="uid://cb00acs26q5np" path="res://Art/FriendlyGolem/FriendlyGolem-Idle_00.png" id="2_c4mmt"]
+[ext_resource type="Shader" path="res://Shaders/ColorFlash.gdshader" id="2_kl1a4"]
 [ext_resource type="Texture2D" uid="uid://djvxsj35midmr" path="res://Art/FriendlyGolem/FriendlyGolem-Death_01.png" id="3_8ruqo"]
 [ext_resource type="Texture2D" uid="uid://r2lfr8usw856" path="res://Art/FriendlyGolem/FriendlyGolem-Idle_01.png" id="3_ptq5v"]
 [ext_resource type="Texture2D" uid="uid://wordsase8rfi" path="res://Art/FriendlyGolem/FriendlyGolem-Idle_02.png" id="4_822g4"]
@@ -245,7 +246,15 @@
 [ext_resource type="Texture2D" uid="uid://cscpada7p4woj" path="res://Art/Bird/skeleton-Idle_38.png" id="234_f8cg3"]
 [ext_resource type="Texture2D" uid="uid://bdlxtlv4xiumw" path="res://Art/Bird/skeleton-Idle_39.png" id="235_d0aah"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_cr0xe"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h2xus"]
+radius = 38.65
+height = 134.58
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8blcq"]
+resource_local_to_scene = true
+shader = ExtResource("2_kl1a4")
+shader_parameter/active = null
+shader_parameter/flash_color = Color(1, 0.0901961, 0.0235294, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_jtl1q"]
 animations = [{
@@ -795,8 +804,9 @@ bg_color = Color(0.462745, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lkd0d"]
 bg_color = Color(1, 0, 0.0980392, 1)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_leb0a"]
-radius = 78.72
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wo244"]
+radius = 69.74
+height = 229.74
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_mkxi0"]
 animations = [{
@@ -1029,42 +1039,43 @@ animations = [{
 }]
 
 [node name="FriendlyGolem" type="RigidBody2D" node_paths=PackedStringArray("sndFootStep", "sndGolemDeathp", "bird")]
+collision_mask = 0
+mass = 100.0
 gravity_scale = 0.0
 lock_rotation = true
+freeze_mode = 1
 script = ExtResource("1_tqyrp")
 sndFootStep = NodePath("Footstep")
 sndGolemDeathp = NodePath("sndGolemDeath")
 bird = NodePath("Bird")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 14)
-scale = Vector2(7.09635, 3.92152)
-shape = SubResource("CircleShape2D_cr0xe")
+[node name="PhysicsShape" type="CollisionShape2D" parent="."]
+editor_description = "small circle to force enemies away"
+position = Vector2(0, 12)
+rotation = -1.57079
+shape = SubResource("CapsuleShape2D_h2xus")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_8blcq")
 position = Vector2(-9, -144)
 sprite_frames = SubResource("SpriteFrames_jtl1q")
-animation = &"Death"
-frame = 67
-frame_progress = 1.0
+animation = &"Idle"
 speed_scale = 2.0
 
 [node name="AttackProjectile" type="Area2D" parent="."]
+editor_description = "will attack enemies who's collider intersects"
 position = Vector2(1, 0)
+scale = Vector2(1.2, 0.84)
 collision_layer = 0
 collision_mask = 2
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackProjectile"]
-visible = false
 shape = SubResource("CircleShape2D_mk5pp")
 
 [node name="ShootingPoint" type="Marker2D" parent="AttackProjectile"]
 unique_name_in_owner = true
 position = Vector2(-163, -158)
-
-[node name="Footstep" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("106_e4ix4")
-bus = &"SFX"
 
 [node name="HPBar" type="ProgressBar" parent="."]
 z_index = 1
@@ -1083,16 +1094,14 @@ value = 1.0
 show_percentage = false
 
 [node name="HitByEnemyArea" type="Area2D" parent="."]
+collision_layer = 0
 collision_mask = 2
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitByEnemyArea"]
-position = Vector2(-1, 12)
-scale = Vector2(1.14497, 0.671197)
-shape = SubResource("CircleShape2D_leb0a")
-
-[node name="sndGolemDeath" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("175_230eu")
-bus = &"SFX"
+position = Vector2(0, 12)
+rotation = -1.57079
+shape = SubResource("CapsuleShape2D_wo244")
 
 [node name="Bird" type="AnimatedSprite2D" parent="."]
 position = Vector2(-64, -289)
@@ -1101,7 +1110,18 @@ animation = &"Hover"
 frame_progress = 0.377172
 speed_scale = 2.0
 
+[node name="Footstep" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("106_e4ix4")
+bus = &"SFX"
+
+[node name="sndGolemDeath" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("175_230eu")
+bus = &"SFX"
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="OnAnimFinished"]
 [connection signal="frame_changed" from="AnimatedSprite2D" to="." method="FrameChanged"]
+[connection signal="body_entered" from="AttackProjectile" to="." method="OnAttackProjectileAreaEntered"]
+[connection signal="body_exited" from="AttackProjectile" to="." method="OnAttackProjectileAreaExited"]
 [connection signal="body_entered" from="HitByEnemyArea" to="." method="OnBodyEntered"]
+[connection signal="body_exited" from="HitByEnemyArea" to="." method="OnBodyExited"]
 [connection signal="animation_finished" from="Bird" to="." method="BirdAnimDone"]

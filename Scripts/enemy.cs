@@ -3,6 +3,8 @@ using System;
 using System.Diagnostics;
 using static ItemScript;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Text;
 
 public partial class enemy : RigidBody2D
 {
@@ -15,16 +17,20 @@ public partial class enemy : RigidBody2D
 
     [Export] public PackedScene itemScene;
 
+    public enum DamageType { Normal, Poison, Fire }
     [Export] public DamageType damageType;
     [Export] public int damage;
     [Export] public int damageTime;
 
     [Export] public bool leavesTrail=false;
 
-    private double curTime = 0;
+    [Export] public string enemyName;
+
+    //private double curTime = 0;
 
     private player pl;
 	Vector2 playerPosition;
+    Vector2 direction;
 
     public bool isDead = false;
 
@@ -34,53 +40,163 @@ public partial class enemy : RigidBody2D
 
     [Export] public int XP;
 
-    // Called when the node enters the scene tree for the first time.
+    private float wolfDist;
+    private bool wolfRunning = false;
+    private float bowtime;
+
+    [Export] public float attackRange = 0;
+    private float dist;
+    public bool playerInDamageArea = false;
+    private bool hasDamagedPlayer = false;
+    private bool canAttack = true;
+
+    private int flipCounter = 0;
+
     public override void _Ready()
 	{
-		enemySprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        //Globals.enemies++;
+        //Globals.UpdateEnemies();
+        enemySprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		enemySprite.Animation = "default";
 		enemySprite.Play();
         Node2D nodEnemies = (Node2D)GetNode(Globals.NodeEnemies);
 		this.Reparent(nodEnemies);
 
-        pl = (player)Globals.pl;
-        Vector2 playerPosition = pl.GlobalPosition;
-
         enemySprite.FlipV = false;
 
-        OnBodyEnteredCallable = (Callable)this.GetNode("Area2D").Get("area_entered");// get signal callable
+ //       OnBodyEnteredCallable = (Callable)this.GetNode("Area2D").Get("area_entered");// get signal callable
 
         maxHealth = health;
 
+        if (enemyName == "Wolf")
+            wolfDist = GD.RandRange(300, 700);
+
+        if (attackRange > 0)
+            attackRange += GD.RandRange(-25, 25); // randomize attack distance a bit
+
+        if (enemyName == "Floating Skull")
+            FloatingSkullMovement();
+
     }
 
 
 
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
-        if (Globals.playerAlive && !frozen && Visible)
+        if (Globals.playerAlive && !frozen && Visible) // move towards player
         {
-            curTime += delta;
-            Vector2 direction = GlobalTransform.Origin.DirectionTo(pl.GlobalPosition);
-            velocity = direction * speed * poisonSpeed;
-
-            if (direction.X < 0) // if facing left
+            if (enemyName == "Skeleton" && enemySprite.Animation == "Attack")
             {
-                enemySprite.FlipH = true;
+                // don't move
             }
             else
-                enemySprite.FlipH = false;
+            {
+                direction = GlobalTransform.Origin.DirectionTo(Globals.pl.GlobalPosition + new Vector2(0, -36));
+                velocity = direction * speed * poisonSpeed;
 
-            Position += velocity * (float)delta;
+                AdjustFlip();
+
+                Position += velocity * (float)delta;
+
+                if (enemyName == "Wolf" && !wolfRunning)
+                    WolfMovement();
+
+                if (attackRange > 0 && canAttack == true) // if enemy has an attack
+                    Attack();
+
+                //Debug.Print("Dist: " + GlobalTransform.Origin.DistanceTo(Globals.pl.GlobalPosition));
+            }
         }
     }
 
-
-    public enum DamageType
+    private void AdjustFlip()
     {
-        Normal, Poison
+        // only process every 5th time
+        flipCounter++;
+        if (flipCounter>4)
+        {
+            flipCounter = 0;
+            if (direction.X < 0) // if facing left
+                enemySprite.FlipH = true;
+            else
+                enemySprite.FlipH = false;
+        }
     }
 
+    private void Attack()
+    {
+        dist = GlobalTransform.Origin.DistanceTo(Globals.pl.GlobalPosition);
+        if (dist < attackRange)
+        {
+            canAttack = false;
+            enemySprite.Animation = "Attack";
+            enemySprite.Play();
+            DelayAttack();
+        }
+    }
+
+    private async void DelayAttack()
+    {
+        await Task.Delay(TimeSpan.FromMilliseconds(GD.RandRange(2000,4000)));
+        hasDamagedPlayer = false;
+        canAttack = true;
+        //Debug.Print("can attack");
+    }
+
+    public void FrameChanged()
+    {
+        // skeleton attack
+        if (enemyName == "Skeleton" && enemySprite.Animation=="Attack")
+        {
+            if (enemySprite.Frame>=7 && enemySprite.Frame<11)
+            {
+                if (playerInDamageArea && hasDamagedPlayer==false)
+                {
+                    // damage player
+                    Globals.DamagePlayer(damage*2);
+                    hasDamagedPlayer = true;
+                }
+            }
+
+            if (enemySprite.Frame==13) // return to walk anim
+            {
+                enemySprite.Animation = "default";
+                enemySprite.Play();
+            }
+
+        }
+    }
+
+    private async void WolfMovement()
+    {
+        float dist = GlobalPosition.DistanceTo(Globals.ps.GlobalPosition);
+        if (dist<wolfDist)
+        {
+            wolfRunning = true;
+            enemySprite.Animation = "bow";
+            enemySprite.Play();
+            speed = 0;
+            bowtime = GD.RandRange(1500, 3400);
+            await Task.Delay(TimeSpan.FromMilliseconds(bowtime));
+            speed = GD.RandRange(140, 180);
+            enemySprite.Animation = "run";
+            enemySprite.Play();
+        }
+    }
+
+    private async void FloatingSkullMovement()
+    {
+        await Task.Delay(TimeSpan.FromMilliseconds(GD.RandRange(5000, 6000)));
+        speed = speed * 3;
+        enemySprite.Animation = "Run";
+        //Debug.Print("Run");
+
+        await Task.Delay(TimeSpan.FromMilliseconds(GD.RandRange(1500, 2000)));
+        speed = speed / 3;
+        enemySprite.Animation = "default";
+        FloatingSkullMovement();
+        //Debug.Print("Walk");
+    }
     public void take_damage(float dmg) 
 	{
 		health -= dmg;
@@ -135,61 +251,36 @@ public partial class enemy : RigidBody2D
             // remove enemy
             //Debug.Print("queuefree:" + Name);
             isDead = true;
+            //Globals.enemies--;
+            //Globals.UpdateEnemies();
             QueueFree();
         }
 
     }
 
-    public void OnBodyEntered(Node2D col) // hit player
-	{
-        //Debug.Print("Enemy col:" + col.Name);
-        if (curTime > .9f) // only allow enemy to hit player every 0.9 seconds
-        {
-            // enemy collide with player
-            if (col.Name == "Player" && Globals.playerAlive && pl.canBeDamaged)
-            {
-                //Debug.Print("Hit: " + col.Name);
-
-                if (damageType == DamageType.Normal)
-                {
-                    Globals.DamagePlayer(damage);
-                }
-                else
-                    if (damageType == DamageType.Poison)
-                {
-                    Globals.PoisonPlayer(damage, damageTime);
-                }
-
-                // bounce back away from player
-                Vector2 direction = GlobalTransform.Origin.DirectionTo(pl.GlobalPosition);
-                velocity = -direction * speed * 2;
-                Position += velocity * (float).2f;
-                curTime = 0;
-            }
-        }
-        // enemy collide with attack slash
-        if (col.Name == "SlashArea2D" && Globals.playerAlive)
-        {
-            AttackSlash aSlash= (AttackSlash)GetNode(col.GetParent().GetPath());
-
-            take_damage(aSlash.GetDamage());
-
-            Node nodAtk = col.GetParent();
-            AttackSlash atk = (AttackSlash)nodAtk;
-            if (atk.element == "ice")
-            {
-                FreezeEnemy(atk.freezeTime);
-            }
-
-        }
-    }
-
     public async void FreezeEnemy(float fTime)
     {
+        int cycles = (int)fTime;
+
         frozen = true;
         enemySprite.Modulate = new Color(0, 0, 1, 1);
         enemySprite.Stop();
-        await Task.Delay(TimeSpan.FromMilliseconds(fTime*1000));
+        //await Task.Delay(TimeSpan.FromMilliseconds(fTime*1000));
+
+        waitagain:
+        await Task.Delay(TimeSpan.FromMilliseconds(1000));
+
+        if (Globals.rootNode.GetTree().Paused == true) // if paused then wait for unpause
+        {
+            //Debug.Print("paused");
+            goto waitagain;
+        }
+
+        cycles--;
+
+        if (cycles > 0)
+            goto waitagain;
+
         frozen = false;
         if (IsInstanceValid(enemySprite)) // don't access disposed nodes
         {
@@ -208,27 +299,28 @@ public partial class enemy : RigidBody2D
             nodEnemies.AddChild(newSlimeTrail);
             newSlimeTrail.GlobalPosition = GlobalPosition;
 
+            if (enemyName == "Poison Slime")
+                newSlimeTrail.Modulate = new Color(0, 1, 0, .6f);
+            else
+                newSlimeTrail.Modulate = new Color(1, 1, 1, .6f);
+
             Timer tmrTrail = (Timer)GetNode("Timer");
             tmrTrail.WaitTime = GD.RandRange(2.2f, 3.9f);
         }
     }
 
-    public void _on_occlusion_area_collider_area_entered(Area2D area)
+    // this is when enemy is hidden for efficiency reasons
+    async void MoveTowardsPlayer()
     {
-        if (area.IsInGroup("Players") && Globals.useOcclusion)
+        //Debug.Print("Move TowardsPlayer");
+        await Task.Delay(TimeSpan.FromMilliseconds(1000));
+        if (Globals.playerAlive && IsInstanceValid(this) && Globals.rootNode.GetTree().Paused == false)
         {
-            Visible = true;
-            //Debug.Print("occlusion: enter:" + RDResource.ToString());
-
-        }
-    }
-
-    public void _on_occlusion_area_collider_area_exited(Area2D area)
-    {
-        if (area.IsInGroup("Players") && Globals.useOcclusion)
-        {
-            Visible = false;
-            //Debug.Print("occlusion: exit" + RDResource.ToString());
+            Vector2 direction = GlobalTransform.Origin.DirectionTo(pl.GlobalPosition);
+            velocity = direction * speed * poisonSpeed;
+            Position += velocity * (float)1;
+            if (!Visible)
+                MoveTowardsPlayer();
         }
     }
 

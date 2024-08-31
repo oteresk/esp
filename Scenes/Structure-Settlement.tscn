@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://cs70lx50ngyvy"]
+[gd_scene load_steps=12 format=3 uid="uid://cs70lx50ngyvy"]
 
 [ext_resource type="Shader" path="res://Shaders/SaturationShader.gdshader" id="1_1qw8p"]
 [ext_resource type="Texture2D" uid="uid://doi3etxku6hg7" path="res://Art/Resources/Settlement.png" id="2_0rrwp"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="3_tumej"]
+[ext_resource type="Texture2D" uid="uid://c6gvcku7fsre" path="res://Art/SmokeParticle.png" id="4_6bu3s"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d03md"]
 resource_local_to_scene = true
@@ -25,6 +26,14 @@ height = 150
 fill = 1
 fill_from = Vector2(0.504587, 0.509174)
 fill_to = Vector2(0.857798, 0.155963)
+
+[sub_resource type="Curve" id="Curve_e2u4f"]
+_data = [Vector2(0.00374532, 0.242105), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_yo64r"]
+offsets = PackedFloat32Array(0, 0.733051, 0.995763, 1)
+colors = PackedColorArray(1, 1, 1, 0.729412, 0.988235, 0.988235, 0.988235, 0.462745, 0.952941, 0.952941, 0.952941, 0, 1, 1, 1, 0)
 
 [node name="Resource" type="Sprite2D"]
 y_sort_enabled = true
@@ -52,13 +61,29 @@ scale = Vector2(140, 90)
 shape = SubResource("RectangleShape2D_c286w")
 
 [node name="FlickerLight" type="PointLight2D" parent="."]
-position = Vector2(-35, 7)
+position = Vector2(15, 28)
 scale = Vector2(1.4, 2)
 color = Color(0.74902, 0.0235294, 0, 1)
 energy = 0.7
 range_layer_min = -200
 texture = SubResource("GradientTexture2D_4ft0u")
 height = 333.0
+
+[node name="Smoke" type="CPUParticles2D" parent="."]
+z_index = 1
+position = Vector2(-96, -180)
+amount = 22
+lifetime = 4.0
+texture = ExtResource("4_6bu3s")
+emission_shape = 1
+emission_sphere_radius = 7.35
+direction = Vector2(0, 0)
+spread = 0.0
+gravity = Vector2(-4, -10)
+angle_max = 720.0
+scale_amount_max = 4.0
+scale_amount_curve = SubResource("Curve_e2u4f")
+color_ramp = SubResource("Gradient_yo64r")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

@@ -53,7 +53,7 @@ scale = Vector2(140, 90)
 shape = SubResource("RectangleShape2D_c286w")
 
 [node name="FlickerLight" type="PointLight2D" parent="." node_paths=PackedStringArray("tmr", "light")]
-position = Vector2(-125, 5)
+position = Vector2(-32, 3)
 scale = Vector2(1.4, 2)
 color = Color(0.752941, 0.223529, 0.203922, 1)
 energy = 0.7

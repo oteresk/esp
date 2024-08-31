@@ -1,10 +1,18 @@
-[gd_scene load_steps=9 format=3 uid="uid://pv0fpyslcgie"]
+[gd_scene load_steps=18 format=3 uid="uid://pv0fpyslcgie"]
 
 [ext_resource type="Shader" path="res://Shaders/SaturationShader.gdshader" id="1_wsbrg"]
 [ext_resource type="Texture2D" uid="uid://swedahiogmgi" path="res://Art/Resources/Tower.png" id="2_pk38l"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="3_tvdb5"]
 [ext_resource type="Texture2D" uid="uid://3fsglyijtxuk" path="res://Art/PlatformLight.png" id="4_irnqh"]
-[ext_resource type="PackedScene" uid="uid://bpjxrp2i6uiq3" path="res://Scenes/attack_Projectile.tscn" id="5_8jjvb"]
+[ext_resource type="PackedScene" uid="uid://bpjxrp2i6uiq3" path="res://Scenes/Attacks/attack_projectile.tscn" id="5_8jjvb"]
+[ext_resource type="Texture2D" uid="uid://badjmturhlxk" path="res://Art/Resources/Flag/Flag_0000_Layer-4.png" id="5_osgch"]
+[ext_resource type="Texture2D" uid="uid://dkb18s4osol0d" path="res://Art/Resources/Flag/Flag_0001_Layer-2-copy.png" id="6_s6os4"]
+[ext_resource type="Texture2D" uid="uid://df4xytepdrknh" path="res://Art/Resources/Flag/Flag_0002_Layer-2-copy-2.png" id="7_ec13b"]
+[ext_resource type="Texture2D" uid="uid://b88d8q7l2feod" path="res://Art/Resources/Flag/Flag_0003_Layer-2-copy-3.png" id="8_b0svi"]
+[ext_resource type="Texture2D" uid="uid://j87dqvixd6t" path="res://Art/Resources/Flag/Flag_0004_Layer-3.png" id="9_hey4a"]
+[ext_resource type="Texture2D" uid="uid://c32tr1lo7d2fj" path="res://Art/Resources/Flag/Flag_0005_Layer-2-copy-5.png" id="10_m8466"]
+[ext_resource type="Texture2D" uid="uid://bb6765dwfpnx4" path="res://Art/Resources/Flag/Flag_0006_Layer-2-copy-6.png" id="11_5l7wf"]
+[ext_resource type="Texture2D" uid="uid://bmqsddmkll3u2" path="res://Art/Resources/Flag/Flag_0007_Layer-2.png" id="12_46opd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d03md"]
 resource_local_to_scene = true
@@ -16,11 +24,42 @@ radius = 329.156
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c286w"]
 
-[node name="Resource" type="Sprite2D"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_8g6ga"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_osgch")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_s6os4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ec13b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_b0svi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_hey4a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_m8466")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_5l7wf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_46opd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Resource" type="Sprite2D" groups=["Tower"]]
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_d03md")
-position = Vector2(-1, -153)
-texture = ExtResource("2_pk38l")
+position = Vector2(-1, -50)
 offset = Vector2(0, -60)
 script = ExtResource("3_tvdb5")
 
@@ -42,20 +81,32 @@ scale = Vector2(140, 90)
 shape = SubResource("RectangleShape2D_c286w")
 
 [node name="FlickerLight" type="PointLight2D" parent="."]
-position = Vector2(2, -233)
+position = Vector2(10, -128)
 scale = Vector2(1.4, 1.9)
-color = Color(0.909804, 0.913725, 1, 1)
-energy = 0.4
+color = Color(1, 0.556863, 0.545098, 1)
+energy = 0.73
 range_layer_min = -200
 texture = ExtResource("4_irnqh")
 height = 333.0
 
 [node name="AttackRange" parent="." instance=ExtResource("5_8jjvb")]
-position = Vector2(0, -200)
+position = Vector2(26, -175)
 bSource = 1
 
 [node name="ShootingPoint" parent="AttackRange" index="1"]
-position = Vector2(-2, 0)
+position = Vector2(9, 3)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-89, -130)
+scale = Vector2(1.25, 1.25)
+sprite_frames = SubResource("SpriteFrames_8g6ga")
+autoplay = "default"
+frame_progress = 0.94547
+offset = Vector2(0, -80)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_pk38l")
+offset = Vector2(0, -100)
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

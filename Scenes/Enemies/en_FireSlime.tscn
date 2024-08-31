@@ -1,0 +1,119 @@
+[gd_scene load_steps=21 format=3 uid="uid://cxrer8uu3mhix"]
+
+[ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_f3ax7"]
+[ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_464kp"]
+[ext_resource type="Shader" path="res://Shaders/ColorFlash.gdshader" id="3_runnn"]
+[ext_resource type="Texture2D" uid="uid://cisddo07ecj2b" path="res://Art/Enemy-sprites/FireSlime/Slime-animation_00.png" id="4_i6u2s"]
+[ext_resource type="Texture2D" uid="uid://co77e4hspqmh3" path="res://Art/Enemy-sprites/FireSlime/Slime-animation_01.png" id="5_1r1ea"]
+[ext_resource type="Texture2D" uid="uid://em37la2aegbe" path="res://Art/Enemy-sprites/FireSlime/Slime-animation_02.png" id="6_sgjpg"]
+[ext_resource type="Texture2D" uid="uid://bqd40vcashak2" path="res://Art/Enemy-sprites/FireSlime/Slime-animation_03.png" id="7_8edyn"]
+[ext_resource type="Texture2D" uid="uid://d1disk50r66gn" path="res://Art/Enemy-sprites/FireSlime/Slime-animation_04.png" id="8_ehvhm"]
+[ext_resource type="Texture2D" uid="uid://b13iqfgaf5quw" path="res://Art/Enemy-sprites/FireSlime/Slime-animation_05.png" id="9_h8md1"]
+[ext_resource type="Texture2D" uid="uid://cym26i6n5h28f" path="res://Art/Enemy-sprites/FireSlime/Slime-animation_06.png" id="10_dgktl"]
+[ext_resource type="Texture2D" uid="uid://2rh7nbu2k0fe" path="res://Art/Enemy-sprites/FireSlime/Slime-animation_07.png" id="11_58qjf"]
+[ext_resource type="Texture2D" uid="uid://c8o2jxp3r75o" path="res://Art/Enemy-sprites/FireSlime/Slime-animation_08.png" id="12_oo6a8"]
+[ext_resource type="Texture2D" uid="uid://csqelppdxtqbs" path="res://Art/Enemy-sprites/FireSlime/Slime-animation_09.png" id="13_dlplm"]
+[ext_resource type="Texture2D" uid="uid://77stjwugie5" path="res://Art/Enemy-sprites/FireSlime/Slime-animation_10.png" id="14_6lwse"]
+[ext_resource type="Texture2D" uid="uid://crm6jadogvujs" path="res://Art/Enemy-sprites/FireSlime/Slime-animation_11.png" id="15_2a248"]
+[ext_resource type="Texture2D" uid="uid://bbs40iscbf3pl" path="res://Art/Enemy-sprites/FireSlime/Slime-animation_12.png" id="16_elf1v"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j2qla"]
+resource_local_to_scene = true
+shader = ExtResource("3_runnn")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_i6u2s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_1r1ea")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_sgjpg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_8edyn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ehvhm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_h8md1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_dgktl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_58qjf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_oo6a8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_dlplm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_6lwse")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_2a248")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_elf1v")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
+radius = 32.17
+height = 71.5
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_afs7g"]
+
+[node name="en_FireSlime" type="RigidBody2D" groups=["Enemies"]]
+collision_layer = 2
+collision_mask = 2
+mass = 0.01
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_f3ax7")
+speed = 30.0
+itemScene = ExtResource("2_464kp")
+damageType = 2
+damage = 7
+damageTime = 5
+XP = 5
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_j2qla")
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_7y2m0")
+frame_progress = 0.604678
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(1, 1)
+rotation = -0.342306
+scale = Vector2(1.00107, 0.76671)
+shape = SubResource("CapsuleShape2D_j3bk0")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="Occlusion Area Collider" type="Area2D" parent="." groups=["Occlusion"]]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
+scale = Vector2(140, 90)
+shape = SubResource("RectangleShape2D_afs7g")
+
+[connection signal="timeout" from="Timer" to="." method="LeaveTrail"]

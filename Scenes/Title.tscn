@@ -1,0 +1,460 @@
+[gd_scene load_steps=37 format=3 uid="uid://0bpvsyr4x8kl"]
+
+[ext_resource type="Texture2D" uid="uid://dihuf0f87wtl" path="res://Art/Title/Title.jpg" id="1_asu6n"]
+[ext_resource type="Texture2D" uid="uid://chbmayap43wjo" path="res://Art/Title/Logo.png" id="1_i4lwq"]
+[ext_resource type="Texture2D" uid="uid://d2mqidchgyvkh" path="res://Art/Title/BG_Layer3.png" id="2_camxe"]
+[ext_resource type="Shader" path="res://Shaders/Fire.gdshader" id="3_hwm84"]
+[ext_resource type="Texture2D" uid="uid://3b17qp25vaod" path="res://Art/Title/BG_Layer2.png" id="3_x1ybn"]
+[ext_resource type="Texture2D" uid="uid://6hmis8aydv6w" path="res://Art/Title/BG_Layer1.png" id="4_bu81n"]
+[ext_resource type="Texture2D" uid="uid://d3dldcqokrggc" path="res://Art/Title/Fire2.png" id="4_ncvl1"]
+[ext_resource type="Texture2D" uid="uid://w2uxrt3adrh0" path="res://Art/Title/Guy.png" id="5_a7dtc"]
+[ext_resource type="Texture2D" uid="uid://bpq7dl72422kj" path="res://Art/Title/Fire1.png" id="6_hujeb"]
+[ext_resource type="Shader" path="res://Shaders/CircularWaves.gdshader" id="10_1crk2"]
+[ext_resource type="Texture2D" uid="uid://b4x7q44g3mspr" path="res://Art/Title/LogoMask.png" id="11_4x48i"]
+[ext_resource type="FontFile" uid="uid://deu73dw073p0l" path="res://Analogist.ttf" id="11_70wfx"]
+[ext_resource type="Script" path="res://Scripts/TitleButton.cs" id="12_pr8f2"]
+[ext_resource type="AudioStream" uid="uid://bxu4ub7nr6pxe" path="res://Audio/Music/Fantasy Vol4 Enemy Main.wav" id="16_hhyhq"]
+[ext_resource type="Texture2D" uid="uid://duc3yrtenakjo" path="res://Art/GUI/StatUpgrades/Button Small.png" id="16_p6tm5"]
+[ext_resource type="Texture2D" uid="uid://ccbsebicl0cl7" path="res://Art/GUI/StatUpgrades/Button Small_Hover.png" id="17_imcsu"]
+[ext_resource type="Script" path="res://Scripts/Globals.cs" id="17_yikj4"]
+[ext_resource type="Texture2D" uid="uid://vy0172p8d6bq" path="res://Art/GUI/StatUpgrades/Button_Disabled.png" id="18_qg1fa"]
+[ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="18_vc4ry"]
+[ext_resource type="FontFile" uid="uid://blv8i47j34igf" path="res://Fonts/CloisterBlack.ttf" id="19_utv2d"]
+[ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/Resource-IronMine.tscn" id="19_vtko4"]
+[ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/resource_template-GoldMine.tscn" id="20_bnwr3"]
+[ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/resource_template-ManaWell.tscn" id="21_n6ryh"]
+[ext_resource type="PackedScene" uid="uid://ctcv7jmln8o34" path="res://Scenes/Resource-Wood.tscn" id="22_ixbe5"]
+[ext_resource type="PackedScene" uid="uid://djjmkb3mx4ata" path="res://Scenes/Resource-Platform.tscn" id="23_u041h"]
+[ext_resource type="Script" path="res://Scripts/SaveLoad.cs" id="24_qirlc"]
+
+[sub_resource type="Gradient" id="Gradient_7b4hk"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2gi68"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ixuov"]
+seamless = true
+color_ramp = SubResource("Gradient_7b4hk")
+noise = SubResource("FastNoiseLite_2gi68")
+
+[sub_resource type="Gradient" id="Gradient_rscnc"]
+offsets = PackedFloat32Array(0, 0.168269, 0.538462, 1)
+colors = PackedColorArray(0.478431, 0, 0, 1, 0.717647, 0.439216, 0.0823529, 1, 0.847059, 0.65098, 0.160784, 1, 0.820735, 0.0980786, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jk5d0"]
+gradient = SubResource("Gradient_rscnc")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lqyw5"]
+resource_local_to_scene = true
+shader = ExtResource("3_hwm84")
+shader_parameter/scroll = Vector2(0, 0.2)
+shader_parameter/scroll2 = Vector2(0.1, 0.1)
+shader_parameter/noiseScale1 = Vector2(0.5, 0.5)
+shader_parameter/noiseScale2 = Vector2(1, 1)
+shader_parameter/blur = 5.985
+shader_parameter/base_intensity = 0.1
+shader_parameter/intensity_factor = 0.737
+shader_parameter/alpha = 1.0
+shader_parameter/NOISE_PATTERN = SubResource("NoiseTexture2D_ixuov")
+shader_parameter/TONE_MAPPING = SubResource("GradientTexture2D_jk5d0")
+shader_parameter/mask = ExtResource("4_ncvl1")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xjl84"]
+resource_local_to_scene = true
+shader = ExtResource("3_hwm84")
+shader_parameter/scroll = Vector2(0, 0.2)
+shader_parameter/scroll2 = Vector2(0.1, 0.1)
+shader_parameter/noiseScale1 = Vector2(0.5, 0.5)
+shader_parameter/noiseScale2 = Vector2(1, 1)
+shader_parameter/blur = 5.985
+shader_parameter/base_intensity = 0.1
+shader_parameter/intensity_factor = 0.737
+shader_parameter/alpha = 1.0
+shader_parameter/NOISE_PATTERN = SubResource("NoiseTexture2D_ixuov")
+shader_parameter/TONE_MAPPING = SubResource("GradientTexture2D_jk5d0")
+shader_parameter/mask = ExtResource("6_hujeb")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ao6ri"]
+shader = ExtResource("10_1crk2")
+shader_parameter/speed = 1.0
+shader_parameter/frequency = 66.0
+shader_parameter/amplitude = 0.2
+shader_parameter/alpha = 0.4
+shader_parameter/mask = ExtResource("11_4x48i")
+
+[sub_resource type="LabelSettings" id="LabelSettings_dtvkn"]
+font = ExtResource("11_70wfx")
+font_size = 27
+font_color = Color(0, 0.592157, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_d8md0"]
+font = ExtResource("19_utv2d")
+font_size = 50
+font_color = Color(0.301961, 0.360784, 0.133333, 1)
+
+[node name="Title" type="Node2D"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 960.0
+offset_top = 514.0
+offset_right = 960.0
+offset_bottom = 514.0
+scale = Vector2(1.26, 1.26)
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_asu6n")
+
+[node name="Layer3" type="TextureRect" parent="Control"]
+z_index = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_camxe")
+
+[node name="Fire2" type="TextureRect" parent="Control"]
+z_index = 3
+material = SubResource("ShaderMaterial_lqyw5")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -766.667
+offset_top = -133.333
+offset_right = 769.333
+offset_bottom = 427.667
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_ncvl1")
+stretch_mode = 3
+
+[node name="Layer2" type="TextureRect" parent="Control"]
+z_index = 4
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -748.0
+offset_top = -222.0
+offset_right = 748.0
+offset_bottom = 492.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_x1ybn")
+
+[node name="Fire1" type="TextureRect" parent="Control"]
+modulate = Color(1, 1, 1, 0.141176)
+self_modulate = Color(1, 1, 1, 0.12549)
+z_index = 4
+material = SubResource("ShaderMaterial_xjl84")
+layout_mode = 0
+offset_left = -766.667
+offset_top = 94.4444
+offset_right = -386.667
+offset_bottom = 394.444
+texture = ExtResource("6_hujeb")
+
+[node name="Layer1" type="TextureRect" parent="Control"]
+z_index = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -748.0
+offset_top = 253.0
+offset_right = -406.0
+offset_bottom = 413.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_bu81n")
+stretch_mode = 2
+
+[node name="Guy" type="TextureRect" parent="Control"]
+z_index = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -65.873
+offset_top = 246.825
+offset_right = 276.127
+offset_bottom = 406.825
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_a7dtc")
+stretch_mode = 2
+
+[node name="Logo" type="TextureRect" parent="Control"]
+z_index = 9
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = -7.6625
+anchor_right = 0.5
+anchor_bottom = -7.6625
+offset_left = -153.968
+offset_top = -392.064
+offset_right = 393.032
+offset_bottom = -161.064
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("1_i4lwq")
+
+[node name="Logo2" type="TextureRect" parent="Control"]
+z_index = 10
+material = SubResource("ShaderMaterial_ao6ri")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = -7.6625
+anchor_right = 0.5
+anchor_bottom = -7.6625
+offset_left = -153.968
+offset_top = -392.064
+offset_right = 393.032
+offset_bottom = -161.064
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("1_i4lwq")
+
+[node name="btnSteamName" type="TextureButton" parent="Control" node_paths=PackedStringArray("lblButton")]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 0
+offset_left = 322.222
+offset_top = -350.794
+offset_right = 362.222
+offset_bottom = -310.794
+disabled = true
+script = ExtResource("12_pr8f2")
+lblButton = NodePath("lblSteamName")
+
+[node name="lblSteamName" type="Label" parent="Control/btnSteamName"]
+z_index = 3
+layout_mode = 1
+offset_right = 135.0
+offset_bottom = 31.0
+text = "Steam Name"
+label_settings = SubResource("LabelSettings_dtvkn")
+horizontal_alignment = 2
+
+[node name="MCbtnUpgrades" type="MarginContainer" parent="Control"]
+z_index = 5
+offset_left = -755.556
+offset_top = -76.1905
+offset_right = -395.556
+offset_bottom = 101.81
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="btnUpgrades" type="TextureButton" parent="Control/MCbtnUpgrades" node_paths=PackedStringArray("lblButton")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+texture_normal = ExtResource("16_p6tm5")
+texture_hover = ExtResource("17_imcsu")
+texture_disabled = ExtResource("18_qg1fa")
+script = ExtResource("12_pr8f2")
+lblButton = NodePath("lblUpgrades")
+
+[node name="lblUpgrades" type="Label" parent="Control/MCbtnUpgrades/btnUpgrades"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.809129
+anchor_top = 0.490909
+anchor_right = 0.809129
+anchor_bottom = 0.490909
+offset_left = -131.0
+offset_top = -37.0
+offset_right = -13.0
+offset_bottom = 37.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Upgrades"
+label_settings = SubResource("LabelSettings_d8md0")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="MCbtnOptions" type="MarginContainer" parent="Control"]
+z_index = 5
+offset_left = -755.556
+offset_top = 65.0794
+offset_right = -395.556
+offset_bottom = 243.079
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="btnOptions" type="TextureButton" parent="Control/MCbtnOptions" node_paths=PackedStringArray("lblButton")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+texture_normal = ExtResource("16_p6tm5")
+texture_hover = ExtResource("17_imcsu")
+texture_disabled = ExtResource("18_qg1fa")
+script = ExtResource("12_pr8f2")
+lblButton = NodePath("lblOptions")
+
+[node name="lblOptions" type="Label" parent="Control/MCbtnOptions/btnOptions"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.809129
+anchor_top = 0.490909
+anchor_right = 0.809129
+anchor_bottom = 0.490909
+offset_left = -131.0
+offset_top = -37.0
+offset_right = -13.0
+offset_bottom = 37.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Options"
+label_settings = SubResource("LabelSettings_d8md0")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="MCbtnPlay" type="MarginContainer" parent="Control"]
+z_index = 5
+offset_left = -807.143
+offset_top = 188.889
+offset_right = -447.143
+offset_bottom = 366.889
+scale = Vector2(1.6, 1.6)
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="btnPlay" type="TextureButton" parent="Control/MCbtnPlay" node_paths=PackedStringArray("lblButton")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+texture_normal = ExtResource("16_p6tm5")
+texture_hover = ExtResource("17_imcsu")
+texture_disabled = ExtResource("18_qg1fa")
+script = ExtResource("12_pr8f2")
+lblButton = NodePath("lblPlay")
+
+[node name="lblPlay" type="Label" parent="Control/MCbtnPlay/btnPlay"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.809129
+anchor_top = 0.490909
+anchor_right = 0.809129
+anchor_bottom = 0.490909
+offset_left = -131.0
+offset_top = -37.0
+offset_right = -13.0
+offset_bottom = 37.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Play"
+label_settings = SubResource("LabelSettings_d8md0")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="MCbtnQuit" type="MarginContainer" parent="Control"]
+z_index = 5
+offset_left = -755.555
+offset_top = -399.206
+offset_right = -395.555
+offset_bottom = -221.206
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="TextureButton" type="TextureButton" parent="Control/MCbtnQuit" node_paths=PackedStringArray("lblButton")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+texture_normal = ExtResource("16_p6tm5")
+texture_hover = ExtResource("17_imcsu")
+texture_disabled = ExtResource("18_qg1fa")
+script = ExtResource("12_pr8f2")
+lblButton = NodePath("lblQuit")
+
+[node name="lblQuit" type="Label" parent="Control/MCbtnQuit/TextureButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.809129
+anchor_top = 0.490909
+anchor_right = 0.809129
+anchor_bottom = 0.490909
+offset_left = -131.0
+offset_top = -37.0
+offset_right = -13.0
+offset_bottom = 37.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Quit"
+label_settings = SubResource("LabelSettings_d8md0")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Black" type="ColorRect" parent="Control"]
+modulate = Color(1, 1, 1, 0)
+z_index = 999
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -960.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 540.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="titleMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_hhyhq")
+bus = &"Music"
+
+[node name="Globals" type="Node2D" parent="."]
+script = ExtResource("17_yikj4")
+
+[node name="ResourceDiscoveries" type="Node2D" parent="."]
+y_sort_enabled = true
+position = Vector2(142, -55)
+script = ExtResource("18_vc4ry")
+rTemplateIronMine = ExtResource("19_vtko4")
+rTemplateGoldMine = ExtResource("20_bnwr3")
+rTemplateManaWell = ExtResource("21_n6ryh")
+rTemplateWood = ExtResource("22_ixbe5")
+rTemplatePlatform = ExtResource("23_u041h")
+resourcesPerCell = 5
+resourceUpdateFreq = 60
+
+[node name="SaveLoad" type="Node2D" parent="."]
+script = ExtResource("24_qirlc")
+
+[connection signal="mouse_entered" from="Control/MCbtnUpgrades/btnUpgrades" to="Control/MCbtnUpgrades/btnUpgrades" method="Hover"]
+[connection signal="mouse_exited" from="Control/MCbtnUpgrades/btnUpgrades" to="Control/MCbtnUpgrades/btnUpgrades" method="UnHover"]
+[connection signal="mouse_entered" from="Control/MCbtnOptions/btnOptions" to="Control/MCbtnOptions/btnOptions" method="Hover"]
+[connection signal="mouse_exited" from="Control/MCbtnOptions/btnOptions" to="Control/MCbtnOptions/btnOptions" method="UnHover"]
+[connection signal="mouse_entered" from="Control/MCbtnPlay/btnPlay" to="Control/MCbtnPlay/btnPlay" method="Hover"]
+[connection signal="mouse_exited" from="Control/MCbtnPlay/btnPlay" to="Control/MCbtnPlay/btnPlay" method="UnHover"]
+[connection signal="mouse_entered" from="Control/MCbtnQuit/TextureButton" to="Control/MCbtnQuit/TextureButton" method="Hover"]
+[connection signal="mouse_exited" from="Control/MCbtnQuit/TextureButton" to="Control/MCbtnQuit/TextureButton" method="UnHover"]

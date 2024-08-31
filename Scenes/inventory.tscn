@@ -1,0 +1,181 @@
+[gd_scene load_steps=14 format=3 uid="uid://dtxy3qw5qjwrl"]
+
+[ext_resource type="Script" path="res://Scripts/Inventory.cs" id="1_eruam"]
+[ext_resource type="Texture2D" uid="uid://571guu7dynnf" path="res://Art/GUI/Backpack.png" id="2_kb1g6"]
+[ext_resource type="Texture2D" uid="uid://bc5nevulo07nb" path="res://Art/GUI/Backpack_Sel.png" id="3_25xkm"]
+[ext_resource type="Texture2D" uid="uid://dwfxwdk107fkm" path="res://Art/GUI/InventorySlots.png" id="4_xudgm"]
+[ext_resource type="Texture2D" uid="uid://dxd6akepaurun" path="res://Art/GUI/Relics/Bracelet.png" id="5_2yf8g"]
+[ext_resource type="Shader" path="res://Shaders/AnimGlow.gdshader" id="5_4xggf"]
+[ext_resource type="Texture2D" uid="uid://b8dj3jydqncxa" path="res://Art/GUI/Relics/Chalice.png" id="6_gkiwd"]
+[ext_resource type="Texture2D" uid="uid://204ql4nkf5n3" path="res://Art/GUI/Relics/Crown.png" id="7_s8wpk"]
+[ext_resource type="Texture2D" uid="uid://bajnq38sow7ym" path="res://Art/GUI/Relics/Horn.png" id="8_acfo5"]
+[ext_resource type="Texture2D" uid="uid://un3ghfrninb5" path="res://Art/GUI/Relics/Necklace1.png" id="9_8xvnd"]
+[ext_resource type="Texture2D" uid="uid://daa87i0gqn0aq" path="res://Art/GUI/Relics/Necklace2.png" id="10_1mqlp"]
+[ext_resource type="Texture2D" uid="uid://bg5nracdqad56" path="res://Art/GUI/Relics/Ring.png" id="11_kaiug"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n0c7j"]
+shader = ExtResource("5_4xggf")
+shader_parameter/max_line_width = 24.0
+shader_parameter/min_line_width = 2.0
+shader_parameter/freq = 12.0
+shader_parameter/block_size = 20.0
+shader_parameter/starting_colour = Vector4(1, 1, 1, 0.8)
+shader_parameter/ending_colour = Vector4(1, 1, 1, 0)
+
+[node name="Inventory" type="VBoxContainer" node_paths=PackedStringArray("slots", "relics")]
+size_flags_horizontal = 0
+size_flags_vertical = 8
+script = ExtResource("1_eruam")
+slots = NodePath("HBoxContainer/MarginContainer2")
+relics = [NodePath("HBoxContainer/MarginContainer2/Slots/Relic0"), NodePath("HBoxContainer/MarginContainer2/Slots/Relic1"), NodePath("HBoxContainer/MarginContainer2/Slots/Relic2"), NodePath("HBoxContainer/MarginContainer2/Slots/Relic3"), NodePath("HBoxContainer/MarginContainer2/Slots/Relic4"), NodePath("HBoxContainer/MarginContainer2/Slots/Relic5"), NodePath("HBoxContainer/MarginContainer2/Slots/Relic6")]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
+
+[node name="Backpack" type="TextureButton" parent="HBoxContainer/MarginContainer"]
+layout_mode = 2
+focus_mode = 0
+texture_normal = ExtResource("2_kb1g6")
+texture_hover = ExtResource("3_25xkm")
+
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 66
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Slots" type="TextureRect" parent="HBoxContainer/MarginContainer2"]
+z_index = -1
+layout_mode = 2
+texture = ExtResource("4_xudgm")
+expand_mode = 3
+
+[node name="Relic0" type="TextureRect" parent="HBoxContainer/MarginContainer2/Slots"]
+material = SubResource("ShaderMaterial_n0c7j")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.99999
+offset_top = 11.0
+offset_right = -355.368
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("5_2yf8g")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="Relic1" type="TextureRect" parent="HBoxContainer/MarginContainer2/Slots"]
+material = SubResource("ShaderMaterial_n0c7j")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 75.0
+offset_top = -1.0
+offset_right = -284.368
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_gkiwd")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="Relic2" type="TextureRect" parent="HBoxContainer/MarginContainer2/Slots"]
+material = SubResource("ShaderMaterial_n0c7j")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 132.0
+offset_top = 4.0
+offset_right = -203.368
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.56, 0.56)
+texture = ExtResource("7_s8wpk")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="Relic3" type="TextureRect" parent="HBoxContainer/MarginContainer2/Slots"]
+material = SubResource("ShaderMaterial_n0c7j")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 205.0
+offset_top = 1.0
+offset_right = -156.368
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("8_acfo5")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="Relic4" type="TextureRect" parent="HBoxContainer/MarginContainer2/Slots"]
+material = SubResource("ShaderMaterial_n0c7j")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 264.0
+offset_top = 4.0
+offset_right = -49.3679
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("9_8xvnd")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="Relic5" type="TextureRect" parent="HBoxContainer/MarginContainer2/Slots"]
+material = SubResource("ShaderMaterial_n0c7j")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 327.0
+offset_top = 11.0
+offset_right = 13.6321
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.46, 0.46)
+texture = ExtResource("10_1mqlp")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="Relic6" type="TextureRect" parent="HBoxContainer/MarginContainer2/Slots"]
+material = SubResource("ShaderMaterial_n0c7j")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 393.0
+offset_top = 9.0
+offset_right = 32.6321
+offset_bottom = -44.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("11_kaiug")
+expand_mode = 1
+stretch_mode = 2
+
+[connection signal="pressed" from="HBoxContainer/MarginContainer/Backpack" to="." method="OnClickBackpack"]

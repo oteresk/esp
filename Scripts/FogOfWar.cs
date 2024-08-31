@@ -30,8 +30,8 @@ public partial class FogOfWar : Node2D
     [Export]
     public int lightHeight = 300;
 
-    [Export]
-    public Area2D Player;
+    //[Export]
+    //public Area2D Player;
 
     [Export]
     public float debounce_time = 0.01f;
@@ -65,7 +65,7 @@ public partial class FogOfWar : Node2D
 
         light_rect = new Rect2I(Vector2I.Zero, lightImage.GetSize());
 
-        update_fog((Vector2I)Player.Position);
+        update_fog((Vector2I)Globals.pl.Position);
     }
 
     // Update the fog
@@ -77,6 +77,8 @@ public partial class FogOfWar : Node2D
         Vector2 rndOffset = new Vector2(xOff, yOff);
         fogImage.BlendRect(lightImage, light_rect, (Vector2I)pos - (Vector2I)(light_offset+rndOffset));
         fogTexture.Update(fogImage);
+        // offset fog
+        fog.Offset=new Vector2(-pos.X, -pos.Y);
     }
 
     // Main render loop
@@ -86,7 +88,7 @@ public partial class FogOfWar : Node2D
         if (time_since_last_fog_update >= debounce_time && Visible)
         {
             time_since_last_fog_update = 0.0f;
-            update_fog((Vector2I)new Vector2(Player.Position.X/14, Player.Position.Y/14));
+            update_fog((Vector2I)new Vector2(Globals.pl.Position.X/14, Globals.pl.Position.Y/14));
         }
     }
 

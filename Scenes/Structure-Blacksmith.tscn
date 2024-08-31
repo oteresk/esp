@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://cx15v303xmpy6"]
+[gd_scene load_steps=13 format=3 uid="uid://cx15v303xmpy6"]
 
 [ext_resource type="Shader" path="res://Shaders/SaturationShader.gdshader" id="1_ccdd2"]
 [ext_resource type="Texture2D" uid="uid://d0qalqfl6foic" path="res://Art/Resources/Blacksmith.png" id="2_2naun"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="3_age7f"]
 [ext_resource type="Script" path="res://Scripts/FlickerLight.cs" id="4_u8h55"]
+[ext_resource type="Texture2D" uid="uid://c6gvcku7fsre" path="res://Art/SmokeParticle.png" id="5_nws82"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d03md"]
 resource_local_to_scene = true
@@ -26,6 +27,14 @@ height = 150
 fill = 1
 fill_from = Vector2(0.504587, 0.509174)
 fill_to = Vector2(0.857798, 0.155963)
+
+[sub_resource type="Curve" id="Curve_0d6rc"]
+_data = [Vector2(0.00374532, 0.242105), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_l32d3"]
+offsets = PackedFloat32Array(0, 0.733051, 0.995763, 1)
+colors = PackedColorArray(0.34902, 0.321569, 0.313726, 0.729412, 0.466667, 0.384314, 0.380392, 0.462745, 0.780392, 0.717647, 0.717647, 0, 1, 1, 1, 0)
 
 [node name="Resource" type="Sprite2D"]
 y_sort_enabled = true
@@ -53,7 +62,7 @@ scale = Vector2(140, 90)
 shape = SubResource("RectangleShape2D_c286w")
 
 [node name="FlickerLight" type="PointLight2D" parent="." node_paths=PackedStringArray("tmr", "light")]
-position = Vector2(-4, 13)
+position = Vector2(12, 8)
 scale = Vector2(1.4, 2)
 color = Color(0.752941, 0.223529, 0.203922, 1)
 energy = 0.7
@@ -68,6 +77,23 @@ light = NodePath(".")
 [node name="Timer" type="Timer" parent="FlickerLight"]
 process_callback = 0
 wait_time = 0.01
+
+[node name="Smoke" type="CPUParticles2D" parent="."]
+z_index = 1
+position = Vector2(26, -133)
+amount = 22
+lifetime = 4.0
+texture = ExtResource("5_nws82")
+emission_shape = 1
+emission_sphere_radius = 7.35
+direction = Vector2(0, 0)
+spread = 0.0
+gravity = Vector2(7, -10)
+angle_max = 720.0
+scale_amount_min = 2.0
+scale_amount_max = 5.0
+scale_amount_curve = SubResource("Curve_0d6rc")
+color_ramp = SubResource("Gradient_l32d3")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

@@ -1,0 +1,98 @@
+[gd_scene load_steps=17 format=3 uid="uid://bfyxxdyqolwlm"]
+
+[ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_nt4iv"]
+[ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_gh2ca"]
+[ext_resource type="Shader" path="res://Shaders/ColorFlash.gdshader" id="3_3thp2"]
+[ext_resource type="Texture2D" uid="uid://b230n6bx2qxvn" path="res://Art/Enemy-sprites/Bat/Bat-animation_0.png" id="4_2t8jh"]
+[ext_resource type="Texture2D" uid="uid://cjbf53ssohgrp" path="res://Art/Enemy-sprites/Bat/Bat-animation_1.png" id="5_rurdc"]
+[ext_resource type="Texture2D" uid="uid://ca04ghkqyhn7f" path="res://Art/Enemy-sprites/Bat/Bat-animation_2.png" id="6_dly14"]
+[ext_resource type="Texture2D" uid="uid://dpajecjk6prgy" path="res://Art/Enemy-sprites/Bat/Bat-animation_3.png" id="7_y45pq"]
+[ext_resource type="Texture2D" uid="uid://cua1ohnlracue" path="res://Art/Enemy-sprites/Bat/Bat-animation_4.png" id="8_4wn12"]
+[ext_resource type="Texture2D" uid="uid://brchb4w6e5kry" path="res://Art/Enemy-sprites/Bat/Bat-animation_5.png" id="9_0bgep"]
+[ext_resource type="Texture2D" uid="uid://vmm5baf71wvx" path="res://Art/Enemy-sprites/Bat/Bat-animation_6.png" id="10_2sebw"]
+[ext_resource type="Texture2D" uid="uid://bk34x86f3t7lo" path="res://Art/Enemy-sprites/Bat/Bat-animation_7.png" id="11_meea1"]
+[ext_resource type="Texture2D" uid="uid://cwq1hew2x1j6y" path="res://Art/Enemy-sprites/Bat/Bat-animation_8.png" id="12_wytb1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_boo5v"]
+resource_local_to_scene = true
+shader = ExtResource("3_3thp2")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nyuw3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_2t8jh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_rurdc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_dly14")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_y45pq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_4wn12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_0bgep")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_2sebw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_meea1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_wytb1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 20.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
+radius = 19.9795
+height = 39.9591
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tilnt"]
+
+[node name="en_RedBat" type="RigidBody2D" groups=["Enemies"]]
+collision_layer = 2
+collision_mask = 2
+mass = 0.01
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_nt4iv")
+health = 10.0
+speed = 90.0
+itemScene = ExtResource("2_gh2ca")
+damage = 12
+XP = 7
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(1, 0.117647, 0.219608, 1)
+texture_filter = 1
+material = SubResource("ShaderMaterial_boo5v")
+position = Vector2(1, 10)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_nyuw3")
+frame_progress = 0.57592
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(4.76837e-07, -4)
+rotation = 0.00420356
+scale = Vector2(0.919833, 1)
+shape = SubResource("CapsuleShape2D_j3bk0")
+
+[node name="Occlusion Area Collider" type="Area2D" parent="." groups=["Occlusion"]]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
+scale = Vector2(140, 90)
+shape = SubResource("RectangleShape2D_tilnt")

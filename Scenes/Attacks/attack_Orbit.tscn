@@ -1,0 +1,152 @@
+[gd_scene load_steps=16 format=3 uid="uid://5idm7ubrtal"]
+
+[ext_resource type="Script" path="res://Scripts/AttackOrbit.cs" id="1_grgys"]
+[ext_resource type="AudioStream" uid="uid://dxo82pehcxlyr" path="res://Audio/SFX/Cross.ogg" id="2_mt6sc"]
+[ext_resource type="Texture2D" uid="uid://dvneeb8c5khtu" path="res://Art/Energy.png" id="3_7xd62"]
+[ext_resource type="Texture2D" uid="uid://dodjbu2a11hmn" path="res://Art/Attacks/Fire1.png" id="3_jglvr"]
+[ext_resource type="Texture2D" uid="uid://cby7aecqyap3g" path="res://Art/Attacks/Fire2.png" id="4_2ojqo"]
+[ext_resource type="Texture2D" uid="uid://b7xyaghr3u8os" path="res://Art/Energy2.png" id="4_evy71"]
+[ext_resource type="Texture2D" uid="uid://de3ipl53wyerb" path="res://Art/Energy3.png" id="5_bb623"]
+[ext_resource type="Texture2D" uid="uid://d3k0jwlj2svuf" path="res://Art/Attacks/Fire3.png" id="5_qd3ay"]
+[ext_resource type="Texture2D" uid="uid://b3kv6s1tgcedk" path="res://Art/Attacks/Fire4.png" id="6_llv7q"]
+[ext_resource type="Texture2D" uid="uid://ogcrman44hw" path="res://Art/Attacks/Fire5.png" id="7_h6qm6"]
+[ext_resource type="Texture2D" uid="uid://dv22v0b10n4e3" path="res://Art/Element_Poison.png" id="8_t0jet"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rn1bp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_7xd62")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_evy71")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_bb623")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h8aly"]
+radius = 13.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wfilo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_jglvr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_2ojqo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_qd3ay")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_llv7q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_h6qm6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 11.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yradr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_t0jet")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="AttackOrbit" type="Area2D" node_paths=PackedStringArray("pivot", "bulletEnergy", "bulletFire", "bulletPoison")]
+modulate = Color(1, 1, 1, 0.501961)
+scale = Vector2(3, 3)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_grgys")
+pivot = NodePath("pivot")
+bulletEnergy = NodePath("pivot/Bullet_Energy")
+bulletFire = NodePath("pivot/Bullet_Fire")
+bulletPoison = NodePath("pivot/Bullet_Poison")
+
+[node name="sndCross" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_mt6sc")
+bus = &"SFX"
+
+[node name="pivot" type="Sprite2D" parent="."]
+position = Vector2(0, -30)
+
+[node name="Bullet_Energy" type="Sprite2D" parent="pivot"]
+visible = false
+rotation = -0.872665
+scale = Vector2(0.1, 0.1)
+flip_h = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="pivot/Bullet_Energy"]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_rn1bp")
+frame_progress = 0.45125
+flip_h = true
+
+[node name="Area2D" type="Area2D" parent="pivot/Bullet_Energy"]
+collision_layer = 0
+collision_mask = 3
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pivot/Bullet_Energy/Area2D"]
+scale = Vector2(0.5, 0.5)
+shape = SubResource("CircleShape2D_h8aly")
+
+[node name="Bullet_Fire" type="Sprite2D" parent="pivot"]
+visible = false
+rotation = -0.872665
+scale = Vector2(0.1, 0.1)
+flip_h = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="pivot/Bullet_Fire"]
+position = Vector2(18, -1.90735e-06)
+rotation = 1.5708
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_wfilo")
+autoplay = "default"
+
+[node name="Area2D" type="Area2D" parent="pivot/Bullet_Fire"]
+collision_layer = 0
+collision_mask = 3
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pivot/Bullet_Fire/Area2D"]
+scale = Vector2(0.5, 0.5)
+shape = SubResource("CircleShape2D_h8aly")
+
+[node name="Bullet_Poison" type="Sprite2D" parent="pivot"]
+visible = false
+rotation = -0.872665
+scale = Vector2(0.1, 0.1)
+flip_h = true
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="pivot/Bullet_Poison"]
+scale = Vector2(0.7, 0.7)
+sprite_frames = SubResource("SpriteFrames_yradr")
+flip_h = true
+
+[node name="Area2D" type="Area2D" parent="pivot/Bullet_Poison"]
+collision_layer = 0
+collision_mask = 3
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pivot/Bullet_Poison/Area2D"]
+scale = Vector2(0.5, 0.5)
+shape = SubResource("CircleShape2D_h8aly")
+
+[connection signal="body_entered" from="pivot/Bullet_Energy/Area2D" to="." method="OnBodyEntered"]
+[connection signal="body_entered" from="pivot/Bullet_Fire/Area2D" to="." method="OnBodyEntered"]
+[connection signal="body_entered" from="pivot/Bullet_Poison/Area2D" to="." method="OnBodyEntered"]

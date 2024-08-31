@@ -15,8 +15,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
-radius = 25.0124
-height = 52.0246
+radius = 13.4361
+height = 30.4026
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D"]
 modulate = Color(0.054902, 1, 0.301961, 1)
@@ -29,17 +29,14 @@ damage = 1
 
 [node name="Area2D" type="Area2D" parent="."]
 scale = Vector2(0.6, 0.6)
+collision_layer = 2
+collision_mask = 0
+monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(-2.77778, 0)
 rotation = -0.230347
 scale = Vector2(3.36207, 2.80419)
-shape = SubResource("CapsuleShape2D_j3bk0")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-position = Vector2(-1.66667, -1.19209e-07)
-rotation = -0.342306
-scale = Vector2(0.972391, 0.675133)
 shape = SubResource("CapsuleShape2D_j3bk0")
 
 [node name="Timer" type="Timer" parent="."]

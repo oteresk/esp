@@ -1,0 +1,214 @@
+[gd_scene load_steps=43 format=3 uid="uid://cyjwyv46g8t81"]
+
+[ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_w2oct"]
+[ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_584q2"]
+[ext_resource type="Shader" path="res://Shaders/ColorFlash.gdshader" id="3_kbmlt"]
+[ext_resource type="Texture2D" uid="uid://cf7vyktypxtcc" path="res://Art/Enemy-sprites/Wolf/Wolf-Bow_00.png" id="4_us80m"]
+[ext_resource type="Texture2D" uid="uid://dw7d8ikeh1dpd" path="res://Art/Enemy-sprites/Wolf/Wolf-Bow_01.png" id="5_fscps"]
+[ext_resource type="Texture2D" uid="uid://tg114la0mrt0" path="res://Art/Enemy-sprites/Wolf/Wolf-Bow_02.png" id="6_kgq85"]
+[ext_resource type="Texture2D" uid="uid://c71fbedoviywt" path="res://Art/Enemy-sprites/Wolf/Wolf-Bow_03.png" id="7_2r3n4"]
+[ext_resource type="Texture2D" uid="uid://ddormm24fohkr" path="res://Art/Enemy-sprites/Wolf/Wolf-Bow_04.png" id="8_vgy2u"]
+[ext_resource type="Texture2D" uid="uid://c4kpbrahc5snr" path="res://Art/Enemy-sprites/Wolf/Wolf-Bow_05.png" id="9_c7ft3"]
+[ext_resource type="Texture2D" uid="uid://bknf3fg8pqwr0" path="res://Art/Enemy-sprites/Wolf/Wolf-Bow_06.png" id="10_33103"]
+[ext_resource type="Texture2D" uid="uid://b5wwuuu5itmob" path="res://Art/Enemy-sprites/Wolf/Wolf-Bow_07.png" id="11_5wv5k"]
+[ext_resource type="Texture2D" uid="uid://dh85qi2wioquh" path="res://Art/Enemy-sprites/Wolf/Wolf-Bow_08.png" id="12_2t5q4"]
+[ext_resource type="Texture2D" uid="uid://ckdo42egpoa2j" path="res://Art/Enemy-sprites/Wolf/Wolf-Bow_09.png" id="13_wk4m6"]
+[ext_resource type="Texture2D" uid="uid://dn2leg37lsb5r" path="res://Art/Enemy-sprites/Wolf/Wolf-Bow_10.png" id="14_7r2mp"]
+[ext_resource type="Texture2D" uid="uid://brubhpnal8cr1" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_00.png" id="15_a5p6w"]
+[ext_resource type="Texture2D" uid="uid://bxanaryqmw0bb" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_01.png" id="16_t1jae"]
+[ext_resource type="Texture2D" uid="uid://gcb6jtnno5eq" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_02.png" id="17_ildh8"]
+[ext_resource type="Texture2D" uid="uid://tlrhrdjoe0gq" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_03.png" id="18_uaf7b"]
+[ext_resource type="Texture2D" uid="uid://b1fa2stjray6n" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_04.png" id="19_olxu3"]
+[ext_resource type="Texture2D" uid="uid://qkgup4d8os8i" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_05.png" id="20_b1agt"]
+[ext_resource type="Texture2D" uid="uid://bjc2e6vnwk5vm" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_06.png" id="21_uvrnw"]
+[ext_resource type="Texture2D" uid="uid://b5byhp1m4e1f7" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_07.png" id="22_utew5"]
+[ext_resource type="Texture2D" uid="uid://csjfkhfh7sst7" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_08.png" id="23_434do"]
+[ext_resource type="Texture2D" uid="uid://nerc0novreej" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_09.png" id="24_j0xkk"]
+[ext_resource type="Texture2D" uid="uid://q4ei4rpariwo" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_10.png" id="25_mbhe1"]
+[ext_resource type="Texture2D" uid="uid://c717vhkqlvh7w" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_11.png" id="26_4segb"]
+[ext_resource type="Texture2D" uid="uid://1sln4qy1tjbe" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_12.png" id="27_g43rs"]
+[ext_resource type="Texture2D" uid="uid://divkmojulkpbk" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_13.png" id="28_cjyul"]
+[ext_resource type="Texture2D" uid="uid://djo7312vc3aup" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_14.png" id="29_qjm1j"]
+[ext_resource type="Texture2D" uid="uid://c8qiw08k126lu" path="res://Art/Enemy-sprites/Wolf/Wolf-Walk_15.png" id="30_7icpm"]
+[ext_resource type="Texture2D" uid="uid://gyj24w8eldrt" path="res://Art/Enemy-sprites/Wolf/Wolf-Run_0.png" id="31_duab5"]
+[ext_resource type="Texture2D" uid="uid://dv1grxr8rp0r5" path="res://Art/Enemy-sprites/Wolf/Wolf-Run_1.png" id="32_o31g3"]
+[ext_resource type="Texture2D" uid="uid://bl5aoqsw3urm4" path="res://Art/Enemy-sprites/Wolf/Wolf-Run_2.png" id="33_n2wwj"]
+[ext_resource type="Texture2D" uid="uid://cg3q1sha4bps6" path="res://Art/Enemy-sprites/Wolf/Wolf-Run_3.png" id="34_gg1tm"]
+[ext_resource type="Texture2D" uid="uid://cg4p32xe7p5xe" path="res://Art/Enemy-sprites/Wolf/Wolf-Run_4.png" id="35_7qt1d"]
+[ext_resource type="Texture2D" uid="uid://c0qa8442eawfh" path="res://Art/Enemy-sprites/Wolf/Wolf-Run_5.png" id="36_2dhvg"]
+[ext_resource type="Texture2D" uid="uid://ciqadggkkj2ko" path="res://Art/Enemy-sprites/Wolf/Wolf-Run_6.png" id="37_dchmn"]
+[ext_resource type="Texture2D" uid="uid://d2fl7nhjjki0f" path="res://Art/Enemy-sprites/Wolf/Wolf-Run_7.png" id="38_rk7ui"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_71tgv"]
+resource_local_to_scene = true
+shader = ExtResource("3_kbmlt")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_us80m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_fscps")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_kgq85")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_2r3n4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_vgy2u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_c7ft3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_33103")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_5wv5k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_2t5q4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_wk4m6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_7r2mp")
+}],
+"loop": false,
+"name": &"bow",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_a5p6w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_t1jae")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_ildh8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_uaf7b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_olxu3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_b1agt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_uvrnw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_utew5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_434do")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_j0xkk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_mbhe1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_4segb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_g43rs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_cjyul")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_qjm1j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_7icpm")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("31_duab5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_o31g3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_n2wwj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_gg1tm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_7qt1d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_2dhvg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_dchmn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_rk7ui")
+}],
+"loop": true,
+"name": &"run",
+"speed": 12.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
+radius = 36.8724
+height = 73.7448
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k88uh"]
+
+[node name="en_Wolf" type="RigidBody2D" groups=["Enemies"]]
+collision_layer = 2
+collision_mask = 2
+mass = 0.01
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_w2oct")
+health = 12.0
+speed = 40.0
+itemScene = ExtResource("2_584q2")
+damage = 9
+enemyName = "Wolf"
+XP = 10
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_71tgv")
+position = Vector2(-12, -2)
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_7y2m0")
+animation = &"bow"
+frame = 10
+frame_progress = 1.0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(4.76837e-07, 1)
+rotation = 0.00420356
+scale = Vector2(0.919833, 1)
+shape = SubResource("CapsuleShape2D_j3bk0")
+
+[node name="Occlusion Area Collider" type="Area2D" parent="." groups=["Occlusion"]]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
+scale = Vector2(140, 90)
+shape = SubResource("RectangleShape2D_k88uh")

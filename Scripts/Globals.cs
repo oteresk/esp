@@ -3,12 +3,15 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Collections;
+using System.Xml.Linq;
 
 public partial class Globals : Node
 {
 	static public string NodeMiniMap = "/root/World/MiniMapCanvas/Control/SubViewportContainer/SubViewport/Node2D";
 	static public string NodeMiniMapContainer = "/root/World/MiniMapCanvas/Control/SubViewportContainer/SubViewport/Node2D/MiniMap";
 	static public string NodeMiniMapPlayer = "/root/World/MiniMapCanvas/Control/SubViewportContainer/SubViewport/Node2D/PlayerIcon/TextureRect";
+	static public string NodeMiniMapBorder = "/root/World/MiniMapCanvas/Control/Border";
 	static public string NodeStructureGUI = "/root/World/GUI/StructureGUI";
 	static public string NodeGUI = "/root/World/GUI";
 	static public string NodeStructureGUICanvas = "/root/World/GUI/StructureGUI/SettlementSelect";
@@ -18,10 +21,12 @@ public partial class Globals : Node
 	static public string NodeStructures = "/root/World/Structures";
 	static public string NodeItems = "/root/World/Items";
 	static public string NodeEnemies = "/root/World/Enemies";
-	static public string NodePoison = "/root/World/GUI/Control/MarginContainer/PoisonGUINode";
+	static public string NodePoison = "/root/World/GUI/Control/MarginContainer/MarginContainer/PoisonGUINode";
 	static public string NodeGlobals = "/root/World/Globals";
+    static public string NodeFPS = "/root/World/FPS";
 
-	static Node rootNode;
+
+    static public Node rootNode;
 
 	static public int gridSizeX = 10;
 	static public int gridSizeY = 10;
@@ -61,6 +66,8 @@ public partial class Globals : Node
 	static public int HPLevel = 1;
 	static public float HPInc = 10;
 
+    static public int speedLevel = 1;
+
     static public Label lblLevel;
 	static public int level = 1;
 	static public float XPGoalIncrease = 1.5f;
@@ -69,6 +76,9 @@ public partial class Globals : Node
 	static public float magenetismInc = 10;
 
 	static public int armorLevel;
+	static public int attackLevel;
+	static public int towerLevel;
+	static public int golemLevel;
 
 	static public bool playerAlive = true;
 	static public bool playerShieldActive = false;
@@ -76,36 +86,80 @@ public partial class Globals : Node
 	static public Area2D pl;
 	static public player ps;
 
+	static public int enemies = 0;
+
 	static public Node2D golem;
 	static public bool golemAlive = false;
+	static public Node2D agroGolem;
+	static public bool agroGolemAlive = false;
 
 	static public HBoxContainer poisonEffect;
-	static public bool isPoisoned=false;
+	static public bool isPoisoned = false;
 	static public int poisonCount;
-	static public List <Node> poisonNodes;
+	static public List<Node> poisonNodes;
 
 	static public float itemAtkSpd; // 1 (default) .5 (with item)
-	static public float permItemAtkSpd = 0; // 0-25
+	static public float statAtkSpd = 0;
+	static public float statDamage = 1;
+	static public float statAoE=1;
+	static public float statMovementSpeed = 0;
+	static public int statArmor = 0;
 
-	static public resourceGUI GUINode;
+    static public resourceGUI GUINode;
 
-	static private Label lblMaxHealth;
-    static private Label lblMovementSpeed;
-    static private Label lblMagnetism;
-    static private Label lblArmor;
-    static private Label lblTowerLevel;
-    static private Label lblGolemLevel;
+	// research upgrade stats
+	static public Label lblMaxHealth;
+	static public Label lblMovementSpeed;
+	static public Label lblMagnetism;
+	static public Label lblArmor;
+	static public Label lblAttack;
+	static public Label lblTowerLevel;
+	static public Label lblGolemLevel;
 
-    static public Sprite2D black;
+	static public Sprite2D black;
 	//    GDScript saveStateSystem;
 	//    GodotObject nodSaveStateSystem;
 
 	static public int potionFreq = 26; // how often enemy drops a potion instead of gem
 
-	const int MAXPOISONS= 3;
+	const int MAXPOISONS = 3;
 
-	public override void _Ready()
+	static public bool[] weaponTypeUnlocked;
+
+    static public int[] costIron;
+    static public int[] costWood;
+
+    // starting structures
+    static public bool StartingTower=false;
+    static public bool StartingPlatform = false;
+
+	static public int platformManaCost = 5;
+
+	// stat upgrades
+	static public int[,] coststatUpgrade;
+
+	static public int MAXUPGRADES = 5;
+    static public int[] statUpgradeLevel;
+
+	static public int MAXRELICS = 7;
+
+    static public bool[] hasRelic;
+
+	static public float settings_SFXVolume = 0;
+    static public float settings_MusicVolume = -8;
+    static public float settings_MasterVolume = 0;
+
+	static public bool settings_ShowFPS = false;
+	static public bool settingsLoaded = false;
+
+    static public float healingModifier = .5f;
+    static public float fireTime = 6; // how long the big fire lasts in world
+    static public float flameTime=2.5f; // how long the flame on enemy lasts
+
+    public override void _Ready()
 	{
+		weaponTypeUnlocked = new bool[12];
+
 		worldArray = new int[gridSizeX * subGridSizeX, gridSizeY * subGridSizeY];
 		// windowSizeY
 		// 1071 - without header
@@ -113,47 +167,135 @@ public partial class Globals : Node
 		windowSizeY = (int)GetViewport().GetVisibleRect().Size.Y;
 		headerOffset = windowSizeY - 1009;
 
-		DelayedStart();
+        // stat upgrade cost
+        coststatUpgrade = new int[5,5] { { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 } };
+
+        statUpgradeLevel = new int[MAXUPGRADES];
+		for (int iter=0;iter<5;iter++)
+			statUpgradeLevel[iter] = 0;
+
+        hasRelic= new bool[MAXRELICS];
+;
+        for (int iter = 0; iter < MAXRELICS; iter++)
+            hasRelic[iter] = false;
+
+        DelayedStart();
 
 		rootNode = GetNode("..");
-        // "GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth"
-        // get stat labels     GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed
-        Node lbl = GetNode("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth");
+		// "GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth"
+		// get stat labels     GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed
+		Node lbl = GetNodeOrNull("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth");
 		lblMaxHealth = (Label)lbl;
-        lbl = GetNode("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed");
-        lblMovementSpeed=(Label)lbl;
-        lbl = GetNode("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/Magnetism/VBoxContainer/lblMagnetism");
-        lblMagnetism = (Label)lbl;
-        lbl = GetNode("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/Armor/VBoxContainer/lblArmor");
-        lblArmor = (Label)lbl;
+		lbl = GetNodeOrNull("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed");
+		lblMovementSpeed = (Label)lbl;
+		lbl = GetNodeOrNull("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/Magnetism/VBoxContainer/lblMagnetism");
+		lblMagnetism = (Label)lbl;
+		lbl = GetNodeOrNull("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/Armor/VBoxContainer/lblArmor");
+		lblArmor = (Label)lbl;
+		lbl = GetNodeOrNull("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/Attack/VBoxContainer/lblAttack");
+		lblAttack = (Label)lbl;
+		lbl = GetNodeOrNull("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/Towers/VBoxContainer/lblTowerLevel");
+		lblTowerLevel = (Label)lbl;
+		lbl = GetNodeOrNull("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/Golems/VBoxContainer/lblGolemLevel");
+		lblGolemLevel = (Label)lbl;
+
+		costIron = new int[8];
+        costWood = new int[8];
+
+
+        //Callable mySignalHandler = new Callable(this, MethodName.OnJoyConnectionChanged);
+
+        Input.JoyConnectionChanged += Input_JoyConnectionChanged;
+
+
+        //(Input.JoyConnectionChanged, mySignalHandler);
 
         ResetGame();
     }
 
-	async void DelayedStart()
+    private void Input_JoyConnectionChanged(long device, bool connected)
+    {
+        if (connected)
+            Debug.Print("Gamepad connected: " + device);
+        else
+            Debug.Print("Gamepad disconnected: " + device);
+
+        //throw new NotImplementedException();
+    }
+
+
+
+    static public void UpdateStatLevels()
+	{
+        // stat attack speed   0-.625
+        statAtkSpd = (float)statUpgradeLevel[0]/8.0f;
+
+		// statDamage   1-26
+        statDamage = 1.0f+(float)statUpgradeLevel[1]* statUpgradeLevel[1];
+        
+		// statAoE   
+		statAoE= (float)statUpgradeLevel[2]/1.5f;
+		if (ps!=null)
+			ps.SetAllAoE(); // update all existing attack AoE
+
+		// statMovementSpeed
+        statMovementSpeed = (float)statUpgradeLevel[3];
+
+        // statArmor
+        statArmor = (int)statUpgradeLevel[4]* statUpgradeLevel[4];
+    }
+
+	public async void DelayedStart()
 	{
 		// wait a bit
-		await Task.Delay(TimeSpan.FromMilliseconds(200));
-        UpdateStatsGUI();
+		await Task.Delay(TimeSpan.FromMilliseconds(100));
+
+		//Debug.Print("***********");
+        SaveLoad.LoadGame();
+        SaveLoad.LoadSettings();
+        SetVolumes();
+
+        if (lblAttack != null)
+		{
+			ResourceDiscoveries.UpdateResourceGUI();
+			UpdateStatsGUI();
+            if (Globals.lblAttack != null)
+                Stats.UpdateStats();
+		}
+
+        // show map
+        ResourceDiscoveries.mapNotPressed = false;
+        Node2D miniMap = (Node2D)GetNodeOrNull(Globals.NodeMiniMap);
+		if (miniMap != null)
+		{
+			miniMap.Call("ShowMiniMap");
+		}
+
+		settingsLoaded= true;
+
     }
 
 	public void ResetGame()
 	{
-		GUINode = (resourceGUI)GetNode(NodeGUI);
+		GUINode = (resourceGUI)GetNodeOrNull(NodeGUI);
 
 		playerAlive = true;
 		level = 1;
 		XPGoal = 20;
 		xpBar = (ProgressBar)GetNodeOrNull("../GUI/XPBar");
 		lblLevel = (Label)GetNodeOrNull("../GUI/XPBar/Label");
-		xpBar.Value = XP;
-		UpdateLevel();
+		if (xpBar != null)
+		{
+			xpBar.Value = XP;
+			UpdateLevel();
+		}
 		itemAtkSpd = 1; // attackSpeed modifier for temp items
 
-		black = (Sprite2D)GetNodeOrNull("../Black");
+		if (lblLevel!=null)
+			black = (Sprite2D)GetNodeOrNull("../Black");
 
 		// hide poison effect
-		poisonEffect = (HBoxContainer)GetNode(NodePoison);
+		poisonEffect = (HBoxContainer)GetNodeOrNull(NodePoison);
 
 		poisonNodes = new List<Node>();
 
@@ -162,25 +304,31 @@ public partial class Globals : Node
 		SetMaxHP();
 		Debug.Print("maxHP:" + MaxHP);
 		Globals.HP = MaxHP;
-        hpBar = (ProgressBar)GetNodeOrNull("../Player/HPBar");
-        hpBar.Value = HP / MaxHP;
+		hpBar = (ProgressBar)GetNodeOrNull("../Player/HPBar");
+        if (hpBar != null)
+            hpBar.Value = HP / MaxHP;
 
-        XPGoalIncrease = 1.5f;
+		XPGoalIncrease = 1.5f;
 		magnetism = 30;
-        magenetismLevel = 1;
 
-        armorLevel = 1;
+		magenetismLevel = 1;
+		armorLevel = 1;
+		attackLevel = 1;
+		towerLevel = 1;
+		golemLevel = 1;
 
 		ResourceDiscoveries.seconds = 0;
 		ResourceDiscoveries.minutes = 0;
 
-		ResourceDiscoveries.iron = 10;
+		ResourceDiscoveries.iron = 0;
 		ResourceDiscoveries.mana = 0;
-		ResourceDiscoveries.wood = 10;
+		ResourceDiscoveries.wood = 0;
 		ResourceDiscoveries.gold = 0;
 		ResourceDiscoveries.goldResourceCount = 0;
 		ResourceDiscoveries.ironResourceCount = 0;
 		ResourceDiscoveries.manaResourceCount = 0;
+		ResourceDiscoveries.research = 0;
+
 
 		Node2D fG = (Node2D)GetNodeOrNull("../FriendlyGolem");
 		if (fG != null)
@@ -188,37 +336,90 @@ public partial class Globals : Node
 			Globals.golem = fG;
 			golemAlive = true;
 
-            Debug.Print("Golem not null");
+			Debug.Print("Golem not null");
 		}
 
-		magenetismLevel = 1;
+		Node2D aG = (Node2D)GetNodeOrNull("../AgroGolem");
+		if (aG != null)
+		{
+			Globals.agroGolem = aG;
+			agroGolemAlive = true;
+
+			Debug.Print("AgroGolem not null");
+		}
+
 		SetMagnetism();
-		if (ps !=null)
+		if (ps != null)
 			ps.SetMagnetismShape();
 
-        // initiate save_state system
-        //        saveStateSystem = GD.Load<GDScript>("res://addons/save_system/save_system.gd");
-        //        nodSaveStateSystem = (GodotObject)saveStateSystem.New();
+		// set weapon unlocks
+		weaponTypeUnlocked[0] = true; // slash
+		weaponTypeUnlocked[1] = true; // projectile
+		weaponTypeUnlocked[2] = false; // cross
+        weaponTypeUnlocked[3] = true; // orbit
+                                       // elements
+        weaponTypeUnlocked[11] = false; // fire
+
+        costIron[0] = 1; // alchemy lab
+        costIron[1] = 2; // blacksmith
+        costIron[2] = 1; // herbalist
+        costIron[3] = 0; // lodestone
+        costIron[4] = 4; // settlement
+        costIron[5] = 4; // tower
+        costIron[6] = 1; // training center
+        costIron[7] = 1; // golem factory
+
+        costWood[0] = 1;
+        costWood[1] = 2;
+        costWood[2] = 0;
+        costWood[3] = 1;
+        costWood[4] = 2;
+        costWood[5] = 6;
+        costWood[6] = 0;
+        costWood[7] = 0;
+
+        for (int iter = 0; iter < 5; iter++)
+            statUpgradeLevel[iter] = 0;
+
+        for (int iter = 0; iter < MAXRELICS; iter++)
+            hasRelic[iter] = false;
+
+        UpdateStatLevels();
+
+		if (settings_ShowFPS)
+		{
+            CanvasLayer nFPS = (CanvasLayer)GetNodeOrNull(NodeFPS);
+            if (nFPS != null)
+                nFPS.Visible = true;
+        }
+		else
+		{
+            CanvasLayer nFPS = (CanvasLayer)GetNodeOrNull(NodeFPS);
+            if (nFPS != null) 
+				nFPS.Visible = false;
+        }
+
+
     }
 
 	static public void SetMaxHP()
 	{
-		Globals.MaxHP = 90 + HPInc * HPLevel*HPLevel;
-		if (hpBar!=null)
+		MaxHP = 90 + HPInc * HPLevel * HPLevel;
+		if (hpBar != null)
 			if (IsInstanceValid(hpBar))
 				hpBar.Value = HP / MaxHP;
-    }
+	}
 
 	static public void SetMagnetism()
 	{
 		magnetism = 20 + magenetismLevel * magenetismInc;
-        if (ps != null)
-            ps.SetMagnetismShape();
-    }
+		if (ps != null)
+			ps.SetMagnetismShape();
+	}
 
 	static public void PoisonPlayer(float dmg, float dmgTime)
 	{
-		if (poisonCount<MAXPOISONS && playerShieldActive == false)
+		if (poisonCount < MAXPOISONS && playerShieldActive == false && ps.canBeDamaged && playerAlive)
 		{
 			Debug.Print("Poison player");
 			var poisonGUIScene = (PackedScene)ResourceLoader.Load("res://Scenes/PoisonGUI.tscn");
@@ -298,21 +499,22 @@ public partial class Globals : Node
 	{
 		if (Input.IsActionJustReleased("save"))
 		{
-			Debug.Print("Save");
-			SaveGameState();
+			Debug.Print("Save settings");
+			SaveLoad.SaveSettings();
+			//SaveGameState();
 		}
 
 		if (Input.IsActionJustReleased("load"))
 		{
-			Debug.Print("Load");
-			LoadGameState();
+			Debug.Print("Load settings");
+			SaveLoad.LoadSettings();
+			//LoadGameState();
 		}
-
-		// For testing
-		if (Input.IsKeyPressed(Key.U)) // energy
+            // For testing
+        if (Input.IsKeyPressed(Key.U)) // Upgrade test
 		{
 			Globals.ShowUpgrades();
-			
+
 			PackedScene upgradeScene = (PackedScene)ResourceLoader.Load("res://Scenes/upgrade_gui.tscn");
 			var upgrade1 = upgradeScene.Instantiate();
 			//GUINode.AddChild(upgrade1);
@@ -320,6 +522,22 @@ public partial class Globals : Node
 			upgrade1.QueueFree();
 			ug.RandomizeUpgrade();
 		}
+
+		// reset game save
+		if (Input.IsActionJustPressed("reset"))
+		{
+			ResourceDiscoveries.gold = 0;
+			for (int iter=0; iter<5;iter++)
+				Globals.statUpgradeLevel[iter] = 0;
+            SaveLoad.SaveGame();
+            // Update slots
+            Node nd = Globals.rootNode.GetNode(".");
+            StatUpgrades su = (StatUpgrades)nd;
+            su.UpdateAllSlots();
+
+            btnUpgrade.DisableButton();
+
+        }
 
 	}
 
@@ -335,10 +553,10 @@ public partial class Globals : Node
 
 	static public void DamagePlayer(float xDmg)
 	{
-		if (playerShieldActive == false)
+		if (playerShieldActive == false && ps.canBeDamaged && playerAlive)
 		{
-
-			xDmg = xDmg - GD.RandRange(0, armorLevel);
+			ps.PlayHurtSound();
+			xDmg = xDmg - GD.RandRange(0, armorLevel+Globals.statArmor);
 
 			if (xDmg > 0)
 			{
@@ -375,18 +593,22 @@ public partial class Globals : Node
 	static async void ShowPlayerHeal()
 	{
 		ps.animatedSprite2D.Modulate = new Color(0, 0, 1, 1);
-		// wait a bit
-		await Task.Delay(TimeSpan.FromMilliseconds(100));
+        ps.animatedSprite2DTop.Modulate = new Color(0, 0, 1, .5f);
+        // wait a bit
+        await Task.Delay(TimeSpan.FromMilliseconds(100));
 		ps.animatedSprite2D.Modulate = new Color(1, 1, 1, 1);
-	}
+        ps.animatedSprite2DTop.Modulate = new Color(1, 1, 1, .5f);
+    }
 
 	static async void ShowPlayerDamage()
 	{
 		ps.animatedSprite2D.Modulate = new Color(1, 0, 0, 1);
-		// wait a bit
-		await Task.Delay(TimeSpan.FromMilliseconds(100));
+        ps.animatedSprite2DTop.Modulate = new Color(1, 0, 0, .5f);
+        // wait a bit
+        await Task.Delay(TimeSpan.FromMilliseconds(100));
 		ps.animatedSprite2D.Modulate = new Color(1, 1, 1, 1);
-	}
+        ps.animatedSprite2DTop.Modulate = new Color(1, 1, 1, .5f);
+    }
 	static private void CheckNextLevel()
 	{
 		if (XP >= XPGoal)
@@ -402,7 +624,7 @@ public partial class Globals : Node
 
 	public static void UpdateLevel()
 	{
-		lblLevel.Text = "LVL: " + level.ToString();
+		lblLevel.Text = "Level: " + level.ToString();
 	}
 
 	static public void ShowUpgrades()
@@ -433,7 +655,7 @@ public partial class Globals : Node
 			UGname2 = ug.GetName();
 		}
 
-		Debug.Print("up1:" + UGname1+" up2:"+UGname2);
+		Debug.Print("up1:" + UGname1 + " up2:" + UGname2);
 
 
 		var upgrade3 = upgradeScene.Instantiate();
@@ -450,41 +672,107 @@ public partial class Globals : Node
 			UGname3 = ug.GetName();
 		}
 
-		Debug.Print("up1:" + UGname1 + " up2:" + UGname2 + " up3:"+ UGname3);
+		Debug.Print("up1:" + UGname1 + " up2:" + UGname2 + " up3:" + UGname3);
 
+		PauseGame();
+	}
+
+	static public void PauseGame()
+	{
 		// pause game
 		rootNode.GetTree().Paused = true;
 	}
 
 	static public void UnPauseGame()
 	{
+		Debug.Print("Unpause game");
 		// unpause game
 		rootNode.GetTree().Paused = false;
 	}
 
-    public static void UpdateStatsGUI()
-    {
-		lblMaxHealth.Text = HPLevel.ToString();
-		lblMovementSpeed.Text = ps.speedLevel.ToString();
-		lblMagnetism.Text = magenetismLevel.ToString();
-        lblArmor.Text = armorLevel.ToString();
+	public static void UpdateStatsGUI()
+	{
+        if (ps != null)
+		{
+            lblMaxHealth.Text = HPLevel.ToString();
+            lblMovementSpeed.Text = speedLevel.ToString();
+            lblMagnetism.Text = magenetismLevel.ToString();
+            lblArmor.Text = armorLevel.ToString();
+            lblAttack.Text = attackLevel.ToString();
+            lblTowerLevel.Text = towerLevel.ToString();
+            lblGolemLevel.Text = golemLevel.ToString();
+        }
+
+	}
+
+	static public void PlayRandomizedSound(AudioStreamPlayer snd)
+	{
+		snd.VolumeDb = GD.RandRange(-7, 7);
+		snd.PitchScale = (float)GD.RandRange(.75f, 1.25f);
+		snd.Play();
+	}
+
+	static public void UpdateEnemies()
+	{
+		Debug.Print("Enemies: " + enemies);
+	}
+
+	static public void SetAttackLevel()
+	{
+		if (attackLevel>1)
+	        Globals.weaponTypeUnlocked[2] = true; // unlock cross
+        if (attackLevel > 2)
+            Globals.weaponTypeUnlocked[11] = true; // unlock fire
     }
 
-
-    private void SaveGameState()
+	static public void SetTowerLevel()
 	{
-		// Player
-		//nodSaveStateSystem.Call("set_var", "Player:PosX",player.Position.X.ToString()); 
-		//nodSaveStateSystem.Call("set_var", "Player:PosY", player.Position.Y.ToString());
+            ResourceDiscovery[] rD = GetStructures("Tower"); // get all towers
+			// set level of tower
+			foreach (ResourceDiscovery rd in rD)
+			{
+                rd.SetTowerLevel();
+            }
 	}
 
-	private void LoadGameState()
+	// gets an array of ResourceDiscoveries that are in the Node Group "Tower"
+	static private ResourceDiscovery[] GetStructures(string resourceName)
 	{
-		// Player
-		//float nX= (float)nodSaveStateSystem.Call("get_var", "Player:PosX");
-		//float nY = (float)nodSaveStateSystem.Call("get_var", "Player:PosY");
-		//Debug.Print("Load: PlayerPos: " + nXS.ToString() + ", " + nYS.ToString());
-		//player.Position = new Vector2(nX, nY);
+        var mainLoop = Godot.Engine.GetMainLoop();
+        var sceneTree = mainLoop as SceneTree;
+
+        var rds = sceneTree.GetNodesInGroup(resourceName);
+        ResourceDiscovery[] blockList = new ResourceDiscovery[rds.Count];
+        for (int i = 0; i < rds.Count; i++)
+        {
+            blockList[i] = (ResourceDiscovery)rds[i];
+
+        }
+
+        return blockList;
+    }
+
+    // returns how many relics have not been found yet
+	static public int GetRelicsNeeded()
+	{
+		int needed = 0;
+		for (int i = 0;i<MAXRELICS;i++)
+		{
+			if (hasRelic[i] == false)
+			{
+				needed++;
+				Debug.Print("Need: " + i);
+			}
+		}
+		return needed;
 	}
 
+	public void SetVolumes()
+	{
+		Debug.Print("volume settings_MusicVolume:"+ settings_MusicVolume);
+		AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("SFX"),settings_SFXVolume);
+        AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Music"), settings_MusicVolume);
+        AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Master"), settings_MasterVolume);
+        Debug.Print("volume AudioServer.GetBusIndex(\"Music\"), settings_MusicVolume:" + AudioServer.GetBusVolumeDb(AudioServer.GetBusIndex("Music")));
+    }
 }

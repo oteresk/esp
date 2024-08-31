@@ -10,19 +10,19 @@ public partial class SettlementSelect : CanvasGroup
     private bool btn0;
     private bool btn1;
     private bool btn2;
+    private bool btnClose;
     [Export] public TextureRect btnNode0;
     [Export] public TextureRect btnNode1;
     [Export] public TextureRect btnNode2;
     [Export] public TextureRect btnNode3;
+
+    [Export] public TextureRect btnCloseNode;
 
     [Export] public Texture2D[] txStructBut;
     [Export] public PackedScene[] scnStruct;
 
     [Export] public Label lblIron;
     [Export] public Label lblWood;
-
-    [Export] public int[] costIron;
-    [Export] public int[] costWood;
 
     [Export] public string[] structName;
     [Export] public string[] structDescription;
@@ -63,6 +63,9 @@ public partial class SettlementSelect : CanvasGroup
         {
             Debug.Print("btn0 entered");
             btn0 = true;
+            btn1 = false;
+            btn2 = false;
+            btnClose = false;
         }
     }
     public void _on_btn_0_mouse_exited()
@@ -79,6 +82,9 @@ public partial class SettlementSelect : CanvasGroup
         {
             Debug.Print("btn1 entered");
             btn1 = true;
+            btn0 = false;
+            btn2 = false;
+            btnClose = false;
         }
     }
     public void _on_btn_1_mouse_exited()
@@ -95,6 +101,9 @@ public partial class SettlementSelect : CanvasGroup
         {
             Debug.Print("btn2 entered");
             btn2 = true;
+            btn1 = false;
+            btn0 = false;
+            btnClose = false;
         }
     }
     public void _on_btn_2_mouse_exited()
@@ -105,6 +114,27 @@ public partial class SettlementSelect : CanvasGroup
             btn2 = false;
         }
     }
+
+    public void _on_btnclose_mouse_entered()
+    {
+        if (buttonsEnabled)
+        {
+            Debug.Print("btnClose entered");
+            btnClose = true;
+            btn1 = false;
+            btn2 = false;
+            btn0 = false;
+        }
+    }
+    public void _on_btnclose_mouse_exited()
+    {
+        if (buttonsEnabled)
+        {
+            Debug.Print("btnClose exited");
+            btnClose = false;
+        }
+    }
+
 
     public override void _Input(InputEvent @event)
     {
@@ -132,6 +162,7 @@ public partial class SettlementSelect : CanvasGroup
                         btnNode3.Position = btnNode0.Position;
                         btnNode3.ZIndex = -1; // put node to back of sort
                         Tween tween = GetTree().CreateTween();
+                        tween.SetPauseMode(Tween.TweenPauseMode.Process);
 
                         tween.TweenProperty(GetNode("btn0"), "position", btnNode1.Position, rotateSpeed);
                         tween.Parallel().TweenProperty(GetNode("btn0"), "scale", btnNode1.Scale, rotateSpeed);
@@ -168,6 +199,7 @@ public partial class SettlementSelect : CanvasGroup
                         btnNode3.ZIndex = -1; // put node to back of sort
                         btnNode3.Position = btnNode2.Position;
                         Tween tween = GetTree().CreateTween();
+                        tween.SetPauseMode(Tween.TweenPauseMode.Process);
 
                         tween.TweenProperty(GetNode("btn2"), "position", btnNode1.Position, rotateSpeed);
                         tween.Parallel().TweenProperty(GetNode("btn2"), "scale", btnNode1.Scale, rotateSpeed);
@@ -192,7 +224,7 @@ public partial class SettlementSelect : CanvasGroup
                         GD.Print("Build structure");
 
                         // check if you can afford it
-                        if (ResourceDiscoveries.iron >= costIron[curStruct] && ResourceDiscoveries.wood >= costWood[curStruct])
+                        if (ResourceDiscoveries.iron >= Globals.costIron[curStruct] && ResourceDiscoveries.wood >= Globals.costWood[curStruct])
                         {
                             if (platform != null && buildDelay > 1)
                             {
@@ -204,23 +236,56 @@ public partial class SettlementSelect : CanvasGroup
                                 {
                                     buildDelay = 0;
                                     // subtract resources
-                                    ResourceDiscoveries.iron -= costIron[curStruct];
-                                    ResourceDiscoveries.wood -= costWood[curStruct];
+                                    ResourceDiscoveries.iron -= Globals.costIron[curStruct];
+                                    ResourceDiscoveries.wood -= Globals.costWood[curStruct];
                                     // update ResourceGUI
                                     ResourceDiscoveries.UpdateResourceGUI();
 
                                     // build structure
                                     CreateStructure(curStruct, platform);
+                                    HideStructSelectGUI();
                                 }
                             }
 
                         }
 
                     }
+
+                    if (btnClose)
+                    {
+                        // hide structure select canvas
+                        CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
+                        nodStruct.Visible = false;
+
+                        Debug.Print("Hide Structure Select");
+
+                        // unpause game
+                        Globals.UnPauseGame();
+                    }
+
+
                 }
 
             }
         }
+    }
+
+    private void HideStructSelectGUI()
+    {
+        // hide structure select canvas
+
+        CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
+        nodStruct.Visible = false;
+        // disable buttons
+        btnNode0.MouseFilter = Control.MouseFilterEnum.Ignore;
+        btnNode1.MouseFilter = Control.MouseFilterEnum.Ignore;
+        btnNode2.MouseFilter = Control.MouseFilterEnum.Ignore;
+        btnNode3.MouseFilter = Control.MouseFilterEnum.Ignore;
+        btnCloseNode.MouseFilter = Control.MouseFilterEnum.Ignore;
+        btn0 = false;
+        btn1 = false;
+        btn2 = false;
+        btnClose = false;
     }
 
     public void CreateStructure(int strucNum, Node2D plat)
@@ -253,19 +318,6 @@ public partial class SettlementSelect : CanvasGroup
 
             Globals.worldArray[sX, sY] = strucNum + 5;
 
-            // hide structure select canvas
-
-            CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
-            nodStruct.Visible = false;
-            // disable buttons
-            btnNode0.MouseFilter = Control.MouseFilterEnum.Ignore;
-            btnNode1.MouseFilter = Control.MouseFilterEnum.Ignore;
-            btnNode2.MouseFilter = Control.MouseFilterEnum.Ignore;
-            btnNode3.MouseFilter = Control.MouseFilterEnum.Ignore;
-            btn0 = false;
-            btn1 = false;
-            btn2 = false;
-
             // destroy platform ********call last
             //Debug.Print("Remove child: " + Globals.NodeResourceDiscoveries+"/"+plat.Name);
             Node rdNode = (Node)GetNode(Globals.NodeResourceDiscoveries);
@@ -279,7 +331,9 @@ public partial class SettlementSelect : CanvasGroup
             miniMap.Call("DisplayMap");
 
             if (strucNum == 7)
+            {
                 golemFactoryExists = true;
+            }
 
             AdjustStats(strucNum);
             Globals.UpdateStatsGUI();
@@ -292,6 +346,7 @@ public partial class SettlementSelect : CanvasGroup
         {
             ResourceDiscoveries.research++;
             ResourceDiscoveries.UpdateResourceGUI();
+            Stats.UpdateStats();
         }
 
         if (strucNum == 1) // armory - inc armor
@@ -313,7 +368,7 @@ public partial class SettlementSelect : CanvasGroup
         
         if (strucNum == 6) // Training Center - inc player speed
         {
-            Globals.ps.speedLevel++;
+            Globals.speedLevel++;
         }
 
     }
@@ -382,23 +437,26 @@ public partial class SettlementSelect : CanvasGroup
     // update iron and wood cost
     public void UpdateCost()
     {
-        lblIron.Text = costIron[curStruct].ToString();
-        lblWood.Text = costWood[curStruct].ToString();
-
-        if (costIron[curStruct] > ResourceDiscoveries.iron || costWood[curStruct] > ResourceDiscoveries.wood || (curStruct ==7 && golemFactoryExists))
+        if (Globals.costIron !=null)
         {
-            // can't afford it
-            redStroke.Visible = true;
-        }
-        else
-        {
-            redStroke.Visible = false;
-        }
+            lblIron.Text = Globals.costIron[curStruct].ToString();
+            lblWood.Text = Globals.costWood[curStruct].ToString();
 
+            if (Globals.costIron[curStruct] > ResourceDiscoveries.iron || Globals.costWood[curStruct] > ResourceDiscoveries.wood || (curStruct == 7 && golemFactoryExists))
+            {
+                // can't afford it
+                redStroke.Visible = true;
+            }
+            else
+            {
+                redStroke.Visible = false;
+            }
+        }
     }
 
     public void _on_visibility_changed()
     {
+        Debug.Print("Visibility changed");
         curStruct = 0;
         PopulateTextures();
         UpdateCurStruct();
@@ -411,6 +469,7 @@ public partial class SettlementSelect : CanvasGroup
             btnNode1.MouseFilter = Control.MouseFilterEnum.Stop;
             btnNode2.MouseFilter = Control.MouseFilterEnum.Stop;
             btnNode3.MouseFilter = Control.MouseFilterEnum.Stop;
+            btnCloseNode.MouseFilter = Control.MouseFilterEnum.Stop;
         }
         else
         {
@@ -419,6 +478,7 @@ public partial class SettlementSelect : CanvasGroup
             btnNode1.MouseFilter = Control.MouseFilterEnum.Ignore;
             btnNode2.MouseFilter = Control.MouseFilterEnum.Ignore;
             btnNode3.MouseFilter = Control.MouseFilterEnum.Ignore;
+            btnCloseNode.MouseFilter = Control.MouseFilterEnum.Ignore;
             btn0 = false;
             btn1 = false;
             btn2 = false;

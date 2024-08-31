@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://cai88magvkii4"]
+
+[ext_resource type="Texture2D" uid="uid://bwfn5a8muxguu" path="res://Art/GUI/Pause.png" id="1_bk4ry"]
+[ext_resource type="Texture2D" uid="uid://dbjw7n802nx66" path="res://Art/GUI/Play.png" id="2_m4i4w"]
+[ext_resource type="Script" path="res://Scripts/Pause.cs" id="3_qj0yp"]
+
+[node name="btnPause" type="TextureButton"]
+process_mode = 3
+offset_right = 40.0
+offset_bottom = 40.0
+toggle_mode = true
+texture_normal = ExtResource("1_bk4ry")
+texture_pressed = ExtResource("2_m4i4w")
+script = ExtResource("3_qj0yp")
+
+[connection signal="pressed" from="." to="." method="PressPause"]

@@ -14,12 +14,12 @@ shader_parameter/saturation = null
 [sub_resource type="CircleShape2D" id="CircleShape2D_s0u15"]
 radius = 471.038
 
-[sub_resource type="Gradient" id="Gradient_mrxxq"]
+[sub_resource type="Gradient" id="Gradient_ifr1c"]
 offsets = PackedFloat32Array(0, 0.270968, 0.696774)
 colors = PackedColorArray(1, 1, 1, 1, 0.516484, 0.516484, 0.516484, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_psye8"]
-gradient = SubResource("Gradient_mrxxq")
+gradient = SubResource("Gradient_ifr1c")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
@@ -32,6 +32,7 @@ radius = 8.0
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_d03md")
 texture = ExtResource("2_31y2h")
+offset = Vector2(0, -50)
 script = ExtResource("1_bdwio")
 RDResource = ExtResource("2_ro3pi")
 resourceCaptureSpeed = 0.6
@@ -45,17 +46,17 @@ shape = SubResource("CircleShape2D_s0u15")
 [node name="CaptureTimer" parent="." instance=ExtResource("5_rvxdf")]
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(-166, -18)
+position = Vector2(-33, -26)
 scale = Vector2(3, 3)
 color = Color(0, 0.533333, 0.890196, 1)
 energy = 1.4
 texture = SubResource("GradientTexture2D_psye8")
 
 [node name="PointLight2D2" type="PointLight2D" parent="."]
-position = Vector2(95, 61)
-scale = Vector2(3, 3)
+position = Vector2(40, -176)
+scale = Vector2(2, 2)
 color = Color(0, 0.533333, 0.890196, 1)
-energy = 1.86
+energy = 1.21
 texture = SubResource("GradientTexture2D_psye8")
 
 [node name="Occlusion Area Collider" type="Area2D" parent="."]
@@ -67,7 +68,7 @@ shape = SubResource("RectangleShape2D_6f6ob")
 [node name="Discovery Area Collider" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Discovery Area Collider"]
-scale = Vector2(100, 100)
+scale = Vector2(550, 550)
 shape = SubResource("CircleShape2D_jdfhr")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

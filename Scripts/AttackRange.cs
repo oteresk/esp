@@ -13,15 +13,14 @@ public partial class AttackRange : Area2D
     private player ps;
     public float damage;
     public float AOE;
-    private int dmgLevel = 1;
+    public int dmgLevel = 1;
     private float dmgBase = 1.5f;
-    private int AOELevel = 1;
-    private int attackSpeedLevel = 1;
+    public int AOELevel = 1;
+    public int attackSpeedLevel = 1;
     private float dmgInc = .5f;
     private float AOEInc = .05f;
     public float baseAOE = .1f;
     private float attackSpeedInc = .9f;
-    private float healingModifier = .2f; // the percentage of damage done by leeches that goes towards healing 
     public float freezeTime = 3.0f;
     public int poisonTime = 3;
 
@@ -36,12 +35,16 @@ public partial class AttackRange : Area2D
 
     public Node2D targetEnemy;
 
+    private Color bulletColor;
+
+    [Export] public AudioStreamPlayer sndProjectile;
+
     public override void _Ready()
     {
         if (GetNodeOrNull("BulletTimer")!=null)
             bulletTimer = (Timer)GetNode("BulletTimer");
-        atkSpdRndOffset = (float)GD.RandRange(0.0, 0.5);
-        UpdateAttributes();
+        atkSpdRndOffset = (float)GD.RandRange(0.0, 0.1);
+        SetDamage();
         DelayAtkSpdStart();
         SetAOE();
     }
@@ -56,7 +59,7 @@ public partial class AttackRange : Area2D
     // set attack speed
     public void SetAttackSpeed() // =base*IAS-(PAS/50)-(ASL/50)
     {
-        finalAtkSpd = baseAtkSpd * Globals.itemAtkSpd - (Globals.permItemAtkSpd / 50f) - (attackSpeedLevel / 13f);
+        finalAtkSpd = baseAtkSpd * Globals.itemAtkSpd - (attackSpeedLevel / 13f) - Globals.statAtkSpd;
         if (finalAtkSpd < .01f)
             finalAtkSpd = .01f;
         if (bulletTimer != null)
@@ -65,20 +68,19 @@ public partial class AttackRange : Area2D
 
     public void SetAOE()
     {
-        AOE = baseAOE + AOELevel * AOEInc;
+        AOE = baseAOE + AOELevel * AOEInc + (Globals.statAoE * AOEInc);
         //Debug.Print("AOE: " + AOE);
         //Scale = new Vector2(AOE, AOE);
     }
 
-    private void UpdateAttributes()
+    public void SetBulletColor(Color col)
     {
-        damage = dmgBase*dmgLevel * dmgLevel * dmgInc;
+        bulletColor = col;
+    }
 
-        // if leeches, then heal player
-        if (element == "leeches")
-        {
-            Globals.HealPlayer(damage * healingModifier);
-        }
+    public void SetDamage()
+    {
+        damage = dmgBase*dmgLevel * dmgLevel * dmgInc * Globals.statDamage;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -91,6 +93,9 @@ public partial class AttackRange : Area2D
 
     public void Shoot()
     {
+        // play sound
+        Globals.PlayRandomizedSound(sndProjectile);
+
         bulletScene = (PackedScene)ResourceLoader.Load("res://Scenes/bullet_energy.tscn"); // default for tower
 
         var newBullet = (Area2D)bulletScene.Instantiate();
@@ -128,10 +133,10 @@ public partial class AttackRange : Area2D
                     break;
                 case BulletSource.Tower:
                     bScript.damage = 2;
-                    bScript.range = 1000;
+                    bScript.range = 500;
                     newBullet.GetNode<AnimatedSprite2D>("AnimatedSprite2D").Scale = new Vector2(3, 3);
-                    newBullet.Modulate = new Color(1, 0.3f, 0.8f, 1);
                     newBullet.Name = "Tower bullet";
+                    newBullet.Modulate =bulletColor;
                     dmgBase = 1f; // TODO: make this increase when you upgrade tower
                     break;
             }
@@ -142,6 +147,7 @@ public partial class AttackRange : Area2D
     {
         if (Globals.playerAlive)
         {
+            //Debug.Print("obs:"+GetOverlappingBodies()+" ola:"+GetOverlappingAreas());
             var enemiesInRange = GetOverlappingBodies();
             if (enemiesInRange.Count > 0)
             {
@@ -152,7 +158,7 @@ public partial class AttackRange : Area2D
 
     public float GetDamage()
     {
-        UpdateAttributes();
+        SetDamage();
         return damage;
     }
     // set bullet acording to element

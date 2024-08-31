@@ -1,12 +1,31 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using static Godot.HttpRequest;
+
 
 public partial class ResourceDiscoveries : Node2D
 {
+// Structures and resources
+    // 1 = Iron Mine
+    // 2 = Gold Mine
+    // 3 = Mana Well
+    // 4 = Tree
+    // 5 = Platform
+    // 6 = Alchemy Lab
+    // 7 = Blacksmith
+    // 8 = Herbalist
+    // 9 = Lodestone
+    // 10 = Settlement
+    // 11 = Tower
+    // 12 = Training Center
+    // 13 = Golem Factory
 
-	[Export] private PackedScene rTemplateIronMine;
+    [Export] private PackedScene rTemplateIronMine;
 	[Export] private PackedScene rTemplateGoldMine;
 	[Export] private PackedScene rTemplateManaWell;
 	[Export] private PackedScene rTemplateWood;
@@ -16,7 +35,7 @@ public partial class ResourceDiscoveries : Node2D
 	[Export] public static int pixelSizeY=108*3;
 	[Export] public int resourcesPerCell;
 
-	private bool mapNotPressed = true; // prevents spamming map key
+	static public bool mapNotPressed = true; // prevents spamming map key
 
 // resource timer
 	[Export] public int resourceUpdateFreq;
@@ -41,39 +60,55 @@ public partial class ResourceDiscoveries : Node2D
 	// GUI node
 	private Node rGUI;
 
-	public override void _Ready()
+    [Export] public PackedScene relicScene;
+
+    public override void _Ready()
 	{
-		GD.Randomize();
-		//Place resource discoveries
-		PlaceResourceDiscoveries();	
+        GD.Randomize();
+        //Place resource discoveries
+        PlaceResourceDiscoveries();
 
-		// get GUI nodes
-		rGUI = GetNodeOrNull("../GUI");
-		if (rGUI != null)
-		{
-			Globals.rG2 = (resourceGUI)GetNodeOrNull(rGUI.GetPath());
-			UpdateResourceGUI();
-		}
+		DelayedStart();
 
-		// offset resourcediscoveries position to put player in middle of array
-		Position = new Vector2(-(Globals.gridSizeX* Globals.subGridSizeX)/2*pixelSizeX,-(Globals.gridSizeY * Globals.subGridSizeY)/2*pixelSizeY);
-		Node2D nodStruct = (Node2D)GetNode(Globals.NodeStructures);
-		nodStruct.Position = Position;
+        // get GUI nodes
+        rGUI = GetNodeOrNull("../GUI");
+        if (rGUI != null)
+        {
+            Globals.rG2 = (resourceGUI)GetNodeOrNull(rGUI.GetPath());
+            UpdateResourceGUI();
+        }
 
-		// hide structure select canvas
-		CanvasLayer nodStructGUI = (CanvasLayer)GetNodeOrNull(Globals.NodeStructureGUI);
-		if (nodStructGUI != null)
-		{
-			nodStructGUI.Visible = false;
-			//Debug.Print("********************* " + nodStruct.GetPath());
-		}
-	}
+        // offset resourcediscoveries position to put player in middle of array
+        Position = new Vector2(-(Globals.gridSizeX * Globals.subGridSizeX) / 2 * pixelSizeX, -(Globals.gridSizeY * Globals.subGridSizeY) / 2 * pixelSizeY);
+        Node2D nodStruct = (Node2D)GetNodeOrNull(Globals.NodeStructures);
+		if (nodStruct!=null)
+	        nodStruct.Position = Position;
+
+        // hide structure select canvas
+        CanvasLayer nodStructGUI = (CanvasLayer)GetNodeOrNull(Globals.NodeStructureGUI);
+        if (nodStructGUI != null)
+        {
+            nodStructGUI.Visible = false;
+            //Debug.Print("********************* " + nodStruct.GetPath());
+        }
+
+    }
+
+	private async void DelayedStart()
+	{
+        await Task.Delay(TimeSpan.FromMilliseconds(200));
+        // place relics
+        if (Globals.xpBar != null) // dont place if on Stat Upgrade menu
+            PlaceRelics();
+    }
+
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 		if (Input.IsActionPressed("map") && mapNotPressed)
 		{
+			Debug.Print("Pressed 'm'");
 			mapNotPressed = false;
 			Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
 			miniMap.Call("ShowMiniMap");
@@ -118,6 +153,7 @@ public partial class ResourceDiscoveries : Node2D
 			mana += manaResourceCount;
 
 			UpdateResourceGUI(); 
+			SaveLoad.SaveGame(); // save gold
 		}
 
 		// refresh structure gui if visible
@@ -130,12 +166,89 @@ public partial class ResourceDiscoveries : Node2D
 
 	static public void UpdateResourceGUI()
 	{
-		Globals.rG2.lblGold.Text = gold.ToString();
-		Globals.rG2.lblIron.Text = iron.ToString();
-		Globals.rG2.lblMana.Text = mana.ToString();
-		Globals.rG2.lblWood.Text = wood.ToString();
-        Globals.rG2.lblResearch.Text = research.ToString();
+		if (Globals.rG2!=null)
+		{
+            Globals.rG2.lblGold.Text = gold.ToString();
+            Globals.rG2.lblIron.Text = iron.ToString();
+            Globals.rG2.lblMana.Text = mana.ToString();
+            Globals.rG2.lblWood.Text = wood.ToString();
+            Globals.rG2.lblResearch.Text = research.ToString();
+
+            // update Tooltips
+            MarginContainer toolTip = (MarginContainer)Globals.rG2.lblGold.GetParent().GetParent();
+            toolTip.TooltipText = "Gold Mines: " + ResourceDiscoveries.goldResourceCount;
+
+            toolTip = (MarginContainer)Globals.rG2.lblIron.GetParent().GetParent();
+            toolTip.TooltipText = "Iron Mines: " + ResourceDiscoveries.ironResourceCount;
+
+            toolTip = (MarginContainer)Globals.rG2.lblMana.GetParent().GetParent();
+            toolTip.TooltipText = "Mana Wells: " + ResourceDiscoveries.manaResourceCount;
+
+			// platform button
+			// TODO
+			/*
+			if (mana>=Globals.platformManaCost)
+			{
+				Globals.rG2.platformAvailable = true;
+                Globals.rG2.FlashPlatform();
+            }
+			else
+				Globals.rG2.platformAvailable = false;
+
+			*/
+
+        }       
     }
+
+	private void PlaceRelics()
+	{
+		float relicX, relicY;
+		int numRelics = 5;
+        bool[] pickedRelic=new bool[Globals.MAXRELICS];
+
+        int needed = Globals.GetRelicsNeeded();
+        Debug.Print("Globals.GetRelicsNeeded() "+ needed);
+
+        if (numRelics > needed)
+			numRelics = needed;
+
+		if (numRelics > 0)
+		{
+			for (int i = 0; i < numRelics; i++)
+			{
+				PickRandomRelic:
+				int rType = GD.RandRange(0, Globals.MAXRELICS-1);
+				//Debug.Print("RandRelic: " + rType);
+				if (Globals.hasRelic[rType] || pickedRelic[rType])
+					goto PickRandomRelic;
+
+				pickedRelic[rType] = true;
+                Area2D rel = (Area2D)relicScene.Instantiate();
+				Relic relic = (Relic)rel;
+				relic.SetRelic(rType);
+
+
+GetNewPos:
+				relicX = GD.RandRange(0, (Globals.gridSizeX - 2) * Globals.subGridSizeX * pixelSizeX + (Globals.subGridSizeX - 2) * pixelSizeX);
+				relicX -= ((Globals.gridSizeX - 2) * Globals.subGridSizeX * pixelSizeX + (Globals.subGridSizeX - 2) * pixelSizeX) / 2;
+				relicY = GD.RandRange(0, (Globals.gridSizeY - 2) * Globals.subGridSizeY * pixelSizeY + (Globals.subGridSizeY - 2) * pixelSizeY);
+				relicY -= ((Globals.gridSizeY - 2) * Globals.subGridSizeY * pixelSizeY + (Globals.subGridSizeY - 2) * pixelSizeY) / 2;
+
+				relic.Position = new Vector2(relicX, relicY);
+
+				float dist = relic.GlobalPosition.DistanceTo(new Vector2(0, 0));
+				if (dist < 11000) // make sure distance to relic is >11000
+					goto GetNewPos;
+				//Debug.Print("relic dist:" + dist);
+
+				Node2D nodItems = (Node2D)GetNode(Globals.NodeItems);
+				nodItems.AddChild(relic);
+
+                Debug.Print("Relic: " + relic.GetRelicName(i) + relicX + " , " + relicY);
+
+            }
+        }
+	}
 private void PlaceResourceDiscoveries()
 {
 	uint rdType;
@@ -147,18 +260,40 @@ private void PlaceResourceDiscoveries()
 				//Debug.Print("RD Len: " + GetChildCount());
 				Vector2I pos;
 				pos= GetRandomPos(x,y);
-				rdType = GD.Randi() % 5;
+            PickResource:
+                rdType = GD.Randi() % 5;
+
+				if (rdType == 1 && GD.RandRange(0, 1) == 1) // make fewer gold mines by randomly picking a different resource if gold
+					goto PickResource;
+
 				PlaceDiscovery(x,y,pos.X,pos.Y,rdType);
 			}
-	// place some discoveries
-		PlaceDiscovery(5, 5, 1, 1, 4);
-		//PlaceDiscovery(5, 5, 0, 0, 2);
-		//PlaceDiscovery(5, 5, 1, 0, 1);
-		//PlaceDiscovery(5, 5, 0, 1, 1);
-		//PlaceDiscovery(5, 5, 1, 1, 1);
+
+		PlaceStartingStructures();	
 	}
 
-	private void PlaceDiscovery(int x, int y, int px, int py, uint rdType)
+	public void PlaceStartingStructures()
+	{
+        Debug.Print("PlaceStartingStructures");
+
+        // place some discoveries
+        if (Globals.StartingPlatform)
+        {
+            PlaceDiscovery(5, 5, 0, -2, 4);
+            Debug.Print("starting platform");
+        }
+        if (Globals.StartingTower)
+        {
+            PlaceDiscovery(5, 5, 0, 0, 11);
+            Debug.Print("starting tower");
+        }
+
+        //		PlaceDiscovery(5, 5, 8, 0, 4);
+        //PlaceDiscovery(5, 5, 0, 1, 1);
+        //PlaceDiscovery(5, 5, 1, 1, 1);
+    }
+
+    private void PlaceDiscovery(int x, int y, int px, int py, uint rdType)
 	{
 		ResourceDiscovery rdp;
 
@@ -257,13 +392,16 @@ private void PlaceResourceDiscoveries()
 		{
 			manaResourceCount += amount;
 		}
-	}
+
+		UpdateResourceGUI();
+
+    }
 	// Add one-time resource
 	public static void AddResource(string resourceType,float amount,float amountMax)
 	{
 		if (resourceType == "Wood")
 		{
-			Debug.Print("*********" + amountMax);
+			//Debug.Print("*********" + amountMax);
 			int rAmount = (int)(GD.Randi() % (amountMax+1));
 			wood += (int)(rAmount+amount);
 		}

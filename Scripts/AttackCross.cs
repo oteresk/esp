@@ -17,10 +17,8 @@ public partial class AttackCross : Area2D
     private float AOEInc = 1.2f;
     public float baseAOE = .1f;
     private float attackSpeedInc = .9f;
-    private float healingModifier = .2f; // the percentage of damage done by leeches that goes towards healing 
     public float freezeTime = 3.0f;
     public int poisonTime = 3;
-    public int flameTime = 3;
 
     private PackedScene bulletScene;
     private string element; // attack element (energy, fire, etc)
@@ -30,11 +28,12 @@ public partial class AttackCross : Area2D
     public float finalAtkSpd; // = base*IAS-(PAS/50)+rndOffset-(ASL/50)
     public float atkSpdRndOffset; // 0.0-.5
     public float baseAtkSpd = 2; // can be different for each attack type (must be no less than 1)
+    [Export] public AudioStreamPlayer sndCross;
 
     public override void _Ready()
     {
         bulletTimer = (Timer)GetNode("BulletTimer");
-        atkSpdRndOffset = (float)GD.RandRange(0.0, 0.5);
+        atkSpdRndOffset = (float)GD.RandRange(0.0, 0.1);
         UpdateAttributes();
         DelayAtkSpdStart();
         SetAOE();
@@ -50,7 +49,7 @@ public partial class AttackCross : Area2D
     // set attack speed
     public void SetAttackSpeed() // =base*IAS-(PAS/50)-(ASL/50)
     {
-        finalAtkSpd = baseAtkSpd * Globals.itemAtkSpd - (Globals.permItemAtkSpd / 50f) - (attackSpeedLevel / 13f);
+        finalAtkSpd = baseAtkSpd * Globals.itemAtkSpd - (attackSpeedLevel / 13f - Globals.statAtkSpd);
         if (finalAtkSpd < .01f)
             finalAtkSpd = .01f;
         bulletTimer.WaitTime = finalAtkSpd;
@@ -58,7 +57,7 @@ public partial class AttackCross : Area2D
     }
     public void SetAOE()
     {
-        AOE = baseAOE + AOELevel * AOEInc;
+        AOE = baseAOE + AOELevel * AOEInc + (Globals.statAoE * AOEInc);
         Debug.Print("AOR: " + AOE);
         //Scale = new Vector2(AOE, AOE);
     }
@@ -69,13 +68,7 @@ public partial class AttackCross : Area2D
     }
     private void UpdateAttributes()
     {
-        damage = dmgBase * dmgLevel * dmgLevel * dmgInc;
-
-        // if leeches, then heal player
-        if (element == "leeches")
-        {
-            Globals.HealPlayer(damage * healingModifier);
-        }
+        damage = dmgBase * dmgLevel * dmgLevel * dmgInc * Globals.statDamage;
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -93,6 +86,9 @@ public partial class AttackCross : Area2D
 
     public void Shoot()
     {
+        // play sound
+        Globals.PlayRandomizedSound(sndCross);
+
         // play player attack anim
         ps = (player)Globals.pl;
         ps.PlayAttackAnim();
@@ -112,7 +108,6 @@ public partial class AttackCross : Area2D
             bScript.range = 450;
             bScript.freezeTime = freezeTime;
             bScript.element = element;
-            bScript.flameTime = flameTime;
 
             a2D.GlobalPosition = GetNode<Node2D>("ShootingPoint").GlobalPosition;
             //a2D.GlobalRotation = GetNode<Node2D>("ShootingPoint").GlobalRotation;

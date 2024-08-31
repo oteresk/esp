@@ -1,6 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://binn46axhlqni"]
+[gd_scene load_steps=28 format=3 uid="uid://binn46axhlqni"]
 
 [ext_resource type="Script" path="res://Scripts/MiniMap.cs" id="1_4v5yl"]
+[ext_resource type="Shader" path="res://Shaders/MaskShader.gdshader" id="1_6hqvu"]
+[ext_resource type="Texture2D" uid="uid://syajwq1wo0tu" path="res://Art/GUI/CircleMask.png" id="2_1qh2e"]
 [ext_resource type="PackedScene" uid="uid://d28wt05wvwlax" path="res://Scenes/Map/MapIcon_Iron Mine.tscn" id="2_5ab15"]
 [ext_resource type="PackedScene" uid="uid://b5mdyytg2otaa" path="res://Scenes/Map/MapIcon_Gold Mine.tscn" id="3_chvyf"]
 [ext_resource type="PackedScene" uid="uid://dojepf4aqn0s7" path="res://Scenes/Map/MapIcon_Mana Well.tscn" id="4_pj7pk"]
@@ -16,6 +18,22 @@
 [ext_resource type="PackedScene" uid="uid://c0h8hydyf0lpm" path="res://Scenes/Map/MapIcon_TrainingCenter.tscn" id="13_fb1br"]
 [ext_resource type="PackedScene" uid="uid://4utyyeshd8lp" path="res://Scenes/Map/MapIcon_GolemFactory.tscn" id="14_8u8vh"]
 [ext_resource type="PackedScene" uid="uid://7256vn7kwf8s" path="res://Scenes/Map/MapIcon_FriendlyGolem.tscn" id="15_1yd5h"]
+[ext_resource type="PackedScene" uid="uid://w4ovk7gfvhgk" path="res://Scenes/Map/MapIcon_AgroGolem.tscn" id="18_k332e"]
+[ext_resource type="PackedScene" uid="uid://03rf0tmt2nd5" path="res://Scenes/FogOfWar.tscn" id="20_xdaan"]
+[ext_resource type="Texture2D" uid="uid://bw6jfbfrnr6xj" path="res://Art/GrassTile.png" id="21_8kfqf"]
+[ext_resource type="Script" path="res://Scripts/FogOfWar.cs" id="21_kcoc2"]
+[ext_resource type="Texture2D" uid="uid://dw6baw0ypmyb0" path="res://Art/Light.png" id="22_kdkw7"]
+[ext_resource type="PackedScene" uid="uid://1xxnq480idry" path="res://Scenes/fo_wfog.tscn" id="23_q2fek"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nkpkk"]
+resource_local_to_scene = true
+shader = ExtResource("1_6hqvu")
+shader_parameter/alpha = 0.0
+shader_parameter/mask = ExtResource("2_1qh2e")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_lf0p2"]
+resource_local_to_scene = true
+blend_mode = 3
 
 [sub_resource type="Environment" id="Environment_vpbp4"]
 background_mode = 3
@@ -29,6 +47,7 @@ glow_hdr_scale = 0.95
 glow_hdr_luminance_cap = 237.24
 
 [node name="SubViewportContainer" type="SubViewportContainer"]
+material = SubResource("ShaderMaterial_nkpkk")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -46,19 +65,18 @@ canvas_item_default_texture_filter = 0
 size = Vector2i(1920, 1080)
 render_target_update_mode = 4
 
+[node name="sprFogOfWar" type="Sprite2D" parent="SubViewport"]
+z_index = 22
+material = SubResource("CanvasItemMaterial_lf0p2")
+position = Vector2(269, 246)
+texture = ExtResource("22_kdkw7")
+
 [node name="Node2D" type="Node2D" parent="SubViewport"]
 modulate = Color(1, 1, 1, 0)
 script = ExtResource("1_4v5yl")
-icon = Array[PackedScene]([ExtResource("2_5ab15"), ExtResource("3_chvyf"), ExtResource("4_pj7pk"), ExtResource("5_8hhcj"), ExtResource("6_o7hxm"), ExtResource("7_6whpy"), ExtResource("8_uecrb"), ExtResource("9_3lv5s"), ExtResource("10_jwisb"), ExtResource("11_ssm7w"), ExtResource("12_d3dt4"), ExtResource("13_fb1br"), ExtResource("14_8u8vh"), ExtResource("15_1yd5h")])
+icon = Array[PackedScene]([ExtResource("2_5ab15"), ExtResource("3_chvyf"), ExtResource("4_pj7pk"), ExtResource("5_8hhcj"), ExtResource("6_o7hxm"), ExtResource("7_6whpy"), ExtResource("8_uecrb"), ExtResource("9_3lv5s"), ExtResource("10_jwisb"), ExtResource("11_ssm7w"), ExtResource("12_d3dt4"), ExtResource("13_fb1br"), ExtResource("14_8u8vh"), ExtResource("15_1yd5h"), ExtResource("18_k332e")])
 iconScale = 0.1
-offset = Vector2(-1200, -630)
-
-[node name="Map Bg" type="TextureRect" parent="SubViewport/Node2D"]
-visible = false
-modulate = Color(1, 1, 1, 0.690196)
-z_index = -1
-offset_right = 40.0
-offset_bottom = 40.0
+offset = Vector2(-1302, -657)
 
 [node name="PlayerIcon" type="Node2D" parent="SubViewport/Node2D"]
 position = Vector2(-40, -40)
@@ -103,3 +121,24 @@ theme_override_constants/margin_bottom = 20
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewport/Node2D"]
 environment = SubResource("Environment_vpbp4")
+
+[node name="grass" type="Sprite2D" parent="SubViewport/Node2D"]
+z_index = -1
+scale = Vector2(333, 333)
+texture = ExtResource("21_8kfqf")
+
+[node name="FogOfWar" parent="." node_paths=PackedStringArray("fog") instance=ExtResource("20_xdaan")]
+visible = true
+z_index = 10
+scale = Vector2(14, 14)
+script = ExtResource("21_kcoc2")
+fog = NodePath("../SubViewport/sprFogOfWar")
+fogWidth = 8400
+fogHeight = 5200
+LightTexture = ExtResource("22_kdkw7")
+lightWidth = 200
+lightHeight = 200
+debounce_time = 0.2
+
+[node name="FoWfog" parent="FogOfWar" instance=ExtResource("23_q2fek")]
+position = Vector2(-1949, -1206)

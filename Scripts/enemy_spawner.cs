@@ -9,7 +9,7 @@ public partial class enemy_spawner : Node2D {
 	int time;
 	public override void _Ready()
 	{
-		Area2D pl = (Area2D)GetTree().GetFirstNodeInGroup("Players");
+		Area2D pl = (Area2D)GetTree().GetFirstNodeInGroup("Player");
 		time = 0;
 	}
 

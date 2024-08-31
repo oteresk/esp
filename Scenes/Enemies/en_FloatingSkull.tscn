@@ -1,0 +1,220 @@
+[gd_scene load_steps=46 format=3 uid="uid://cjwo34ku6t07t"]
+
+[ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_8a77r"]
+[ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_6w2fv"]
+[ext_resource type="Shader" path="res://Shaders/ColorFlash.gdshader" id="3_8yuh7"]
+[ext_resource type="Texture2D" uid="uid://bopnfjg8bcktj" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Run_00.png" id="4_slsc2"]
+[ext_resource type="Texture2D" uid="uid://tvlpohjwlnjq" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Run_01.png" id="5_ca2cs"]
+[ext_resource type="Texture2D" uid="uid://boewaecmp6ccl" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Run_02.png" id="6_qe6sn"]
+[ext_resource type="Texture2D" uid="uid://5n8dluit7xet" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Run_03.png" id="7_fw7jb"]
+[ext_resource type="Texture2D" uid="uid://u76x2jaxt6fx" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Run_04.png" id="8_gj1v6"]
+[ext_resource type="Texture2D" uid="uid://blkb32wrgqeg5" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Run_05.png" id="9_6umc0"]
+[ext_resource type="Texture2D" uid="uid://by3wy6liss1w0" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Run_06.png" id="10_3e6qu"]
+[ext_resource type="Texture2D" uid="uid://m67sr833784x" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Run_07.png" id="11_ktpcj"]
+[ext_resource type="Texture2D" uid="uid://da1xls6rnn4vd" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Run_08.png" id="12_k3ixy"]
+[ext_resource type="Texture2D" uid="uid://cv0dxucqjkw43" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Run_09.png" id="13_u3pg1"]
+[ext_resource type="Texture2D" uid="uid://djy4lhinfdbva" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Run_10.png" id="14_lb86a"]
+[ext_resource type="Texture2D" uid="uid://cisr0kv7sqv8v" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Run_11.png" id="15_1kxt4"]
+[ext_resource type="Texture2D" uid="uid://dq5dsu3aggs84" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Run_12.png" id="16_q8x8p"]
+[ext_resource type="Texture2D" uid="uid://bttj4wgw0gk2w" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_00.png" id="17_pbm2x"]
+[ext_resource type="Texture2D" uid="uid://nvegcv83l58r" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_01.png" id="18_0dvtk"]
+[ext_resource type="Texture2D" uid="uid://b51df1oo1qswi" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_02.png" id="19_1cp4g"]
+[ext_resource type="Texture2D" uid="uid://dx4uqqsfyyvpq" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_03.png" id="20_q8mbl"]
+[ext_resource type="Texture2D" uid="uid://chwuks6fb81hp" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_04.png" id="21_tc35h"]
+[ext_resource type="Texture2D" uid="uid://cgh8d082bg66g" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_05.png" id="22_ry8uq"]
+[ext_resource type="Texture2D" uid="uid://dmy0pb4b4dq3e" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_06.png" id="23_7iply"]
+[ext_resource type="Texture2D" uid="uid://dldyt3nmyire" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_07.png" id="24_vldgc"]
+[ext_resource type="Texture2D" uid="uid://p2md0klc1pao" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_08.png" id="25_3h70v"]
+[ext_resource type="Texture2D" uid="uid://dkmlmqsv4u7yq" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_09.png" id="26_msimo"]
+[ext_resource type="Texture2D" uid="uid://cpk3eat33else" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_10.png" id="27_5t35c"]
+[ext_resource type="Texture2D" uid="uid://blvhdpieswt8x" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_11.png" id="28_6lodx"]
+[ext_resource type="Texture2D" uid="uid://pqa04b7pxsaf" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_12.png" id="29_qyvtu"]
+[ext_resource type="Texture2D" uid="uid://c0hsydkdy7p3k" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_13.png" id="30_qjlch"]
+[ext_resource type="Texture2D" uid="uid://8c4cfphhun80" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_14.png" id="31_63jec"]
+[ext_resource type="Texture2D" uid="uid://c43f0kj8d150w" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_15.png" id="32_ut7od"]
+[ext_resource type="Texture2D" uid="uid://clsqgle7f4vii" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_16.png" id="33_ldolg"]
+[ext_resource type="Texture2D" uid="uid://cpnw3cf6fkrpa" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_17.png" id="34_y2n1e"]
+[ext_resource type="Texture2D" uid="uid://dqafjmmcsykbl" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_18.png" id="35_i4et6"]
+[ext_resource type="Texture2D" uid="uid://bbdibcjvdiqxl" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_19.png" id="36_qv51h"]
+[ext_resource type="Texture2D" uid="uid://dovs7vfsh0wtb" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_20.png" id="37_yyywr"]
+[ext_resource type="Texture2D" uid="uid://cqdm7fkl36lyw" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_21.png" id="38_vkyer"]
+[ext_resource type="Texture2D" uid="uid://cf7v0eqo5468" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_22.png" id="39_gbwgm"]
+[ext_resource type="Texture2D" uid="uid://df1571thlhkyw" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_23.png" id="40_rg1ls"]
+[ext_resource type="Texture2D" uid="uid://d0uujuekijdhd" path="res://Art/Enemy-sprites/FloatingSkull/FloatingSkull-Walk_24.png" id="41_dos4q"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_71tgv"]
+resource_local_to_scene = true
+shader = ExtResource("3_8yuh7")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_slsc2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ca2cs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_qe6sn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_fw7jb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_gj1v6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_6umc0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_3e6qu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_ktpcj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_k3ixy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_u3pg1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_lb86a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_1kxt4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_q8x8p")
+}],
+"loop": true,
+"name": &"Run",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_pbm2x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_0dvtk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_1cp4g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_q8mbl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_tc35h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_ry8uq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_7iply")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_vldgc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_3h70v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_msimo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_5t35c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_6lodx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_qyvtu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_qjlch")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_63jec")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_ut7od")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_ldolg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_y2n1e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_i4et6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_qv51h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_yyywr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_vkyer")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_gbwgm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_rg1ls")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_dos4q")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
+radius = 33.7152
+height = 67.4304
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vifxa"]
+
+[node name="en_FloatingSkull" type="RigidBody2D" groups=["Enemies"]]
+collision_layer = 2
+collision_mask = 2
+mass = 0.01
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_8a77r")
+health = 24.0
+speed = 90.0
+itemScene = ExtResource("2_6w2fv")
+damage = 7
+enemyName = "Floating Skull"
+XP = 12
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_71tgv")
+position = Vector2(-18, -118)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_7y2m0")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+editor_description = "small physics circle"
+position = Vector2(0, -3)
+rotation = 0.00420356
+scale = Vector2(0.919833, 1)
+shape = SubResource("CapsuleShape2D_j3bk0")
+
+[node name="Occlusion Area Collider" type="Area2D" parent="." groups=["Occlusion"]]
+editor_description = "Shows and hides node for efficiency"
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
+scale = Vector2(140, 90)
+shape = SubResource("RectangleShape2D_vifxa")

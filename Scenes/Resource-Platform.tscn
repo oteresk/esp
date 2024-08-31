@@ -39,7 +39,7 @@ shape = SubResource("CircleShape2D_s0u15")
 position = Vector2(0, -236)
 scale = Vector2(1.4, 2)
 color = Color(0, 0.207843, 1, 1)
-energy = 2.5
+energy = 0.98
 range_layer_min = -200
 texture = ExtResource("5_ej1vv")
 height = 333.0
@@ -53,7 +53,7 @@ shape = SubResource("RectangleShape2D_c286w")
 [node name="Discovery Area Collider" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Discovery Area Collider"]
-scale = Vector2(100, 100)
+scale = Vector2(550, 550)
 shape = SubResource("CircleShape2D_axok3")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

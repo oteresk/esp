@@ -1,17 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://bdmht03cemk5y"]
+[gd_scene load_steps=4 format=3 uid="uid://bdmht03cemk5y"]
 
 [ext_resource type="Script" path="res://Scripts/AttackSlash.cs" id="1_xluy4"]
+[ext_resource type="AudioStream" uid="uid://bg4o5atis2ekj" path="res://Audio/SFX/Swipe.ogg" id="2_xcors"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mk5pp"]
 radius = 521.0
 
-[node name="AttackSlash" type="Area2D"]
+[node name="AttackSlash" type="Area2D" node_paths=PackedStringArray("sndSwipe")]
 modulate = Color(1, 1, 1, 0.501961)
 position = Vector2(0, -120)
 scale = Vector2(3, 3)
 collision_layer = 0
-collision_mask = 2
+collision_mask = 0
+monitoring = false
+monitorable = false
 script = ExtResource("1_xluy4")
+sndSwipe = NodePath("sndSwipe")
 
 [node name="ShootingPoint" type="Marker2D" parent="."]
 unique_name_in_owner = true
@@ -22,6 +26,9 @@ wait_time = 0.75
 autostart = true
 
 [node name="SlashArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SlashArea2D"]
 position = Vector2(80, -9)
@@ -29,4 +36,12 @@ rotation = 0.00482192
 scale = Vector2(0.216453, 0.18553)
 shape = SubResource("CircleShape2D_mk5pp")
 
+[node name="sndSwipe" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_xcors")
+bus = &"SFX"
+
 [connection signal="timeout" from="BulletTimer" to="." method="OnBulletTimerTimeout"]
+[connection signal="area_entered" from="SlashArea2D" to="." method="OnAreaEntered"]
+[connection signal="area_exited" from="SlashArea2D" to="." method="OnAreaExited"]
+[connection signal="body_entered" from="SlashArea2D" to="." method="OnBodyEntered"]
+[connection signal="body_exited" from="SlashArea2D" to="." method="OnBodyExited"]

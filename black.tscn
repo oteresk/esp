@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bpukysafnurai"]
-
-[ext_resource type="Texture2D" uid="uid://cg1yhdevm0s3e" path="res://Art/GrassTile.png" id="1_ggr7p"]
-
-[node name="Black" type="Sprite2D"]
-modulate = Color(0, 0, 0, 0)
-z_index = 999
-scale = Vector2(999, 999)
-texture = ExtResource("1_ggr7p")

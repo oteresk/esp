@@ -1,0 +1,974 @@
+[gd_scene load_steps=35 format=3 uid="uid://buj15m7kgw8nk"]
+
+[ext_resource type="Script" path="res://Scripts/StatUpgrades.cs" id="1_ge2oc"]
+[ext_resource type="Texture2D" uid="uid://pmir7d3ysfmu" path="res://Art/GUI/StatUpgrades/UpgradesBackground.png" id="1_xej6k"]
+[ext_resource type="Script" path="res://Scripts/StatUpgrade.cs" id="2_o5phl"]
+[ext_resource type="Texture2D" uid="uid://2dbdki0i67n1" path="res://Art/GUI/StatUpgrades/Menu Tab.png" id="3_7i52p"]
+[ext_resource type="Texture2D" uid="uid://bwmagyws5tkga" path="res://Art/GUI/StatUpgrades/Block_Empty.png" id="3_ydy0s"]
+[ext_resource type="FontFile" uid="uid://blv8i47j34igf" path="res://Fonts/CloisterBlack.ttf" id="4_47kom"]
+[ext_resource type="Texture2D" uid="uid://b88etd8quvl4o" path="res://Art/GUI/Gold.png" id="5_wx2qb"]
+[ext_resource type="FontVariation" uid="uid://cioe7t5vpxgkl" path="res://StatUpgradeFont.tres" id="6_iukmn"]
+[ext_resource type="FontFile" uid="uid://deu73dw073p0l" path="res://Analogist.ttf" id="7_o6e22"]
+[ext_resource type="Texture2D" uid="uid://duc3yrtenakjo" path="res://Art/GUI/StatUpgrades/Button Small.png" id="8_3j46r"]
+[ext_resource type="Texture2D" uid="uid://451kmtclyme1" path="res://Art/GUI/StatUpgrades/Border.png" id="8_wxuvw"]
+[ext_resource type="Texture2D" uid="uid://vy0172p8d6bq" path="res://Art/GUI/StatUpgrades/Button_Disabled.png" id="9_trcln"]
+[ext_resource type="Texture2D" uid="uid://cd6pne2n8repc" path="res://Art/GUI/StatUpgrades/AreaOfEffect.png" id="10_q3f6h"]
+[ext_resource type="Texture2D" uid="uid://b1shib1f0y2x0" path="res://Art/GUI/StatUpgrades/Gold Display.png" id="11_y5xxc"]
+[ext_resource type="Texture2D" uid="uid://ccbsebicl0cl7" path="res://Art/GUI/StatUpgrades/Button Small_Hover.png" id="13_4kpsi"]
+[ext_resource type="Script" path="res://Scripts/SaveLoad.cs" id="13_18dtb"]
+[ext_resource type="Script" path="res://Scripts/Globals.cs" id="14_k2fsy"]
+[ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="15_mc0ly"]
+[ext_resource type="Texture2D" uid="uid://detiu1nruacbm" path="res://Art/GUI/StatUpgrades/Attack Speed.png" id="16_20t5r"]
+[ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/Resource-IronMine.tscn" id="16_mdlpe"]
+[ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/resource_template-GoldMine.tscn" id="17_27he6"]
+[ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/resource_template-ManaWell.tscn" id="18_rvxhx"]
+[ext_resource type="Texture2D" uid="uid://dj3l4qa3d73m" path="res://Art/GUI/StatUpgrades/Attack Damage.png" id="18_yptus"]
+[ext_resource type="PackedScene" uid="uid://ctcv7jmln8o34" path="res://Scenes/Resource-Wood.tscn" id="19_ejcab"]
+[ext_resource type="Texture2D" uid="uid://bxw7wfv2xylr5" path="res://Art/GUI/StatUpgrades/Move Speed.png" id="20_isbwc"]
+[ext_resource type="PackedScene" uid="uid://djjmkb3mx4ata" path="res://Scenes/Resource-Platform.tscn" id="20_jwskn"]
+[ext_resource type="Texture2D" uid="uid://cqw6wgvaxgdgv" path="res://Art/GUI/StatUpgrades/Defense.png" id="21_mul4e"]
+[ext_resource type="Script" path="res://Scripts/btnUpgrade.cs" id="23_wn04p"]
+[ext_resource type="AudioStream" uid="uid://b2beyxfybchew" path="res://Audio/Music/Fantasy Vol4 Enemy Intensity 2.wav" id="32_1c8d3"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8iope"]
+font = ExtResource("4_47kom")
+font_size = 52
+font_color = Color(0.301961, 0.360784, 0.133333, 1)
+shadow_size = 4
+shadow_color = Color(0.227451, 0.243137, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_s770q"]
+font = ExtResource("4_47kom")
+font_size = 42
+font_color = Color(0.301961, 0.360784, 0.133333, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_rtwsg"]
+line_spacing = 5.0
+font = ExtResource("7_o6e22")
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_cb63y"]
+font = ExtResource("7_o6e22")
+font_size = 18
+font_color = Color(0.141176, 0.117647, 0.121569, 1)
+outline_size = 2
+outline_color = Color(0.141176, 0.117647, 0.121569, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_3l5xi"]
+font = ExtResource("4_47kom")
+font_size = 50
+font_color = Color(0.301961, 0.360784, 0.133333, 1)
+
+[node name="StatUpgrades" type="CanvasLayer"]
+script = ExtResource("1_ge2oc")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_xej6k")
+
+[node name="MenuBG" type="TextureRect" parent="Control/TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -708.0
+offset_top = -540.0
+offset_right = 708.0
+offset_bottom = 540.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_7i52p")
+
+[node name="Title" type="Label" parent="Control/TextureRect"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -713.0
+offset_top = 140.0
+offset_right = 713.0
+offset_bottom = 205.0
+grow_horizontal = 2
+text = "Upgrades"
+label_settings = SubResource("LabelSettings_8iope")
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="MCUpgradeImage" type="MarginContainer" parent="Control/TextureRect"]
+layout_mode = 2
+offset_left = 1156.0
+offset_top = 345.0
+offset_right = 1368.0
+offset_bottom = 495.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 0
+
+[node name="UpgradeImage" type="TextureRect" parent="Control/TextureRect/MCUpgradeImage"]
+layout_mode = 2
+size_flags_vertical = 0
+texture = ExtResource("8_wxuvw")
+
+[node name="MCUpgradeName" type="MarginContainer" parent="Control/TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 144.0
+offset_top = 24.5
+offset_right = 464.0
+offset_bottom = 78.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
+
+[node name="UpgradeName" type="Label" parent="Control/TextureRect/MCUpgradeName"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("6_iukmn")
+text = "Upgrade"
+label_settings = SubResource("LabelSettings_s770q")
+horizontal_alignment = 1
+
+[node name="MCDescription" type="MarginContainer" parent="Control/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1105.0
+offset_top = 657.0
+offset_right = -495.0
+offset_bottom = -381.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 0
+
+[node name="Description" type="Label" parent="Control/TextureRect/MCDescription"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 0
+text = "This is a description of the stat upgrade item which is selected."
+label_settings = SubResource("LabelSettings_rtwsg")
+horizontal_alignment = 1
+autowrap_mode = 3
+justification_flags = 162
+
+[node name="MClblCost" type="MarginContainer" parent="Control/TextureRect"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+offset_left = 1105.0
+offset_top = 625.0
+offset_right = 1425.0
+offset_bottom = 647.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="lblCost" type="Label" parent="Control/TextureRect/MClblCost"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("6_iukmn")
+text = "Cost: "
+label_settings = SubResource("LabelSettings_cb63y")
+horizontal_alignment = 1
+
+[node name="MCbtnUpgrade" type="MarginContainer" parent="Control/TextureRect"]
+layout_mode = 2
+offset_left = 1144.0
+offset_top = 740.0
+offset_right = 1385.0
+offset_bottom = 850.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+
+[node name="TextureButton" type="TextureButton" parent="Control/TextureRect/MCbtnUpgrade"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("8_3j46r")
+texture_hover = ExtResource("13_4kpsi")
+texture_disabled = ExtResource("9_trcln")
+script = ExtResource("23_wn04p")
+
+[node name="lblUpgrade" type="Label" parent="Control/TextureRect/MCbtnUpgrade/TextureButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.726141
+anchor_top = 0.504545
+anchor_right = 0.726141
+anchor_bottom = 0.504545
+offset_left = -131.0
+offset_top = -33.5
+offset_right = 30.0
+offset_bottom = 28.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Upgrade"
+label_settings = SubResource("LabelSettings_3l5xi")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="MCGold" type="MarginContainer" parent="Control/TextureRect"]
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 240.0
+theme_override_constants/margin_top = 140
+
+[node name="GoldDisplay" type="TextureRect" parent="Control/TextureRect/MCGold"]
+layout_mode = 2
+texture = ExtResource("11_y5xxc")
+expand_mode = 3
+stretch_mode = 2
+
+[node name="HBGold" type="HBoxContainer" parent="Control/TextureRect/MCGold"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="MCimgGold" type="MarginContainer" parent="Control/TextureRect/MCGold/HBGold"]
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 5
+
+[node name="imgGold" type="TextureRect" parent="Control/TextureRect/MCGold/HBGold/MCimgGold"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("5_wx2qb")
+expand_mode = 1
+stretch_mode = 4
+flip_h = true
+
+[node name="MCGold" type="MarginContainer" parent="Control/TextureRect/MCGold/HBGold"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 0
+
+[node name="Gold" type="Label" parent="Control/TextureRect/MCGold/HBGold/MCGold"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_fonts/font = ExtResource("6_iukmn")
+text = "9000000"
+label_settings = SubResource("LabelSettings_s770q")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="MCbtnBack" type="MarginContainer" parent="Control"]
+layout_mode = 2
+offset_left = -6.0
+offset_top = 932.0
+offset_right = 354.0
+offset_bottom = 1110.0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="TextureButton" type="TextureButton" parent="Control/MCbtnBack"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+texture_normal = ExtResource("8_3j46r")
+texture_hover = ExtResource("13_4kpsi")
+texture_disabled = ExtResource("9_trcln")
+
+[node name="lblBack" type="Label" parent="Control/MCbtnBack/TextureButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.809129
+anchor_top = 0.490909
+anchor_right = 0.809129
+anchor_bottom = 0.490909
+offset_left = -131.0
+offset_top = -37.0
+offset_right = -13.0
+offset_bottom = 37.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Back"
+label_settings = SubResource("LabelSettings_3l5xi")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="MCUpgrade0" type="MarginContainer" parent="Control" node_paths=PackedStringArray("image", "imgSlot1", "imgSlot2", "imgSlot3", "imgSlot4", "imgSlot5") groups=["StatUpgrade"]]
+layout_mode = 1
+offset_left = 532.0
+offset_top = 295.0
+offset_right = 708.0
+offset_bottom = 477.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("2_o5phl")
+image = NodePath("VBoxContainer/MarginContainer2/SkillIcon")
+imgSlot1 = NodePath("VBoxContainer/Slots/mc2/Slot1")
+imgSlot2 = NodePath("VBoxContainer/Slots/mc/Slot2")
+imgSlot3 = NodePath("VBoxContainer/Slots/mc3/Slot3")
+imgSlot4 = NodePath("VBoxContainer/Slots/mc4/Slot4")
+imgSlot5 = NodePath("VBoxContainer/Slots/mc5/Slot5")
+upgradeName = "Attack Speed"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MCUpgrade0"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control/MCUpgrade0/VBoxContainer"]
+custom_minimum_size = Vector2(132, 130)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="SkillIcon" type="TextureRect" parent="Control/MCUpgrade0/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("16_20t5r")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="Slots" type="HBoxContainer" parent="Control/MCUpgrade0/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="mc2" type="MarginContainer" parent="Control/MCUpgrade0/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 2
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot1" type="TextureRect" parent="Control/MCUpgrade0/VBoxContainer/Slots/mc2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc" type="MarginContainer" parent="Control/MCUpgrade0/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot2" type="TextureRect" parent="Control/MCUpgrade0/VBoxContainer/Slots/mc"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc3" type="MarginContainer" parent="Control/MCUpgrade0/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot3" type="TextureRect" parent="Control/MCUpgrade0/VBoxContainer/Slots/mc3"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc4" type="MarginContainer" parent="Control/MCUpgrade0/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot4" type="TextureRect" parent="Control/MCUpgrade0/VBoxContainer/Slots/mc4"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc5" type="MarginContainer" parent="Control/MCUpgrade0/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot5" type="TextureRect" parent="Control/MCUpgrade0/VBoxContainer/Slots/mc5"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="MCUpgrade1" type="MarginContainer" parent="Control" node_paths=PackedStringArray("image", "imgSlot1", "imgSlot2", "imgSlot3", "imgSlot4", "imgSlot5") groups=["StatUpgrade"]]
+layout_mode = 1
+offset_left = 310.0
+offset_top = 501.0
+offset_right = 486.0
+offset_bottom = 683.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("2_o5phl")
+image = NodePath("VBoxContainer/MarginContainer2/SkillIcon")
+imgSlot1 = NodePath("VBoxContainer/Slots/mc2/Slot1")
+imgSlot2 = NodePath("VBoxContainer/Slots/mc/Slot2")
+imgSlot3 = NodePath("VBoxContainer/Slots/mc3/Slot3")
+imgSlot4 = NodePath("VBoxContainer/Slots/mc4/Slot4")
+imgSlot5 = NodePath("VBoxContainer/Slots/mc5/Slot5")
+upgradeName = "Damage"
+upgradeNum = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MCUpgrade1"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control/MCUpgrade1/VBoxContainer"]
+custom_minimum_size = Vector2(132, 130)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="SkillIcon" type="TextureRect" parent="Control/MCUpgrade1/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("18_yptus")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="Slots" type="HBoxContainer" parent="Control/MCUpgrade1/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="mc2" type="MarginContainer" parent="Control/MCUpgrade1/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 2
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot1" type="TextureRect" parent="Control/MCUpgrade1/VBoxContainer/Slots/mc2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc" type="MarginContainer" parent="Control/MCUpgrade1/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot2" type="TextureRect" parent="Control/MCUpgrade1/VBoxContainer/Slots/mc"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc3" type="MarginContainer" parent="Control/MCUpgrade1/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot3" type="TextureRect" parent="Control/MCUpgrade1/VBoxContainer/Slots/mc3"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc4" type="MarginContainer" parent="Control/MCUpgrade1/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot4" type="TextureRect" parent="Control/MCUpgrade1/VBoxContainer/Slots/mc4"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc5" type="MarginContainer" parent="Control/MCUpgrade1/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot5" type="TextureRect" parent="Control/MCUpgrade1/VBoxContainer/Slots/mc5"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="MCUpgrade2" type="MarginContainer" parent="Control" node_paths=PackedStringArray("image", "imgSlot1", "imgSlot2", "imgSlot3", "imgSlot4", "imgSlot5") groups=["StatUpgrade"]]
+layout_mode = 1
+offset_left = 532.0
+offset_top = 501.0
+offset_right = 708.0
+offset_bottom = 683.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("2_o5phl")
+image = NodePath("VBoxContainer/MarginContainer2/SkillIcon")
+imgSlot1 = NodePath("VBoxContainer/Slots/mc2/Slot1")
+imgSlot2 = NodePath("VBoxContainer/Slots/mc/Slot2")
+imgSlot3 = NodePath("VBoxContainer/Slots/mc3/Slot3")
+imgSlot4 = NodePath("VBoxContainer/Slots/mc4/Slot4")
+imgSlot5 = NodePath("VBoxContainer/Slots/mc5/Slot5")
+upgradeName = "Area of Effect"
+upgradeNum = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MCUpgrade2"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control/MCUpgrade2/VBoxContainer"]
+custom_minimum_size = Vector2(132, 130)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="SkillIcon" type="TextureRect" parent="Control/MCUpgrade2/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("10_q3f6h")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="Slots" type="HBoxContainer" parent="Control/MCUpgrade2/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="mc2" type="MarginContainer" parent="Control/MCUpgrade2/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 2
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot1" type="TextureRect" parent="Control/MCUpgrade2/VBoxContainer/Slots/mc2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc" type="MarginContainer" parent="Control/MCUpgrade2/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot2" type="TextureRect" parent="Control/MCUpgrade2/VBoxContainer/Slots/mc"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc3" type="MarginContainer" parent="Control/MCUpgrade2/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot3" type="TextureRect" parent="Control/MCUpgrade2/VBoxContainer/Slots/mc3"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc4" type="MarginContainer" parent="Control/MCUpgrade2/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot4" type="TextureRect" parent="Control/MCUpgrade2/VBoxContainer/Slots/mc4"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc5" type="MarginContainer" parent="Control/MCUpgrade2/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot5" type="TextureRect" parent="Control/MCUpgrade2/VBoxContainer/Slots/mc5"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="MCUpgrade3" type="MarginContainer" parent="Control" node_paths=PackedStringArray("image", "imgSlot1", "imgSlot2", "imgSlot3", "imgSlot4", "imgSlot5") groups=["StatUpgrade"]]
+layout_mode = 1
+offset_left = 754.0
+offset_top = 501.0
+offset_right = 930.0
+offset_bottom = 683.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("2_o5phl")
+image = NodePath("VBoxContainer/MarginContainer2/SkillIcon")
+imgSlot1 = NodePath("VBoxContainer/Slots/mc2/Slot1")
+imgSlot2 = NodePath("VBoxContainer/Slots/mc/Slot2")
+imgSlot3 = NodePath("VBoxContainer/Slots/mc3/Slot3")
+imgSlot4 = NodePath("VBoxContainer/Slots/mc4/Slot4")
+imgSlot5 = NodePath("VBoxContainer/Slots/mc5/Slot5")
+upgradeName = "Movement Speed"
+upgradeNum = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MCUpgrade3"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control/MCUpgrade3/VBoxContainer"]
+custom_minimum_size = Vector2(132, 130)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="SkillIcon" type="TextureRect" parent="Control/MCUpgrade3/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("20_isbwc")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="Slots" type="HBoxContainer" parent="Control/MCUpgrade3/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="mc2" type="MarginContainer" parent="Control/MCUpgrade3/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 2
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot1" type="TextureRect" parent="Control/MCUpgrade3/VBoxContainer/Slots/mc2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc" type="MarginContainer" parent="Control/MCUpgrade3/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot2" type="TextureRect" parent="Control/MCUpgrade3/VBoxContainer/Slots/mc"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc3" type="MarginContainer" parent="Control/MCUpgrade3/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot3" type="TextureRect" parent="Control/MCUpgrade3/VBoxContainer/Slots/mc3"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc4" type="MarginContainer" parent="Control/MCUpgrade3/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot4" type="TextureRect" parent="Control/MCUpgrade3/VBoxContainer/Slots/mc4"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc5" type="MarginContainer" parent="Control/MCUpgrade3/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot5" type="TextureRect" parent="Control/MCUpgrade3/VBoxContainer/Slots/mc5"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="MCUpgrade4" type="MarginContainer" parent="Control" node_paths=PackedStringArray("image", "imgSlot1", "imgSlot2", "imgSlot3", "imgSlot4", "imgSlot5") groups=["StatUpgrade"]]
+layout_mode = 1
+offset_left = 532.0
+offset_top = 707.0
+offset_right = 708.0
+offset_bottom = 889.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("2_o5phl")
+image = NodePath("VBoxContainer/MarginContainer2/SkillIcon")
+imgSlot1 = NodePath("VBoxContainer/Slots/mc2/Slot1")
+imgSlot2 = NodePath("VBoxContainer/Slots/mc/Slot2")
+imgSlot3 = NodePath("VBoxContainer/Slots/mc3/Slot3")
+imgSlot4 = NodePath("VBoxContainer/Slots/mc4/Slot4")
+imgSlot5 = NodePath("VBoxContainer/Slots/mc5/Slot5")
+upgradeName = "Armor"
+upgradeNum = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MCUpgrade4"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control/MCUpgrade4/VBoxContainer"]
+custom_minimum_size = Vector2(132, 130)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="SkillIcon" type="TextureRect" parent="Control/MCUpgrade4/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("21_mul4e")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="Slots" type="HBoxContainer" parent="Control/MCUpgrade4/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="mc2" type="MarginContainer" parent="Control/MCUpgrade4/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 2
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot1" type="TextureRect" parent="Control/MCUpgrade4/VBoxContainer/Slots/mc2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc" type="MarginContainer" parent="Control/MCUpgrade4/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot2" type="TextureRect" parent="Control/MCUpgrade4/VBoxContainer/Slots/mc"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc3" type="MarginContainer" parent="Control/MCUpgrade4/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot3" type="TextureRect" parent="Control/MCUpgrade4/VBoxContainer/Slots/mc3"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc4" type="MarginContainer" parent="Control/MCUpgrade4/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot4" type="TextureRect" parent="Control/MCUpgrade4/VBoxContainer/Slots/mc4"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="mc5" type="MarginContainer" parent="Control/MCUpgrade4/VBoxContainer/Slots"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Slot5" type="TextureRect" parent="Control/MCUpgrade4/VBoxContainer/Slots/mc5"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ydy0s")
+
+[node name="SaveLoad" type="Node2D" parent="."]
+script = ExtResource("13_18dtb")
+
+[node name="Globals" type="Node2D" parent="."]
+script = ExtResource("14_k2fsy")
+
+[node name="ResourceDiscoveries" type="Node2D" parent="."]
+y_sort_enabled = true
+position = Vector2(142, -55)
+script = ExtResource("15_mc0ly")
+rTemplateIronMine = ExtResource("16_mdlpe")
+rTemplateGoldMine = ExtResource("17_27he6")
+rTemplateManaWell = ExtResource("18_rvxhx")
+rTemplateWood = ExtResource("19_ejcab")
+rTemplatePlatform = ExtResource("20_jwskn")
+resourcesPerCell = 5
+resourceUpdateFreq = 60
+
+[node name="Black" type="ColorRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+z_index = 999
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -960.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 540.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="statsMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("32_1c8d3")
+bus = &"Music"
+
+[connection signal="pressed" from="Control/TextureRect/MCbtnUpgrade/TextureButton" to="Control/TextureRect/MCbtnUpgrade/TextureButton" method="ClickButton"]
+[connection signal="mouse_entered" from="Control/MCbtnBack/TextureButton" to="." method="BackEntered"]
+[connection signal="mouse_exited" from="Control/MCbtnBack/TextureButton" to="." method="BackExited"]
+[connection signal="mouse_entered" from="Control/MCUpgrade0/VBoxContainer" to="Control/MCUpgrade0" method="OnMouseEntered"]
+[connection signal="mouse_exited" from="Control/MCUpgrade0/VBoxContainer" to="Control/MCUpgrade0" method="OnMouseExited"]
+[connection signal="mouse_entered" from="Control/MCUpgrade1/VBoxContainer" to="Control/MCUpgrade1" method="OnMouseEntered"]
+[connection signal="mouse_exited" from="Control/MCUpgrade1/VBoxContainer" to="Control/MCUpgrade1" method="OnMouseExited"]
+[connection signal="mouse_entered" from="Control/MCUpgrade2/VBoxContainer" to="Control/MCUpgrade2" method="OnMouseEntered"]
+[connection signal="mouse_exited" from="Control/MCUpgrade2/VBoxContainer" to="Control/MCUpgrade2" method="OnMouseExited"]
+[connection signal="mouse_entered" from="Control/MCUpgrade3/VBoxContainer" to="Control/MCUpgrade3" method="OnMouseEntered"]
+[connection signal="mouse_exited" from="Control/MCUpgrade3/VBoxContainer" to="Control/MCUpgrade3" method="OnMouseExited"]
+[connection signal="mouse_entered" from="Control/MCUpgrade4/VBoxContainer" to="Control/MCUpgrade4" method="OnMouseEntered"]
+[connection signal="mouse_exited" from="Control/MCUpgrade4/VBoxContainer" to="Control/MCUpgrade4" method="OnMouseExited"]

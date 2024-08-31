@@ -28,11 +28,25 @@ public partial class MiniMap : Node2D
 
     private PackedScene golemIcon;
     private Node2D golemMapIcon;
+    private PackedScene agroGolemIcon;
+    private Node2D agroGolemMapIcon;
+
+    ShaderMaterial minMapMat;
+    Node miniMapNode;
+    Node borderNode;
+    int pixelSizeX;
+    int pixelSizeY;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
-		Player = (Area2D)GetNode(Globals.NodePlayer);
+        pixelSizeX = 192 * 3; // used for golems
+        pixelSizeY = 108 * 3;
+        
+        Player = (Area2D)GetNode(Globals.NodePlayer);
+
+        miniMapNode = GetNode("../..");
+        borderNode = GetNode(Globals.NodeMiniMapBorder);
 
         lastPos = new Vector2(-999999, -999999); // make sure last pos doesn't match cur player pos
 
@@ -43,23 +57,37 @@ public partial class MiniMap : Node2D
         DelayedStart();
     }
 
-    private async void DelayedStart()
+    public async void DelayedStart()
     {
         await Task.Delay(TimeSpan.FromMilliseconds(200));
 
+        CreateGolemIcons();
+        
+        DisplayGolem();
+        DisplayAgroGolem();
+    }
+
+    public void CreateGolemIcons()
+    {
+        Debug.Print("instantiate minimap golems");
         golemIcon = icon[13];
         golemMapIcon = (Node2D)golemIcon.Instantiate();
         GetNode(Globals.NodeMiniMapContainer).AddChild((Node2D)golemMapIcon);
         golemMapIcon.Scale = new Vector2(iconScale, iconScale);
-        DisplayGolem();
+        golemMapIcon.Name = "Golem";
+
+        // agro golem
+        agroGolemIcon = icon[14];
+        agroGolemMapIcon = (Node2D)agroGolemIcon.Instantiate();
+        GetNode(Globals.NodeMiniMapContainer).AddChild((Node2D)agroGolemMapIcon);
+        agroGolemMapIcon.Scale = new Vector2(iconScale, iconScale);
+        agroGolemMapIcon.Name = "AgroGolem";
     }
 
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		
-
         if (Player.Position != lastPos) // only calculate zoom hen player moves
         {
             CalculateZoom();
@@ -88,7 +116,7 @@ public partial class MiniMap : Node2D
         {
             for (int iter= rdNode.GetChildCount()-1; iter>=0; iter--)
             {
-                if (rdNode.GetChild(iter).Name!= "Golem")
+                if (rdNode.GetChild(iter).Name!= "Golem" && rdNode.GetChild(iter).Name != "AgroGolem")
                     rdNode.GetChild(iter).QueueFree();
             }
         }
@@ -96,6 +124,7 @@ public partial class MiniMap : Node2D
         DisplayResourceDiscoveries();
         DisplayStructures();
         DisplayGolem();
+        DisplayAgroGolem();
     }
 
     private void DisplayResourceDiscoveries()
@@ -146,7 +175,7 @@ public partial class MiniMap : Node2D
                         if ((bool)childNode.Get("captured") == true)
                         {
                             Color curColor = mapIcon.Modulate;
-                            Debug.Print("time - found: " + rdp.RDResource.resourceType.ToString());
+                            //Debug.Print("time - found: " + rdp.RDResource.resourceType.ToString());
                             mapIcon.Modulate = new Color(curColor.R, curColor.G, curColor.B, .5f);
                         }
                     }
@@ -163,7 +192,7 @@ public partial class MiniMap : Node2D
         {
             if (childNode.GetType() == typeof(ResourceDiscovery))
             {
-                Debug.Print("Structure found: " + childNode.Name);
+                //Debug.Print("Structure found: " + childNode.Name);
                 PackedScene pS;
                 pS = icon[0];
 
@@ -193,59 +222,121 @@ public partial class MiniMap : Node2D
         }
     }
 
-    async void DisplayGolem()
+    async public void DisplayGolem()
     {
-        await Task.Delay(TimeSpan.FromMilliseconds(200));
+        //Debug.Print("Display golem");
+        await Task.Delay(TimeSpan.FromMilliseconds(200)); // use delay to speed up function
 
         if (Globals.golem!=null)
         {
-           
-            int pixelSizeX = 192 * 3;
-            int pixelSizeY = 108 * 3;
-
             if (IsInstanceValid(Globals.golem))
             {
-                float golemGridXPos = Globals.golem.Position.X / pixelSizeX * posRatioX + 1600;
-                float golemGridYPos = Globals.golem.Position.Y / pixelSizeY * posRatioY + 931;
-
                 if (golemMapIcon != null)
                 {
                     if (IsInstanceValid(golemMapIcon))
                     {
-                        golemMapIcon.Position = new Vector2(golemGridXPos, golemGridYPos);
-                        golemMapIcon.Name = "Golem";
+                        golemMapIcon.Position = new Vector2(Globals.golem.Position.X / pixelSizeX * posRatioX + 1600, Globals.golem.Position.Y / pixelSizeY * posRatioY + 931);
                     }
                 }
             }
-
         }
 
         if (Globals.golemAlive)
+        {
             DisplayGolem();
+        }
         else
             if (IsInstanceValid(golemMapIcon))
+            {
+                Debug.Print("kill minimmap golem");
                 golemMapIcon.QueueFree();
+            }     
+    }
+
+    async public void DisplayAgroGolem()
+    {
+        await Task.Delay(TimeSpan.FromMilliseconds(200)); // use delay to speed up function
+        //Debug.Print("DisplayAgroGolem: Globals.agroGolem:"+ Globals.agroGolem);
+        //Debug.Print("IsInstanceValid(Globals.agroGolem):" + IsInstanceValid(Globals.agroGolem));
+        //Debug.Print("agroGolemMapIcon:" + IsInstanceValid(agroGolemMapIcon));
+
+        if (Globals.agroGolem != null)
+        {
+            if (IsInstanceValid(Globals.agroGolem))
+            {
+                if (agroGolemMapIcon != null)
+                {
+                    if (IsInstanceValid(agroGolemMapIcon))
+                    {
+                        agroGolemMapIcon.Position = new Vector2(Globals.agroGolem.Position.X / pixelSizeX * posRatioX + 1600, Globals.agroGolem.Position.Y / pixelSizeY * posRatioY + 931);
+                        //Debug.Print("DisplayAgroGolem: " + agroGolemMapIcon.Position);
+                    }
+                }
+            }
+        }
+
+        if (Globals.agroGolemAlive)
+        {
+            DisplayAgroGolem();
+        }
+        else
+            if (IsInstanceValid(agroGolemMapIcon))
+            {
+                Debug.Print("kill minimmap agro golem");
+                agroGolemMapIcon.QueueFree();
+            }
     }
 
 
     public void ShowMiniMap()
     {
-        if (isVisible == true)
+        if (isVisible == true) // fade out
         {
+            Debug.Print("Hide map");
             isVisible = false;
             Tween tween = GetTree().CreateTween();
             tween.Parallel().TweenProperty(this, "modulate:a", 0f, 1.0f);
+
+            // fade shader mask
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderValue), .7f, 0f, 1.0f);
+
             TextureRect playerIcon = (TextureRect)GetNode(Globals.NodeMiniMapPlayer);
             tween.Parallel().TweenProperty(playerIcon, "modulate:a", 0f, 1.0f);
+
+            // border
+            // border
+            tween.Parallel().TweenProperty(borderNode, "modulate:a", 0f, 1.00f);
         }
-        else
+        else // fade in
         {
+            Debug.Print("Show map");
             isVisible = true;
             Tween tween = GetTree().CreateTween();
-            tween.Parallel().TweenProperty(this, "modulate:a", 1.0f, 1.0f);
+            tween.Parallel().TweenProperty(this, "modulate:a", .7f, 1.0f);
+
+            // fade shader mask
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderValue), 0f, .7f, 1.0f);
+
             TextureRect playerIcon = (TextureRect)GetNode(Globals.NodeMiniMapPlayer);
-            tween.Parallel().TweenProperty(playerIcon, "modulate:a", 1.0f, 1.0f);
+            tween.Parallel().TweenProperty(playerIcon, "modulate:a", .7f, 1.0f);
+
+            // border
+            tween.Parallel().TweenProperty(borderNode, "modulate:a", .7f, 1.0f);
+            
         }
+    }
+
+    private void SetShaderValue(float value)
+    {
+
+        
+        //Debug.Print("mmnaode:" + miniMapNode + " val:" + value);
+        SubViewportContainer svc = (SubViewportContainer)miniMapNode;
+
+        minMapMat = (ShaderMaterial)svc.Material;
+
+        minMapMat.SetShaderParameter("alpha", value);
+
     }
 
 }

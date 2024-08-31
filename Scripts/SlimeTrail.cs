@@ -24,6 +24,7 @@ public partial class SlimeTrail : AnimatedSprite2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+        /*
         if (hitPlayer) 
         {
             //Vector2 pos = Globals.pl.GlobalPosition + new Vector2(0, -50);
@@ -36,6 +37,7 @@ public partial class SlimeTrail : AnimatedSprite2D
             }
 
         }
+        */
 
     }
 
@@ -54,35 +56,27 @@ public partial class SlimeTrail : AnimatedSprite2D
         }
     }
 
-    public void OnBodyEntered(Node2D col) // hit player
+    public void DamagePlayer() // hit player
     {
-        // only take damage if trail is more than half faded
+        // only take damage if trail is less than half faded
         if (this.Modulate.A > .5f)
         {
-            if (col.Name == "Player" && Globals.playerAlive)
+            if (damageType == DamageType.Normal)
             {
-                if (damageType == DamageType.Normal)
-                {
-                    Globals.DamagePlayer(damage);
-                }
-                else
-                    if (damageType == DamageType.Poison)
+                Globals.DamagePlayer(damage);
+            }
+            else
+                if (damageType == DamageType.Poison)
                 {
                     Globals.PoisonPlayer(damage, damageTime);
                 }
-                Tween tween = GetTree().CreateTween();
-                tween.Parallel().TweenProperty(this, "modulate:a", 0f, 1.5f);
-                tween.Parallel().TweenProperty(this, "scale", new Vector2(0, 0), 1.5f);
-                hitPlayer = true;
-            }
+            Tween tween = GetTree().CreateTween();
+            tween.Parallel().TweenProperty(this, "modulate:a", 0f, 1.5f);
+            tween.Parallel().TweenProperty(this, "scale", new Vector2(0, 0), 1.5f);
+            hitPlayer = true;
         }
     }
 
-    private void DeleteThis()
-    {
-        if (IsInstanceValid(this))
-            QueueFree();
-    }
     async void FadeOut(float fadeTime)
     {
         //Debug.Print("fadetime:" + fadeTime);
@@ -93,22 +87,4 @@ public partial class SlimeTrail : AnimatedSprite2D
             QueueFree();
     }
 
-    public void _on_occlusion_area_collider_area_entered(Area2D area)
-    {
-        if (area.IsInGroup("Players") && Globals.useOcclusion)
-        {
-            Visible = true;
-            //Debug.Print("occlusion: enter:" + this);
-
-        }
-    }
-
-    public void _on_occlusion_area_collider_area_exited(Area2D area)
-    {
-        if (area.IsInGroup("Players") && Globals.useOcclusion)
-        {
-            Visible = false;
-            //Debug.Print("occlusion: exit" + this);
-        }
-    }
 }

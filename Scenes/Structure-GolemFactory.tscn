@@ -112,17 +112,17 @@ position = Vector2(-12.8205, 706.349)
 shape = SubResource("CircleShape2D_s0u15")
 
 [node name="Light1" type="PointLight2D" parent="."]
-position = Vector2(-31, 159)
+position = Vector2(-1.11111, 66.6667)
 scale = Vector2(1.4, 2)
 color = Color(0.580392, 0.0823529, 0, 1)
-energy = 1.89
+energy = 1.35
 range_layer_min = -200
 texture = SubResource("GradientTexture2D_yon0d")
 height = 333.0
 
 [node name="Light2" type="PointLight2D" parent="."]
-position = Vector2(16, -140)
-scale = Vector2(0.4, 0.4)
+position = Vector2(16.6667, -87.7778)
+scale = Vector2(0.2, 0.4)
 color = Color(0.580392, 0.0823529, 0, 1)
 energy = 1.89
 range_layer_min = -200
@@ -130,7 +130,7 @@ texture = SubResource("GradientTexture2D_yon0d")
 height = 333.0
 
 [node name="Light3" type="PointLight2D" parent="."]
-position = Vector2(-96, -99)
+position = Vector2(-65.5556, -62.2222)
 scale = Vector2(0.2, 0.4)
 color = Color(0.580392, 0.0823529, 0, 1)
 energy = 1.89
@@ -166,10 +166,10 @@ z_index = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -550.0
-offset_top = 265.556
-offset_right = -450.0
-offset_bottom = 271.556
+offset_left = -430.222
+offset_top = 217.778
+offset_right = -330.222
+offset_bottom = 223.778
 grow_horizontal = 2
 scale = Vector2(4, 4)
 theme_override_styles/background = SubResource("StyleBoxFlat_cytaw")
@@ -202,7 +202,7 @@ wait_time = 5.0
 autostart = true
 
 [node name="Switch" type="CanvasGroup" parent="."]
-position = Vector2(-240, 114.444)
+position = Vector2(-188.889, -50)
 scale = Vector2(0.4, 0.4)
 
 [node name="Control" type="Control" parent="Switch"]

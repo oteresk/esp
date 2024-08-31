@@ -22,8 +22,9 @@ size_flags_vertical = 10
 theme_override_constants/margin_bottom = 70
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer"]
-custom_minimum_size = Vector2(116, 131)
+custom_minimum_size = Vector2(81, 91)
 layout_direction = 3
 layout_mode = 2
 texture = ExtResource("1_3een5")
-expand_mode = 1
+expand_mode = 3
+stretch_mode = 4

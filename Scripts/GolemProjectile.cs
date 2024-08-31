@@ -25,7 +25,8 @@ public partial class GolemProjectile : Area2D
     private float yOff;
     private float acceleration;
     private float gravity = .01f;
-    private float projectileSpeed = 190; //higher=faster
+    private float projectileSpeed = 390; //higher=faster
+    private bool isFriendly = true;
 
     Tween tween;
     Tween boulderTween;
@@ -99,8 +100,9 @@ public partial class GolemProjectile : Area2D
     }
 
     
-    public void SetTarget(Vector2 tPos)
+    public void SetTarget(Vector2 tPos, bool isFriend)
     {
+        isFriendly= isFriend;
         targetSet = true;
         targetPos = tPos;
         startDist = targetPos.DistanceTo(GlobalPosition);
@@ -120,7 +122,7 @@ public partial class GolemProjectile : Area2D
 
         ExplodeBullet(startDist / projectileSpeed);
 
-        Debug.Print("Target Pos: " + targetPos+ " startDist:" + startDist);
+        //Debug.Print("Target Pos: " + targetPos+ " startDist:" + startDist);
     }
 
 
@@ -128,7 +130,8 @@ public partial class GolemProjectile : Area2D
     {
         await Task.Delay(TimeSpan.FromMilliseconds(waitTime*1000+20));
 
-        projectile.Visible = false;
+        if (IsInstanceValid(projectile))
+            projectile.Visible = false;
         shadow.Visible = false;
 
         sndBoulderLandh.Play();
@@ -152,11 +155,36 @@ public partial class GolemProjectile : Area2D
 
     }
 
-    public void _OnBodyEntered(Node body)
+    public void _OnBodyEntered(Node2D body)
     {
-        if (body.HasMethod("take_damage"))
+        //Debug.Print("_OnBodyEntered body.Name:"+ body.Name+ " Globals.playerAlive:"+ Globals.playerAlive+ " Globals.ps.canBeDamaged:"+ Globals.ps.canBeDamaged);
+        if (isFriendly) //damage enemies
         {
-            body.Call("take_damage", damage);
+            //Debug.Print("friendly");
+            if (body.HasMethod("take_damage"))
+            {
+                //Debug.Print("golem projectile hit: " + body.Name);
+                if (body.Name == "AgroGolem")
+                    body.Call("take_damage", damage * 10); // damage is * 10 if it's against agro golem
+            }
         }
+        else // damage player
+        {
+            if (body.Name == "Player" && Globals.playerAlive)
+            {
+                //Debug.Print("dmg: " + damage);
+                Globals.DamagePlayer(damage);
+            }
+        }
+
+        if (body.GetParent().Name== "FriendlyGolem" && !isFriendly) // check if hit friendly golem, but not if projectile was friendly
+        { 
+            Debug.Print("hurt friendly");
+            body.GetParent<RigidBody2D>().Call("take_damage", damage); // damage is * 2 if it's against friendly golem
+        }
+
+
     }
+
+
 }

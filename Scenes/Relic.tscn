@@ -1,0 +1,160 @@
+[gd_scene load_steps=26 format=3 uid="uid://do5qsqhhmteq3"]
+
+[ext_resource type="Script" path="res://Scripts/Relic.cs" id="1_kgpfi"]
+[ext_resource type="Texture2D" uid="uid://dxd6akepaurun" path="res://Art/GUI/Relics/Bracelet.png" id="2_tc5s6"]
+[ext_resource type="Texture2D" uid="uid://b8dj3jydqncxa" path="res://Art/GUI/Relics/Chalice.png" id="3_7apow"]
+[ext_resource type="Texture2D" uid="uid://204ql4nkf5n3" path="res://Art/GUI/Relics/Crown.png" id="4_nodtm"]
+[ext_resource type="Texture2D" uid="uid://bajnq38sow7ym" path="res://Art/GUI/Relics/Horn.png" id="5_jwx2k"]
+[ext_resource type="Texture2D" uid="uid://un3ghfrninb5" path="res://Art/GUI/Relics/Necklace1.png" id="6_ehrm2"]
+[ext_resource type="Texture2D" uid="uid://daa87i0gqn0aq" path="res://Art/GUI/Relics/Necklace2.png" id="7_w2eyj"]
+[ext_resource type="Texture2D" uid="uid://bg5nracdqad56" path="res://Art/GUI/Relics/Ring.png" id="8_vh6rh"]
+[ext_resource type="Shader" path="res://Shaders/AnimGlow.gdshader" id="9_gybru"]
+[ext_resource type="AudioStream" uid="uid://bqsxtyvdcarhu" path="res://Audio/SFX/GetItem.ogg" id="9_n0582"]
+[ext_resource type="AudioStream" uid="uid://bw86fvnheukjk" path="res://Audio/SFX/DiscoverRelic.ogg" id="10_iha4i"]
+[ext_resource type="Texture2D" uid="uid://ckq4e154tu5pj" path="res://Art/GUI/Relics/StarParticle.png" id="12_tdlkb"]
+[ext_resource type="PackedScene" uid="uid://2i4s0bf304dm" path="res://Scenes/RelicDiscovery.tscn" id="13_a4nxa"]
+[ext_resource type="Shader" path="res://Shaders/Distortion.gdshader" id="14_8sb36"]
+[ext_resource type="Texture2D" uid="uid://dr5xuvuwhgro2" path="res://Art/2ColorCircle.png" id="15_lp7be"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dj03w"]
+shader = ExtResource("9_gybru")
+shader_parameter/max_line_width = 24.0
+shader_parameter/min_line_width = 2.0
+shader_parameter/freq = 12.0
+shader_parameter/block_size = 20.0
+shader_parameter/starting_colour = Vector4(1, 1, 1, 1)
+shader_parameter/ending_colour = Vector4(1, 1, 1, 0)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_31pjl"]
+radius = 32.0156
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g6a6l"]
+radius = 160.012
+
+[sub_resource type="Gradient" id="Gradient_iiffp"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_j85no"]
+gradient = SubResource("Gradient_iiffp")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jdpoq"]
+lifetime_randomness = 0.39
+emission_shape = 1
+emission_sphere_radius = 30.33
+particle_flag_disable_z = true
+direction = Vector3(0, -250, 0)
+spread = 31.86
+gravity = Vector3(0, 300, 0)
+initial_velocity_min = 715.33
+initial_velocity_max = 788.43
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+linear_accel_min = 58.4
+linear_accel_max = 74.46
+scale_min = 0.03
+scale_max = 0.17
+color = Color(1, 1, 1, 0.603922)
+color_ramp = SubResource("GradientTexture1D_j85no")
+hue_variation_min = -0.02
+hue_variation_max = 0.02
+turbulence_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_jl6ig"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0v3on"]
+gradient = SubResource("Gradient_jl6ig")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cdwv5"]
+lifetime_randomness = 0.32
+emission_shape = 1
+emission_sphere_radius = 52.75
+particle_flag_disable_z = true
+gravity = Vector3(0, 40, 0)
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+color_ramp = SubResource("GradientTexture1D_0v3on")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4q4kj"]
+resource_local_to_scene = true
+shader = ExtResource("14_8sb36")
+shader_parameter/strength = 0.08
+shader_parameter/center = Vector2(0.46, 0.46)
+shader_parameter/radius = 0.334
+shader_parameter/aberration = 0.425
+shader_parameter/width = 0.0301
+shader_parameter/feather = 0.135
+shader_parameter/maskImage = ExtResource("15_lp7be")
+
+[node name="Relic" type="Area2D" node_paths=PackedStringArray("sprRelic", "sprShadow", "sprDiscovery", "AreaDiscovery", "sndGetRelic", "sndDiscoverRelic", "dust", "stars") groups=["Relics"]]
+scale = Vector2(0.5, 0.5)
+collision_layer = 4
+monitoring = false
+monitorable = false
+script = ExtResource("1_kgpfi")
+imgRelics = Array[Texture2D]([ExtResource("2_tc5s6"), ExtResource("3_7apow"), ExtResource("4_nodtm"), ExtResource("5_jwx2k"), ExtResource("6_ehrm2"), ExtResource("7_w2eyj"), ExtResource("8_vh6rh")])
+sprRelic = NodePath("sprRelic")
+sprShadow = NodePath("Shadow")
+sprDiscovery = NodePath("sprDiscovery")
+AreaDiscovery = NodePath("Area2D")
+sndGetRelic = NodePath("sndGetRelic")
+sndDiscoverRelic = NodePath("sndDiscoverRelic")
+dust = NodePath("Dust")
+stars = NodePath("Stars")
+
+[node name="sprRelic" type="Sprite2D" parent="."]
+y_sort_enabled = true
+material = SubResource("ShaderMaterial_dj03w")
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("5_jwx2k")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0, 0, 0, 0.67451)
+z_index = -1
+y_sort_enabled = true
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("5_jwx2k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_31pjl")
+one_way_collision_margin = 23.6
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+monitorable = false
+
+[node name="DiscoverShape" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_g6a6l")
+one_way_collision_margin = 23.6
+
+[node name="sndGetRelic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_n0582")
+
+[node name="sndDiscoverRelic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_iha4i")
+
+[node name="Stars" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_jdpoq")
+texture = ExtResource("12_tdlkb")
+lifetime = 3.0
+one_shot = true
+explosiveness = 0.84
+trail_lifetime = 4.06
+trail_sections = 6
+
+[node name="Dust" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 40
+process_material = SubResource("ParticleProcessMaterial_cdwv5")
+lifetime = 3.0
+randomness = 0.2
+
+[node name="sprDiscovery" parent="." instance=ExtResource("13_a4nxa")]
+material = SubResource("ShaderMaterial_4q4kj")
+scale = Vector2(12, 12)
+
+[connection signal="area_entered" from="." to="." method="OnAreaEntered"]
+[connection signal="area_entered" from="Area2D" to="." method="OnAreaEntered"]
