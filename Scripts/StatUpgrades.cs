@@ -20,9 +20,12 @@ public partial class StatUpgrades : CanvasLayer
     static public StatUpgrade sUpgrade;
     private bool btnBackEntered;
     private ColorRect black;
+    [Export] public Control confirm;
 
     public override void _Ready()
     {
+        confirm.Visible = false;
+
 		Node nod = Globals.rootNode.GetNode("Control/TextureRect/MCGold/HBGold/MCGold/Gold");
 		lblGold = (Label)nod;
 
@@ -47,6 +50,8 @@ public partial class StatUpgrades : CanvasLayer
         black = (ColorRect)nodBlack;
 
         ResetUpgrade();
+
+        FadeIn();
     }
 
     static public void ResetUpgrade()
@@ -63,13 +68,13 @@ public partial class StatUpgrades : CanvasLayer
         var mainLoop = Godot.Engine.GetMainLoop();
         var sceneTree = mainLoop as SceneTree;
 
-        var statUpgrades = sceneTree.GetNodesInGroup("StatUpgrade");
+        var statUpgrade = sceneTree.GetNodesInGroup("StatUpgrade");
 
-        Debug.Print("Stat Upgrades: " + statUpgrades.Count);
+        Debug.Print("Stat Upgrades: " + statUpgrade.Count);
 
-        for (int i = 0; i < statUpgrades.Count; i++)
+        for (int i = 0; i < statUpgrade.Count; i++)
         {
-            statUpgrades[i].Call("UpdateSlots");
+            statUpgrade[i].Call("UpdateSlots");
         }
 
     }
@@ -111,6 +116,48 @@ public partial class StatUpgrades : CanvasLayer
         // wait a bit
         await Task.Delay(TimeSpan.FromMilliseconds(2000));
         black.Visible = false;
-        GetTree().ChangeSceneToFile("res://Scenes/Title.tscn");
+        //GetTree().ChangeSceneToFile("res://Scenes/Title.tscn");
+        GetTree().ChangeSceneToPacked(Globals.TitleScene);
     }
+
+    private async void FadeIn()
+    {
+        black.Visible = true;
+        black.Modulate = new Color(1, 1, 1, 1);
+        await Task.Delay(TimeSpan.FromMilliseconds(1900));
+
+        Tween tween = GetTree().CreateTween();
+        tween.TweenProperty(black, "modulate:a", 0f, 3f);
+
+        // play music
+        for (int i = 0; i < 10; i++) // wait to load volume settings
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(1000));
+            if (Globals.settingsLoaded)
+                break;
+        }
+
+    }
+
+
+    public void ShowConfirm()
+    {
+        confirm.Visible = true;
+        Globals.rootNode.GetTree().Paused = true;
+    }
+
+    public void ConfirmNo()
+    {
+        confirm.Visible = false;
+        Globals.rootNode.GetTree().Paused = false;
+    }
+
+    public void ConfirmYes()
+    {
+        confirm.Visible = false;
+        Globals.rootNode.GetTree().Paused = false;
+        Globals.instance.ResetStats();
+    }
+
+
 }

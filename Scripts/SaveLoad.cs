@@ -56,18 +56,18 @@ public partial class SaveLoad : Node2D
         settingsData.Add("[StructureCosts] AlchemyLabWood", Globals.costWood[0]);
         settingsData.Add("[StructureCosts] BlacksmithIron", Globals.costIron[1]);
         settingsData.Add("[StructureCosts] BlacksmithWood", Globals.costWood[1]);
-        settingsData.Add("[StructureCosts] HerbalistIron", Globals.costIron[2]);
-        settingsData.Add("[StructureCosts] HerbalistWood", Globals.costWood[2]);
-        settingsData.Add("[StructureCosts] LodestoneIron", Globals.costIron[3]);
-        settingsData.Add("[StructureCosts] LodestoneWood", Globals.costWood[3]);
-        settingsData.Add("[StructureCosts] SettlementIron", Globals.costIron[4]);
-        settingsData.Add("[StructureCosts] SettlementWood", Globals.costWood[4]);
-        settingsData.Add("[StructureCosts] TowerIron", Globals.costIron[5]);
-        settingsData.Add("[StructureCosts] TowerWood", Globals.costWood[5]);
-        settingsData.Add("[StructureCosts] TrainingCenterIron", Globals.costIron[6]);
-        settingsData.Add("[StructureCosts] TrainingCenterWood", Globals.costWood[6]);
-        settingsData.Add("[StructureCosts] GolemFactoryIron", Globals.costIron[7]);
-        settingsData.Add("[StructureCosts] GolemFactoryWood", Globals.costWood[7]);
+        settingsData.Add("[StructureCosts] HerbalistIron", Globals.costIron[3]);
+        settingsData.Add("[StructureCosts] HerbalistWood", Globals.costWood[3]);
+        settingsData.Add("[StructureCosts] LodestoneIron", Globals.costIron[4]);
+        settingsData.Add("[StructureCosts] LodestoneWood", Globals.costWood[4]);
+        settingsData.Add("[StructureCosts] SettlementIron", Globals.costIron[5]);
+        settingsData.Add("[StructureCosts] SettlementWood", Globals.costWood[5]);
+        settingsData.Add("[StructureCosts] TowerIron", Globals.costIron[6]);
+        settingsData.Add("[StructureCosts] TowerWood", Globals.costWood[6]);
+        settingsData.Add("[StructureCosts] TrainingCenterIron", Globals.costIron[7]);
+        settingsData.Add("[StructureCosts] TrainingCenterWood", Globals.costWood[7]);
+        settingsData.Add("[StructureCosts] GolemFactoryIron", Globals.costIron[2]);
+        settingsData.Add("[StructureCosts] GolemFactoryWood", Globals.costWood[2]);
 
         // starting structures
         settingsData.Add("[StartingStructures] Tower", Globals.StartingTower);
@@ -113,6 +113,8 @@ public partial class SaveLoad : Node2D
 
         settingsData.Add("[Settings] ShowFPS", Globals.settings_ShowFPS);
 
+        settingsData.Add("[Settings] GodMode", Globals.settings_GodMode);
+
         string json = Json.Stringify(settingsData, "\t");
         settingsData.Clear();
 
@@ -147,18 +149,18 @@ public partial class SaveLoad : Node2D
             Globals.costWood[0] = (int)settingsData["[StructureCosts] AlchemyLabWood"];
             Globals.costIron[1] = (int)settingsData["[StructureCosts] BlacksmithIron"];
             Globals.costWood[1] = (int)settingsData["[StructureCosts] BlacksmithWood"];
-            Globals.costIron[2] = (int)settingsData["[StructureCosts] HerbalistIron"];
-            Globals.costWood[2] = (int)settingsData["[StructureCosts] HerbalistWood"];
-            Globals.costIron[3] = (int)settingsData["[StructureCosts] LodestoneIron"];
-            Globals.costWood[3] = (int)settingsData["[StructureCosts] LodestoneWood"];
-            Globals.costIron[4] = (int)settingsData["[StructureCosts] SettlementIron"];
-            Globals.costWood[4] = (int)settingsData["[StructureCosts] SettlementWood"];
-            Globals.costIron[5] = (int)settingsData["[StructureCosts] TowerIron"];
-            Globals.costWood[5] = (int)settingsData["[StructureCosts] TowerWood"];
-            Globals.costIron[6] = (int)settingsData["[StructureCosts] TrainingCenterIron"];
-            Globals.costWood[6] = (int)settingsData["[StructureCosts] TrainingCenterWood"];
-            Globals.costIron[7] = (int)settingsData["[StructureCosts] GolemFactoryIron"];
-            Globals.costWood[7] = (int)settingsData["[StructureCosts] GolemFactoryWood"];
+            Globals.costIron[3] = (int)settingsData["[StructureCosts] HerbalistIron"];
+            Globals.costWood[3] = (int)settingsData["[StructureCosts] HerbalistWood"];
+            Globals.costIron[4] = (int)settingsData["[StructureCosts] LodestoneIron"];
+            Globals.costWood[4] = (int)settingsData["[StructureCosts] LodestoneWood"];
+            Globals.costIron[5] = (int)settingsData["[StructureCosts] SettlementIron"];
+            Globals.costWood[5] = (int)settingsData["[StructureCosts] SettlementWood"];
+            Globals.costIron[6] = (int)settingsData["[StructureCosts] TowerIron"];
+            Globals.costWood[6] = (int)settingsData["[StructureCosts] TowerWood"];
+            Globals.costIron[7] = (int)settingsData["[StructureCosts] TrainingCenterIron"];
+            Globals.costWood[7] = (int)settingsData["[StructureCosts] TrainingCenterWood"];
+            Globals.costIron[2] = (int)settingsData["[StructureCosts] GolemFactoryIron"];
+            Globals.costWood[2] = (int)settingsData["[StructureCosts] GolemFactoryWood"];
 
             // starting structures
             Globals.StartingTower = (bool)settingsData["[StartingStructures] Tower"];
@@ -203,6 +205,7 @@ public partial class SaveLoad : Node2D
             Globals.settings_MasterVolume = (float)settingsData["[Settings] MasterVolume"];
 
             Globals.settings_ShowFPS = (bool)settingsData["[Settings] ShowFPS"];
+            Globals.settings_GodMode = (bool)settingsData["[Settings] GodMode"];
 
             Node rdNode = Globals.rootNode.GetNodeOrNull(Globals.NodeResourceDiscoveries);
             Debug.Print("Scene name: " + Globals.rootNode.Name);
@@ -218,7 +221,7 @@ public partial class SaveLoad : Node2D
                 StatUpgrades su = (StatUpgrades)nd;
                 su.UpdateAllSlots();
             }
-            else // if stat upgrade scene
+            else // if title
             if (Globals.rootNode.Name == "Title")
             {
 
@@ -344,9 +347,24 @@ public partial class SaveLoad : Node2D
             if (gameSaveData.ContainsKey("[Relic] Ruby Ring"))
                 Globals.hasRelic[6] = (bool)gameSaveData["[Relic] Ruby Ring"];
 
+            // testing
+            Globals.hasRelic[1] = true;
+            Globals.hasRelic[2] = true;
+            Globals.hasRelic[6] = true;
+            Globals.hasRelic[5] = true;
+
+
             Debug.Print("Load Game Save");
 
             Globals.UpdateStatLevels();
+
+            // update stat upgrades
+            if (Globals.rootNode.Name == "StatUpgrades")
+            {
+                Node nd = Globals.rootNode.GetNode(".");
+                StatUpgrades su = (StatUpgrades)nd;
+                su.UpdateAllSlots();
+            }
 
             Debug.Print("ResourceDiscoveries.gold:" + ResourceDiscoveries.gold);
 

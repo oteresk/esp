@@ -5,15 +5,18 @@ using static ItemScript;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
+using System.Security.Cryptography;
+using System.Xml;
 
 public partial class enemy : RigidBody2D
 {
-	[Export] public float health {get; set; } = 1;
+    [Export] public float health { get; set; } = 1;
     private float maxHealth;
     [Export] public float speed;
     public float poisonSpeed = 1f;
     Vector2 velocity;
-	AnimatedSprite2D enemySprite;
+    AnimatedSprite2D enemySprite;
 
     [Export] public PackedScene itemScene;
 
@@ -22,14 +25,15 @@ public partial class enemy : RigidBody2D
     [Export] public int damage;
     [Export] public int damageTime;
 
-    [Export] public bool leavesTrail=false;
+    [Export] public bool leavesTrail = false;
 
     [Export] public string enemyName;
+    [Export] public Laser laser;
 
     //private double curTime = 0;
 
     private player pl;
-	Vector2 playerPosition;
+    Vector2 playerPosition;
     Vector2 direction;
 
     public bool isDead = false;
@@ -45,6 +49,7 @@ public partial class enemy : RigidBody2D
     private float bowtime;
 
     [Export] public float attackRange = 0;
+    [Export] public float randomAttackRange = 0;
     private float dist;
     public bool playerInDamageArea = false;
     private bool hasDamagedPlayer = false;
@@ -52,19 +57,28 @@ public partial class enemy : RigidBody2D
 
     private int flipCounter = 0;
 
+    [Export] public AudioStreamPlayer2D[] enemyNoise;
+    [Export] public AudioStreamPlayer2D enemyDeathSound;
+    [Export] public AudioStreamPlayer2D enemyAttackSound;
+
+    [Export] public PackedScene bloodScene;
+    [Export] public Color bloodColor;
+    private Node2D newBlood;
+    [Export] public int bloodFrame;
+
     public override void _Ready()
-	{
-        //Globals.enemies++;
-        //Globals.UpdateEnemies();
+    {
+        if (randomAttackRange > 0)
+            attackRange += (float)GD.RandRange(-randomAttackRange, randomAttackRange);
         enemySprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-		enemySprite.Animation = "default";
-		enemySprite.Play();
+        enemySprite.Animation = "default";
+        enemySprite.Play();
         Node2D nodEnemies = (Node2D)GetNode(Globals.NodeEnemies);
-		this.Reparent(nodEnemies);
+        this.Reparent(nodEnemies);
 
         enemySprite.FlipV = false;
 
- //       OnBodyEnteredCallable = (Callable)this.GetNode("Area2D").Get("area_entered");// get signal callable
+        //       OnBodyEnteredCallable = (Callable)this.GetNode("Area2D").Get("area_entered");// get signal callable
 
         maxHealth = health;
 
@@ -77,15 +91,34 @@ public partial class enemy : RigidBody2D
         if (enemyName == "Floating Skull")
             FloatingSkullMovement();
 
+        PlayRandomNoise(); // plays a random enemy noise
+
+        Globals.enemies++;
+        Globals.UpdateEnemies();
+
+        Name="Bat"+Globals.enemies.ToString();
     }
 
+    private async void PlayRandomNoise()
+    {
+        if (enemyNoise.Length > 0)
+        {
+            int r=GD.RandRange(0, enemyNoise.Length-1);
+
+            if (IsInstanceValid(enemyNoise[r]))
+                Globals.PlayRandomizedSound2D(enemyNoise[r]);
+
+            await Task.Delay(TimeSpan.FromMilliseconds(GD.RandRange(15000, 25000)));
+            PlayRandomNoise();
+        }
+    }
 
 
     public override void _PhysicsProcess(double delta)
     {
-        if (Globals.playerAlive && !frozen && Visible) // move towards player
+        if (Globals.playerAlive && !frozen && Visible && !isDead) // move towards player
         {
-            if (enemyName == "Skeleton" && enemySprite.Animation == "Attack")
+            if ((enemyName == "Skeleton" && enemySprite.Animation == "Attack") || (enemyName == "Evil Eye" && enemySprite.Animation == "Attack")) // don't attack if already attacking
             {
                 // don't move
             }
@@ -105,8 +138,40 @@ public partial class enemy : RigidBody2D
                     Attack();
 
                 //Debug.Print("Dist: " + GlobalTransform.Origin.DistanceTo(Globals.pl.GlobalPosition));
+
+
             }
         }
+
+        // shorten laser to player
+        if (enemyName=="Evil Eye" && canAttack==false) // if lasering
+        {
+            dist = GlobalTransform.Origin.DistanceTo(Globals.pl.GlobalPosition);
+            if (dist<400)
+            {
+                laser.Scale = new Vector2(dist / 400, laser.Scale.Y);
+                laser.endParticle.Visible = true;
+                laser.endParticle.Emitting = true;
+                laser.endParticle.Scale = new Vector2(14, 14);
+                laser.endParticle.Spread = 180;
+
+                // damage player
+                if (enemySprite.Animation == "Attack" && enemySprite.Frame >= 19)
+                {
+                    //Debug.Print("HP:" + Globals.HP);
+                    Globals.DamagePlayer(damage / 18);
+                    //Debug.Print("damage player:" + damage);
+                }
+            }
+            else
+            {
+                laser.endParticle.Scale = new Vector2(.5f, .5f);
+                laser.endParticle.Spread = 0;
+            }
+
+        }
+
+
     }
 
     private void AdjustFlip()
@@ -123,24 +188,39 @@ public partial class enemy : RigidBody2D
         }
     }
 
-    private void Attack()
+    private async void Attack()
     {
         dist = GlobalTransform.Origin.DistanceTo(Globals.pl.GlobalPosition);
-        if (dist < attackRange)
+        if (dist < attackRange && !isDead)
         {
             canAttack = false;
             enemySprite.Animation = "Attack";
             enemySprite.Play();
+            if (enemyAttackSound != null)
+            {
+                Globals.PlayRandomizedSound2D(enemyAttackSound);
+            }
+
             DelayAttack();
         }
+        await Task.Delay(TimeSpan.FromMilliseconds(20)); // check dist every 20 ms
     }
 
     private async void DelayAttack()
     {
         await Task.Delay(TimeSpan.FromMilliseconds(GD.RandRange(2000,4000)));
-        hasDamagedPlayer = false;
-        canAttack = true;
-        //Debug.Print("can attack");
+
+        // wait extra for evil eye attack
+        if (enemyName=="Evil Eye")
+            await Task.Delay(TimeSpan.FromMilliseconds(2000));
+
+        if (!isDead)
+        {
+            hasDamagedPlayer = false;
+            canAttack = true;
+            //Debug.Print("can attack");
+        }
+
     }
 
     public void FrameChanged()
@@ -158,13 +238,32 @@ public partial class enemy : RigidBody2D
                 }
             }
 
-            if (enemySprite.Frame==13) // return to walk anim
+            if (enemySprite.Animation == "Attack" && enemySprite.Frame==13) // return to walk anim
             {
                 enemySprite.Animation = "default";
                 enemySprite.Play();
             }
 
         }
+
+        // spawn blood
+        if (enemySprite.Animation=="Death" && enemySprite.Frame==bloodFrame && bloodScene!=null)
+        {
+            newBlood = (Node2D)bloodScene.Instantiate();
+            AddChild(newBlood);
+            newBlood.Modulate = bloodColor;
+            AnimatedSprite2D blood = (AnimatedSprite2D)newBlood;
+            blood.Play();
+        }
+
+        // Evil Eye
+
+        if (enemyName == "Evil Eye" && enemySprite.Animation=="Attack" && enemySprite.Frame == 19)
+        {
+            laser.Shoot();
+        }
+
+
     }
 
     private async void WolfMovement()
@@ -202,12 +301,26 @@ public partial class enemy : RigidBody2D
 		health -= dmg;
         DamageBlink();
 
-        if (health <= 0) 
-		{
-			EnemyDrop();
-		}
+        if (health <= 0)
+        {
+            EnemyDrop();
+            KillEnemy();            
+        }
+        else
+            PushBackEnemy();
 	}
 
+    private void PushBackEnemy()
+    {
+        float pushDist = 80;
+
+        if (Position.X < Globals.ps.Position.X)
+            pushDist = -pushDist;
+
+        Tween tween = CreateTween();
+        tween.TweenProperty(this, "position", new Vector2(Position.X+pushDist, Position.Y), .1f);
+
+    }
     private async void DamageBlink()
     {
         if (enemySprite != null && !isDead)
@@ -244,19 +357,65 @@ public partial class enemy : RigidBody2D
 		iScript.CreateItem();
         if (!isDead)
         {
+            isDead = true;
             item.Position = Position;
             Node2D nodItems = (Node2D)GetNode(Globals.NodeItems);
             nodItems.AddChild(item);
 
-            // remove enemy
-            //Debug.Print("queuefree:" + Name);
-            isDead = true;
-            //Globals.enemies--;
-            //Globals.UpdateEnemies();
-            QueueFree();
+            // disable colliders
+            Node colNode = (Node)GetNode("CollisionShape2D2");
+            CollisionShape2D col=(CollisionShape2D)colNode;
+            col.Disabled = true;
+
+            colNode = (Node)GetNode("Occlusion Area Collider");
+            Area2D col2 = (Area2D)colNode;
+            col2.CallDeferred("set_monitorable", false);
+            col2.CallDeferred("set_monitoring", false);
+
         }
 
     }
+
+    private async void KillEnemy()
+    {
+        ShaderMaterial enemyMat = (ShaderMaterial)enemySprite.Material;
+        if (enemyMat != null) // stop damage flash
+            enemyMat.SetShaderParameter("active", false);
+
+        // delay death anim slightly acording to dist from player
+        float deathDist = GlobalTransform.Origin.DistanceTo(Globals.pl.GlobalPosition)/1100;
+        if (deathDist > .4f)
+            deathDist = .4f;
+        await Task.Delay(TimeSpan.FromMilliseconds(deathDist));
+
+
+        enemySprite.Play("Death");
+
+        // play death sound
+        if (enemyDeathSound!=null)
+            Globals.PlayRandomizedSound2D(enemyDeathSound);
+
+    }
+
+    public void AnimationFinished()
+    {
+        if (enemySprite.Animation == "Death")
+        {
+            //Debug.Print("Death visible=false");
+            Globals.enemies--;
+            Globals.UpdateEnemies();
+            Visible = false;
+        }
+
+        if (enemySprite.Animation == "Attack" && enemyName=="Evil Eye")
+        {
+            enemySprite.Animation = "default";
+            enemySprite.Play();
+            laser.Visible = false;
+        }
+
+    }
+
 
     public async void FreezeEnemy(float fTime)
     {
@@ -319,7 +478,7 @@ public partial class enemy : RigidBody2D
             Vector2 direction = GlobalTransform.Origin.DirectionTo(pl.GlobalPosition);
             velocity = direction * speed * poisonSpeed;
             Position += velocity * (float)1;
-            if (!Visible)
+            if (!Visible && !isDead)
                 MoveTowardsPlayer();
         }
     }

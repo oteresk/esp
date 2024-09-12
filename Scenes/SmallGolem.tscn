@@ -169,7 +169,7 @@
 radius = 5.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cr0xe"]
-radius = 4.0
+radius = 3.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_02vxv"]
 animations = [{
@@ -721,17 +721,19 @@ shape = SubResource("CircleShape2D_ponvr")
 position = Vector2(67, 0)
 
 [node name="PoundCol" type="CollisionShape2D" parent="PoundArea"]
+position = Vector2(-13, 0)
 scale = Vector2(6.4607, 5.0252)
 shape = SubResource("CircleShape2D_cr0xe")
 
 [node name="Shockwave" type="AnimatedSprite2D" parent="PoundArea/PoundCol"]
 position = Vector2(0.176361, 0.527344)
-scale = Vector2(0.034, 0.028)
+scale = Vector2(0.022, 0.02)
 sprite_frames = SubResource("SpriteFrames_02vxv")
+frame = 8
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_awlmn")
-position = Vector2(2, -20)
+position = Vector2(0, -20)
 sprite_frames = SubResource("SpriteFrames_jtl1q")
 animation = &"Death"
 speed_scale = 2.0

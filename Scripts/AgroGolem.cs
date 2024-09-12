@@ -15,10 +15,10 @@ public partial class AgroGolem : RigidBody2D
     private float runDistance = 1000;
     private float walkToDistance = 350;
     public string mode = "stand";
-    public float moveSpeed = 50f;
+    public float moveSpeed = 60f;
     public float poisonSpeed = 1f;
     Vector2 velocity;
-    private float damage = 20;
+    private float damage = 50;
     public bool throwing = false;
     private Node2D targetEnemy;
     private Vector2 targetEnemyPos;
@@ -41,7 +41,7 @@ public partial class AgroGolem : RigidBody2D
 
     public bool isDead = false;
 
-    public float maxHP = 50;
+    public float maxHP = 150;
     public float HP;
 
     public override void _Ready()
@@ -362,6 +362,7 @@ public partial class AgroGolem : RigidBody2D
 
     private void AgroPound()
     {
+
         if (animatedSprite2D.Frame == 18)
         {
             sndPound2.Play();
@@ -417,7 +418,7 @@ public partial class AgroGolem : RigidBody2D
 
     private void SmallPound()
     {
-        Debug.Print("small pound: "+Position);
+        //Debug.Print("small pound: "+Position);
         if (animatedSprite2D.Frame == 28 || animatedSprite2D.Frame==16)
         {
             sndPound2.Play();
@@ -434,7 +435,7 @@ public partial class AgroGolem : RigidBody2D
             if (targetEnemyPos.X < Position.X) // if facing left
             {
                 animatedSprite2D.FlipH = true;
-                poundArea.Position = new Vector2(-67, 0);
+                poundArea.Position = new Vector2(-43, 0);
             }
             else
             {
@@ -450,11 +451,15 @@ public partial class AgroGolem : RigidBody2D
             Globals.DamagePlayer(damage);
         }
 
-        poundProgression += .08f;
-        Position = startPos.Lerp(targetEnemyPos, poundProgression);
+        
 
-        //        if (animatedSprite2D.Frame < 20)
+        
+
+        if (animatedSprite2D.Frame < 20)
         {
+            poundProgression += .048f;
+            if (poundProgression > .8f)
+                poundProgression = .8f;
             if (Position.X < Globals.ps.GlobalPosition.X)
             {
                 targetEnemyPos = new Vector2(Globals.ps.GlobalPosition.X - 180 + GD.RandRange(-0, 0), Globals.ps.GlobalPosition.Y + GD.RandRange(-0, 0));
@@ -467,10 +472,10 @@ public partial class AgroGolem : RigidBody2D
                 animatedSprite2D.FlipH = true;
                 poundArea.Position = new Vector2(-63, 0);
             }
+            Debug.Print("poundProgression:" + poundProgression);
+            Position = startPos.Lerp(targetEnemyPos, poundProgression);
             //Debug.Print("pos: " + Position + "pd/sp:"+(poundDistance/.16f)+ " startPos:"+ startPos);
         }
     }
-
-
 
 }

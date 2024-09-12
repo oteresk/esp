@@ -50,6 +50,11 @@ shader_parameter/flash_color = Color(1, 0, 0, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
 animations = [{
+"frames": [],
+"loop": true,
+"name": &"Death",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("4_slsc2")
@@ -181,19 +186,21 @@ height = 67.4304
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vifxa"]
 
-[node name="en_FloatingSkull" type="RigidBody2D" groups=["Enemies"]]
+[node name="en_FloatingSkull" type="RigidBody2D" node_paths=PackedStringArray("enemyNoise") groups=["Enemies"]]
 collision_layer = 2
 collision_mask = 2
 mass = 0.01
 gravity_scale = 0.0
 lock_rotation = true
 script = ExtResource("1_8a77r")
-health = 24.0
-speed = 90.0
+health = 130.0
+speed = 120.0
 itemScene = ExtResource("2_6w2fv")
-damage = 7
+damageType = 2
+damage = 30
 enemyName = "Floating Skull"
-XP = 12
+XP = 17
+enemyNoise = []
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -201,6 +208,7 @@ material = SubResource("ShaderMaterial_71tgv")
 position = Vector2(-18, -118)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_7y2m0")
+animation = &"Death"
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
 editor_description = "small physics circle"
@@ -218,3 +226,6 @@ monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
 scale = Vector2(140, 90)
 shape = SubResource("RectangleShape2D_vifxa")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="AnimationFinished"]
+[connection signal="frame_changed" from="AnimatedSprite2D" to="." method="FrameChanged"]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=179 format=3 uid="uid://bj68a1718682m"]
+[gd_scene load_steps=182 format=3 uid="uid://bj68a1718682m"]
 
 [ext_resource type="Script" path="res://Scripts/player.cs" id="1_kjyyd"]
+[ext_resource type="Shader" path="res://Shaders/GodRays.gdshader" id="2_o1qhm"]
 [ext_resource type="Texture2D" uid="uid://b3igky0q8qf8c" path="res://Art/Hero-sprites/Player-Attack_1.png" id="3_hj7v1"]
 [ext_resource type="Texture2D" uid="uid://dchrtjh225qbj" path="res://Art/Hero-sprites/Player-Attack_2.png" id="4_5mh2d"]
 [ext_resource type="Texture2D" uid="uid://d2sv6rdxcmnuv" path="res://Art/Hero-sprites/Player-Attack_3.png" id="5_xfopp"]
@@ -164,6 +165,7 @@
 [ext_resource type="Texture2D" uid="uid://duc3yrtenakjo" path="res://Art/GUI/StatUpgrades/Button Small.png" id="162_rwui1"]
 [ext_resource type="Texture2D" uid="uid://vy0172p8d6bq" path="res://Art/GUI/StatUpgrades/Button_Disabled.png" id="163_1mo48"]
 [ext_resource type="Texture2D" uid="uid://ccbsebicl0cl7" path="res://Art/GUI/StatUpgrades/Button Small_Hover.png" id="163_xdepo"]
+[ext_resource type="AudioStream" uid="uid://du7h1878ks1mo" path="res://Audio/SFX/GainLevel.ogg" id="166_eb023"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_cu0p3"]
 font = ExtResource("161_28ixg")
@@ -643,6 +645,22 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h5jf5"]
+shader = ExtResource("2_o1qhm")
+shader_parameter/angle = 0.115
+shader_parameter/position = 0.07
+shader_parameter/spread = 0.447
+shader_parameter/cutoff = 0.039
+shader_parameter/falloff = 0.2
+shader_parameter/edge_fade = 0.265
+shader_parameter/speed = 22.0
+shader_parameter/ray1_density = 5.0
+shader_parameter/ray2_density = 30.0
+shader_parameter/ray2_intensity = 0.213
+shader_parameter/color = Color(1, 0.901961, 0.65098, 1)
+shader_parameter/hdr = false
+shader_parameter/seed = 2.0
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_tac1t"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5nqbr"]
@@ -705,7 +723,7 @@ bg_color = Color(1, 0, 0.0980392, 1)
 font = ExtResource("161_28ixg")
 font_size = 52
 
-[node name="Player" type="Area2D" node_paths=PackedStringArray("magnetismShape", "itemIconSpeed", "itemIconAttackSpeed", "itemIconDamage", "itemIconAoE", "itemIconShield", "txtSpeed", "txtAtkSpeed", "txtDamage", "txtAoE", "txtShield", "shield", "sndHurtPlayer", "sndHurtPlayer2", "sndDash", "sndPlayerDeath", "sndWarp", "sndRingingLoop", "lblTime", "btnBack") groups=["Player"]]
+[node name="Player" type="Area2D" node_paths=PackedStringArray("magnetismShape", "itemIconSpeed", "itemIconAttackSpeed", "itemIconDamage", "itemIconAoE", "itemIconShield", "txtSpeed", "txtAtkSpeed", "txtDamage", "txtAoE", "txtShield", "shield", "sndHurtPlayer", "sndHurtPlayer2", "sndDash", "sndPlayerDeath", "sndWarp", "sndRingingLoop", "sndGainLevel", "lblTime", "btnBack", "GodRays") groups=["Player"]]
 y_sort_enabled = true
 collision_mask = 6
 script = ExtResource("1_kjyyd")
@@ -727,12 +745,15 @@ sndDash = NodePath("Sounds/sndDash")
 sndPlayerDeath = NodePath("Sounds/sndPlayerDeath")
 sndWarp = NodePath("Sounds/sndWarp")
 sndRingingLoop = NodePath("Sounds/sndRingingLoop")
+sndGainLevel = NodePath("Sounds/sndGainLevel")
 lblTime = NodePath("lblTime")
 btnBack = NodePath("TextureButton")
+GodRays = NodePath("AnimatedSprite2D/GodRays")
 metadata/_edit_group_ = true
 
 [node name="TextureButton" type="TextureButton" parent="."]
 process_mode = 3
+visible = false
 modulate = Color(1, 1, 1, 0)
 z_index = 1000
 offset_left = -305.0
@@ -774,6 +795,23 @@ texture_filter = 1
 position = Vector2(52, -89)
 sprite_frames = SubResource("SpriteFrames_7cwag")
 animation = &"attack"
+
+[node name="GodRays" type="ColorRect" parent="AnimatedSprite2D"]
+visible = false
+material = SubResource("ShaderMaterial_h5jf5")
+custom_minimum_size = Vector2(220, 340)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -110.0
+offset_top = -104.0
+offset_right = 110.0
+offset_bottom = 236.0
+grow_horizontal = 2
+grow_vertical = 0
+rotation = 3.14159
 
 [node name="AnimatedSprite2DTop" type="AnimatedSprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.498039)
@@ -900,6 +938,10 @@ bus = &"SFX"
 
 [node name="sndDash" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("33_0llgq")
+bus = &"SFX"
+
+[node name="sndGainLevel" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("166_eb023")
 bus = &"SFX"
 
 [node name="lblTime" type="Label" parent="."]

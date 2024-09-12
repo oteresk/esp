@@ -629,6 +629,8 @@ public partial class Upgrade : CanvasLayer
         //Debug.Print("Rarity: " + rType.ToString());
         lblRarity.Text = rType.ToString();
 
+        ShaderMaterial upgradeMat = (ShaderMaterial)btnUpgrade.Material;
+
         switch (rType)
         {
             case RARITYTYPE.Common:
@@ -636,29 +638,67 @@ public partial class Upgrade : CanvasLayer
                 lblDescription.Modulate = new Color(.6f, .26f, 1, 1);
                 lblRarity.Modulate= new Color(.6f, .26f, 1, 1);
                 lblUpgrade.Modulate = new Color(0, .86f, .87f, 1);
+                if (upgradeMat != null)
+                {
+                    upgradeMat.SetShaderParameter("block_size", 0);
+                }
+
                 break;
             case RARITYTYPE.Rare:
                 btnUpgrade.Texture = texRarities[1];
                 lblRarity.Modulate = new Color(0, .86f, .87f, 1);
                 lblDescription.Modulate = new Color(0, .86f, .87f, 1);
                 lblUpgrade.Modulate = new Color(0, .86f, .87f, 1);
+                if (upgradeMat != null)
+                {
+                    Debug.Print("Rare not null: "+ lblUpgrade.Text);
+                    upgradeMat.SetShaderParameter("block_size", 8);
+                    upgradeMat.SetShaderParameter("starting_colour", new Color(0, .71f, .69f, 1));
+                    upgradeMat.SetShaderParameter("ending_colour", new Color(0, .71f, .69f, 1));
+                    upgradeMat.SetShaderParameter("min_line_width", 3);
+                    upgradeMat.SetShaderParameter("max_line_width", 22);
+                }
                 break;
             case RARITYTYPE.Epic:
                 btnUpgrade.Texture = texRarities[2];
                 lblRarity.Modulate = new Color(.27f, 1, .53f, 1);
                 lblDescription.Modulate = new Color(.27f, 1, .53f, 1);
                 lblUpgrade.Modulate = new Color(0, .86f, .87f, 1);
+                if (upgradeMat != null)
+                {
+                    upgradeMat.SetShaderParameter("block_size", 8);
+                    upgradeMat.SetShaderParameter("starting_colour", new Color(0, .99f, .4f, 1));
+                    upgradeMat.SetShaderParameter("ending_colour", new Color(0, .99f, .4f, 1));
+                    upgradeMat.SetShaderParameter("min_line_width", 3);
+                    upgradeMat.SetShaderParameter("max_line_width", 22);
+                }
                 break;
             case RARITYTYPE.Legendary:
                 btnUpgrade.Texture = texRarities[3];
                 lblRarity.Modulate = new Color(1, .45f, .8f, 1);
                 lblDescription.Modulate = new Color(1, .45f, .8f, 1);
                 lblUpgrade.Modulate = new Color(0, .86f, .87f, 1);
+                if (upgradeMat != null)
+                {
+                    upgradeMat.SetShaderParameter("block_size", 8);
+                    upgradeMat.SetShaderParameter("starting_colour", new Color(1, 0f, .18f, 1));
+                    upgradeMat.SetShaderParameter("ending_colour", new Color(1, 0f, .18f, 1));
+                    upgradeMat.SetShaderParameter("min_line_width", 3);
+                    upgradeMat.SetShaderParameter("max_line_width", 22);
+                }
                 break;
             case RARITYTYPE.New:
                 btnUpgrade.Texture = texRarities[4];
                 lblDescription.Modulate = new Color(.8f, .8f, .3f, 2);
                 lblUpgrade.Modulate = new Color(.8f, .8f, .3f, 2);
+                if (upgradeMat != null)
+                {
+                    upgradeMat.SetShaderParameter("block_size", 8);
+                    upgradeMat.SetShaderParameter("starting_colour", new Color(1, 1, 1, 1));
+                    upgradeMat.SetShaderParameter("ending_colour", new Color(1, 1, 1, 1));
+                    upgradeMat.SetShaderParameter("min_line_width", 0);
+                    upgradeMat.SetShaderParameter("max_line_width", 3);
+                }
                 break;
         }
     }

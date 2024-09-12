@@ -14,14 +14,17 @@ public partial class Pause : TextureButton
 	{
         if (Input.IsActionJustReleased("pause"))
         {
-            if (Globals.rootNode.GetTree().Paused == false)
+            if (Globals.canUnPause)
             {
-                // show pause menu
+                if (Globals.rootNode.GetTree().Paused == false)
+                {
+                    // show pause menu
 
-                PauseGame();
+                    PauseGame();
+                }
+                else
+                    UnPauseGame();
             }
-            else
-                UnPauseGame();
         }
     }
 
@@ -41,11 +44,14 @@ public partial class Pause : TextureButton
 
     public void PressPause()
     {
-        if (Globals.rootNode.GetTree().Paused == false)
+        if (Globals.canUnPause)
         {
-            PauseGame();
+            if (Globals.rootNode.GetTree().Paused == false)
+            {
+                PauseGame();
+            }
+            else
+                UnPauseGame();
         }
-        else
-            UnPauseGame();
     }
 }

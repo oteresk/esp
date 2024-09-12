@@ -1,8 +1,7 @@
-[gd_scene load_steps=22 format=3 uid="uid://bapkaoil4rjah"]
+[gd_scene load_steps=21 format=3 uid="uid://bapkaoil4rjah"]
 
 [ext_resource type="Script" path="res://Scripts/Upgrade.cs" id="1_1wvgr"]
 [ext_resource type="Texture2D" uid="uid://or8p80gd3b2l" path="res://Art/GUI/Upgrades/UpgradeBG_Common.png" id="2_qhc44"]
-[ext_resource type="FontFile" uid="uid://cmd8giqpdr2nh" path="res://Daydream.ttf" id="3_573fr"]
 [ext_resource type="Texture2D" uid="uid://myc1w6xk3g1g" path="res://Art/GUI/Upgrades/UpgradeBG_Epic.png" id="3_cjugn"]
 [ext_resource type="Texture2D" uid="uid://77p3ns1uaprg" path="res://Art/GUI/Upgrades/UpgradeBG_Legendary.png" id="4_843io"]
 [ext_resource type="Texture2D" uid="uid://dxa36uata0ois" path="res://Art/GUI/Upgrades/UpgradeBG_Rare.png" id="5_8wts4"]
@@ -13,7 +12,18 @@
 [ext_resource type="Texture2D" uid="uid://dcpl5svgjrxvg" path="res://Art/GUI/Upgrades/MaterialPoison.png" id="8_fl6mg"]
 [ext_resource type="Texture2D" uid="uid://burxx8utli8la" path="res://Art/GUI/Upgrades/MaterialLeeches.png" id="9_mmhb5"]
 [ext_resource type="FontFile" uid="uid://blv8i47j34igf" path="res://Fonts/CloisterBlack.ttf" id="12_agcus"]
+[ext_resource type="Shader" path="res://Shaders/AnimGlow.gdshader" id="12_hy1ys"]
 [ext_resource type="FontFile" uid="uid://deu73dw073p0l" path="res://Analogist.ttf" id="14_vg8ko"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f45uj"]
+resource_local_to_scene = true
+shader = ExtResource("12_hy1ys")
+shader_parameter/max_line_width = 22.0
+shader_parameter/min_line_width = 3.0
+shader_parameter/freq = 5.0
+shader_parameter/block_size = 0.0
+shader_parameter/starting_colour = Vector4(0, 0, 0, 1)
+shader_parameter/ending_colour = Vector4(1, 1, 1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_sgqox"]
 font = ExtResource("12_agcus")
@@ -22,38 +32,26 @@ font_color = Color(0.12549, 0.121569, 0, 1)
 outline_size = 30
 outline_color = Color(0.811765, 0.788235, 0.792157, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_7s5dm"]
-font = ExtResource("3_573fr")
-font_size = 26
-font_color = Color(0.6, 1, 1, 1)
-outline_size = 6
-outline_color = Color(0, 0, 0, 1)
-
 [sub_resource type="FontVariation" id="FontVariation_0hjp2"]
 base_font = ExtResource("14_vg8ko")
 
 [sub_resource type="LabelSettings" id="LabelSettings_t6yut"]
 line_spacing = 6.0
 font = SubResource("FontVariation_0hjp2")
-font_size = 100
+font_size = 114
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 2
 shadow_color = Color(0, 0, 0, 0.360784)
 shadow_offset = Vector2(2, 2)
-
-[sub_resource type="LabelSettings" id="LabelSettings_n2tc5"]
-font = ExtResource("3_573fr")
-font_size = 53
-outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="FontVariation" id="FontVariation_u7bh8"]
 base_font = ExtResource("12_agcus")
 
 [sub_resource type="LabelSettings" id="LabelSettings_6iqv7"]
 font = SubResource("FontVariation_u7bh8")
-font_size = 100
+font_size = 112
 outline_color = Color(0, 0, 0, 1)
-shadow_size = 23
+shadow_size = 24
 shadow_color = Color(0.12549, 0.121569, 0, 1)
 shadow_offset = Vector2(4, 4)
 
@@ -85,6 +83,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="TextureRect" type="TextureRect" parent="Control"]
+material = SubResource("ShaderMaterial_f45uj")
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.001
@@ -136,19 +135,6 @@ label_settings = SubResource("LabelSettings_sgqox")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="lblSubtype" type="Label" parent="Control/TextureRect/Control"]
-visible = false
-layout_mode = 0
-offset_left = 52.381
-offset_top = 498.81
-offset_right = 552.381
-offset_bottom = 578.81
-pivot_offset = Vector2(250, 40)
-text = "Material"
-label_settings = SubResource("LabelSettings_7s5dm")
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="lblDescription" type="Label" parent="Control/TextureRect/Control"]
 layout_mode = 0
 offset_left = 535.954
@@ -159,20 +145,8 @@ pivot_offset = Vector2(550, 100)
 text = "This is what the weapon can do and what type of element it uses."
 label_settings = SubResource("LabelSettings_t6yut")
 horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="lblUpgrade" type="Label" parent="Control/TextureRect/Control"]
-visible = false
-layout_mode = 0
-offset_left = 72.6191
-offset_top = 815.476
-offset_right = 542.619
-offset_bottom = 935.476
-text = "Upgrade"
-label_settings = SubResource("LabelSettings_n2tc5")
-horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 1
+autowrap_mode = 3
 
 [node name="lblRarity" type="Label" parent="Control/TextureRect/Control"]
 modulate = Color(0.6, 0.258824, 1, 1)
@@ -187,6 +161,18 @@ text = "Rarity
 label_settings = SubResource("LabelSettings_6iqv7")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="lblUpgrade" type="Label" parent="Control/TextureRect/Control"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="lblSubtype" type="Label" parent="Control/TextureRect/Control"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
 
 [node name="texRectElement" type="TextureRect" parent="Control/TextureRect"]
 layout_mode = 0

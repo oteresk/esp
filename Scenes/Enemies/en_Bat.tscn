@@ -1,17 +1,39 @@
-[gd_scene load_steps=17 format=3 uid="uid://cea8np42epeyx"]
+[gd_scene load_steps=39 format=3 uid="uid://cea8np42epeyx"]
 
 [ext_resource type="Shader" path="res://Shaders/ColorFlash.gdshader" id="1_l2bn1"]
 [ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_q6scr"]
 [ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_jcdqm"]
+[ext_resource type="PackedScene" uid="uid://bwf1ntuq71oi1" path="res://Scenes/Blood.tscn" id="3_3d2hh"]
 [ext_resource type="Texture2D" uid="uid://b230n6bx2qxvn" path="res://Art/Enemy-sprites/Bat/Bat-animation_0.png" id="4_68j5g"]
+[ext_resource type="Texture2D" uid="uid://c5x6281yqg3f8" path="res://Art/Enemy-sprites/Bat/Bat-death_00.png" id="4_t1s6m"]
 [ext_resource type="Texture2D" uid="uid://cjbf53ssohgrp" path="res://Art/Enemy-sprites/Bat/Bat-animation_1.png" id="5_3uqyk"]
+[ext_resource type="Texture2D" uid="uid://d3utisami2ax6" path="res://Art/Enemy-sprites/Bat/Bat-death_01.png" id="5_bwosb"]
 [ext_resource type="Texture2D" uid="uid://ca04ghkqyhn7f" path="res://Art/Enemy-sprites/Bat/Bat-animation_2.png" id="6_5jy7d"]
+[ext_resource type="Texture2D" uid="uid://dgmp3pkdr086r" path="res://Art/Enemy-sprites/Bat/Bat-death_02.png" id="6_iqvp6"]
 [ext_resource type="Texture2D" uid="uid://dpajecjk6prgy" path="res://Art/Enemy-sprites/Bat/Bat-animation_3.png" id="7_degxr"]
+[ext_resource type="Texture2D" uid="uid://dcb2kmg8l38x" path="res://Art/Enemy-sprites/Bat/Bat-death_03.png" id="7_n7w4x"]
+[ext_resource type="Texture2D" uid="uid://bpq2qh0seybrf" path="res://Art/Enemy-sprites/Bat/Bat-death_04.png" id="8_ik8ta"]
 [ext_resource type="Texture2D" uid="uid://cua1ohnlracue" path="res://Art/Enemy-sprites/Bat/Bat-animation_4.png" id="8_sea6u"]
 [ext_resource type="Texture2D" uid="uid://brchb4w6e5kry" path="res://Art/Enemy-sprites/Bat/Bat-animation_5.png" id="9_bf8ni"]
+[ext_resource type="Texture2D" uid="uid://c3prv3e2l1b32" path="res://Art/Enemy-sprites/Bat/Bat-death_05.png" id="9_gntux"]
+[ext_resource type="Texture2D" uid="uid://c0p1hxgkqr1nn" path="res://Art/Enemy-sprites/Bat/Bat-death_06.png" id="10_auxv5"]
 [ext_resource type="Texture2D" uid="uid://vmm5baf71wvx" path="res://Art/Enemy-sprites/Bat/Bat-animation_6.png" id="10_mvqid"]
 [ext_resource type="Texture2D" uid="uid://bk34x86f3t7lo" path="res://Art/Enemy-sprites/Bat/Bat-animation_7.png" id="11_prmrv"]
+[ext_resource type="Texture2D" uid="uid://ck0sbcp4gta16" path="res://Art/Enemy-sprites/Bat/Bat-death_07.png" id="11_vhe7g"]
 [ext_resource type="Texture2D" uid="uid://cwq1hew2x1j6y" path="res://Art/Enemy-sprites/Bat/Bat-animation_8.png" id="12_rkg0u"]
+[ext_resource type="Texture2D" uid="uid://c47w55doerjvd" path="res://Art/Enemy-sprites/Bat/Bat-death_08.png" id="12_yqha0"]
+[ext_resource type="Texture2D" uid="uid://b11yv1w5kwcvt" path="res://Art/Enemy-sprites/Bat/Bat-death_09.png" id="13_xvu23"]
+[ext_resource type="Texture2D" uid="uid://dqvvll6i5hmb1" path="res://Art/Enemy-sprites/Bat/Bat-death_10.png" id="14_r0n5x"]
+[ext_resource type="Texture2D" uid="uid://2pqbl4yhlwa0" path="res://Art/Enemy-sprites/Bat/Bat-death_11.png" id="15_bukyh"]
+[ext_resource type="Texture2D" uid="uid://bk4ult6lfcbnm" path="res://Art/Enemy-sprites/Bat/Bat-death_12.png" id="16_1p3ac"]
+[ext_resource type="Texture2D" uid="uid://cffwcoketwret" path="res://Art/Enemy-sprites/Bat/Bat-death_13.png" id="17_6nbkc"]
+[ext_resource type="Texture2D" uid="uid://cravppwdife32" path="res://Art/Enemy-sprites/Bat/Bat-death_14.png" id="18_0sh4c"]
+[ext_resource type="Texture2D" uid="uid://v518pqj6w7lu" path="res://Art/Enemy-sprites/Bat/Bat-death_15.png" id="19_ifnf7"]
+[ext_resource type="Texture2D" uid="uid://beqk7at8sgwqx" path="res://Art/Enemy-sprites/Bat/Bat-death_16.png" id="20_ujp37"]
+[ext_resource type="AudioStream" uid="uid://cj243ouwjbnc8" path="res://Audio/SFX/BatNoise1.ogg" id="37_pwwl6"]
+[ext_resource type="AudioStream" uid="uid://uow2frulnolw" path="res://Audio/SFX/BatNoise2.ogg" id="38_a1711"]
+[ext_resource type="AudioStream" uid="uid://duknboedv3oni" path="res://Audio/SFX/BatNoise3.ogg" id="39_vm02i"]
+[ext_resource type="AudioStream" uid="uid://nw6c7sd5iqwc" path="res://Audio/SFX/BatDeath.ogg" id="40_372p5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_71tgv"]
 resource_local_to_scene = true
@@ -21,6 +43,62 @@ shader_parameter/flash_color = Color(1, 0, 0, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_t1s6m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_bwosb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_iqvp6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_n7w4x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ik8ta")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_gntux")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_auxv5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_vhe7g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_yqha0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_xvu23")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_r0n5x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_bukyh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_1p3ac")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_6nbkc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_0sh4c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_ifnf7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_ujp37")
+}],
+"loop": false,
+"name": &"Death",
+"speed": 16.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("4_68j5g")
@@ -51,7 +129,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 20.0
+"speed": 18.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
@@ -60,26 +138,32 @@ height = 39.96
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vifxa"]
 
-[node name="en_Bat" type="RigidBody2D" groups=["Enemies"]]
+[node name="en_Bat" type="RigidBody2D" node_paths=PackedStringArray("enemyNoise", "enemyDeathSound") groups=["Enemies"]]
 collision_layer = 2
 collision_mask = 2
 mass = 0.01
 gravity_scale = 0.0
 lock_rotation = true
 script = ExtResource("1_q6scr")
-health = 1.2
+health = 0.5
 speed = 90.0
 itemScene = ExtResource("2_jcdqm")
 damage = 2
+enemyName = "Bat"
 XP = 1
+enemyNoise = [NodePath("enemyNoise"), NodePath("enemyNoise2"), NodePath("enemyNoise3")]
+enemyDeathSound = NodePath("enemyDeathSound")
+bloodScene = ExtResource("3_3d2hh")
+bloodColor = Color(0.603922, 0.301961, 0.733333, 0.827451)
+bloodFrame = 10
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 material = SubResource("ShaderMaterial_71tgv")
-position = Vector2(1, 10)
+position = Vector2(-1, -15)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_7y2m0")
-frame_progress = 0.139048
+animation = &"Death"
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
 editor_description = "small physics circle"
@@ -97,3 +181,36 @@ monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
 scale = Vector2(140, 90)
 shape = SubResource("RectangleShape2D_vifxa")
+
+[node name="enemyNoise" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("37_pwwl6")
+volume_db = -66.615
+max_distance = 1800.0
+attenuation = 4.0
+panning_strength = 3.0
+bus = &"SFX"
+
+[node name="enemyNoise2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("38_a1711")
+volume_db = -66.615
+max_distance = 1800.0
+attenuation = 4.0
+panning_strength = 3.0
+bus = &"SFX"
+
+[node name="enemyNoise3" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("39_vm02i")
+volume_db = -66.615
+max_distance = 1800.0
+attenuation = 4.0
+panning_strength = 3.0
+bus = &"SFX"
+
+[node name="enemyDeathSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("40_372p5")
+max_distance = 1800.0
+panning_strength = 3.0
+bus = &"SFX"
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="AnimationFinished"]
+[connection signal="frame_changed" from="AnimatedSprite2D" to="." method="FrameChanged"]

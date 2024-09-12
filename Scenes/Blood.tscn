@@ -1,0 +1,77 @@
+[gd_scene load_steps=12 format=3 uid="uid://bwf1ntuq71oi1"]
+
+[ext_resource type="Texture2D" uid="uid://r0iqu32koex2" path="res://Art/BloodSplatter.png" id="1_ydknh"]
+[ext_resource type="Script" path="res://Scripts/Blood.cs" id="2_hjmc8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aqfh0"]
+atlas = ExtResource("1_ydknh")
+region = Rect2(0, 324, 480, 324)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4lqv4"]
+atlas = ExtResource("1_ydknh")
+region = Rect2(480, 324, 480, 324)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ivwla"]
+atlas = ExtResource("1_ydknh")
+region = Rect2(960, 324, 480, 324)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r32vw"]
+atlas = ExtResource("1_ydknh")
+region = Rect2(1440, 324, 480, 324)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h2yd5"]
+atlas = ExtResource("1_ydknh")
+region = Rect2(0, 648, 480, 324)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r1eau"]
+atlas = ExtResource("1_ydknh")
+region = Rect2(480, 648, 480, 324)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uej25"]
+atlas = ExtResource("1_ydknh")
+region = Rect2(960, 648, 480, 324)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0nqm"]
+atlas = ExtResource("1_ydknh")
+region = Rect2(1440, 648, 480, 324)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sxw2n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aqfh0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4lqv4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ivwla")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r32vw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h2yd5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r1eau")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uej25")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0nqm")
+}],
+"loop": false,
+"name": &"default",
+"speed": 18.0
+}]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D"]
+modulate = Color(1, 1, 1, 0.501961)
+sprite_frames = SubResource("SpriteFrames_sxw2n")
+frame = 7
+frame_progress = 1.0
+script = ExtResource("2_hjmc8")
+
+[connection signal="animation_finished" from="." to="." method="AnimationFinished"]

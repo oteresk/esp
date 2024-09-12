@@ -68,13 +68,13 @@ render_target_update_mode = 4
 [node name="sprFogOfWar" type="Sprite2D" parent="SubViewport"]
 z_index = 22
 material = SubResource("CanvasItemMaterial_lf0p2")
-position = Vector2(269, 246)
+position = Vector2(181, 185)
 texture = ExtResource("22_kdkw7")
 
 [node name="Node2D" type="Node2D" parent="SubViewport"]
 modulate = Color(1, 1, 1, 0)
 script = ExtResource("1_4v5yl")
-icon = Array[PackedScene]([ExtResource("2_5ab15"), ExtResource("3_chvyf"), ExtResource("4_pj7pk"), ExtResource("5_8hhcj"), ExtResource("6_o7hxm"), ExtResource("7_6whpy"), ExtResource("8_uecrb"), ExtResource("9_3lv5s"), ExtResource("10_jwisb"), ExtResource("11_ssm7w"), ExtResource("12_d3dt4"), ExtResource("13_fb1br"), ExtResource("14_8u8vh"), ExtResource("15_1yd5h"), ExtResource("18_k332e")])
+icon = Array[PackedScene]([ExtResource("2_5ab15"), ExtResource("3_chvyf"), ExtResource("4_pj7pk"), ExtResource("5_8hhcj"), ExtResource("6_o7hxm"), ExtResource("7_6whpy"), ExtResource("8_uecrb"), ExtResource("14_8u8vh"), ExtResource("9_3lv5s"), ExtResource("10_jwisb"), ExtResource("11_ssm7w"), ExtResource("12_d3dt4"), ExtResource("13_fb1br"), ExtResource("15_1yd5h"), ExtResource("18_k332e")])
 iconScale = 0.1
 offset = Vector2(-1302, -657)
 
@@ -91,9 +91,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -18.0
-offset_top = -40.0
+offset_top = -20.0
 offset_right = 15.0
-offset_bottom = -7.0
+offset_bottom = 13.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 6
@@ -108,8 +108,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -40.0
+offset_left = -130.0
+offset_top = -110.0
+offset_right = -90.0
+offset_bottom = -70.0
 grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 10

@@ -62,8 +62,16 @@ public partial class ResourceDiscoveries : Node2D
 
     [Export] public PackedScene relicScene;
 
+	static public Timer enemyTimer;
+
+	static public int goldMinesInWorld=0;
+    static public int manaWellsInWorld = 0;
+
+	static public ResourceDiscoveries instance;
+
     public override void _Ready()
 	{
+		instance = this;
         GD.Randomize();
         //Place resource discoveries
         PlaceResourceDiscoveries();
@@ -74,7 +82,7 @@ public partial class ResourceDiscoveries : Node2D
         rGUI = GetNodeOrNull("../GUI");
         if (rGUI != null)
         {
-            Globals.rG2 = (resourceGUI)GetNodeOrNull(rGUI.GetPath());
+            Globals.rG2 = (resourceGUI)GetNode(rGUI.GetPath());
             UpdateResourceGUI();
         }
 
@@ -83,14 +91,6 @@ public partial class ResourceDiscoveries : Node2D
         Node2D nodStruct = (Node2D)GetNodeOrNull(Globals.NodeStructures);
 		if (nodStruct!=null)
 	        nodStruct.Position = Position;
-
-        // hide structure select canvas
-        CanvasLayer nodStructGUI = (CanvasLayer)GetNodeOrNull(Globals.NodeStructureGUI);
-        if (nodStructGUI != null)
-        {
-            nodStructGUI.Visible = false;
-            //Debug.Print("********************* " + nodStruct.GetPath());
-        }
 
     }
 
@@ -117,7 +117,10 @@ public partial class ResourceDiscoveries : Node2D
 		if (Input.IsActionJustReleased("map"))
 			mapNotPressed = true;
 
-	}
+		Node nodeEnemyTimer = GetNodeOrNull("../EnemyTimer");
+        if (nodeEnemyTimer!=null)
+	        enemyTimer = (Timer)nodeEnemyTimer;
+    }
 
 // Game Timer - also updates resources every minute
 	public void OnTimer()
@@ -139,9 +142,13 @@ public partial class ResourceDiscoveries : Node2D
 		if (minutes < 10)
 			strMinutes = "0" + strMinutes;
 
+		// decreas enemy timer as the minute goes on
+		enemyTimer.WaitTime = (double)0.6600 - (double)(seconds / 120.0); // 0-.5
+		//Debug.Print("wait timer: " + enemyTimer.WaitTime+" seconds:"+seconds+"s/120:"+(double)(seconds/120.0));
 
 
-		Globals.rG2.lblTimer.Text = strMinutes+":"+strSeconds;
+
+        Globals.rG2.lblTimer.Text = strMinutes+":"+strSeconds;
 
 		// update resources
 		curResourceTimer++;
@@ -156,17 +163,12 @@ public partial class ResourceDiscoveries : Node2D
 			SaveLoad.SaveGame(); // save gold
 		}
 
-		// refresh structure gui if visible
-		Node2D nodStructCanvas = (Node2D)GetNode(Globals.NodeStructureGUICanvas);
-		if (nodStructCanvas.Visible == true)
-			nodStructCanvas.Call("UpdateCost");
-
 		//Debug.Print("Timer: " + minutes+":"+seconds);
 	}
 
 	static public void UpdateResourceGUI()
 	{
-		if (Globals.rG2!=null)
+		if (Globals.rG2!=null && IsInstanceValid(Globals.rG2.lblGold))
 		{
             Globals.rG2.lblGold.Text = gold.ToString();
             Globals.rG2.lblIron.Text = iron.ToString();
@@ -269,12 +271,15 @@ private void PlaceResourceDiscoveries()
 				PlaceDiscovery(x,y,pos.X,pos.Y,rdType);
 			}
 
-		PlaceStartingStructures();	
+		//PlaceStartingStructures();
+
+		Debug.Print("goldMinesInWorld: " + goldMinesInWorld + " manaWellsInWorld:" + manaWellsInWorld);
+
 	}
 
 	public void PlaceStartingStructures()
 	{
-        Debug.Print("PlaceStartingStructures");
+        Debug.Print("PlaceStartingStructures Globals.StartingPlatform:"+ Globals.StartingPlatform);
 
         // place some discoveries
         if (Globals.StartingPlatform)
@@ -306,11 +311,13 @@ private void PlaceResourceDiscoveries()
 			case 1:
 				resourceDiscovery = (Node2D)rTemplateGoldMine.Instantiate();
 				Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 2;
-				break;
+				goldMinesInWorld++;
+                break;
 			case 2:
 				resourceDiscovery = (Node2D)rTemplateManaWell.Instantiate();
 				Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 3;
-				break;
+				manaWellsInWorld++;
+                break;
 			case 3:
 				resourceDiscovery = (Node2D)rTemplateWood.Instantiate();
 				Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 4;
@@ -330,8 +337,9 @@ private void PlaceResourceDiscoveries()
 				rdp.gridYPos = y * Globals.subGridSizeY + py;
 				resourceDiscovery.Name = (rdp.gridXPos.ToString()) + ", " + (rdp.gridYPos.ToString());
 				// convert to structure
-				SettlementSelect settle = (SettlementSelect)GetNode(Globals.NodeStructureGUICanvas);
-				settle.CreateStructure(5, resourceDiscovery);
+				StructureSelect settle = (StructureSelect)GetNodeOrNull(Globals.NodeStructureGUI);
+				if (settle != null)
+					settle.CreateStructure(6, resourceDiscovery);
 				break;
 		}
 

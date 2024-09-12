@@ -28,6 +28,14 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("4_nbmee")
+}],
+"loop": false,
+"name": &"Death",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_nbmee")
 }, {
 "duration": 1.0,
 "texture": ExtResource("5_d63rl")
@@ -76,27 +84,29 @@ height = 71.5
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_afs7g"]
 
-[node name="en_Slime" type="RigidBody2D" groups=["Enemies"]]
+[node name="en_Slime" type="RigidBody2D" node_paths=PackedStringArray("enemyNoise") groups=["Enemies"]]
 collision_layer = 2
 collision_mask = 2
 mass = 0.01
 gravity_scale = 0.0
 lock_rotation = true
 script = ExtResource("1_v5eqe")
-speed = 30.0
+health = 1.1
+speed = 35.0
 itemScene = ExtResource("2_3ipyh")
-damage = 5
+damage = 8
 leavesTrail = true
-XP = 5
+XP = 2
+enemyNoise = []
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 material = SubResource("ShaderMaterial_j2qla")
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_7y2m0")
-frame_progress = 0.604678
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(1, 1)
 rotation = -0.342306
 scale = Vector2(1.00107, 0.76671)
@@ -112,7 +122,10 @@ collision_mask = 0
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
+visible = false
 scale = Vector2(140, 90)
 shape = SubResource("RectangleShape2D_afs7g")
 
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="AnimationFinished"]
+[connection signal="frame_changed" from="AnimatedSprite2D" to="." method="FrameChanged"]
 [connection signal="timeout" from="Timer" to="." method="LeaveTrail"]

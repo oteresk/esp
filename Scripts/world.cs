@@ -21,18 +21,20 @@ public partial class world : Node2D
 
 		string[] enemyString = new string[] 
 		{
-            "res://Scenes/Enemies/en_Bat.tscn", //1
-			"res://Scenes/Enemies/en_Slime.tscn", //5
-			"res://Scenes/Enemies/en_Spider.tscn", //6
+            "res://Scenes/Enemies/en_Bat.tscn", 
+			"res://Scenes/Enemies/en_Slime.tscn", 
+			"res://Scenes/Enemies/en_Lizard.tscn", 
+			"res://Scenes/Enemies/en_Spider.tscn", 
             "res://Scenes/Enemies/en_PoisonSlime.tscn",
-            "res://Scenes/Enemies/en_Bat2.tscn", //7
+            "res://Scenes/Enemies/en_Bat2.tscn", 
 			"res://Scenes/AgroGolem.tscn",
+            "res://Scenes/Enemies/en_FireSlime.tscn",
             "res://Scenes/Enemies/en_Scorp.tscn",
 			"res://Scenes/Enemies/en_Skeleton.tscn",
             "res://Scenes/Enemies/en_Wolf.tscn",
-            "res://Scenes/Enemies/en_FireSlime.tscn",
             "res://Scenes/Enemies/en_FloatingSkull.tscn",
-                        "res://Scenes/SmallGolem.tscn",
+            "res://Scenes/Enemies/en_EvilEye.tscn",
+            "res://Scenes/SmallGolem.tscn",
         };
 
 		if (ResourceDiscoveries.GetMinutes() < enemyString.Length)

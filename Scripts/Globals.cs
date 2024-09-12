@@ -8,13 +8,13 @@ using System.Xml.Linq;
 
 public partial class Globals : Node
 {
-	static public string NodeMiniMap = "/root/World/MiniMapCanvas/Control/SubViewportContainer/SubViewport/Node2D";
-	static public string NodeMiniMapContainer = "/root/World/MiniMapCanvas/Control/SubViewportContainer/SubViewport/Node2D/MiniMap";
-	static public string NodeMiniMapPlayer = "/root/World/MiniMapCanvas/Control/SubViewportContainer/SubViewport/Node2D/PlayerIcon/TextureRect";
-	static public string NodeMiniMapBorder = "/root/World/MiniMapCanvas/Control/Border";
-	static public string NodeStructureGUI = "/root/World/GUI/StructureGUI";
-	static public string NodeGUI = "/root/World/GUI";
-	static public string NodeStructureGUICanvas = "/root/World/GUI/StructureGUI/SettlementSelect";
+	static public string NodeMiniMap = "/root/World/MiniMapCanvas/Control2/Control/MarginContainer/ctlSub/SubViewportContainer/SubViewport/Node2D";
+	static public string NodeMiniMapContainer = "/root/World/MiniMapCanvas/Control2/Control/MarginContainer/ctlSub/SubViewportContainer/SubViewport/Node2D/MiniMap";
+    static public string NodeMiniMapCanvas = "/root/World/MiniMapCanvas";
+    static public string NodeMiniMapPlayer = "/root/World/MiniMapCanvas/Control2/Control/MarginContainer/ctlSub/SubViewportContainer/SubViewport/Node2D/PlayerIcon/TextureRect";
+	static public string NodeMiniMapBorder = "/root/World/MiniMapCanvas/Control2/Control/MarginContainer/ctlBorder/Border";
+	static public string NodeStructureGUI = "/root/World/LateGUI/ctlStructureSelect";
+    static public string NodeGUI = "/root/World/GUI";
 	static public string NodeResourceDiscoveries = "/root/World/ResourceDiscoveries";
 	static public string NodePlayer = "/root/World/Player";
 	static public string NodeWorld = "/root/World";
@@ -24,6 +24,7 @@ public partial class Globals : Node
 	static public string NodePoison = "/root/World/GUI/Control/MarginContainer/MarginContainer/PoisonGUINode";
 	static public string NodeGlobals = "/root/World/Globals";
     static public string NodeFPS = "/root/World/FPS";
+	static public string NodeBack = "/root/World/CLbtnBack/ctlBack/TextureButton";
 
 
     static public Node rootNode;
@@ -130,8 +131,8 @@ public partial class Globals : Node
     static public int[] costWood;
 
     // starting structures
-    static public bool StartingTower=false;
-    static public bool StartingPlatform = false;
+    static public bool StartingTower=true;
+    static public bool StartingPlatform = true;
 
 	static public int platformManaCost = 5;
 
@@ -146,19 +147,39 @@ public partial class Globals : Node
     static public bool[] hasRelic;
 
 	static public float settings_SFXVolume = 0;
-    static public float settings_MusicVolume = -8;
+    static public float settings_MusicVolume = 0;
     static public float settings_MasterVolume = 0;
 
 	static public bool settings_ShowFPS = false;
-	static public bool settingsLoaded = false;
+	static public bool settings_GodMode = false;
+    static public bool settingsLoaded = false;
 
     static public float healingModifier = .5f;
     static public float fireTime = 6; // how long the big fire lasts in world
     static public float flameTime=2.5f; // how long the flame on enemy lasts
 
+	static public int screenWidth;
+    static public int screenHeight;
+
+	static public TextureButton btnBack;
+
+	static public Globals instance;
+
+    static public PackedScene TitleScene;
+    static public PackedScene StatUpgradesScene;
+    static public PackedScene OptionsScene;
+    static public PackedScene WorldScene;
+
+	static public bool canUnPause = true;
+
+	[Export] public AudioStreamPlayer musInGame;
+
     public override void _Ready()
 	{
-		weaponTypeUnlocked = new bool[12];
+		instance = this;
+        btnBack = (TextureButton)GetNodeOrNull(NodeBack);
+
+        weaponTypeUnlocked = new bool[12];
 
 		worldArray = new int[gridSizeX * subGridSizeX, gridSizeY * subGridSizeY];
 		// windowSizeY
@@ -182,33 +203,34 @@ public partial class Globals : Node
         DelayedStart();
 
 		rootNode = GetNode("..");
-		// "GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth"
-		// get stat labels     GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed
-		Node lbl = GetNodeOrNull("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth");
+        // "GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth"
+        // get stat labels     GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed
+
+        Node lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth");
 		lblMaxHealth = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed");
+		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed");
 		lblMovementSpeed = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/Magnetism/VBoxContainer/lblMagnetism");
+		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/Magnetism/VBoxContainer/lblMagnetism");
 		lblMagnetism = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/Armor/VBoxContainer/lblArmor");
+		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/Armor/VBoxContainer/lblArmor");
 		lblArmor = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/Attack/VBoxContainer/lblAttack");
-		lblAttack = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/Towers/VBoxContainer/lblTowerLevel");
+		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Attack/VBoxContainer/lblAttack");
+        lblAttack = (Label)lbl;
+		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Towers/VBoxContainer/lblTowerLevel");
 		lblTowerLevel = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/Control/MarginContainer/StatsGUI/HBoxContainer/Golems/VBoxContainer/lblGolemLevel");
-		lblGolemLevel = (Label)lbl;
+		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Golems/VBoxContainer/lblGolemLevel");
+        lblGolemLevel = (Label)lbl;
 
 		costIron = new int[8];
         costWood = new int[8];
 
+        screenWidth = (int)GetViewport().GetVisibleRect().Size.X;
+        screenHeight = (int)GetViewport().GetVisibleRect().Size.Y;
 
-        //Callable mySignalHandler = new Callable(this, MethodName.OnJoyConnectionChanged);
-
-        Input.JoyConnectionChanged += Input_JoyConnectionChanged;
-
-
-        //(Input.JoyConnectionChanged, mySignalHandler);
+        StatUpgradesScene = (PackedScene)ResourceLoader.Load("res://Scenes/StatUpgrades.tscn");
+        OptionsScene = (PackedScene)ResourceLoader.Load("res://Scenes/Options.tscn");
+        WorldScene = (PackedScene)ResourceLoader.Load("res://Scenes/world.tscn");
+        TitleScene = (PackedScene)ResourceLoader.Load("res://Scenes/Title.tscn");
 
         ResetGame();
     }
@@ -248,7 +270,7 @@ public partial class Globals : Node
 	public async void DelayedStart()
 	{
 		// wait a bit
-		await Task.Delay(TimeSpan.FromMilliseconds(100));
+		await Task.Delay(TimeSpan.FromMilliseconds(40));
 
 		//Debug.Print("***********");
         SaveLoad.LoadGame();
@@ -265,13 +287,39 @@ public partial class Globals : Node
 
         // show map
         ResourceDiscoveries.mapNotPressed = false;
-        Node2D miniMap = (Node2D)GetNodeOrNull(Globals.NodeMiniMap);
-		if (miniMap != null)
+		if (IsInstanceValid(this))
 		{
-			miniMap.Call("ShowMiniMap");
-		}
+            Node2D miniMap = (Node2D)GetNodeOrNull(Globals.NodeMiniMap);
+            if (miniMap != null)
+            {
+                miniMap.Call("ShowMiniMap");
+            }
+        }
+
 
 		settingsLoaded= true;
+
+        if (settings_ShowFPS)
+        {
+            CanvasLayer nFPS = (CanvasLayer)GetNodeOrNull(NodeFPS);
+            if (nFPS != null)
+                nFPS.Visible = true;
+        }
+        else
+        {
+            CanvasLayer nFPS = (CanvasLayer)GetNodeOrNull(NodeFPS);
+            if (nFPS != null)
+                nFPS.Visible = false;
+        }
+
+		// set god mode
+		if (rootNode.Name == "World") // if world scene
+		{ //only set god mode when in world scene
+			if (settings_GodMode)
+				ps.canBeDamaged = false;
+			else
+				ps.canBeDamaged = true;
+		}
 
     }
 
@@ -282,8 +330,8 @@ public partial class Globals : Node
 		playerAlive = true;
 		level = 1;
 		XPGoal = 20;
-		xpBar = (ProgressBar)GetNodeOrNull("../GUI/XPBar");
-		lblLevel = (Label)GetNodeOrNull("../GUI/XPBar/Label");
+		xpBar = (ProgressBar)GetNodeOrNull("../GUI/XPOverlay/XPBar");
+		lblLevel = (Label)GetNodeOrNull("../GUI/XPOverlay/XPBar/Label");
 		if (xpBar != null)
 		{
 			xpBar.Value = XP;
@@ -304,7 +352,7 @@ public partial class Globals : Node
 		SetMaxHP();
 		Debug.Print("maxHP:" + MaxHP);
 		Globals.HP = MaxHP;
-		hpBar = (ProgressBar)GetNodeOrNull("../Player/HPBar");
+        hpBar = (ProgressBar)GetNodeOrNull("../Player/HPBar");
         if (hpBar != null)
             hpBar.Value = HP / MaxHP;
 
@@ -362,21 +410,21 @@ public partial class Globals : Node
 
         costIron[0] = 1; // alchemy lab
         costIron[1] = 2; // blacksmith
-        costIron[2] = 1; // herbalist
-        costIron[3] = 0; // lodestone
-        costIron[4] = 4; // settlement
-        costIron[5] = 4; // tower
-        costIron[6] = 1; // training center
-        costIron[7] = 1; // golem factory
+        costIron[3] = 1; // herbalist
+        costIron[4] = 0; // lodestone
+        costIron[5] = 4; // settlement
+        costIron[6] = 4; // tower
+        costIron[7] = 1; // training center
+        costIron[2] = 1; // golem factory
 
         costWood[0] = 1;
         costWood[1] = 2;
-        costWood[2] = 0;
-        costWood[3] = 1;
-        costWood[4] = 2;
-        costWood[5] = 6;
-        costWood[6] = 0;
+        costWood[3] = 0;
+        costWood[4] = 1;
+        costWood[5] = 2;
+        costWood[6] = 6;
         costWood[7] = 0;
+        costWood[2] = 0;
 
         for (int iter = 0; iter < 5; iter++)
             statUpgradeLevel[iter] = 0;
@@ -385,27 +433,12 @@ public partial class Globals : Node
             hasRelic[iter] = false;
 
         UpdateStatLevels();
-
-		if (settings_ShowFPS)
-		{
-            CanvasLayer nFPS = (CanvasLayer)GetNodeOrNull(NodeFPS);
-            if (nFPS != null)
-                nFPS.Visible = true;
-        }
-		else
-		{
-            CanvasLayer nFPS = (CanvasLayer)GetNodeOrNull(NodeFPS);
-            if (nFPS != null) 
-				nFPS.Visible = false;
-        }
-
-
     }
 
 	static public void SetMaxHP()
 	{
 		MaxHP = 90 + HPInc * HPLevel * HPLevel;
-		if (hpBar != null)
+        if (hpBar != null)
 			if (IsInstanceValid(hpBar))
 				hpBar.Value = HP / MaxHP;
 	}
@@ -522,24 +555,36 @@ public partial class Globals : Node
 			upgrade1.QueueFree();
 			ug.RandomizeUpgrade();
 		}
-
-		// reset game save
-		if (Input.IsActionJustPressed("reset"))
+		if (Input.IsKeyPressed(Key.K)) // Kill player
 		{
-			ResourceDiscoveries.gold = 0;
-			for (int iter=0; iter<5;iter++)
-				Globals.statUpgradeLevel[iter] = 0;
-            SaveLoad.SaveGame();
-            // Update slots
-            Node nd = Globals.rootNode.GetNode(".");
-            StatUpgrades su = (StatUpgrades)nd;
-            su.UpdateAllSlots();
+			//Globals.DamagePlayer(999999);
+		}
 
-            btnUpgrade.DisableButton();
-
+            // reset game save
+        if (Input.IsActionJustPressed("reset"))
+		{
+			ResetStats();
         }
 
 	}
+
+	public void ResetStats()
+	{
+        ResourceDiscoveries.gold = 0;
+        for (int iter = 0; iter < 5; iter++)
+            Globals.statUpgradeLevel[iter] = 0;
+        SaveLoad.SaveGame();
+        // Update slots
+        Node nd = Globals.rootNode.GetNode(".");
+        StatUpgrades su = (StatUpgrades)nd;
+        su.UpdateAllSlots();
+
+        // update GUI
+        StatUpgrades.lblGold.Text = ResourceDiscoveries.gold.ToString();
+
+
+        btnUpgrade.DisableButton();
+    }
 
 	static public void AddXP(float xAdd)
 	{
@@ -617,8 +662,7 @@ public partial class Globals : Node
 			level++;
 			XPGoal = XPGoal * XPGoalIncrease;
 
-			UpdateLevel();
-			ShowUpgrades();
+			ps.GainLevel();
 		}
 	}
 
@@ -641,6 +685,7 @@ public partial class Globals : Node
 		string UGname1 = ug.GetName();
 		Debug.Print("up1:" + UGname1);
 
+
 		var upgrade2 = upgradeScene.Instantiate();
 		GUINode.AddChild(upgrade2);
 		CanvasLayer nUpgrade2 = (CanvasLayer)upgrade2;
@@ -657,7 +702,6 @@ public partial class Globals : Node
 
 		Debug.Print("up1:" + UGname1 + " up2:" + UGname2);
 
-
 		var upgrade3 = upgradeScene.Instantiate();
 		GUINode.AddChild(upgrade3);
 		CanvasLayer nUpgrade3 = (CanvasLayer)upgrade3;
@@ -673,7 +717,6 @@ public partial class Globals : Node
 		}
 
 		Debug.Print("up1:" + UGname1 + " up2:" + UGname2 + " up3:" + UGname3);
-
 		PauseGame();
 	}
 
@@ -692,7 +735,7 @@ public partial class Globals : Node
 
 	public static void UpdateStatsGUI()
 	{
-        if (ps != null)
+        if (ps != null && lblMaxHealth!=null)
 		{
             lblMaxHealth.Text = HPLevel.ToString();
             lblMovementSpeed.Text = speedLevel.ToString();
@@ -707,14 +750,21 @@ public partial class Globals : Node
 
 	static public void PlayRandomizedSound(AudioStreamPlayer snd)
 	{
-		snd.VolumeDb = GD.RandRange(-7, 7);
-		snd.PitchScale = (float)GD.RandRange(.75f, 1.25f);
+		snd.VolumeDb = GD.RandRange(-6, 6);
+		snd.PitchScale = (float)GD.RandRange(.79f, 1.21f);
 		snd.Play();
 	}
 
-	static public void UpdateEnemies()
+    static public void PlayRandomizedSound2D(AudioStreamPlayer2D snd)
+    {
+        snd.VolumeDb = GD.RandRange(-6, 6);
+        snd.PitchScale = (float)GD.RandRange(.79f, 1.21f);
+        snd.Play();
+    }
+
+    static public void UpdateEnemies()
 	{
-		Debug.Print("Enemies: " + enemies);
+		//Debug.Print("Enemies: " + enemies);
 	}
 
 	static public void SetAttackLevel()
@@ -735,8 +785,8 @@ public partial class Globals : Node
             }
 	}
 
-	// gets an array of ResourceDiscoveries that are in the Node Group "Tower"
-	static private ResourceDiscovery[] GetStructures(string resourceName)
+    // gets an array of ResourceDiscoveries that are in the Node Group "Tower"
+    static private ResourceDiscovery[] GetStructures(string resourceName)
 	{
         var mainLoop = Godot.Engine.GetMainLoop();
         var sceneTree = mainLoop as SceneTree;

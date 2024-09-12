@@ -46,7 +46,8 @@ public partial class StatUpgrade : MarginContainer
 
         CheckCanAfford();
 
-        statsMusic.Play();
+        if (IsInstanceValid(statsMusic))
+            statsMusic.Play();
 
         //Debug.Print("gold:"+ ResourceDiscoveries.gold.ToString());
     }
@@ -100,53 +101,56 @@ public partial class StatUpgrade : MarginContainer
     {
         slots = Globals.statUpgradeLevel[upgradeNum];
         //Debug.Print("Slots:" + slots);
-        if (slots==0)
+        if (IsInstanceValid(imgSlot1))
         {
-            imgSlot1.Texture = StatUpgrades.slotEmpty;
-            imgSlot2.Texture = StatUpgrades.slotEmpty;
-            imgSlot3.Texture = StatUpgrades.slotEmpty;
-            imgSlot4.Texture = StatUpgrades.slotEmpty;
-            imgSlot5.Texture = StatUpgrades.slotEmpty;
-        }
-        if (slots == 1)
-        {
-            imgSlot1.Texture = StatUpgrades.slotFull;
-            imgSlot2.Texture = StatUpgrades.slotEmpty;
-            imgSlot3.Texture = StatUpgrades.slotEmpty;
-            imgSlot4.Texture = StatUpgrades.slotEmpty;
-            imgSlot5.Texture = StatUpgrades.slotEmpty;
-        }
-        if (slots == 2)
-        {
-            imgSlot1.Texture = StatUpgrades.slotFull;
-            imgSlot2.Texture = StatUpgrades.slotFull;
-            imgSlot3.Texture = StatUpgrades.slotEmpty;
-            imgSlot4.Texture = StatUpgrades.slotEmpty;
-            imgSlot5.Texture = StatUpgrades.slotEmpty;
-        }
-        if (slots == 3)
-        {
-            imgSlot1.Texture = StatUpgrades.slotFull;
-            imgSlot2.Texture = StatUpgrades.slotFull;
-            imgSlot3.Texture = StatUpgrades.slotFull;
-            imgSlot4.Texture = StatUpgrades.slotEmpty;
-            imgSlot5.Texture = StatUpgrades.slotEmpty;
-        }
-        if (slots == 4)
-        {
-            imgSlot1.Texture = StatUpgrades.slotFull;
-            imgSlot2.Texture = StatUpgrades.slotFull;
-            imgSlot3.Texture = StatUpgrades.slotFull;
-            imgSlot4.Texture = StatUpgrades.slotFull;
-            imgSlot5.Texture = StatUpgrades.slotEmpty;
-        }
-        if (slots == 5)
-        {
-            imgSlot1.Texture = StatUpgrades.slotFull;
-            imgSlot2.Texture = StatUpgrades.slotFull;
-            imgSlot3.Texture = StatUpgrades.slotFull;
-            imgSlot4.Texture = StatUpgrades.slotFull;
-            imgSlot5.Texture = StatUpgrades.slotFull;
+            if (slots == 0)
+            {
+                imgSlot1.Texture = StatUpgrades.slotEmpty;
+                imgSlot2.Texture = StatUpgrades.slotEmpty;
+                imgSlot3.Texture = StatUpgrades.slotEmpty;
+                imgSlot4.Texture = StatUpgrades.slotEmpty;
+                imgSlot5.Texture = StatUpgrades.slotEmpty;
+            }
+            if (slots == 1)
+            {
+                imgSlot1.Texture = StatUpgrades.slotFull;
+                imgSlot2.Texture = StatUpgrades.slotEmpty;
+                imgSlot3.Texture = StatUpgrades.slotEmpty;
+                imgSlot4.Texture = StatUpgrades.slotEmpty;
+                imgSlot5.Texture = StatUpgrades.slotEmpty;
+            }
+            if (slots == 2)
+            {
+                imgSlot1.Texture = StatUpgrades.slotFull;
+                imgSlot2.Texture = StatUpgrades.slotFull;
+                imgSlot3.Texture = StatUpgrades.slotEmpty;
+                imgSlot4.Texture = StatUpgrades.slotEmpty;
+                imgSlot5.Texture = StatUpgrades.slotEmpty;
+            }
+            if (slots == 3)
+            {
+                imgSlot1.Texture = StatUpgrades.slotFull;
+                imgSlot2.Texture = StatUpgrades.slotFull;
+                imgSlot3.Texture = StatUpgrades.slotFull;
+                imgSlot4.Texture = StatUpgrades.slotEmpty;
+                imgSlot5.Texture = StatUpgrades.slotEmpty;
+            }
+            if (slots == 4)
+            {
+                imgSlot1.Texture = StatUpgrades.slotFull;
+                imgSlot2.Texture = StatUpgrades.slotFull;
+                imgSlot3.Texture = StatUpgrades.slotFull;
+                imgSlot4.Texture = StatUpgrades.slotFull;
+                imgSlot5.Texture = StatUpgrades.slotEmpty;
+            }
+            if (slots == 5)
+            {
+                imgSlot1.Texture = StatUpgrades.slotFull;
+                imgSlot2.Texture = StatUpgrades.slotFull;
+                imgSlot3.Texture = StatUpgrades.slotFull;
+                imgSlot4.Texture = StatUpgrades.slotFull;
+                imgSlot5.Texture = StatUpgrades.slotFull;
+            }
         }
     }
 
@@ -211,12 +215,14 @@ public partial class StatUpgrade : MarginContainer
         {
             // selected
             //image.Visible = true;
-            image.Modulate = new Color(1, 1, 1, 1f);
+            if (IsInstanceValid(image))
+                image.Modulate = new Color(1, 1, 1, 1f);
         }
         else
         {
             // , unselected
-            image.Modulate = new Color(1, 1, 1, .5f);
+            if (IsInstanceValid(image))
+                image.Modulate = new Color(1, 1, 1, .5f);
         }
     }
 

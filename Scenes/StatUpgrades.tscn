@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://buj15m7kgw8nk"]
+[gd_scene load_steps=37 format=3 uid="uid://buj15m7kgw8nk"]
 
 [ext_resource type="Script" path="res://Scripts/StatUpgrades.cs" id="1_ge2oc"]
 [ext_resource type="Texture2D" uid="uid://pmir7d3ysfmu" path="res://Art/GUI/StatUpgrades/UpgradesBackground.png" id="1_xej6k"]
@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://2dbdki0i67n1" path="res://Art/GUI/StatUpgrades/Menu Tab.png" id="3_7i52p"]
 [ext_resource type="Texture2D" uid="uid://bwmagyws5tkga" path="res://Art/GUI/StatUpgrades/Block_Empty.png" id="3_ydy0s"]
 [ext_resource type="FontFile" uid="uid://blv8i47j34igf" path="res://Fonts/CloisterBlack.ttf" id="4_47kom"]
-[ext_resource type="Texture2D" uid="uid://b88etd8quvl4o" path="res://Art/GUI/Gold.png" id="5_wx2qb"]
+[ext_resource type="Texture2D" uid="uid://gycg2mxwedlh" path="res://Art/GUI/Gold.png" id="5_wx2qb"]
 [ext_resource type="FontVariation" uid="uid://cioe7t5vpxgkl" path="res://StatUpgradeFont.tres" id="6_iukmn"]
 [ext_resource type="FontFile" uid="uid://deu73dw073p0l" path="res://Analogist.ttf" id="7_o6e22"]
 [ext_resource type="Texture2D" uid="uid://duc3yrtenakjo" path="res://Art/GUI/StatUpgrades/Button Small.png" id="8_3j46r"]
@@ -59,8 +59,19 @@ font = ExtResource("4_47kom")
 font_size = 50
 font_color = Color(0.301961, 0.360784, 0.133333, 1)
 
-[node name="StatUpgrades" type="CanvasLayer"]
+[sub_resource type="LabelSettings" id="LabelSettings_728cv"]
+font = ExtResource("4_47kom")
+font_size = 50
+font_color = Color(0.572549, 0, 0.211765, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_548jd"]
+font = ExtResource("4_47kom")
+font_size = 45
+font_color = Color(0.301961, 0.360784, 0.133333, 1)
+
+[node name="StatUpgrades" type="CanvasLayer" node_paths=PackedStringArray("confirm")]
 script = ExtResource("1_ge2oc")
+confirm = NodePath("ctlConfirm")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -233,6 +244,44 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="MCbtnReset" type="MarginContainer" parent="Control/TextureRect"]
+layout_mode = 2
+offset_left = 1618.0
+offset_top = 160.0
+offset_right = 1859.0
+offset_bottom = 270.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureButton" type="TextureButton" parent="Control/TextureRect/MCbtnReset"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("8_3j46r")
+texture_hover = ExtResource("13_4kpsi")
+texture_disabled = ExtResource("9_trcln")
+script = ExtResource("23_wn04p")
+
+[node name="lblReset" type="Label" parent="Control/TextureRect/MCbtnReset/TextureButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.726141
+anchor_top = 0.504545
+anchor_right = 0.726141
+anchor_bottom = 0.504545
+offset_left = -131.0
+offset_top = -33.5
+offset_right = 30.0
+offset_bottom = 28.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Reset"
+label_settings = SubResource("LabelSettings_728cv")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="MCGold" type="MarginContainer" parent="Control/TextureRect"]
 layout_mode = 0
 offset_right = 300.0
@@ -334,6 +383,7 @@ offset_right = 708.0
 offset_bottom = 477.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+mouse_filter = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -368,6 +418,7 @@ stretch_mode = 3
 [node name="Slots" type="HBoxContainer" parent="Control/MCUpgrade0/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+mouse_filter = 2
 
 [node name="mc2" type="MarginContainer" parent="Control/MCUpgrade0/VBoxContainer/Slots"]
 layout_mode = 2
@@ -452,6 +503,7 @@ offset_right = 486.0
 offset_bottom = 683.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+mouse_filter = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -487,6 +539,7 @@ stretch_mode = 3
 [node name="Slots" type="HBoxContainer" parent="Control/MCUpgrade1/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+mouse_filter = 2
 
 [node name="mc2" type="MarginContainer" parent="Control/MCUpgrade1/VBoxContainer/Slots"]
 layout_mode = 2
@@ -571,6 +624,7 @@ offset_right = 708.0
 offset_bottom = 683.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+mouse_filter = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -606,6 +660,7 @@ stretch_mode = 3
 [node name="Slots" type="HBoxContainer" parent="Control/MCUpgrade2/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+mouse_filter = 2
 
 [node name="mc2" type="MarginContainer" parent="Control/MCUpgrade2/VBoxContainer/Slots"]
 layout_mode = 2
@@ -690,6 +745,7 @@ offset_right = 930.0
 offset_bottom = 683.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+mouse_filter = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -725,6 +781,7 @@ stretch_mode = 3
 [node name="Slots" type="HBoxContainer" parent="Control/MCUpgrade3/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+mouse_filter = 2
 
 [node name="mc2" type="MarginContainer" parent="Control/MCUpgrade3/VBoxContainer/Slots"]
 layout_mode = 2
@@ -809,6 +866,7 @@ offset_right = 708.0
 offset_bottom = 889.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+mouse_filter = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -844,6 +902,7 @@ stretch_mode = 3
 [node name="Slots" type="HBoxContainer" parent="Control/MCUpgrade4/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+mouse_filter = 2
 
 [node name="mc2" type="MarginContainer" parent="Control/MCUpgrade4/VBoxContainer/Slots"]
 layout_mode = 2
@@ -920,6 +979,123 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("3_ydy0s")
 
+[node name="ctlConfirm" type="Control" parent="."]
+process_mode = 2
+visible = false
+z_index = 99
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -150.0
+offset_right = 300.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="ctlConfirm"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -150.0
+offset_right = 300.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="lblConfirm" type="Label" parent="ctlConfirm/ColorRect"]
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.253333
+anchor_top = 0.141667
+anchor_right = 0.918333
+anchor_bottom = 0.868333
+offset_left = -131.0
+offset_top = -33.5
+offset_right = 30.0
+offset_bottom = 28.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "This Will reset your character and erase all of your stats.
+Are you sure?"
+label_settings = SubResource("LabelSettings_548jd")
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="btnYes" type="TextureButton" parent="ctlConfirm"]
+layout_mode = 0
+offset_left = 343.0
+offset_top = 175.0
+offset_right = 584.0
+offset_bottom = 285.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("8_3j46r")
+texture_hover = ExtResource("13_4kpsi")
+texture_disabled = ExtResource("9_trcln")
+script = ExtResource("23_wn04p")
+
+[node name="lblYes" type="Label" parent="ctlConfirm/btnYes"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.726141
+anchor_top = 0.504545
+anchor_right = 0.726141
+anchor_bottom = 0.504545
+offset_left = -131.0
+offset_top = -33.5
+offset_right = 30.0
+offset_bottom = 28.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Yes"
+label_settings = SubResource("LabelSettings_3l5xi")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="btnNo" type="TextureButton" parent="ctlConfirm"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 175.0
+offset_right = 256.0
+offset_bottom = 285.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("8_3j46r")
+texture_hover = ExtResource("13_4kpsi")
+texture_disabled = ExtResource("9_trcln")
+script = ExtResource("23_wn04p")
+
+[node name="lblNo" type="Label" parent="ctlConfirm/btnNo"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.726141
+anchor_top = 0.504545
+anchor_right = 0.726141
+anchor_bottom = 0.504545
+offset_left = -131.0
+offset_top = -33.5
+offset_right = 30.0
+offset_bottom = 28.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "No"
+label_settings = SubResource("LabelSettings_3l5xi")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="SaveLoad" type="Node2D" parent="."]
 script = ExtResource("13_18dtb")
 
@@ -956,10 +1132,12 @@ mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="statsMusic" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("32_1c8d3")
 bus = &"Music"
 
 [connection signal="pressed" from="Control/TextureRect/MCbtnUpgrade/TextureButton" to="Control/TextureRect/MCbtnUpgrade/TextureButton" method="ClickButton"]
+[connection signal="pressed" from="Control/TextureRect/MCbtnReset/TextureButton" to="." method="ShowConfirm"]
 [connection signal="mouse_entered" from="Control/MCbtnBack/TextureButton" to="." method="BackEntered"]
 [connection signal="mouse_exited" from="Control/MCbtnBack/TextureButton" to="." method="BackExited"]
 [connection signal="mouse_entered" from="Control/MCUpgrade0/VBoxContainer" to="Control/MCUpgrade0" method="OnMouseEntered"]
@@ -972,3 +1150,6 @@ bus = &"Music"
 [connection signal="mouse_exited" from="Control/MCUpgrade3/VBoxContainer" to="Control/MCUpgrade3" method="OnMouseExited"]
 [connection signal="mouse_entered" from="Control/MCUpgrade4/VBoxContainer" to="Control/MCUpgrade4" method="OnMouseEntered"]
 [connection signal="mouse_exited" from="Control/MCUpgrade4/VBoxContainer" to="Control/MCUpgrade4" method="OnMouseExited"]
+[connection signal="pressed" from="ctlConfirm/btnYes" to="." method="ConfirmYes"]
+[connection signal="pressed" from="ctlConfirm/btnYes" to="ctlConfirm/btnYes" method="ClickButton"]
+[connection signal="pressed" from="ctlConfirm/btnNo" to="." method="ConfirmNo"]

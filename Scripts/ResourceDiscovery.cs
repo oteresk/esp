@@ -157,7 +157,7 @@ public partial class ResourceDiscovery : Sprite2D
 			if (RDResource.resourceType.ToString() == "None" && nearResource == true && area.IsInGroup("Player"))
 			{
 				// hide structure select canvas
-				CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
+				Control nodStruct = (Control)GetNode(Globals.NodeStructureGUI);
 				nodStruct.Visible = false;
 
 				nearResource = false;
@@ -182,13 +182,17 @@ public partial class ResourceDiscovery : Sprite2D
 		{
 			if (RDResource.resourceType.ToString() == "None" && nearResource == false && area.IsInGroup("Player"))
 			{
-				CanvasLayer nodStruct = (CanvasLayer)GetNode(Globals.NodeStructureGUI);
+				Control nodStruct = (Control)GetNode(Globals.NodeStructureGUI);
 				nodStruct.Visible = true;
+				StructureSelect sSel = (StructureSelect)nodStruct;
+				sSel.UpdateStructure();
+				sSel.UpdateCost();
+
 				nearResource = true;
 				Debug.Print("Show Structure Select");
 
-				// let Structure Select know which platform you are on
-				SettlementSelect.platform = this;
+                // let Structure Select know which platform you are on
+                StructureSelect.platform = this;
 
                 // pause game
                 Globals.PauseGame();

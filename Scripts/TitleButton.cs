@@ -72,17 +72,20 @@ public partial class TitleButton : TextureButton
 
         if (lblButton.Name == "lblPlay")
         {
-            GetTree().ChangeSceneToFile("res://Scenes/world.tscn");
+            //GetTree().ChangeSceneToFile("res://Scenes/world.tscn");
+            GetTree().ChangeSceneToPacked(Globals.WorldScene);
         }
 
         if (lblButton.Name == "lblUpgrades")
         {
-            GetTree().ChangeSceneToFile("res://Scenes/StatUpgrades.tscn");
+            //GetTree().ChangeSceneToFile("res://Scenes/StatUpgrades.tscn");
+            GetTree().ChangeSceneToPacked(Globals.StatUpgradesScene);
         }
 
         if (lblButton.Name == "lblOptions")
         {
-            GetTree().ChangeSceneToFile("res://Scenes/Options.tscn");
+            //GetTree().ChangeSceneToFile("res://Scenes/Options.tscn");
+            GetTree().ChangeSceneToPacked(Globals.OptionsScene);
         }
         if (lblButton.Name == "lblQuit")
         {

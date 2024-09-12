@@ -19,7 +19,7 @@ ResourceScriptDirectories=["res://"]
 config/name="Dark Age Asunder"
 run/main_scene="res://Scenes/Title.tscn"
 config/features=PackedStringArray("4.1", "C#", "GL Compatibility")
-boot_splash/bg_color=Color(0.121569, 0.262745, 0.368627, 1)
+boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/image="res://Art/Plutonium Powered_logo_full.png"
 
 [autoload]
@@ -30,9 +30,9 @@ SteamManager="*res://Scenes/SteamManager.tscn"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/mode=3
+window/size/mode=4
 window/size/initial_position_type=0
-window/stretch/aspect="ignore"
+window/stretch/mode="viewport"
 window/vsync/vsync_mode=0
 
 [dotnet]

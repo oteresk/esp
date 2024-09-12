@@ -118,6 +118,11 @@ animations = [{
 "name": &"Block",
 "speed": 6.0
 }, {
+"frames": [],
+"loop": true,
+"name": &"Death",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("4_130f1")
@@ -202,20 +207,21 @@ height = 76.0858
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7tu5e"]
 
-[node name="en_Skeleton" type="RigidBody2D" groups=["Enemies"]]
+[node name="en_Skeleton" type="RigidBody2D" node_paths=PackedStringArray("enemyNoise") groups=["Enemies"]]
 collision_layer = 2
 collision_mask = 2
 mass = 0.01
 gravity_scale = 0.0
 lock_rotation = true
 script = ExtResource("1_30qn3")
-health = 100.0
+health = 110.0
 speed = 50.0
 itemScene = ExtResource("2_4c6ae")
-damage = 7
+damage = 50
 enemyName = "Skeleton"
 XP = 15
 attackRange = 130.0
+enemyNoise = []
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -223,6 +229,7 @@ material = SubResource("ShaderMaterial_fb7vb")
 position = Vector2(10.28, -41.65)
 scale = Vector2(0.32, 0.33)
 sprite_frames = SubResource("SpriteFrames_7y2m0")
+animation = &"Death"
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
 position = Vector2(-4.72001, -15.65)
@@ -239,4 +246,5 @@ monitoring = false
 scale = Vector2(140, 90)
 shape = SubResource("RectangleShape2D_7tu5e")
 
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="AnimationFinished"]
 [connection signal="frame_changed" from="AnimatedSprite2D" to="." method="FrameChanged"]

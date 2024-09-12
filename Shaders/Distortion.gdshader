@@ -1,36 +1,48 @@
 shader_type canvas_item;
- 
-uniform sampler2D maskImage : filter_linear_mipmap;           
- 
-uniform float strength: hint_range(0.0, 0.1, 0.001) = 0.08;
-uniform vec2 center = vec2(0.5, 0.5);
-uniform float radius: hint_range(0.0, 1.0, 0.001) = 0.25;
-uniform float aberration: hint_range(0.0, 1.0, 0.001) = 0.425;
-uniform float width: hint_range(0.0, 0.1, 0.0001) = 0.04;
-uniform float feather: hint_range(0.0, 1.0, 0.001) = 0.135;
-uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+
+uniform vec3 effect_color: source_color = vec3(0.2, 0.3, 0.8);
+uniform int octave_count: hint_range(1, 20) = 10;
+uniform float amp_start = 0.5;
+uniform float amp_coeff = 0.5;
+uniform float freq_coeff = 2.0;
+uniform float speed = 0.5;
+
+
+float hash12(vec2 x) {
+    return fract(cos(mod(dot(x, vec2(13.9898, 8.141)), 3.14)) * 43758.5453);
+}
+
+vec2 hash22(vec2 uv) {
+    uv = vec2(dot(uv, vec2(127.1,311.7)),
+              dot(uv, vec2(269.5,183.3)));
+    return 2.0 * fract(sin(uv) * 43758.5453123) - 1.0;
+}
+
+float noise(vec2 uv) {
+    vec2 iuv = floor(uv);
+    vec2 fuv = fract(uv);
+    vec2 blur = smoothstep(0.0, 1.0, fuv);
+    return mix(mix(dot(hash22(iuv + vec2(0.0,0.0)), fuv - vec2(0.0,0.0)),
+                   dot(hash22(iuv + vec2(1.0,0.0)), fuv - vec2(1.0,0.0)), blur.x),
+               mix(dot(hash22(iuv + vec2(0.0,1.0)), fuv - vec2(0.0,1.0)),
+                   dot(hash22(iuv + vec2(1.0,1.0)), fuv - vec2(1.0,1.0)), blur.x), blur.y) + 0.5;
+}
+
+float fbm(vec2 uv, int octaves) {
+    float value = 0.0;
+    float amplitude = amp_start;
+    for (int i = 0; i < octaves; i++) {
+        value += amplitude * noise(uv);
+        uv *= freq_coeff;
+        amplitude *= amp_coeff;
+    }
+    return value;
+}
 
 void fragment() {
-    vec4 maskImageColor = texture(maskImage, UV);
-     
-    // Caluclate the brightness of the pixel in the mask image
-    float maskImageBrightness = (maskImageColor.r + maskImageColor.g + maskImageColor.b) / 3.0;
-     
-		vec2 st = SCREEN_UV;
-	float aspect_ratio = SCREEN_PIXEL_SIZE.y/SCREEN_PIXEL_SIZE.x;
-	vec2 scaled_st = (st -vec2(0.0, 0.5)) / vec2(1.0, aspect_ratio) + vec2(0,0.5); 
-	vec2 dist_center = scaled_st - center;
-	float mask =  (1.0 - smoothstep(radius-feather, radius, length(dist_center))) * smoothstep(radius - width - feather, radius-width , length(dist_center));
-	vec2 offset = normalize(dist_center)*strength*mask;
-	vec2 biased_st = scaled_st - offset;
-	
-	vec2 abber_vec = offset*aberration*mask;
-	
-	vec2 final_st = st*(1.0-mask) + biased_st*mask;
-	vec4 red = texture(SCREEN_TEXTURE, final_st + abber_vec);
-	vec4 blue = texture(SCREEN_TEXTURE, final_st - abber_vec);
-	vec4 ori = texture(SCREEN_TEXTURE, final_st);
-    COLOR = vec4(red.r, ori.g, blue.b, 1.0);
-    COLOR.a = maskImageBrightness;
-
+    vec2 uv = 2.0 * UV - 1.0;
+    uv += 2.0 * fbm(uv + TIME * speed, octave_count) - 1.0;
+    float dist = abs(uv.x);
+    vec3 color = effect_color * mix(0.0, 0.05, hash12(vec2(TIME))) / dist;
+    COLOR = vec4(color, 1.0);
 }

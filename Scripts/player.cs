@@ -67,6 +67,7 @@ public partial class player : Area2D
     [Export] public AudioStreamPlayer sndPlayerDeath;
     [Export] public AudioStreamPlayer sndWarp;
     [Export] public AudioStreamPlayer sndRingingLoop;
+    [Export] public AudioStreamPlayer sndGainLevel;
 
     private List<enemy> enemies;
 	private float dmgFreq = 1000; // how often in ms an enemy damages a play when it stays in his collider
@@ -83,6 +84,8 @@ public partial class player : Area2D
     private bool OnFire = false;
 	private float curFireTime;
 	private string curAnim;
+
+	[Export] public ColorRect GodRays;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -187,7 +190,7 @@ public partial class player : Area2D
             //GD.Print("Mouse Motion at: ", eventMouseMotion.Position);
             // >960 == right
             // if using variable resolution, use GetViewport().GetVisibleRect().Size.X\2
-            if (eventMouseMotion.Position.X>960)
+            if (eventMouseMotion.Position.X> Globals.screenWidth/2)
 			{
                 animatedSprite2D.FlipH = false;
                 animatedSprite2D.Offset = new Vector2(0, 0);
@@ -679,20 +682,19 @@ public partial class player : Area2D
 
 	public void PlayDeathAnim()
 	{
+		Globals.canUnPause = false;
 		//Debug.Print("Play attack anim");
 		animatedSprite2D.Animation = "death";
 		animatedSprite2D.Play();
         animatedSprite2DTop.Animation = "death";
         animatedSprite2DTop.Play();
         FadeToBlack();
-		// hide mini map
-		Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
-		miniMap.Visible = false;
-		Control miniMapBorder = (Control)GetNode(Globals.NodeMiniMapBorder+"/..");
-		miniMapBorder.Visible = false;
+        // hide mini map
+        CanvasLayer miniMap = (CanvasLayer)GetNode(Globals.NodeMiniMapCanvas);
+		miniMap.Visible = false;       
 
-		// hide GUI
-		CanvasLayer gui = (CanvasLayer)GetNode(Globals.NodeGUI);
+        // hide GUI
+        CanvasLayer gui = (CanvasLayer)GetNode(Globals.NodeGUI);
 		gui.Visible = false;
 		itemIconSpeed.Visible = false;
 		itemIconAoE.Visible = false;
@@ -712,10 +714,11 @@ public partial class player : Area2D
         if (atkOrbitFire.Count > 0)
             atkOrbitFire[0].Visible = false;
 
-		// Don't process settlement select GUI
-        SettlementSelect settle = (SettlementSelect)GetNode(Globals.NodeStructureGUICanvas);
+        // Don't process settlement select GUI
+        StructureSelect settle = (StructureSelect)GetNode(Globals.NodeStructureGUI);
 		settle.ProcessMode = Godot.Node.ProcessModeEnum.Disabled;
 
+		ResourceDiscoveries.enemyTimer.OneShot = true;
 
         GameOver();
 
@@ -726,7 +729,9 @@ public partial class player : Area2D
 		ZIndex = 1000;
 		Tween tween = GetTree().CreateTween();
 		tween.TweenProperty(Globals.black, "modulate:a", 1f, 3.0f);
-        tween.TweenProperty(btnBack, "modulate:a", 1f, 1.5f);
+        Globals.btnBack.Visible = true;
+        Globals.btnBack.Modulate = new Color(1, 1, 1, 0);
+        tween.TweenProperty(Globals.btnBack, "modulate:a", 1f, 1.5f);
         
     }
 
@@ -744,15 +749,7 @@ public partial class player : Area2D
 
     }
 
-	public void LoadUpgradeScene()
-	{
-        Globals.rootNode.GetTree().Paused = false;
-        GetTree().ChangeSceneToFile("res://Scenes/StatUpgrades.tscn");
-        Node glN = GetNode(Globals.NodeGlobals);
-        Globals g = (Globals)glN;
-        g.ResetGame();
-        g.DelayedStart();
-    }
+
 
 	private void ShowTime()
 	{
@@ -1041,5 +1038,21 @@ public partial class player : Area2D
 		}
 		DamagePlayer();
     }
+
+	public async void GainLevel()
+	{
+		Debug.Print("God");
+        Globals.PlayRandomizedSound(sndGainLevel);
+        GodRays.Visible = true;
+        ShaderMaterial godRaysMat = (ShaderMaterial)GodRays.Material;
+
+        
+	    await Task.Delay(TimeSpan.FromMilliseconds(1100));
+        GodRays.Visible = false;
+        await Task.Delay(TimeSpan.FromMilliseconds(300));
+        Globals.UpdateLevel();
+        Globals.ShowUpgrades();
+    }
+
 
 }

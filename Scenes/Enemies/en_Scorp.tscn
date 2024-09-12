@@ -20,6 +20,11 @@ shader_parameter/flash_color = Color(1, 0, 0, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
 animations = [{
+"frames": [],
+"loop": true,
+"name": &"Death",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("4_oy7se")
@@ -56,20 +61,21 @@ height = 58.9003
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7tu5e"]
 
-[node name="en_Scorp" type="RigidBody2D" groups=["Enemies"]]
+[node name="en_Scorp" type="RigidBody2D" node_paths=PackedStringArray("enemyNoise") groups=["Enemies"]]
 collision_layer = 2
 collision_mask = 2
 mass = 0.01
 gravity_scale = 0.0
 lock_rotation = true
 script = ExtResource("1_ksm67")
-health = 10.0
+health = 18.0
 speed = 45.0
 itemScene = ExtResource("2_b7f3c")
 damageType = 1
-damage = 3
-damageTime = 4
+damage = 20
+damageTime = 5
 XP = 9
+enemyNoise = []
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -77,7 +83,7 @@ material = SubResource("ShaderMaterial_fb7vb")
 position = Vector2(7.5, 4.375)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_7y2m0")
-frame_progress = 0.277755
+animation = &"Death"
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
 position = Vector2(6, 4)
@@ -93,3 +99,6 @@ monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
 scale = Vector2(140, 90)
 shape = SubResource("RectangleShape2D_7tu5e")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="AnimationFinished"]
+[connection signal="frame_changed" from="AnimatedSprite2D" to="." method="FrameChanged"]

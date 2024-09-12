@@ -1,0 +1,350 @@
+[gd_scene load_steps=34 format=3 uid="uid://bepx0px6qsi8e"]
+
+[ext_resource type="Script" path="res://Scripts/StructureSelect.cs" id="1_nxwgd"]
+[ext_resource type="Texture2D" uid="uid://b34q1lr3lafa0" path="res://Art/GUI/Background.png" id="1_x6h7o"]
+[ext_resource type="PackedScene" uid="uid://b7cdceuynn4co" path="res://Scenes/Structure-AlchemyLab.tscn" id="2_mc77p"]
+[ext_resource type="PackedScene" uid="uid://cx15v303xmpy6" path="res://Scenes/Structure-Blacksmith.tscn" id="3_swbqo"]
+[ext_resource type="Texture2D" uid="uid://d03igl3oa1swu" path="res://Art/GUI/Slot.png" id="3_xbxuk"]
+[ext_resource type="PackedScene" uid="uid://wm58i7j3apso" path="res://Scenes/Structure-GolemFactory.tscn" id="4_02udj"]
+[ext_resource type="Texture2D" uid="uid://dvgfe0sk66tqs" path="res://Art/GUI/btnAlechemyLab.png" id="4_f68v6"]
+[ext_resource type="Texture2D" uid="uid://b8wsbb2jt5pyu" path="res://Art/GUI/btnBlacksmith.png" id="5_2t4bb"]
+[ext_resource type="PackedScene" uid="uid://ckakgnegnrlvf" path="res://Scenes/Structure-Herbalist.tscn" id="5_k6ju7"]
+[ext_resource type="Texture2D" uid="uid://b23apvmyac4lx" path="res://Art/GUI/btnGolemFactory.png" id="6_wq1ql"]
+[ext_resource type="PackedScene" uid="uid://b2e4ek01eon7f" path="res://Scenes/Structure-Lodestone.tscn" id="6_xvfvo"]
+[ext_resource type="Texture2D" uid="uid://ckrrp2gcbqft0" path="res://Art/GUI/btnHerbalist.png" id="7_cvgyy"]
+[ext_resource type="PackedScene" uid="uid://cs70lx50ngyvy" path="res://Scenes/Structure-Settlement.tscn" id="7_ee7ro"]
+[ext_resource type="Texture2D" uid="uid://dnas3wtclg63g" path="res://Art/GUI/btnLodestone.png" id="8_gantb"]
+[ext_resource type="PackedScene" uid="uid://pv0fpyslcgie" path="res://Scenes/Structure-Tower.tscn" id="8_rb3cp"]
+[ext_resource type="Texture2D" uid="uid://3uf26qhnwybg" path="res://Art/GUI/btnSettlement.png" id="9_6pmks"]
+[ext_resource type="PackedScene" uid="uid://bcn0ebog5s0ps" path="res://Scenes/Structure-TrainingCenter.tscn" id="9_kc8hf"]
+[ext_resource type="Texture2D" uid="uid://boifd3b0kaqav" path="res://Art/GUI/btnTower.png" id="10_rnmt2"]
+[ext_resource type="Texture2D" uid="uid://b3gh0i468gumr" path="res://Art/GUI/btnTrainingCenter.png" id="11_nhasb"]
+[ext_resource type="Texture2D" uid="uid://ncrc0frion5g" path="res://Art/GUI/Arrow Left.png" id="12_hrki4"]
+[ext_resource type="Texture2D" uid="uid://c0odekc8hv26u" path="res://Art/GUI/Arrow Right.png" id="13_2hwxe"]
+[ext_resource type="Texture2D" uid="uid://b5yd673bb7ce4" path="res://Art/GUI/btnClose.png" id="14_ew8ol"]
+[ext_resource type="FontFile" uid="uid://blv8i47j34igf" path="res://Fonts/CloisterBlack.ttf" id="16_bwwyj"]
+[ext_resource type="Texture2D" uid="uid://cvjn2m5ps58i1" path="res://Art/GUI/Resource -  Iron.png" id="23_u1pr4"]
+[ext_resource type="Texture2D" uid="uid://biq4q1a2gqxt3" path="res://Art/GUI/Resource - Wood.png" id="25_a6euj"]
+[ext_resource type="Texture2D" uid="uid://bkjl0vf4gs5nm" path="res://Art/GUI/RedStroke.png" id="26_wnxte"]
+[ext_resource type="Texture2D" uid="uid://duc3yrtenakjo" path="res://Art/GUI/StatUpgrades/Button Small.png" id="27_fcrfb"]
+[ext_resource type="Texture2D" uid="uid://ccbsebicl0cl7" path="res://Art/GUI/StatUpgrades/Button Small_Hover.png" id="28_5j0fs"]
+[ext_resource type="Texture2D" uid="uid://vy0172p8d6bq" path="res://Art/GUI/StatUpgrades/Button_Disabled.png" id="29_72pnm"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_g16je"]
+font = ExtResource("16_bwwyj")
+font_size = 33
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_uq3h3"]
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_5oljx"]
+resource_local_to_scene = true
+font = ExtResource("16_bwwyj")
+font_size = 54
+font_color = Color(0.247059, 0.231373, 0.219608, 1)
+outline_size = 3
+
+[sub_resource type="LabelSettings" id="LabelSettings_vtdxf"]
+font = ExtResource("16_bwwyj")
+font_size = 50
+font_color = Color(0.301961, 0.360784, 0.133333, 1)
+
+[node name="ctlStructureSelect" type="Control" node_paths=PackedStringArray("structures", "selStructure", "lblIron", "lblWood", "lblStructName", "lblStructDescription", "btnBuild", "redStroke")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_nxwgd")
+structures = [NodePath("TextureRect/imgStructure1"), NodePath("TextureRect/imgStructure2"), NodePath("TextureRect/imgStructure3"), NodePath("TextureRect/imgStructure4"), NodePath("TextureRect/imgStructure5"), NodePath("TextureRect/imgStructure6"), NodePath("TextureRect/imgStructure7"), NodePath("TextureRect/imgStructure8")]
+selStructure = NodePath("TextureRect/imgStructure")
+scnStruct = Array[PackedScene]([ExtResource("2_mc77p"), ExtResource("3_swbqo"), ExtResource("4_02udj"), ExtResource("5_k6ju7"), ExtResource("6_xvfvo"), ExtResource("7_ee7ro"), ExtResource("8_rb3cp"), ExtResource("9_kc8hf")])
+lblIron = NodePath("TextureRect/lblIron")
+lblWood = NodePath("TextureRect/lblWood")
+structName = PackedStringArray("Alchemy Lab", "BlckSmith", "Golem Factory", "Herbalist", "Lode Stone", "Settlement", "Tower", "Training Center")
+structDescription = PackedStringArray("Generates research points to be used to upgrade weapons, towers and golems.", "Increases your armor so you take less damage from enemies.", "Creates a golem. You may only have one.", "Increases your max health.", "Increases magnetism(the area around player that sucks in items).", "Nothing Yet.", "Shoots nearby enemies", "Increases player speed.")
+lblStructName = NodePath("TextureRect/lblStructName")
+lblStructDescription = NodePath("TextureRect/lblStructDescription")
+btnBuild = NodePath("TextureRect/MCbtnBuild/TextureButton")
+redStroke = NodePath("TextureRect/RedStroke")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_x6h7o")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="imgStructure" type="TextureRect" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.453646
+anchor_top = 0.417593
+anchor_right = 0.526042
+anchor_bottom = 0.54537
+offset_left = 2.0
+offset_top = -12.0
+offset_right = 41.9999
+offset_bottom = 28.0
+texture = ExtResource("3_xbxuk")
+metadata/_edit_use_anchors_ = true
+
+[node name="imgStructure1" type="TextureRect" parent="TextureRect"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.453646
+anchor_top = 0.417593
+anchor_right = 0.526042
+anchor_bottom = 0.54537
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("4_f68v6")
+metadata/_edit_use_anchors_ = true
+
+[node name="imgStructure2" type="TextureRect" parent="TextureRect"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.453646
+anchor_top = 0.417593
+anchor_right = 0.526042
+anchor_bottom = 0.54537
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("5_2t4bb")
+metadata/_edit_use_anchors_ = true
+
+[node name="imgStructure3" type="TextureRect" parent="TextureRect"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.453646
+anchor_top = 0.417593
+anchor_right = 0.526042
+anchor_bottom = 0.54537
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("6_wq1ql")
+metadata/_edit_use_anchors_ = true
+
+[node name="imgStructure4" type="TextureRect" parent="TextureRect"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.453646
+anchor_top = 0.417593
+anchor_right = 0.526042
+anchor_bottom = 0.54537
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("7_cvgyy")
+metadata/_edit_use_anchors_ = true
+
+[node name="imgStructure5" type="TextureRect" parent="TextureRect"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.453646
+anchor_top = 0.417593
+anchor_right = 0.526042
+anchor_bottom = 0.54537
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("8_gantb")
+metadata/_edit_use_anchors_ = true
+
+[node name="imgStructure6" type="TextureRect" parent="TextureRect"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.453646
+anchor_top = 0.417593
+anchor_right = 0.526042
+anchor_bottom = 0.54537
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("9_6pmks")
+metadata/_edit_use_anchors_ = true
+
+[node name="imgStructure7" type="TextureRect" parent="TextureRect"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.453646
+anchor_top = 0.417593
+anchor_right = 0.526042
+anchor_bottom = 0.54537
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("10_rnmt2")
+metadata/_edit_use_anchors_ = true
+
+[node name="imgStructure8" type="TextureRect" parent="TextureRect"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.453646
+anchor_top = 0.417593
+anchor_right = 0.526042
+anchor_bottom = 0.54537
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("11_nhasb")
+metadata/_edit_use_anchors_ = true
+
+[node name="btnLeft" type="TextureButton" parent="TextureRect"]
+layout_mode = 0
+offset_left = 732.0
+offset_top = 495.0
+offset_right = 830.0
+offset_bottom = 561.0
+texture_normal = ExtResource("12_hrki4")
+
+[node name="btnRight" type="TextureButton" parent="TextureRect"]
+layout_mode = 0
+offset_left = 1102.0
+offset_top = 495.0
+offset_right = 1201.0
+offset_bottom = 561.0
+texture_normal = ExtResource("13_2hwxe")
+
+[node name="btnClose" type="TextureButton" parent="TextureRect"]
+layout_mode = 0
+offset_left = 1299.0
+offset_top = 273.0
+offset_right = 1368.0
+offset_bottom = 338.0
+texture_normal = ExtResource("14_ew8ol")
+
+[node name="Iron" type="TextureRect" parent="TextureRect"]
+offset_left = 825.0
+offset_top = 630.0
+offset_right = 959.0
+offset_bottom = 740.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("23_u1pr4")
+
+[node name="lblIron" type="Label" parent="TextureRect"]
+offset_left = 900.0
+offset_top = 636.0
+offset_right = 972.0
+offset_bottom = 679.0
+text = "999"
+label_settings = SubResource("LabelSettings_g16je")
+
+[node name="Wood" type="TextureRect" parent="TextureRect"]
+offset_left = 984.0
+offset_top = 630.0
+offset_right = 1128.0
+offset_bottom = 728.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("25_a6euj")
+
+[node name="lblWood" type="Label" parent="TextureRect"]
+offset_left = 1061.0
+offset_top = 636.0
+offset_right = 1133.0
+offset_bottom = 679.0
+text = "999"
+label_settings = SubResource("LabelSettings_g16je")
+
+[node name="lblStructDescription" type="Label" parent="TextureRect"]
+custom_minimum_size = Vector2(530, 0)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -262.0
+offset_top = 691.0
+offset_right = 268.0
+offset_bottom = 751.0
+grow_horizontal = 2
+size_flags_vertical = 1
+text = "Description"
+label_settings = SubResource("LabelSettings_uq3h3")
+horizontal_alignment = 1
+autowrap_mode = 3
+justification_flags = 0
+
+[node name="lblStructName" type="Label" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -66.0
+offset_top = -195.0
+offset_right = 66.0
+offset_bottom = -128.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 1
+text = "Name"
+label_settings = SubResource("LabelSettings_5oljx")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RedStroke" type="TextureRect" parent="TextureRect"]
+z_index = 2
+offset_left = 874.0
+offset_top = 436.0
+offset_right = 1066.0
+offset_bottom = 617.0
+mouse_filter = 2
+texture = ExtResource("26_wnxte")
+
+[node name="MCbtnBuild" type="MarginContainer" parent="TextureRect"]
+z_index = 5
+offset_left = 752.0
+offset_top = 814.0
+offset_right = 1112.0
+offset_bottom = 992.0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="TextureButton" type="TextureButton" parent="TextureRect/MCbtnBuild"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+texture_normal = ExtResource("27_fcrfb")
+texture_hover = ExtResource("28_5j0fs")
+texture_disabled = ExtResource("29_72pnm")
+
+[node name="lblBuild" type="Label" parent="TextureRect/MCbtnBuild/TextureButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.809129
+anchor_top = 0.490909
+anchor_right = 0.809129
+anchor_bottom = 0.490909
+offset_left = -131.0
+offset_top = -37.0
+offset_right = -13.0
+offset_bottom = 37.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Build"
+label_settings = SubResource("LabelSettings_vtdxf")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="TextureRect/btnLeft" to="." method="Left"]
+[connection signal="pressed" from="TextureRect/btnRight" to="." method="Right"]
+[connection signal="pressed" from="TextureRect/btnClose" to="." method="_OnClose"]
+[connection signal="mouse_entered" from="TextureRect/MCbtnBuild/TextureButton" to="." method="Hover"]
+[connection signal="mouse_exited" from="TextureRect/MCbtnBuild/TextureButton" to="." method="UnHover"]
+[connection signal="pressed" from="TextureRect/MCbtnBuild/TextureButton" to="." method="BuildStructure"]
