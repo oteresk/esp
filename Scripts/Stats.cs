@@ -181,13 +181,11 @@ public partial class Stats : VBoxContainer
     public void OnBtnTowerLevelEnter()
     {
         btnTowerLevel = true;
-        Debug.Print("tower enter");
     }
 
     public void OnBtnTowerLevelExit()
     {
         btnTowerLevel = false;
-        Debug.Print("tower exit");
     }
 
     public void OnBtnGolemLevelEnter()

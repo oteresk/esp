@@ -5,7 +5,7 @@
 	"[ResourceStart] StartWood": 0,
 	"[Settings] GodMode": false,
 	"[Settings] MasterVolume": 0,
-	"[Settings] MusicVolume": 0,
+	"[Settings] MusicVolume": -8,
 	"[Settings] SFXVolume": 0,
 	"[Settings] ShowFPS": false,
 	"[StartingStructures] Platform": true,

@@ -31,8 +31,8 @@ public partial class ResourceDiscoveries : Node2D
 	[Export] private PackedScene rTemplateWood;
 	[Export] private PackedScene rTemplatePlatform;
 
-	[Export] public static int pixelSizeX=192*3;
-	[Export] public static int pixelSizeY=108*3;
+	public static int pixelSizeX=192*3;
+	public static int pixelSizeY=108*3;
 	[Export] public int resourcesPerCell;
 
 	static public bool mapNotPressed = true; // prevents spamming map key
@@ -143,7 +143,7 @@ public partial class ResourceDiscoveries : Node2D
 			strMinutes = "0" + strMinutes;
 
 		// decreas enemy timer as the minute goes on
-		enemyTimer.WaitTime = (double)0.6600 - (double)(seconds / 120.0); // 0-.5
+		enemyTimer.WaitTime = (double)0.700 - (double)(seconds / 220.0); // 0-.5
 		//Debug.Print("wait timer: " + enemyTimer.WaitTime+" seconds:"+seconds+"s/120:"+(double)(seconds/120.0));
 
 
@@ -239,7 +239,7 @@ GetNewPos:
 				relic.Position = new Vector2(relicX, relicY);
 
 				float dist = relic.GlobalPosition.DistanceTo(new Vector2(0, 0));
-				if (dist < 11000) // make sure distance to relic is >11000
+				if (dist < 5000) // make sure distance to relic is >11000
 					goto GetNewPos;
 				//Debug.Print("relic dist:" + dist);
 

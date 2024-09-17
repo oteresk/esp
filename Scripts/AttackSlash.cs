@@ -63,7 +63,7 @@ public partial class AttackSlash : Area2D
 
     public void SetAOE()
     {
-        AOE = baseAOE + AOELevel * AOEInc+(Globals.statAoE * AOEInc);
+        AOE = (baseAOE + AOELevel * AOEInc+(Globals.statAoE * AOEInc))/2;
         if (IsInstanceValid(this))
            Scale=new Vector2(AOE,AOE);
         //Debug.Print("SetAoE");

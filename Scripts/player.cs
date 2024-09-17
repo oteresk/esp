@@ -86,6 +86,7 @@ public partial class player : Area2D
 	private string curAnim;
 
 	[Export] public ColorRect GodRays;
+	[Export] public Label lblPosition;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -201,9 +202,9 @@ public partial class player : Area2D
 			else
             {
                 animatedSprite2D.FlipH = true;
-				animatedSprite2D.Offset = new Vector2(-100, 0);
+				animatedSprite2D.Offset = new Vector2(-50, 0);
                 animatedSprite2DTop.FlipH = true;
-                animatedSprite2DTop.Offset = new Vector2(-100, 0);
+                animatedSprite2DTop.Offset = new Vector2(-50, 0);
                 SetAttackFlips();
             }
 
@@ -236,9 +237,9 @@ public partial class player : Area2D
 			if (Input.IsActionPressed("FaceLeft") && Globals.playerAlive)
 			{
 				animatedSprite2D.FlipH = true;
-				animatedSprite2D.Offset = new Vector2(-100, 0);
+				animatedSprite2D.Offset = new Vector2(-50, 0);
                 animatedSprite2DTop.FlipH = true;
-                animatedSprite2DTop.Offset = new Vector2(-100, 0);
+                animatedSprite2DTop.Offset = new Vector2(-50, 0);
                 SetAttackFlips();
 			}
 			else
@@ -282,6 +283,8 @@ public partial class player : Area2D
 			else if (velocity.Length() > 0)
 			{ // TODO: efficiency - precalc this
 			  //Debug.Print("Player pos:" + Position);
+				if (Globals.settings_ShowPlayerPosition==true)
+					lblPosition.Text = Position.ToString();
 				velocity *= (baseSpeed * speedMultiplier * poisonSpeed) + (Globals.speedLevel * speedInc) + (Globals.statMovementSpeed * speedInc);
 			}
 
@@ -994,6 +997,8 @@ public partial class player : Area2D
 			st.DamagePlayer();
 		}
 		// occlusion for enemies
+		
+		/*
 		if (area.IsInGroup("Occlusion"))
         {
 			area.GetParent<RigidBody2D>().Visible = true;
@@ -1002,18 +1007,33 @@ public partial class player : Area2D
         {
             area.GetParent<AnimatedSprite2D>().Visible = true;
         }
+		*/
+		
     }
 
 	public void OnAreaExited(Area2D area) // enemy exit
 	{
+		/*
         // occlusion for enemies
         if (area.IsInGroup("Occlusion"))
         {
-            area.GetParent<RigidBody2D>().Visible = false;
+			if (IsInstanceValid(area.GetParent<RigidBody2D>()))
+			{
+				area.GetParent().QueueFree();
+                Globals.enemies--;
+                Globals.UpdateEnemies();
+
+            }
+
+            //area.GetParent<RigidBody2D>().Visible = false;
+			Debug.Print("hide: " + area.GetParent<RigidBody2D>().Name);
         }
+		*/
         if (area.IsInGroup("OcclusionTrail")) // slime trail
         {
-            area.GetParent<AnimatedSprite2D>().Visible = false;
+            if (IsInstanceValid(area.GetParent<AnimatedSprite2D>()))
+                area.GetParent().QueueFree();
+            //area.GetParent<AnimatedSprite2D>().Visible = false;
         }
     }
 

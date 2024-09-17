@@ -57,9 +57,9 @@ public partial class AttackCross : Area2D
     }
     public void SetAOE()
     {
-        AOE = baseAOE + AOELevel * AOEInc + (Globals.statAoE * AOEInc);
+        AOE = (baseAOE + AOELevel * AOEInc + (Globals.statAoE * AOEInc))/2;
         Debug.Print("AOR: " + AOE);
-        //Scale = new Vector2(AOE, AOE);
+        Scale = new Vector2(AOE, AOE);
     }
     public float GetDamage()
     {

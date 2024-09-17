@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://cea8np42epeyx"]
+[gd_scene load_steps=38 format=3 uid="uid://cea8np42epeyx"]
 
 [ext_resource type="Shader" path="res://Shaders/ColorFlash.gdshader" id="1_l2bn1"]
 [ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_q6scr"]
@@ -136,8 +136,6 @@ animations = [{
 radius = 19.98
 height = 39.96
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vifxa"]
-
 [node name="en_Bat" type="RigidBody2D" node_paths=PackedStringArray("enemyNoise", "enemyDeathSound") groups=["Enemies"]]
 collision_layer = 2
 collision_mask = 2
@@ -152,7 +150,7 @@ damage = 2
 enemyName = "Bat"
 XP = 1
 enemyNoise = [NodePath("enemyNoise"), NodePath("enemyNoise2"), NodePath("enemyNoise3")]
-enemyDeathSound = NodePath("enemyDeathSound")
+enemyDeathSound = [NodePath("enemyDeathSound")]
 bloodScene = ExtResource("3_3d2hh")
 bloodColor = Color(0.603922, 0.301961, 0.733333, 0.827451)
 bloodFrame = 10
@@ -160,8 +158,7 @@ bloodFrame = 10
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 material = SubResource("ShaderMaterial_71tgv")
-position = Vector2(-1, -15)
-scale = Vector2(0.5, 0.5)
+position = Vector2(2, -14)
 sprite_frames = SubResource("SpriteFrames_7y2m0")
 animation = &"Death"
 
@@ -171,16 +168,6 @@ position = Vector2(0, -3)
 rotation = 0.00420356
 scale = Vector2(0.919833, 1)
 shape = SubResource("CapsuleShape2D_j3bk0")
-
-[node name="Occlusion Area Collider" type="Area2D" parent="." groups=["Occlusion"]]
-editor_description = "Shows and hides node for efficiency"
-collision_layer = 4
-collision_mask = 0
-monitoring = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
-scale = Vector2(140, 90)
-shape = SubResource("RectangleShape2D_vifxa")
 
 [node name="enemyNoise" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("37_pwwl6")

@@ -14,6 +14,8 @@ public partial class Globals : Node
     static public string NodeMiniMapPlayer = "/root/World/MiniMapCanvas/Control2/Control/MarginContainer/ctlSub/SubViewportContainer/SubViewport/Node2D/PlayerIcon/TextureRect";
 	static public string NodeMiniMapBorder = "/root/World/MiniMapCanvas/Control2/Control/MarginContainer/ctlBorder/Border";
 	static public string NodeStructureGUI = "/root/World/LateGUI/ctlStructureSelect";
+    static public string NodeStructureGUIMessage = "/root/World/LateGUI/ctlResourceMessage";
+    static public string NodeGUIWinMessage = "/root/World/LateGUI/ctlWinMessage";
     static public string NodeGUI = "/root/World/GUI";
 	static public string NodeResourceDiscoveries = "/root/World/ResourceDiscoveries";
 	static public string NodePlayer = "/root/World/Player";
@@ -153,6 +155,7 @@ public partial class Globals : Node
 	static public bool settings_ShowFPS = false;
 	static public bool settings_GodMode = false;
     static public bool settingsLoaded = false;
+	static public bool settings_ShowPlayerPosition = false;
 
     static public float healingModifier = .5f;
     static public float fireTime = 6; // how long the big fire lasts in world
@@ -361,7 +364,7 @@ public partial class Globals : Node
 
 		magenetismLevel = 1;
 		armorLevel = 1;
-		attackLevel = 1;
+		attackLevel = 2; // for testing
 		towerLevel = 1;
 		golemLevel = 1;
 
@@ -764,8 +767,10 @@ public partial class Globals : Node
 
     static public void UpdateEnemies()
 	{
-		//Debug.Print("Enemies: " + enemies);
-	}
+        GD.PrintRich("[color=blue]Enemies: [/color]" + enemies +" - "+ ResourceDiscoveries.minutes.ToString()+ ":"+ResourceDiscoveries.seconds.ToString()+" - FPS:"+ Engine.GetFramesPerSecond().ToString());
+
+
+    }
 
 	static public void SetAttackLevel()
 	{

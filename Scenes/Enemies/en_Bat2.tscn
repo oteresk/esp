@@ -95,9 +95,9 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("20_73lqo")
 }],
-"loop": true,
+"loop": false,
 "name": &"Death",
-"speed": 5.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -151,7 +151,7 @@ itemScene = ExtResource("2_gh2ca")
 damage = 20
 XP = 7
 enemyNoise = [NodePath("enemyNoise"), NodePath("enemyNoise2"), NodePath("enemyNoise3")]
-enemyDeathSound = NodePath("enemyDeathSound")
+enemyDeathSound = [NodePath("enemyDeathSound")]
 bloodScene = ExtResource("3_45cd7")
 bloodColor = Color(1, 0.301961, 0.513726, 0.752941)
 bloodFrame = 10
@@ -160,8 +160,7 @@ bloodFrame = 10
 modulate = Color(1, 0.117647, 0.219608, 1)
 texture_filter = 1
 material = SubResource("ShaderMaterial_boo5v")
-position = Vector2(1, 10)
-scale = Vector2(0.5, 0.5)
+position = Vector2(2, -15)
 sprite_frames = SubResource("SpriteFrames_nyuw3")
 animation = &"Death"
 

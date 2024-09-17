@@ -8,8 +8,8 @@ radius = 521.0
 
 [node name="AttackSlash" type="Area2D" node_paths=PackedStringArray("sndSwipe")]
 modulate = Color(1, 1, 1, 0.501961)
-position = Vector2(0, -120)
-scale = Vector2(3, 3)
+position = Vector2(0, -60)
+scale = Vector2(1.5, 1.5)
 collision_layer = 0
 collision_mask = 0
 monitoring = false

@@ -68,7 +68,7 @@ public partial class AttackRange : Area2D
 
     public void SetAOE()
     {
-        AOE = baseAOE + AOELevel * AOEInc + (Globals.statAoE * AOEInc);
+        AOE = (baseAOE + AOELevel * AOEInc + (Globals.statAoE * AOEInc))/2;
         //Debug.Print("AOE: " + AOE);
         //Scale = new Vector2(AOE, AOE);
     }

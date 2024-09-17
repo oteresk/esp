@@ -67,6 +67,7 @@ public partial class Upgrade : CanvasLayer
                 {
                     Globals.UnPauseGame();
                     SelectUpgrade();
+                    PrintAllUpgrades();
                     ShrinkSelected();
                     curUpgrade = null;
                 }
@@ -79,6 +80,58 @@ public partial class Upgrade : CanvasLayer
         }
     }
 
+    private void PrintAllUpgrades()
+    {
+        if (Globals.ps.atkSlashEnergy.Count>0)
+        {
+            GD.PrintRich("[color=green]"+"[b]"+"atkSlashEnergy " + "[/b]"+ "AoE:" + Globals.ps.atkSlashEnergy[0].GetAOELevel() + " spd:" + Globals.ps.atkSlashEnergy[0].GetAttackSpeedLevel() + " dmg:" + Globals.ps.atkSlashEnergy[0].GetDmgLevel() + "[/color]");
+        }
+        if (Globals.ps.atkSlashIce.Count > 0)
+        {
+            GD.PrintRich("[color=green]" + "[b]" + "atkSlashIce " + "[/b]" + "AoE:" + Globals.ps.atkSlashIce[0].GetAOELevel() + " spd:" + Globals.ps.atkSlashIce[0].GetAttackSpeedLevel() + " dmg:" + Globals.ps.atkSlashIce[0].GetDmgLevel() + "[/color]");
+        }
+        if (Globals.ps.atkSlashLeeches.Count > 0)
+        {
+            GD.PrintRich("[color=green]" + "[b]" + "atkSlashLeeches " + "[/b]" + "AoE:" + Globals.ps.atkSlashLeeches[0].GetAOELevel() + " spd:" + Globals.ps.atkSlashLeeches[0].GetAttackSpeedLevel() + " dmg:" + Globals.ps.atkSlashLeeches[0].GetDmgLevel() + "[/color]");
+        }
+        if (Globals.ps.atkProjectileEnergy.Count > 0)
+        {
+            GD.PrintRich("[color=green]" + "[b]" + "atkProjectileEnergy " + "[/b]" + "AoE:" + Globals.ps.atkProjectileEnergy[0].GetAOELevel() + " spd:" + Globals.ps.atkProjectileEnergy[0].GetAttackSpeedLevel() + " dmg:" + Globals.ps.atkProjectileEnergy[0].GetDmgLevel() + "[/color]");
+        }
+        if (Globals.ps.atkProjectileLeeches.Count > 0)
+        {
+            GD.PrintRich("[color=green]" + "[b]" + "atkProjectileLeeches " + "[/b]" + "AoE:" + Globals.ps.atkProjectileLeeches[0].GetAOELevel() + " spd:" + Globals.ps.atkProjectileLeeches[0].GetAttackSpeedLevel() + " dmg:" + Globals.ps.atkProjectileLeeches[0].GetDmgLevel() + "[/color]");
+        }
+        if (Globals.ps.atkProjectilePoison.Count > 0)
+        {
+            GD.PrintRich("[color=green]" + "[b]" + "atkProjectilePoison " + "[/b]" + "AoE:" + Globals.ps.atkProjectilePoison[0].GetAOELevel() + " spd:" + Globals.ps.atkProjectilePoison[0].GetAttackSpeedLevel() + " dmg:" + Globals.ps.atkProjectilePoison[0].GetDmgLevel() + "[/color]");
+        }
+        if (Globals.ps.atkOrbitEnergy.Count > 0)
+        {
+            GD.PrintRich("[color=green]" + "[b]" + "atkOrbitEnergy " + "[/b]" + "AoE:" + Globals.ps.atkOrbitEnergy[0].GetAOELevel() + " spd:" + Globals.ps.atkOrbitEnergy[0].GetAttackSpeedLevel() + " dmg:" + Globals.ps.atkOrbitEnergy[0].GetDmgLevel() + "[/color]");
+        }
+        if (Globals.ps.atkOrbitFire.Count > 0)
+        {
+            GD.PrintRich("[color=green]" + "[b]" + "atkOrbitFire " + "[/b]" + "AoE:" + Globals.ps.atkOrbitFire[0].GetAOELevel() + " spd:" + Globals.ps.atkOrbitFire[0].GetAttackSpeedLevel() + " dmg:" + Globals.ps.atkOrbitFire[0].GetDmgLevel() + "[/color]");
+        }
+        if (Globals.ps.atkOrbitPoison.Count > 0)
+        {
+            GD.PrintRich("[color=green]" + "[b]" + "atkOrbitPoison " + "[/b]" + "AoE:" + Globals.ps.atkOrbitPoison[0].GetAOELevel() + " spd:" + Globals.ps.atkOrbitPoison[0].GetAttackSpeedLevel() + " dmg:" + Globals.ps.atkOrbitPoison[0].GetDmgLevel() + "[/color]");
+        }
+        if (Globals.ps.atkCrossFire.Count > 0)
+        {
+            GD.PrintRich("[color=green]" + "[b]" + "atkCrossFire " + "[/b]" + "AoE:" + Globals.ps.atkCrossFire[0].GetAOELevel() + " spd:" + Globals.ps.atkCrossFire[0].GetAttackSpeedLevel() + " dmg:" + Globals.ps.atkCrossFire[0].GetDmgLevel() + "[/color]");
+        }
+        if (Globals.ps.atkCrossIce.Count > 0)
+        {
+            GD.PrintRich("[color=green]" + "[b]" + "atkCrossIce " + "[/b]" + "AoE:" + Globals.ps.atkCrossIce[0].GetAOELevel() + " spd:" + Globals.ps.atkCrossIce[0].GetAttackSpeedLevel() + " dmg:" + Globals.ps.atkCrossIce[0].GetDmgLevel() + "[/color]");
+        }
+        if (Globals.ps.atkCrossLeeches.Count > 0)
+        {
+            GD.PrintRich("[color=green]" + "[b]" + "atkCrossLeeches " + "[/b]" + "AoE:" + Globals.ps.atkCrossLeeches[0].GetAOELevel() + " spd:" + Globals.ps.atkCrossLeeches[0].GetAttackSpeedLevel() + " dmg:" + Globals.ps.atkCrossLeeches[0].GetDmgLevel() + "[/color]");
+        }
+
+    }
     private async void ShrinkNotSelected()
     {
         float animTime = .5f;
@@ -100,7 +153,8 @@ public partial class Upgrade : CanvasLayer
         tween.Parallel().TweenProperty(btnUpgrade, "modulate:a", 0f, animTime);
 
         await Task.Delay(TimeSpan.FromMilliseconds(animTime*1000));
-        this.QueueFree();
+        if (IsInstanceValid(this))
+            this.QueueFree();
     }
 
 

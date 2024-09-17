@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://do5qsqhhmteq3"]
+[gd_scene load_steps=25 format=3 uid="uid://do5qsqhhmteq3"]
 
 [ext_resource type="Script" path="res://Scripts/Relic.cs" id="1_kgpfi"]
 [ext_resource type="Texture2D" uid="uid://dxd6akepaurun" path="res://Art/GUI/Relics/Bracelet.png" id="2_tc5s6"]
@@ -14,7 +14,6 @@
 [ext_resource type="Texture2D" uid="uid://ckq4e154tu5pj" path="res://Art/GUI/Relics/StarParticle.png" id="12_tdlkb"]
 [ext_resource type="PackedScene" uid="uid://2i4s0bf304dm" path="res://Scenes/RelicDiscovery.tscn" id="13_a4nxa"]
 [ext_resource type="Shader" path="res://Shaders/Distortion.gdshader" id="14_8sb36"]
-[ext_resource type="Texture2D" uid="uid://dr5xuvuwhgro2" path="res://Art/2ColorCircle.png" id="15_lp7be"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dj03w"]
 shader = ExtResource("9_gybru")
@@ -75,16 +74,15 @@ orbit_velocity_min = 0.0
 orbit_velocity_max = 0.0
 color_ramp = SubResource("GradientTexture1D_0v3on")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4q4kj"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m2wgp"]
 resource_local_to_scene = true
 shader = ExtResource("14_8sb36")
 shader_parameter/strength = 0.08
-shader_parameter/center = Vector2(0.46, 0.46)
-shader_parameter/radius = 0.334
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/radius = 0.25
 shader_parameter/aberration = 0.425
-shader_parameter/width = 0.0301
+shader_parameter/width = 0.04
 shader_parameter/feather = 0.135
-shader_parameter/maskImage = ExtResource("15_lp7be")
 
 [node name="Relic" type="Area2D" node_paths=PackedStringArray("sprRelic", "sprShadow", "sprDiscovery", "AreaDiscovery", "sndGetRelic", "sndDiscoverRelic", "dust", "stars") groups=["Relics"]]
 scale = Vector2(0.5, 0.5)
@@ -153,7 +151,7 @@ lifetime = 3.0
 randomness = 0.2
 
 [node name="sprDiscovery" parent="." instance=ExtResource("13_a4nxa")]
-material = SubResource("ShaderMaterial_4q4kj")
+material = SubResource("ShaderMaterial_m2wgp")
 scale = Vector2(12, 12)
 
 [connection signal="area_entered" from="." to="." method="OnAreaEntered"]

@@ -42,7 +42,7 @@ public partial class SaveLoad : Node2D
     }
 
 
-        static public void SaveSettings()
+    static public void SaveSettings()
 	{
         Debug.Print("Save settings");
         // resource starting numbers (used for testing)
@@ -114,6 +114,7 @@ public partial class SaveLoad : Node2D
         settingsData.Add("[Settings] ShowFPS", Globals.settings_ShowFPS);
 
         settingsData.Add("[Settings] GodMode", Globals.settings_GodMode);
+        settingsData.Add("[Settings] ShowPlayerPosition", Globals.settings_ShowPlayerPosition);
 
         string json = Json.Stringify(settingsData, "\t");
         settingsData.Clear();
@@ -206,6 +207,10 @@ public partial class SaveLoad : Node2D
 
             Globals.settings_ShowFPS = (bool)settingsData["[Settings] ShowFPS"];
             Globals.settings_GodMode = (bool)settingsData["[Settings] GodMode"];
+            if (settingsData.ContainsKey("[Settings] ShowPlayerPosition"))
+                Globals.settings_ShowPlayerPosition = (bool)settingsData["[Settings] ShowPlayerPosition"];
+            else
+                settingsData.Add("[Settings] ShowPlayerPosition", false);
 
             Node rdNode = Globals.rootNode.GetNodeOrNull(Globals.NodeResourceDiscoveries);
             Debug.Print("Scene name: " + Globals.rootNode.Name);
@@ -350,7 +355,7 @@ public partial class SaveLoad : Node2D
             // testing
             Globals.hasRelic[1] = true;
             Globals.hasRelic[2] = true;
-            Globals.hasRelic[6] = true;
+            //Globals.hasRelic[6] = true;
             Globals.hasRelic[5] = true;
 
 

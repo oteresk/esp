@@ -21,9 +21,9 @@ shader_parameter/flash_color = Color(1, 0, 0, 1)
 [sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
 animations = [{
 "frames": [],
-"loop": true,
+"loop": false,
 "name": &"Death",
-"speed": 5.0
+"speed": 120.0
 }, {
 "frames": [{
 "duration": 1.0,

@@ -112,7 +112,7 @@ public partial class AttackOrbit : Area2D
     }
     public void SetAOE()
     {
-        AOE = baseAOE + AOELevel * AOEInc + (Globals.statAoE * AOEInc);
+        AOE = (baseAOE + AOELevel * AOEInc + (Globals.statAoE * AOEInc))/2;
         Debug.Print("AOE: " + AOE);
         bullet.Scale = new Vector2(AOE, AOE);
         //radius = 70+(AOE*10);
