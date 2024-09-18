@@ -81,6 +81,7 @@ grow_vertical = 2
 pivot_offset = Vector2(256, 432)
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="Control"]
 material = SubResource("ShaderMaterial_f45uj")
