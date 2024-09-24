@@ -47,10 +47,22 @@ shader_parameter/flash_color = Color(1, 0, 0, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
 animations = [{
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("32_o31g3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_n2wwj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_gg1tm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_7qt1d")
+}],
 "loop": false,
 "name": &"Death",
-"speed": 16.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,

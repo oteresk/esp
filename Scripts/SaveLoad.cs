@@ -14,16 +14,6 @@ public partial class SaveLoad : Node2D
 
     public override void _Ready()
 	{
-        settingsData = new Godot.Collections.Dictionary();
-        gameSaveData = new Godot.Collections.Dictionary();
-        DelayedStart();
-    }
-
-    public async void DelayedStart()
-    {
-        // wait a bit
-        await Task.Delay(TimeSpan.FromMilliseconds(200));
-
         string path = ProjectSettings.GlobalizePath(settingsFilename);
 
         if (!File.Exists(path))
@@ -32,8 +22,9 @@ public partial class SaveLoad : Node2D
         path = ProjectSettings.GlobalizePath(gameSaveFilename);
 
         if (!File.Exists(path))
-            SaveGame();
+            SaveGameNewFile();
     }
+
 
     // clears the dictionary
     static public void ClearSettings()
@@ -46,6 +37,8 @@ public partial class SaveLoad : Node2D
 	{
         Debug.Print("Save settings");
         // resource starting numbers (used for testing)
+        settingsData.Clear();
+
         settingsData.Add("[ResourceStart] StartIron", ResourceDiscoveries.iron);
         settingsData.Add("[ResourceStart] StartMana", ResourceDiscoveries.mana);
         settingsData.Add("[ResourceStart] StartWood", ResourceDiscoveries.wood);
@@ -111,10 +104,14 @@ public partial class SaveLoad : Node2D
         settingsData.Add("[Settings] MusicVolume", Globals.settings_MusicVolume);
         settingsData.Add("[Settings] MasterVolume", Globals.settings_MasterVolume);
 
+        settingsData.Add("[Settings] ShowFullScreen", Globals.settings_FullScreen);
         settingsData.Add("[Settings] ShowFPS", Globals.settings_ShowFPS);
 
         settingsData.Add("[Settings] GodMode", Globals.settings_GodMode);
         settingsData.Add("[Settings] ShowPlayerPosition", Globals.settings_ShowPlayerPosition);
+
+        settingsData.Add("[Settings] Decorations", Globals.settings_Decorations);
+        settingsData.Add("[Settings] PlayerGhost", Globals.settings_PlayerGhost);
 
         string json = Json.Stringify(settingsData, "\t");
         settingsData.Clear();
@@ -125,6 +122,7 @@ public partial class SaveLoad : Node2D
 
     static public void LoadSettings()
 	{
+        settingsData = new Godot.Collections.Dictionary();
         settingsData.Clear();
 
         if (File.Exists(settingsFilename))
@@ -205,12 +203,41 @@ public partial class SaveLoad : Node2D
             Globals.settings_MusicVolume = (float)settingsData["[Settings] MusicVolume"];
             Globals.settings_MasterVolume = (float)settingsData["[Settings] MasterVolume"];
 
-            Globals.settings_ShowFPS = (bool)settingsData["[Settings] ShowFPS"];
-            Globals.settings_GodMode = (bool)settingsData["[Settings] GodMode"];
+            if (settingsData.ContainsKey("[Settings] FullScreen"))
+                Globals.settings_FullScreen = (bool)settingsData["[Settings] FullScreen"];
+            else
+                settingsData.Add("[Settings] FullScreen", true);
+
+            if (settingsData.ContainsKey("[Settings] ShowFPS"))
+                Globals.settings_ShowFPS = (bool)settingsData["[Settings] ShowFPS"];
+            else
+                settingsData.Add("[Settings] ShowFPS", false);
+
+            if (settingsData.ContainsKey("[Settings] GodMode"))
+                Globals.settings_GodMode = (bool)settingsData["[Settings] GodMode"];
+            else
+                settingsData.Add("[Settings] GodMode", false);
+
             if (settingsData.ContainsKey("[Settings] ShowPlayerPosition"))
                 Globals.settings_ShowPlayerPosition = (bool)settingsData["[Settings] ShowPlayerPosition"];
             else
                 settingsData.Add("[Settings] ShowPlayerPosition", false);
+
+            if (settingsData.ContainsKey("[Settings] Decorations"))
+                Globals.settings_Decorations = (bool)settingsData["[Settings] Decorations"];
+            else
+                settingsData.Add("[Settings] Decorations", true);
+
+            if (settingsData.ContainsKey("[Settings] PlayerGhost"))
+                Globals.settings_PlayerGhost = (bool)settingsData["[Settings] PlayerGhost"];
+            else
+                settingsData.Add("[Settings] PlayerGhost", true);
+
+
+
+
+
+            // initialize stuff
 
             Node rdNode = Globals.rootNode.GetNodeOrNull(Globals.NodeResourceDiscoveries);
             Debug.Print("Scene name: " + Globals.rootNode.Name);
@@ -218,13 +245,9 @@ public partial class SaveLoad : Node2D
             {
                 ResourceDiscoveries rD = (ResourceDiscoveries)rdNode;
                 rD.PlaceStartingStructures();
-            }
-            else // if stat upgrade scene
-            if (Globals.rootNode.Name == "StatUpgrades")
-            {
-                Node nd = Globals.rootNode.GetNode(".");
-                StatUpgrades su = (StatUpgrades)nd;
-                su.UpdateAllSlots();
+                rD.PlaceResourceDiscoveries();
+                if (Globals.settings_Decorations)
+                    rD.PlaceDecorations();
             }
             else // if title
             if (Globals.rootNode.Name == "Title")
@@ -232,15 +255,40 @@ public partial class SaveLoad : Node2D
 
             }
 
+            // full screen
+            if (Globals.settings_FullScreen)
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.ExclusiveFullscreen);
+            else
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
+
+
             Debug.Print("Load settings");
         }
 
     }
 
-    static public void SaveGame()
+    static public void SaveGameNewFile()
     {
-        Debug.Print("save gold:" + ResourceDiscoveries.gold);
+        // init stat upgrades
+        Globals.statUpgradeLevel = new int[Globals.MAXUPGRADES];
+        for (int iter = 0; iter < 5; iter++)
+            Globals.statUpgradeLevel[iter] = 0;
+
+        // init relics
+        Globals.hasRelic = new bool[Globals.MAXRELICS];
+
+        for (int iter = 0; iter < Globals.MAXRELICS; iter++)
+            Globals.hasRelic[iter] = false;
+
+        SaveGame();
+    }
+
+        static public void SaveGame()
+    {
+        Debug.Print("save game:" + ResourceDiscoveries.gold);
+        gameSaveData = new Godot.Collections.Dictionary();
         gameSaveData.Clear();
+
         gameSaveData.Add("StartGold", ResourceDiscoveries.gold);
         gameSaveData.Add("[StatUpgradeLevel] AttackSpeed", Globals.statUpgradeLevel[0]);
         gameSaveData.Add("[StatUpgradeLevel] Damage", Globals.statUpgradeLevel[1]);
@@ -279,6 +327,7 @@ public partial class SaveLoad : Node2D
 
     static public void LoadGame()
     {
+        gameSaveData = new Godot.Collections.Dictionary();
         gameSaveData.Clear();
 
         if (File.Exists(gameSaveFilename))
@@ -323,6 +372,8 @@ public partial class SaveLoad : Node2D
             Globals.SetTowerLevel();
 
             // stat upgrades
+            Globals.InitArrays();
+
             if (gameSaveData.ContainsKey("[StatUpgradeLevel] AttackSpeed"))
                 Globals.statUpgradeLevel[0] = (int)gameSaveData["[StatUpgradeLevel] AttackSpeed"];
             if (gameSaveData.ContainsKey("[StatUpgradeLevel] Damage"))
@@ -366,12 +417,15 @@ public partial class SaveLoad : Node2D
             // update stat upgrades
             if (Globals.rootNode.Name == "StatUpgrades")
             {
+                Debug.Print("SaveLoad Stat Upgrades");
+
+                Debug.Print("Damage Upgrade: " + Globals.statUpgradeLevel[1]);
+                Debug.Print("Damage Upgrade key: " + gameSaveData["[StatUpgradeLevel] Damage"]);
+
                 Node nd = Globals.rootNode.GetNode(".");
                 StatUpgrades su = (StatUpgrades)nd;
                 su.UpdateAllSlots();
             }
-
-            Debug.Print("ResourceDiscoveries.gold:" + ResourceDiscoveries.gold);
 
             // update GUI
             ResourceDiscoveries.UpdateResourceGUI();

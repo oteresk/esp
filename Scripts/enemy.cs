@@ -328,8 +328,11 @@ public partial class enemy : RigidBody2D
             bowtime = GD.RandRange(1500, 3400);
             await Task.Delay(TimeSpan.FromMilliseconds(bowtime));
             speed = GD.RandRange(140, 180);
-            enemySprite.Animation = "run";
-            enemySprite.Play();
+            if (IsInstanceValid(this))
+            {
+                enemySprite.Animation = "run";
+                enemySprite.Play();
+            }
         }
     }
 
@@ -384,7 +387,7 @@ public partial class enemy : RigidBody2D
             
         // wait a bit
         await Task.Delay(TimeSpan.FromMilliseconds(100));
-        if (enemySprite != null && !isDead)
+        if (enemySprite != null && !isDead && IsInstanceValid(this))
         {
             ShaderMaterial enemyMat = (ShaderMaterial)enemySprite.Material;
             if (enemyMat != null)

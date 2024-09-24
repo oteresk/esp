@@ -14,7 +14,10 @@ shader_parameter/flash_color = Color(1, 0, 0, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
 animations = [{
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_gqysb")
+}],
 "loop": false,
 "name": &"Death",
 "speed": 16.0
@@ -58,6 +61,7 @@ enemyDeathSound = []
 texture_filter = 1
 material = SubResource("ShaderMaterial_fb7vb")
 sprite_frames = SubResource("SpriteFrames_7y2m0")
+animation = &"Death"
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
 position = Vector2(6, 4)

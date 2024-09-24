@@ -24,9 +24,17 @@ public partial class StatUpgrades : CanvasLayer
 
     public override void _Ready()
     {
+
+        // reset title music volume
+        AudioStreamPlayer titleMusic = (AudioStreamPlayer)GetNode(Globals.NodeTitleMusic);
+        titleMusic.VolumeDb = 0;
+        if (!titleMusic.Playing)
+            titleMusic.Play();
+
         confirm.Visible = false;
 
 		Node nod = Globals.rootNode.GetNode("Control/TextureRect/MCGold/HBGold/MCGold/Gold");
+        Debug.Print("StatUpgrades.lblGold");
 		lblGold = (Label)nod;
 
         nod = Globals.rootNode.GetNode("Control/TextureRect/MCUpgradeImage/UpgradeImage");
@@ -70,7 +78,7 @@ public partial class StatUpgrades : CanvasLayer
 
         var statUpgrade = sceneTree.GetNodesInGroup("StatUpgrade");
 
-        Debug.Print("Stat Upgrades: " + statUpgrade.Count);
+        Debug.Print("UpdateAllSlots Stat Upgrades: " + statUpgrade.Count);
 
         for (int i = 0; i < statUpgrade.Count; i++)
         {
@@ -103,6 +111,17 @@ public partial class StatUpgrades : CanvasLayer
                     Fade();
                 }
             }
+        }
+    }
+
+    public override void _Process(double delta)
+    {
+        if (Input.IsActionJustPressed("AddGold"))
+        {
+            ResourceDiscoveries.gold += 100;
+            StatUpgrades.lblGold.Text = ResourceDiscoveries.gold.ToString();
+            SaveLoad.SaveGame();
+            UpdateAllSlots();
         }
     }
 

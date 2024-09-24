@@ -33,7 +33,7 @@ public partial class MiniMap : Node2D
 
     ShaderMaterial minMapMat;
     Node miniMapNode;
-    Node borderNode;
+    public Node borderNode;
     int pixelSizeX;
     int pixelSizeY;
 
@@ -46,26 +46,18 @@ public partial class MiniMap : Node2D
         Player = (Area2D)GetNode(Globals.NodePlayer);
 
         miniMapNode = GetNode("../..");
-        borderNode = GetNode(Globals.NodeMiniMapBorder);
 
         lastPos = new Vector2(-999999, -999999); // make sure last pos doesn't match cur player pos
 
         CalculateZoom();
         DisplayMap();
 
-
-        DelayedStart();
-    }
-
-    public async void DelayedStart()
-    {
-        await Task.Delay(TimeSpan.FromMilliseconds(200));
-
         CreateGolemIcons();
-        
+
         DisplayGolem();
         DisplayAgroGolem();
     }
+
 
     public void CreateGolemIcons()
     {

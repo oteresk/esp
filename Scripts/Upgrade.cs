@@ -146,7 +146,7 @@ public partial class Upgrade : CanvasLayer
     }
     private async void ShrinkSelected()
     {
-        float animTime = 1.0f;
+        float animTime = .7f;
         Tween tween = GetTree().CreateTween();
         tween.SetPauseMode(Tween.TweenPauseMode.Process);
         //tween.TweenProperty(ctlUpgrade, "scale", new Vector2(0, 0), animTime);

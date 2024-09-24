@@ -47,5 +47,3 @@ animations = [{
 [node name="Slash" type="AnimatedSprite2D"]
 position = Vector2(-1, 0)
 sprite_frames = SubResource("SpriteFrames_seomp")
-frame = 3
-frame_progress = 0.780036

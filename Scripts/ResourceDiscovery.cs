@@ -251,7 +251,6 @@ public partial class ResourceDiscovery : Sprite2D
 		{
 			Visible = true;
 			//Debug.Print("occlusion: enter:" + RDResource.ToString());
-			
 		}
 	}
 

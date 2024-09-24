@@ -223,6 +223,10 @@ public partial class AttackRange : Area2D
                 SetAttackSpeed();
                 break;
         }
+        // limit attack upgrade levels
+        dmgLevel = Math.Min(dmgLevel, Globals.maxAttackLevel);
+        AOELevel = Math.Min(AOELevel, Globals.maxAttackLevel);
+        attackSpeedLevel = Math.Min(attackSpeedLevel, Globals.maxAttackLevel);
     }
 
 }

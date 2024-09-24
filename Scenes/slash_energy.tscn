@@ -46,5 +46,3 @@ animations = [{
 
 [node name="Slash" type="AnimatedSprite2D"]
 sprite_frames = SubResource("SpriteFrames_seomp")
-frame = 8
-frame_progress = 1.0

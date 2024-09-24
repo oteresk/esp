@@ -27,16 +27,13 @@ public partial class StatUpgrade : MarginContainer
         DelayedStart();
         Tween tween = GetTree().CreateTween();
         tween.Parallel().TweenProperty(image, "scale", new Vector2(.95f, .95f), .2f);
-
-        Node nodMusic = GetNode("/root/StatUpgrades/statsMusic");
-        statsMusic = (AudioStreamPlayer)nodMusic;
         
     }
 
 	public async void DelayedStart()
     {
         // wait a bit
-        await Task.Delay(TimeSpan.FromMilliseconds(300));
+        await Task.Delay(TimeSpan.FromMilliseconds(20));
 
         StatUpgrades.lblGold.Text=ResourceDiscoveries.gold.ToString();
 
@@ -100,7 +97,7 @@ public partial class StatUpgrade : MarginContainer
     public void UpdateSlots()
     {
         slots = Globals.statUpgradeLevel[upgradeNum];
-        //Debug.Print("Slots:" + slots);
+        Debug.Print("Slots:"+ upgradeNum+" - " + slots);
         if (IsInstanceValid(imgSlot1))
         {
             if (slots == 0)

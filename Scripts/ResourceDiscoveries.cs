@@ -69,14 +69,21 @@ public partial class ResourceDiscoveries : Node2D
 
 	static public ResourceDiscoveries instance;
 
+    [Export] private PackedScene scnDecoration;
+    [Export] private Texture2D[] Decorations;
+    private Node2D nodDecorations;
+	private int decNum;
+	private int randDecoration;
+
     public override void _Ready()
 	{
 		instance = this;
         GD.Randomize();
         //Place resource discoveries
-        PlaceResourceDiscoveries();
+        //PlaceResourceDiscoveries();
 
-		DelayedStart();
+        if (Globals.xpBar != null) // dont place if on Stat Upgrade menu
+            PlaceRelics();
 
         // get GUI nodes
         rGUI = GetNodeOrNull("../GUI");
@@ -92,16 +99,10 @@ public partial class ResourceDiscoveries : Node2D
 		if (nodStruct!=null)
 	        nodStruct.Position = Position;
 
-    }
+		if (nodDecorations!=null)
+	        nodDecorations.Position = Position;
 
-	private async void DelayedStart()
-	{
-        await Task.Delay(TimeSpan.FromMilliseconds(200));
-        // place relics
-        if (Globals.xpBar != null) // dont place if on Stat Upgrade menu
-            PlaceRelics();
     }
-
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
@@ -251,7 +252,7 @@ GetNewPos:
             }
         }
 	}
-private void PlaceResourceDiscoveries()
+public void PlaceResourceDiscoveries()
 {
 	uint rdType;
 
@@ -277,7 +278,54 @@ private void PlaceResourceDiscoveries()
 
 	}
 
-	public void PlaceStartingStructures()
+    public void PlaceDecorations()
+    {
+		int numDecorations = 30;
+        Node nod = GetNode("../Decorations");
+        nodDecorations = (Node2D)nod;
+
+        int decorationType;
+        for (int y = 0; y < Globals.gridSizeY; y++)
+            for (int x = 0; x < Globals.gridSizeX; x++)
+                for (int i = 1; i <= numDecorations; i++)
+                {
+                    Vector2I pos;
+                    pos = GetRandomPos(x, y);
+					decNum++;
+
+                    PlaceDecoration(x, y, pos.X, pos.Y);
+                }
+
+
+		Debug.Print("Decorations: " + decNum);
+
+    }
+
+    private void PlaceDecoration(int x, int y, int px, int py)
+	{
+		Node2D nodDecoration;
+
+        nodDecoration = (Node2D)scnDecoration.Instantiate();
+		Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = -1; // -1 is decoration
+
+        nodDecorations.AddChild(nodDecoration);
+
+		int randOffsetX = GD.RandRange(-pixelSizeX/4, pixelSizeX/4);
+        int randOffsetY = GD.RandRange(-pixelSizeY / 4, pixelSizeY / 4);
+        Vector2 randDecorationOffset=new Vector2(randOffsetX, randOffsetY);
+        nodDecoration.Position = new Vector2(x * Globals.subGridSizeX * pixelSizeX + px * pixelSizeX, y * Globals.subGridSizeY * pixelSizeY + py * pixelSizeY)+ randDecorationOffset;
+		// set sprite
+		Sprite2D sprDecoration = (Sprite2D)nodDecoration.GetChild(0);
+        randDecoration=GD.RandRange(0,Decorations.Length-1);
+		sprDecoration.Texture = Decorations[randDecoration];
+
+		// offset by texture size
+		sprDecoration.Offset = new Vector2(-sprDecoration.Texture.GetWidth()/2, -sprDecoration.Texture.GetHeight()+30);
+
+        //Debug.Print("pos:" + nodDecoration.Position);
+}
+
+    public void PlaceStartingStructures()
 	{
         Debug.Print("PlaceStartingStructures Globals.StartingPlatform:"+ Globals.StartingPlatform);
 

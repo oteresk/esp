@@ -133,8 +133,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
-radius = 19.98
-height = 39.96
+radius = 20.0
+height = 40.0
 
 [node name="en_Bat" type="RigidBody2D" node_paths=PackedStringArray("enemyNoise", "enemyDeathSound") groups=["Enemies"]]
 collision_layer = 2
@@ -158,13 +158,14 @@ bloodFrame = 10
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 material = SubResource("ShaderMaterial_71tgv")
-position = Vector2(2, -14)
+position = Vector2(-2, -18)
+scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_7y2m0")
 animation = &"Death"
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
 editor_description = "small physics circle"
-position = Vector2(0, -3)
+position = Vector2(-9.31323e-10, 1)
 rotation = 0.00420356
 scale = Vector2(0.919833, 1)
 shape = SubResource("CapsuleShape2D_j3bk0")

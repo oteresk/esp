@@ -27,6 +27,7 @@ public partial class Globals : Node
 	static public string NodeGlobals = "/root/World/Globals";
     static public string NodeFPS = "/root/World/FPS";
 	static public string NodeBack = "/root/World/CLbtnBack/ctlBack/TextureButton";
+    static public string NodeTitleMusic = "/root/SteamManager/TitleMusic";
 
 
     static public Node rootNode;
@@ -103,8 +104,8 @@ public partial class Globals : Node
 
 	static public float itemAtkSpd; // 1 (default) .5 (with item)
 	static public float statAtkSpd = 0;
-	static public float statDamage = 1;
-	static public float statAoE=1;
+	static public float statDamage = 0;
+	static public float statAoE=0;
 	static public float statMovementSpeed = 0;
 	static public int statArmor = 0;
 
@@ -152,10 +153,13 @@ public partial class Globals : Node
     static public float settings_MusicVolume = 0;
     static public float settings_MasterVolume = 0;
 
-	static public bool settings_ShowFPS = false;
+    static public bool settings_FullScreen = true;
+    static public bool settings_ShowFPS = false;
 	static public bool settings_GodMode = false;
     static public bool settingsLoaded = false;
 	static public bool settings_ShowPlayerPosition = false;
+	static public bool settings_Decorations = true;
+	static public bool settings_PlayerGhost = true;
 
     static public float healingModifier = .5f;
     static public float fireTime = 6; // how long the big fire lasts in world
@@ -175,11 +179,19 @@ public partial class Globals : Node
 
 	static public bool canUnPause = true;
 
+	static public bool wonGame = false;
+	static public int maxAttackLevel = 15; // the limits for attack upgrades
+
 	[Export] public AudioStreamPlayer musInGame;
 
     public override void _Ready()
 	{
 		instance = this;
+        rootNode = GetNode("..");
+
+        costIron = new int[8];
+        costWood = new int[8];
+
         btnBack = (TextureButton)GetNodeOrNull(NodeBack);
 
         weaponTypeUnlocked = new bool[12];
@@ -194,18 +206,6 @@ public partial class Globals : Node
         // stat upgrade cost
         coststatUpgrade = new int[5,5] { { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 } };
 
-        statUpgradeLevel = new int[MAXUPGRADES];
-		for (int iter=0;iter<5;iter++)
-			statUpgradeLevel[iter] = 0;
-
-        hasRelic= new bool[MAXRELICS];
-;
-        for (int iter = 0; iter < MAXRELICS; iter++)
-            hasRelic[iter] = false;
-
-        DelayedStart();
-
-		rootNode = GetNode("..");
         // "GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth"
         // get stat labels     GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed
 
@@ -224,9 +224,6 @@ public partial class Globals : Node
 		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Golems/VBoxContainer/lblGolemLevel");
         lblGolemLevel = (Label)lbl;
 
-		costIron = new int[8];
-        costWood = new int[8];
-
         screenWidth = (int)GetViewport().GetVisibleRect().Size.X;
         screenHeight = (int)GetViewport().GetVisibleRect().Size.Y;
 
@@ -236,6 +233,8 @@ public partial class Globals : Node
         TitleScene = (PackedScene)ResourceLoader.Load("res://Scenes/Title.tscn");
 
         ResetGame();
+
+        Initialize();
     }
 
     private void Input_JoyConnectionChanged(long device, bool connected)
@@ -270,10 +269,10 @@ public partial class Globals : Node
         statArmor = (int)statUpgradeLevel[4]* statUpgradeLevel[4];
     }
 
-	public async void DelayedStart()
+	public void Initialize()
 	{
 		// wait a bit
-		await Task.Delay(TimeSpan.FromMilliseconds(40));
+		//await Task.Delay(TimeSpan.FromMilliseconds(40));
 
 		//Debug.Print("***********");
         SaveLoad.LoadGame();
@@ -295,6 +294,8 @@ public partial class Globals : Node
             Node2D miniMap = (Node2D)GetNodeOrNull(Globals.NodeMiniMap);
             if (miniMap != null)
             {
+                MiniMap miniMap1 = (MiniMap)miniMap;
+                miniMap1.borderNode = GetNode(Globals.NodeMiniMapBorder);
                 miniMap.Call("ShowMiniMap");
             }
         }
@@ -314,15 +315,6 @@ public partial class Globals : Node
             if (nFPS != null)
                 nFPS.Visible = false;
         }
-
-		// set god mode
-		if (rootNode.Name == "World") // if world scene
-		{ //only set god mode when in world scene
-			if (settings_GodMode)
-				ps.canBeDamaged = false;
-			else
-				ps.canBeDamaged = true;
-		}
 
     }
 
@@ -429,6 +421,8 @@ public partial class Globals : Node
         costWood[7] = 0;
         costWood[2] = 0;
 
+		InitArrays();
+
         for (int iter = 0; iter < 5; iter++)
             statUpgradeLevel[iter] = 0;
 
@@ -436,6 +430,18 @@ public partial class Globals : Node
             hasRelic[iter] = false;
 
         UpdateStatLevels();
+    }
+
+	static public void InitArrays()
+	{
+        if (statUpgradeLevel == null) // init stat upgrades if null
+        {
+            // init stat upgrades
+            statUpgradeLevel = new int[MAXUPGRADES];
+
+            // init relics
+            hasRelic = new bool[MAXRELICS];
+        }
     }
 
 	static public void SetMaxHP()
@@ -568,8 +574,13 @@ public partial class Globals : Node
 		{
 			ResetStats();
         }
+		// night mode
+        if (Input.IsActionJustPressed("ToggleNightMode"))
+        {
 
-	}
+        }
+
+    }
 
 	public void ResetStats()
 	{
@@ -738,7 +749,7 @@ public partial class Globals : Node
 
 	public static void UpdateStatsGUI()
 	{
-        if (ps != null && lblMaxHealth!=null)
+        if (ps != null && lblMaxHealth!=null && IsInstanceValid(lblMaxHealth))
 		{
             lblMaxHealth.Text = HPLevel.ToString();
             lblMovementSpeed.Text = speedLevel.ToString();
@@ -774,13 +785,20 @@ public partial class Globals : Node
 
 	static public void SetAttackLevel()
 	{
-		if (attackLevel>1)
-	        Globals.weaponTypeUnlocked[2] = true; // unlock cross
-        if (attackLevel > 2)
+        //if (attackLevel>1)
+        //    Globals.weaponTypeUnlocked[2] = true; // unlock cross
+        //if (attackLevel > 2)
+        //    Globals.weaponTypeUnlocked[11] = true; // unlock fire
+
+        // only for demo
+        if (attackLevel > 0)
+            Globals.weaponTypeUnlocked[2] = true; // unlock cross
+        if (attackLevel > 1)
             Globals.weaponTypeUnlocked[11] = true; // unlock fire
+
     }
 
-	static public void SetTowerLevel()
+    static public void SetTowerLevel()
 	{
             ResourceDiscovery[] rD = GetStructures("Tower"); // get all towers
 			// set level of tower

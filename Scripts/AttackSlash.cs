@@ -250,6 +250,10 @@ public partial class AttackSlash : Area2D
                 SetAttackSpeed();
                 break;
         }
+        // limit attack upgrade levels
+        dmgLevel = Math.Min(dmgLevel, Globals.maxAttackLevel);
+        AOELevel = Math.Min(AOELevel, Globals.maxAttackLevel);
+        attackSpeedLevel = Math.Min(attackSpeedLevel, Globals.maxAttackLevel);
     }
 
     public void OnBodyEntered(Node2D body) // enemy

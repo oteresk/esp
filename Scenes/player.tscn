@@ -719,7 +719,7 @@ bg_color = Color(0.462745, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lc6ir"]
 bg_color = Color(1, 0, 0.0980392, 1)
 
-[node name="Player" type="Area2D" node_paths=PackedStringArray("magnetismShape", "itemIconSpeed", "itemIconAttackSpeed", "itemIconDamage", "itemIconAoE", "itemIconShield", "txtSpeed", "txtAtkSpeed", "txtDamage", "txtAoE", "txtShield", "shield", "sndHurtPlayer", "sndHurtPlayer2", "sndDash", "sndPlayerDeath", "sndWarp", "sndRingingLoop", "sndGainLevel", "lblTime", "btnBack", "GodRays") groups=["Player"]]
+[node name="Player" type="Area2D" node_paths=PackedStringArray("magnetismShape", "itemIconSpeed", "itemIconAttackSpeed", "itemIconDamage", "itemIconAoE", "itemIconShield", "txtSpeed", "txtAtkSpeed", "txtDamage", "txtAoE", "txtShield", "shield", "sndHurtPlayer", "sndHurtPlayer2", "sndDash", "sndPlayerDeath", "sndWarp", "sndRingingLoop", "sndGainLevel", "btnBack", "GodRays") groups=["Player"]]
 y_sort_enabled = true
 collision_mask = 6
 script = ExtResource("1_kjyyd")
@@ -742,7 +742,6 @@ sndPlayerDeath = NodePath("Sounds/sndPlayerDeath")
 sndWarp = NodePath("Sounds/sndWarp")
 sndRingingLoop = NodePath("Sounds/sndRingingLoop")
 sndGainLevel = NodePath("Sounds/sndGainLevel")
-lblTime = NodePath("")
 btnBack = NodePath("TextureButton")
 GodRays = NodePath("AnimatedSprite2D/GodRays")
 metadata/_edit_group_ = true

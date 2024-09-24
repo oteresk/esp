@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://0bpvsyr4x8kl"]
+[gd_scene load_steps=34 format=3 uid="uid://0bpvsyr4x8kl"]
 
 [ext_resource type="Texture2D" uid="uid://chbmayap43wjo" path="res://Art/Title/Logo.png" id="1_i4lwq"]
 [ext_resource type="Texture2D" uid="uid://d2mqidchgyvkh" path="res://Art/Title/BG_Layer3.png" id="2_camxe"]
@@ -11,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://b4x7q44g3mspr" path="res://Art/Title/LogoMask.png" id="11_4x48i"]
 [ext_resource type="FontFile" uid="uid://deu73dw073p0l" path="res://Analogist.ttf" id="11_70wfx"]
 [ext_resource type="Script" path="res://Scripts/TitleButton.cs" id="12_pr8f2"]
-[ext_resource type="AudioStream" uid="uid://bxu4ub7nr6pxe" path="res://Audio/Music/Fantasy Vol4 Enemy Main.wav" id="16_hhyhq"]
 [ext_resource type="Texture2D" uid="uid://duc3yrtenakjo" path="res://Art/GUI/StatUpgrades/Button Small.png" id="16_p6tm5"]
 [ext_resource type="Texture2D" uid="uid://ccbsebicl0cl7" path="res://Art/GUI/StatUpgrades/Button Small_Hover.png" id="17_imcsu"]
 [ext_resource type="Script" path="res://Scripts/Globals.cs" id="17_yikj4"]
@@ -19,8 +18,8 @@
 [ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="18_vc4ry"]
 [ext_resource type="FontFile" uid="uid://blv8i47j34igf" path="res://Fonts/CloisterBlack.ttf" id="19_utv2d"]
 [ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/Resource-IronMine.tscn" id="19_vtko4"]
-[ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/resource_template-GoldMine.tscn" id="20_bnwr3"]
-[ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/resource_template-ManaWell.tscn" id="21_n6ryh"]
+[ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/Resource-GoldMineOld.tscn" id="20_bnwr3"]
+[ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/Resource-ManaWellOld.tscn" id="21_n6ryh"]
 [ext_resource type="PackedScene" uid="uid://ctcv7jmln8o34" path="res://Scenes/Resource-Wood.tscn" id="22_ixbe5"]
 [ext_resource type="PackedScene" uid="uid://djjmkb3mx4ata" path="res://Scenes/Resource-Platform.tscn" id="23_u041h"]
 [ext_resource type="Script" path="res://Scripts/SaveLoad.cs" id="24_qirlc"]
@@ -400,10 +399,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
-
-[node name="titleMusic" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("16_hhyhq")
-bus = &"Music"
 
 [node name="Globals" type="Node2D" parent="."]
 script = ExtResource("17_yikj4")

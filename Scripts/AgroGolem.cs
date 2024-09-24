@@ -329,6 +329,7 @@ public partial class AgroGolem : RigidBody2D
             {
                 // win game
                 nodWinMessage.Visible = true;
+                Globals.wonGame = true;
                 Globals.PauseGame();
             }
         }

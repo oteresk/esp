@@ -76,7 +76,7 @@ public partial class StructureSelect : Control
 		Visible = false;
         Globals.UnPauseGame();
 
-        if (structures.Length == 0) // if win game
+        if (Globals.wonGame == true) // if win game
         {
             GetTree().ChangeSceneToPacked(Globals.StatUpgradesScene);
         }

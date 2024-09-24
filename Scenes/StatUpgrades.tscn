@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://buj15m7kgw8nk"]
+[gd_scene load_steps=36 format=3 uid="uid://dvtslu2gha2sa"]
 
 [ext_resource type="Script" path="res://Scripts/StatUpgrades.cs" id="1_ge2oc"]
 [ext_resource type="Texture2D" uid="uid://pmir7d3ysfmu" path="res://Art/GUI/StatUpgrades/UpgradesBackground.png" id="1_xej6k"]
@@ -20,15 +20,14 @@
 [ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="15_mc0ly"]
 [ext_resource type="Texture2D" uid="uid://detiu1nruacbm" path="res://Art/GUI/StatUpgrades/Attack Speed.png" id="16_20t5r"]
 [ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/Resource-IronMine.tscn" id="16_mdlpe"]
-[ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/resource_template-GoldMine.tscn" id="17_27he6"]
-[ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/resource_template-ManaWell.tscn" id="18_rvxhx"]
 [ext_resource type="Texture2D" uid="uid://dj3l4qa3d73m" path="res://Art/GUI/StatUpgrades/Attack Damage.png" id="18_yptus"]
 [ext_resource type="PackedScene" uid="uid://ctcv7jmln8o34" path="res://Scenes/Resource-Wood.tscn" id="19_ejcab"]
 [ext_resource type="Texture2D" uid="uid://bxw7wfv2xylr5" path="res://Art/GUI/StatUpgrades/Move Speed.png" id="20_isbwc"]
 [ext_resource type="PackedScene" uid="uid://djjmkb3mx4ata" path="res://Scenes/Resource-Platform.tscn" id="20_jwskn"]
 [ext_resource type="Texture2D" uid="uid://cqw6wgvaxgdgv" path="res://Art/GUI/StatUpgrades/Defense.png" id="21_mul4e"]
+[ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/Resource-GoldMineOld.tscn" id="23_jxaaw"]
 [ext_resource type="Script" path="res://Scripts/btnUpgrade.cs" id="23_wn04p"]
-[ext_resource type="AudioStream" uid="uid://b2beyxfybchew" path="res://Audio/Music/Fantasy Vol4 Enemy Intensity 2.wav" id="32_1c8d3"]
+[ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/Resource-ManaWellOld.tscn" id="24_ulqow"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_8iope"]
 font = ExtResource("4_47kom")
@@ -1096,23 +1095,23 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="SaveLoad" type="Node2D" parent="."]
-script = ExtResource("13_18dtb")
-
-[node name="Globals" type="Node2D" parent="."]
-script = ExtResource("14_k2fsy")
-
 [node name="ResourceDiscoveries" type="Node2D" parent="."]
 y_sort_enabled = true
 position = Vector2(142, -55)
 script = ExtResource("15_mc0ly")
 rTemplateIronMine = ExtResource("16_mdlpe")
-rTemplateGoldMine = ExtResource("17_27he6")
-rTemplateManaWell = ExtResource("18_rvxhx")
+rTemplateGoldMine = ExtResource("23_jxaaw")
+rTemplateManaWell = ExtResource("24_ulqow")
 rTemplateWood = ExtResource("19_ejcab")
 rTemplatePlatform = ExtResource("20_jwskn")
 resourcesPerCell = 5
 resourceUpdateFreq = 60
+
+[node name="SaveLoad" type="Node2D" parent="."]
+script = ExtResource("13_18dtb")
+
+[node name="Globals" type="Node2D" parent="."]
+script = ExtResource("14_k2fsy")
 
 [node name="Black" type="ColorRect" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -1130,11 +1129,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
-
-[node name="statsMusic" type="AudioStreamPlayer" parent="."]
-process_mode = 3
-stream = ExtResource("32_1c8d3")
-bus = &"Music"
 
 [connection signal="pressed" from="Control/TextureRect/MCbtnUpgrade/TextureButton" to="Control/TextureRect/MCbtnUpgrade/TextureButton" method="ClickButton"]
 [connection signal="pressed" from="Control/TextureRect/MCbtnReset/TextureButton" to="." method="ShowConfirm"]
