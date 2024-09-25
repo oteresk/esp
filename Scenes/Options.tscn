@@ -1,9 +1,10 @@
-[gd_scene load_steps=21 format=3 uid="uid://ce3u6rl1g6muh"]
+[gd_scene load_steps=22 format=3 uid="uid://ce3u6rl1g6muh"]
 
 [ext_resource type="Script" path="res://Scripts/Options.cs" id="1_gpfll"]
 [ext_resource type="Texture2D" uid="uid://cyc03qnixbx37" path="res://Art/GUI/ChruchBackground.jpg" id="1_wyvqs"]
 [ext_resource type="FontFile" uid="uid://blv8i47j34igf" path="res://Fonts/CloisterBlack.ttf" id="2_i183a"]
 [ext_resource type="Texture2D" uid="uid://du7j38dddlskn" path="res://Art/GUI/OptionMenuBack.png" id="3_u06kk"]
+[ext_resource type="FontFile" uid="uid://bkjpjbwrgwmgj" path="res://Fonts/vinque rg.otf" id="5_2ld5g"]
 [ext_resource type="Texture2D" uid="uid://duc3yrtenakjo" path="res://Art/GUI/StatUpgrades/Button Small.png" id="5_opc18"]
 [ext_resource type="Texture2D" uid="uid://ccbsebicl0cl7" path="res://Art/GUI/StatUpgrades/Button Small_Hover.png" id="6_0r1kx"]
 [ext_resource type="Texture2D" uid="uid://vy0172p8d6bq" path="res://Art/GUI/StatUpgrades/Button_Disabled.png" id="6_2satq"]
@@ -24,8 +25,8 @@ shadow_size = 4
 shadow_color = Color(0.227451, 0.243137, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_2rwap"]
-font = ExtResource("2_i183a")
-font_size = 60
+font = ExtResource("5_2ld5g")
+font_size = 51
 
 [sub_resource type="LabelSettings" id="LabelSettings_nmxci"]
 font = ExtResource("2_i183a")
@@ -78,9 +79,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -708.0
-offset_top = -516.5
+offset_top = -551.5
 offset_right = 708.0
-offset_bottom = 516.5
+offset_bottom = 481.5
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -94,9 +95,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -713.0
-offset_top = 140.0
+offset_top = 105.0
 offset_right = 713.0
-offset_bottom = 205.0
+offset_bottom = 170.0
 grow_horizontal = 2
 text = "Options"
 label_settings = SubResource("LabelSettings_35om8")
@@ -141,6 +142,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 
 [node name="lblFullscreen" type="Label" parent="Control/MCVScrollBar/VBoxLabels"]
+custom_minimum_size = Vector2(0, 74)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -149,6 +151,7 @@ label_settings = SubResource("LabelSettings_2rwap")
 horizontal_alignment = 2
 
 [node name="lblResolution" type="Label" parent="Control/MCVScrollBar/VBoxLabels"]
+custom_minimum_size = Vector2(0, 74)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -158,6 +161,7 @@ horizontal_alignment = 2
 
 [node name="lblPauseForSettlements" type="Label" parent="Control/MCVScrollBar/VBoxLabels"]
 visible = false
+custom_minimum_size = Vector2(0, 74)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -167,6 +171,7 @@ horizontal_alignment = 2
 
 [node name="lblMiniMapSize" type="Label" parent="Control/MCVScrollBar/VBoxLabels"]
 visible = false
+custom_minimum_size = Vector2(0, 74)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -175,6 +180,7 @@ label_settings = SubResource("LabelSettings_2rwap")
 horizontal_alignment = 2
 
 [node name="lblDisplayFPS" type="Label" parent="Control/MCVScrollBar/VBoxLabels"]
+custom_minimum_size = Vector2(0, 74)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -183,6 +189,7 @@ label_settings = SubResource("LabelSettings_2rwap")
 horizontal_alignment = 2
 
 [node name="lblMusicVolume" type="Label" parent="Control/MCVScrollBar/VBoxLabels"]
+custom_minimum_size = Vector2(0, 74)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -191,6 +198,7 @@ label_settings = SubResource("LabelSettings_2rwap")
 horizontal_alignment = 2
 
 [node name="lblSFXVolume" type="Label" parent="Control/MCVScrollBar/VBoxLabels"]
+custom_minimum_size = Vector2(0, 74)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -199,6 +207,7 @@ label_settings = SubResource("LabelSettings_2rwap")
 horizontal_alignment = 2
 
 [node name="lblDecorations" type="Label" parent="Control/MCVScrollBar/VBoxLabels"]
+custom_minimum_size = Vector2(0, 74)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -207,6 +216,7 @@ label_settings = SubResource("LabelSettings_2rwap")
 horizontal_alignment = 2
 
 [node name="lblPlayerGhost" type="Label" parent="Control/MCVScrollBar/VBoxLabels"]
+custom_minimum_size = Vector2(0, 74)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -234,11 +244,13 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_font_sizes/font_size = 15
-item_count = 2
-popup/item_0/text = "1920x1080"
-popup/item_0/id = 0
-popup/item_1/text = "1280x800"
-popup/item_1/id = 1
+item_count = 3
+popup/item_0/text = "3840x2160"
+popup/item_0/id = 2
+popup/item_1/text = "1920x1080"
+popup/item_1/id = 0
+popup/item_2/text = "1280x800"
+popup/item_2/id = 1
 
 [node name="chkPauseForSettlements" type="CheckButton" parent="Control/MCVScrollBar/VBoxControls"]
 visible = false
@@ -302,9 +314,9 @@ button_pressed = true
 
 [node name="MCbtnBack" type="MarginContainer" parent="Control"]
 layout_mode = 0
-offset_top = 880.0
+offset_top = 861.0
 offset_right = 360.0
-offset_bottom = 1058.0
+offset_bottom = 1039.0
 size_flags_horizontal = 0
 size_flags_vertical = 8
 theme_override_constants/margin_left = 40

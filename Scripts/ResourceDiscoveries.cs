@@ -82,8 +82,9 @@ public partial class ResourceDiscoveries : Node2D
         //Place resource discoveries
         //PlaceResourceDiscoveries();
 
-        if (Globals.xpBar != null) // dont place if on Stat Upgrade menu
-            PlaceRelics();
+        if (Globals.rootNode.Name == "World")
+			if (Globals.xpBar != null) // dont place if on Stat Upgrade menu
+				PlaceRelics();
 
         // get GUI nodes
         rGUI = GetNodeOrNull("../GUI");

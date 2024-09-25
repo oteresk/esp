@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 public partial class Globals : Node
 {
@@ -182,7 +183,16 @@ public partial class Globals : Node
 	static public bool wonGame = false;
 	static public int maxAttackLevel = 15; // the limits for attack upgrades
 
-	[Export] public AudioStreamPlayer musInGame;
+	static public bool nightMode = false;
+
+    [Export] public AudioStreamPlayer musInGame;
+
+    [Export] public ParallaxBackground nightBackground;
+    private ParallaxLayer nightPar1;
+    private ColorRect nightPar2;
+    [Export] public ColorRect vignet;
+	private ShaderMaterial vignetMat;
+	private ShaderMaterial nightPar2Mat;
 
     public override void _Ready()
 	{
@@ -231,6 +241,18 @@ public partial class Globals : Node
         OptionsScene = (PackedScene)ResourceLoader.Load("res://Scenes/Options.tscn");
         WorldScene = (PackedScene)ResourceLoader.Load("res://Scenes/world.tscn");
         TitleScene = (PackedScene)ResourceLoader.Load("res://Scenes/Title.tscn");
+
+		if (Globals.rootNode.Name == "World")
+		{
+			nightPar1 = (ParallaxLayer)GetNode("../ParallaxBackground-Night/ParallaxLayer");
+			nightPar2 = (ColorRect)GetNode("../ParallaxBackground-Night/ParallaxLayer2/ColorRect");
+			vignetMat = (ShaderMaterial)vignet.Material;
+			nightPar2Mat = (ShaderMaterial)nightPar2.Material;
+
+			vignetMat.SetShaderParameter("inner_radius", .1f);
+			vignetMat.SetShaderParameter("outer_radius", 1.0f);
+			vignetMat.SetShaderParameter("vignette_strength", 1.2f);
+		}
 
         ResetGame();
 
@@ -577,12 +599,58 @@ public partial class Globals : Node
 		// night mode
         if (Input.IsActionJustPressed("ToggleNightMode"))
         {
-
+			ToggleNight();
         }
 
     }
 
-	public void ResetStats()
+	public async void ToggleNight()
+	{
+		nightMode = !nightMode;
+		if (nightMode)
+		{
+			nightPar1.Modulate = new Color(1, 1, 1, 0);
+			nightBackground.Visible = true;
+            Tween tween = GetTree().CreateTween();
+            tween.Parallel().TweenProperty(nightPar1, "modulate:a", 1f, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderNoiseColor), 0f,0.205f, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderInner), .1f, -.4f, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderOuter), 1.0f, 2.2f, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderStrength), 1.2f, 4.0f, 5.0f);
+
+            
+        }
+		else
+		{
+            Tween tween = GetTree().CreateTween();
+            tween.Parallel().TweenProperty(nightPar1, "modulate:a", 0f, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderNoiseColor), .205f,0f, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderInner), -.4f, .1f, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderOuter), 2.2f, 1, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderStrength), 4f, 1.2f, 5.0f);
+            await Task.Delay(TimeSpan.FromMilliseconds(5000));
+            nightBackground.Visible = false;
+        }
+	}
+
+    private void SetShaderInner(float value)
+    {
+        vignetMat.SetShaderParameter("inner_radius", value);
+    }
+    private void SetShaderOuter(float value)
+    {
+        vignetMat.SetShaderParameter("outer_radius", value);
+    }
+    private void SetShaderStrength(float value)
+    {
+        vignetMat.SetShaderParameter("vignette_strength", value);
+    }
+    private void SetShaderNoiseColor(float value)
+    {
+        nightPar2Mat.SetShaderParameter("AlphaLevel", value);
+    }
+
+    public void ResetStats()
 	{
         ResourceDiscoveries.gold = 0;
         for (int iter = 0; iter < 5; iter++)
@@ -612,6 +680,10 @@ public partial class Globals : Node
 
 	static public void DamagePlayer(float xDmg)
 	{
+		// double damage for night mode
+		if (Globals.nightMode)
+			xDmg *= 2;
+
 		if (playerShieldActive == false && ps.canBeDamaged && playerAlive)
 		{
 			ps.PlayHurtSound();

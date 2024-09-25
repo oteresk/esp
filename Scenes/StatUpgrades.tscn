@@ -5,10 +5,10 @@
 [ext_resource type="Script" path="res://Scripts/StatUpgrade.cs" id="2_o5phl"]
 [ext_resource type="Texture2D" uid="uid://2dbdki0i67n1" path="res://Art/GUI/StatUpgrades/Menu Tab.png" id="3_7i52p"]
 [ext_resource type="Texture2D" uid="uid://bwmagyws5tkga" path="res://Art/GUI/StatUpgrades/Block_Empty.png" id="3_ydy0s"]
-[ext_resource type="FontFile" uid="uid://blv8i47j34igf" path="res://Fonts/CloisterBlack.ttf" id="4_47kom"]
+[ext_resource type="FontFile" uid="uid://bkjpjbwrgwmgj" path="res://Fonts/vinque rg.otf" id="4_7gcw7"]
 [ext_resource type="Texture2D" uid="uid://gycg2mxwedlh" path="res://Art/GUI/Gold.png" id="5_wx2qb"]
 [ext_resource type="FontVariation" uid="uid://cioe7t5vpxgkl" path="res://StatUpgradeFont.tres" id="6_iukmn"]
-[ext_resource type="FontFile" uid="uid://deu73dw073p0l" path="res://Analogist.ttf" id="7_o6e22"]
+[ext_resource type="FontFile" uid="uid://bujcsy0diojex" path="res://Fonts/Analogist.ttf" id="7_o6e22"]
 [ext_resource type="Texture2D" uid="uid://duc3yrtenakjo" path="res://Art/GUI/StatUpgrades/Button Small.png" id="8_3j46r"]
 [ext_resource type="Texture2D" uid="uid://451kmtclyme1" path="res://Art/GUI/StatUpgrades/Border.png" id="8_wxuvw"]
 [ext_resource type="Texture2D" uid="uid://vy0172p8d6bq" path="res://Art/GUI/StatUpgrades/Button_Disabled.png" id="9_trcln"]
@@ -30,15 +30,15 @@
 [ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/Resource-ManaWellOld.tscn" id="24_ulqow"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_8iope"]
-font = ExtResource("4_47kom")
+font = ExtResource("4_7gcw7")
 font_size = 52
 font_color = Color(0.301961, 0.360784, 0.133333, 1)
 shadow_size = 4
 shadow_color = Color(0.227451, 0.243137, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_s770q"]
-font = ExtResource("4_47kom")
-font_size = 42
+font = ExtResource("4_7gcw7")
+font_size = 41
 font_color = Color(0.301961, 0.360784, 0.133333, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_rtwsg"]
@@ -54,17 +54,17 @@ outline_size = 2
 outline_color = Color(0.141176, 0.117647, 0.121569, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_3l5xi"]
-font = ExtResource("4_47kom")
+font = ExtResource("4_7gcw7")
 font_size = 50
 font_color = Color(0.301961, 0.360784, 0.133333, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_728cv"]
-font = ExtResource("4_47kom")
+font = ExtResource("4_7gcw7")
 font_size = 50
 font_color = Color(0.572549, 0, 0.211765, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_548jd"]
-font = ExtResource("4_47kom")
+font = ExtResource("4_7gcw7")
 font_size = 45
 font_color = Color(0.301961, 0.360784, 0.133333, 1)
 
@@ -324,14 +324,14 @@ size_flags_horizontal = 10
 size_flags_vertical = 4
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 22
-theme_override_constants/margin_right = 20
+theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 0
 
 [node name="Gold" type="Label" parent="Control/TextureRect/MCGold/HBGold/MCGold"]
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_fonts/font = ExtResource("6_iukmn")
-text = "9000000"
+text = "900000"
 label_settings = SubResource("LabelSettings_s770q")
 horizontal_alignment = 2
 vertical_alignment = 1

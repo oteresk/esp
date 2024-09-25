@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://0bpvsyr4x8kl"]
+[gd_scene load_steps=32 format=3 uid="uid://0bpvsyr4x8kl"]
 
 [ext_resource type="Texture2D" uid="uid://chbmayap43wjo" path="res://Art/Title/Logo.png" id="1_i4lwq"]
 [ext_resource type="Texture2D" uid="uid://d2mqidchgyvkh" path="res://Art/Title/BG_Layer3.png" id="2_camxe"]
@@ -9,14 +9,13 @@
 [ext_resource type="Texture2D" uid="uid://bpq7dl72422kj" path="res://Art/Title/Fire1.png" id="6_hujeb"]
 [ext_resource type="Shader" path="res://Shaders/CircularWaves.gdshader" id="10_1crk2"]
 [ext_resource type="Texture2D" uid="uid://b4x7q44g3mspr" path="res://Art/Title/LogoMask.png" id="11_4x48i"]
-[ext_resource type="FontFile" uid="uid://deu73dw073p0l" path="res://Analogist.ttf" id="11_70wfx"]
 [ext_resource type="Script" path="res://Scripts/TitleButton.cs" id="12_pr8f2"]
+[ext_resource type="FontFile" uid="uid://bkjpjbwrgwmgj" path="res://Fonts/vinque rg.otf" id="14_05d0r"]
 [ext_resource type="Texture2D" uid="uid://duc3yrtenakjo" path="res://Art/GUI/StatUpgrades/Button Small.png" id="16_p6tm5"]
 [ext_resource type="Texture2D" uid="uid://ccbsebicl0cl7" path="res://Art/GUI/StatUpgrades/Button Small_Hover.png" id="17_imcsu"]
 [ext_resource type="Script" path="res://Scripts/Globals.cs" id="17_yikj4"]
 [ext_resource type="Texture2D" uid="uid://vy0172p8d6bq" path="res://Art/GUI/StatUpgrades/Button_Disabled.png" id="18_qg1fa"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="18_vc4ry"]
-[ext_resource type="FontFile" uid="uid://blv8i47j34igf" path="res://Fonts/CloisterBlack.ttf" id="19_utv2d"]
 [ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/Resource-IronMine.tscn" id="19_vtko4"]
 [ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/Resource-GoldMineOld.tscn" id="20_bnwr3"]
 [ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/Resource-ManaWellOld.tscn" id="21_n6ryh"]
@@ -78,14 +77,9 @@ shader_parameter/amplitude = 0.2
 shader_parameter/alpha = 0.4
 shader_parameter/mask = ExtResource("11_4x48i")
 
-[sub_resource type="LabelSettings" id="LabelSettings_dtvkn"]
-font = ExtResource("11_70wfx")
-font_size = 42
-font_color = Color(0, 0.592157, 1, 1)
-
 [sub_resource type="LabelSettings" id="LabelSettings_d8md0"]
-font = ExtResource("19_utv2d")
-font_size = 50
+font = ExtResource("14_05d0r")
+font_size = 42
 font_color = Color(0.301961, 0.360784, 0.133333, 1)
 
 [node name="Title" type="Node2D"]
@@ -196,26 +190,6 @@ offset_right = 147.0
 offset_bottom = -107.0
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("1_i4lwq")
-
-[node name="btnSteamName" type="TextureButton" parent="Control" node_paths=PackedStringArray("lblButton")]
-custom_minimum_size = Vector2(400, 0)
-layout_mode = 0
-offset_left = 427.0
-offset_top = -466.0
-offset_right = 827.0
-offset_bottom = -426.0
-disabled = true
-script = ExtResource("12_pr8f2")
-lblButton = NodePath("lblSteamName")
-
-[node name="lblSteamName" type="Label" parent="Control/btnSteamName"]
-z_index = 3
-layout_mode = 1
-offset_right = 135.0
-offset_bottom = 31.0
-text = "Steam Name"
-label_settings = SubResource("LabelSettings_dtvkn")
-horizontal_alignment = 2
 
 [node name="MCbtnUpgrades" type="MarginContainer" parent="Control"]
 z_index = 5
@@ -344,10 +318,10 @@ metadata/_edit_use_anchors_ = true
 [node name="MCbtnQuit" type="MarginContainer" parent="Control"]
 z_index = 5
 layout_mode = 0
-offset_left = -911.412
-offset_top = -354.0
-offset_right = -551.412
-offset_bottom = -176.0
+offset_left = 587.0
+offset_top = -501.0
+offset_right = 947.0
+offset_bottom = -323.0
 size_flags_horizontal = 0
 size_flags_vertical = 8
 theme_override_constants/margin_left = 40

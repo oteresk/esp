@@ -351,6 +351,8 @@ public partial class enemy : RigidBody2D
     }
     public void take_damage(float dmg) 
 	{
+        if (Globals.nightMode)
+            dmg *= .5f;
 		health -= dmg;
         DamageBlink();
 

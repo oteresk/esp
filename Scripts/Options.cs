@@ -155,7 +155,7 @@ public partial class Options : Node2D
         Debug.Print("Resolution: " + optResolution.GetItemText(item));
         string full = optResolution.GetItemText(item);
         string[] separate = full.Split('x');
-        Debug.Print(separate[0]+" x "+separate[1]);
+        Debug.Print(separate[0]+"x"+separate[1]);
         GetWindow().Size = new Vector2I(Int32.Parse(separate[0]), Int32.Parse(separate[1]));
         CenterWindow();
     }
@@ -174,11 +174,14 @@ public partial class Options : Node2D
         if (pressed)
         {
             DisplayServer.WindowSetMode(DisplayServer.WindowMode.ExclusiveFullscreen);
+            Globals.settings_FullScreen = true;
         }
         else
         {
             DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
+            Globals.settings_FullScreen = false;
         }
+        SaveLoad.SaveSettings();
     }
 
     public void ShowFPSPress(bool pressed)
