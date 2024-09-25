@@ -684,7 +684,7 @@ public partial class Globals : Node
 		Upgrade ug = (Upgrade)upgrade1;
 		string UGname1 = ug.GetName();
 		Debug.Print("up1:" + UGname1);
-
+		
 
 		var upgrade2 = upgradeScene.Instantiate();
 		GUINode.AddChild(upgrade2);
@@ -717,6 +717,21 @@ public partial class Globals : Node
 		}
 
 		Debug.Print("up1:" + UGname1 + " up2:" + UGname2 + " up3:" + UGname3);
+		
+		Control ctlUp1 = (Control)upgrade1.GetChild(0);
+		Control ctlUp2 = (Control)upgrade2.GetChild(0);
+		Control ctlUp3 = (Control)upgrade3.GetChild(0);
+		NodePath up1 = ctlUp1.GetPath();
+		NodePath up2 = ctlUp2.GetPath();
+		NodePath up3 = ctlUp3.GetPath();
+		
+		ctlUp1.SetFocusNeighbor(Side.Right, up2);
+		ctlUp2.SetFocusNeighbor(Side.Right, up3);
+		ctlUp2.SetFocusNeighbor(Side.Left, up1);
+		ctlUp3.SetFocusNeighbor(Side.Left, up2);
+		
+		ctlUp2.GrabFocus();
+		
 		PauseGame();
 }
 

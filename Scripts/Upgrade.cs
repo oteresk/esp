@@ -78,6 +78,34 @@ public partial class Upgrade : CanvasLayer
 				}
 			}
 		}
+		
+		 if (@event.IsActionPressed("ui_accept"))
+		{
+			//Debug.Print("Button: " + this);
+				if (curUpgrade == this)
+				{
+					Globals.UnPauseGame();
+					SelectUpgrade();
+					ShrinkSelected();
+					curUpgrade = null;
+				}
+				else
+				{
+					Globals.UnPauseGame();
+					ShrinkNotSelected();
+				}
+		}
+		/* Handle joystick navigation (Focus on the next button)
+		else if (@event.IsActionPressed("ui_left"))
+		{
+			// Move focus to the next button to the left
+			GetNode<Control>("Control").FocusNeighbour(MoveDirection.Left);
+		}
+		else if (@event.IsActionPressed("ui_right"))
+		{
+			// Move focus to the next button to the right
+			GetNode<Control>("Control").FocusNeighbour(MoveDirection.Right);
+		}*/
 	}
 
 	private async void ShrinkNotSelected()

@@ -1,0 +1,188 @@
+[gd_scene load_steps=21 format=3 uid="uid://bapkaoil4rjah"]
+
+[ext_resource type="Script" path="res://Scripts/Upgrade.cs" id="1_1wvgr"]
+[ext_resource type="Texture2D" uid="uid://or8p80gd3b2l" path="res://Art/GUI/Upgrades/UpgradeBG_Common.png" id="2_qhc44"]
+[ext_resource type="Texture2D" uid="uid://myc1w6xk3g1g" path="res://Art/GUI/Upgrades/UpgradeBG_Epic.png" id="3_cjugn"]
+[ext_resource type="Texture2D" uid="uid://77p3ns1uaprg" path="res://Art/GUI/Upgrades/UpgradeBG_Legendary.png" id="4_843io"]
+[ext_resource type="Texture2D" uid="uid://dxa36uata0ois" path="res://Art/GUI/Upgrades/UpgradeBG_Rare.png" id="5_8wts4"]
+[ext_resource type="Texture2D" uid="uid://2xiu2pw7ytg2" path="res://Art/GUI/Upgrades/UpgradeBG_New.png" id="6_2tdjj"]
+[ext_resource type="Texture2D" uid="uid://y8newu46oyto" path="res://Art/GUI/Upgrades/MaterialEnergy.png" id="6_iwog5"]
+[ext_resource type="Texture2D" uid="uid://c4lk45dst7taa" path="res://Art/GUI/Upgrades/MaterialFire.png" id="7_6gi0g"]
+[ext_resource type="Texture2D" uid="uid://dv4u6fcs1ew14" path="res://Art/GUI/Upgrades/MaterialIce.png" id="8_67lhj"]
+[ext_resource type="Texture2D" uid="uid://dcpl5svgjrxvg" path="res://Art/GUI/Upgrades/MaterialPoison.png" id="8_fl6mg"]
+[ext_resource type="Texture2D" uid="uid://burxx8utli8la" path="res://Art/GUI/Upgrades/MaterialLeeches.png" id="9_mmhb5"]
+[ext_resource type="FontFile" uid="uid://blv8i47j34igf" path="res://Fonts/CloisterBlack.ttf" id="12_agcus"]
+[ext_resource type="Shader" path="res://Shaders/AnimGlow.gdshader" id="12_hy1ys"]
+[ext_resource type="FontFile" uid="uid://deu73dw073p0l" path="res://Analogist.ttf" id="14_vg8ko"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f45uj"]
+resource_local_to_scene = true
+shader = ExtResource("12_hy1ys")
+shader_parameter/max_line_width = 22.0
+shader_parameter/min_line_width = 3.0
+shader_parameter/freq = 5.0
+shader_parameter/block_size = 0.0
+shader_parameter/starting_colour = Vector4(0, 0, 0, 1)
+shader_parameter/ending_colour = Vector4(1, 1, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_sgqox"]
+font = ExtResource("12_agcus")
+font_size = 220
+font_color = Color(0.12549, 0.121569, 0, 1)
+outline_size = 30
+outline_color = Color(0.811765, 0.788235, 0.792157, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_0hjp2"]
+base_font = ExtResource("14_vg8ko")
+
+[sub_resource type="LabelSettings" id="LabelSettings_t6yut"]
+line_spacing = 6.0
+font = SubResource("FontVariation_0hjp2")
+font_size = 114
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 0.360784)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="FontVariation" id="FontVariation_u7bh8"]
+base_font = ExtResource("12_agcus")
+
+[sub_resource type="LabelSettings" id="LabelSettings_6iqv7"]
+font = SubResource("FontVariation_u7bh8")
+font_size = 112
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 24
+shadow_color = Color(0.12549, 0.121569, 0, 1)
+shadow_offset = Vector2(4, 4)
+
+[node name="UpgradeGUI" type="CanvasLayer" node_paths=PackedStringArray("btnUpgrade", "texElement", "lblType", "lblSubType", "lblDescription", "lblUpgrade", "lblRarity", "ctlUpgrade")]
+process_mode = 3
+layer = 128
+script = ExtResource("1_1wvgr")
+texRarities = Array[Texture2D]([ExtResource("2_qhc44"), ExtResource("5_8wts4"), ExtResource("3_cjugn"), ExtResource("4_843io"), ExtResource("6_2tdjj")])
+texElements = Array[Texture2D]([ExtResource("6_iwog5"), ExtResource("7_6gi0g"), ExtResource("8_fl6mg"), ExtResource("8_67lhj"), ExtResource("9_mmhb5")])
+btnUpgrade = NodePath("Control/TextureRect")
+texElement = NodePath("Control/TextureRect/texRectElement")
+lblType = NodePath("Control/TextureRect/Control/lblType")
+lblSubType = NodePath("Control/TextureRect/Control/lblSubtype")
+lblDescription = NodePath("Control/TextureRect/Control/lblDescription")
+lblUpgrade = NodePath("Control/TextureRect/Control/lblUpgrade")
+lblRarity = NodePath("Control/TextureRect/Control/lblRarity")
+ctlUpgrade = NodePath("Control")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchor_right = 0.269
+anchor_bottom = 0.803
+offset_right = -0.480042
+offset_bottom = -0.240051
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(256, 432)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+material = SubResource("ShaderMaterial_f45uj")
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.001
+anchor_right = 1.0
+anchor_bottom = 1.001
+offset_left = 172.0
+offset_top = 288.133
+offset_right = -172.0
+offset_bottom = -289.867
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(86, 144)
+mouse_filter = 2
+texture = ExtResource("2_qhc44")
+stretch_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Control" type="Control" parent="Control/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -218.667
+offset_top = -371.0
+offset_right = 219.818
+offset_bottom = 368.495
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.28, 0.28)
+pivot_offset = Vector2(305, 514)
+mouse_filter = 2
+
+[node name="lblType" type="Label" parent="Control/TextureRect/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 177.997
+offset_top = 510.324
+offset_right = 971.997
+offset_bottom = 771.324
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(378, 84)
+text = "Projectile"
+label_settings = SubResource("LabelSettings_sgqox")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lblDescription" type="Label" parent="Control/TextureRect/Control"]
+layout_mode = 0
+offset_left = 535.954
+offset_top = 1833.64
+offset_right = 1635.95
+offset_bottom = 2575.64
+pivot_offset = Vector2(550, 100)
+text = "This is what the weapon can do and what type of element it uses."
+label_settings = SubResource("LabelSettings_t6yut")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="lblRarity" type="Label" parent="Control/TextureRect/Control"]
+modulate = Color(0.6, 0.258824, 1, 1)
+layout_mode = 0
+offset_left = 235.954
+offset_top = 1258.64
+offset_right = 1935.95
+offset_bottom = 1408.65
+pivot_offset = Vector2(850, 75)
+text = "Rarity
+"
+label_settings = SubResource("LabelSettings_6iqv7")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lblUpgrade" type="Label" parent="Control/TextureRect/Control"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="lblSubtype" type="Label" parent="Control/TextureRect/Control"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="texRectElement" type="TextureRect" parent="Control/TextureRect"]
+layout_mode = 0
+offset_right = 606.0
+offset_bottom = 900.0
+mouse_filter = 2
+texture = ExtResource("6_iwog5")
+
+[connection signal="focus_entered" from="Control" to="." method="OnMouseEntered"]
+[connection signal="focus_exited" from="Control" to="." method="OnMouseExited"]
+[connection signal="mouse_entered" from="Control" to="." method="OnMouseEntered"]
+[connection signal="mouse_exited" from="Control" to="." method="OnMouseExited"]
