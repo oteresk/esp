@@ -182,5 +182,7 @@ offset_bottom = 900.0
 mouse_filter = 2
 texture = ExtResource("6_iwog5")
 
+[connection signal="focus_entered" from="Control" to="." method="OnMouseEntered"]
+[connection signal="focus_exited" from="Control" to="." method="OnMouseExited"]
 [connection signal="mouse_entered" from="Control" to="." method="OnMouseEntered"]
 [connection signal="mouse_exited" from="Control" to="." method="OnMouseExited"]
