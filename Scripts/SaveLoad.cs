@@ -104,7 +104,7 @@ public partial class SaveLoad : Node2D
         settingsData.Add("[Settings] MusicVolume", Globals.settings_MusicVolume);
         settingsData.Add("[Settings] MasterVolume", Globals.settings_MasterVolume);
 
-        settingsData.Add("[Settings] ShowFullScreen", Globals.settings_FullScreen);
+        settingsData.Add("[Settings] FullScreen", Globals.settings_FullScreen);
         settingsData.Add("[Settings] ShowFPS", Globals.settings_ShowFPS);
 
         settingsData.Add("[Settings] GodMode", Globals.settings_GodMode);

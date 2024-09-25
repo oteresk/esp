@@ -19,9 +19,9 @@ public partial class AttackOrbit : Area2D
     public float AOE;
     private float dmgInc = .5f;
     private float AOEInc = .18f;
-    private float attackSpeedInc = .4f;
+    private float attackSpeedInc = .5f;
     private float dmgBase = 1.5f;
-    public float baseAOE = .07f;
+    public float baseAOE = 1.5f;
     public float baseAtkSpd = 18.2f; // can be different for each attack type (must be no less than 1)
 
     public float freezeTime = 3.0f;

@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://burxx8utli8la" path="res://Art/GUI/Upgrades/MaterialLeeches.png" id="9_mmhb5"]
 [ext_resource type="Shader" path="res://Shaders/AnimGlow.gdshader" id="12_hy1ys"]
 [ext_resource type="FontFile" uid="uid://bkjpjbwrgwmgj" path="res://Fonts/vinque rg.otf" id="13_vxgvs"]
-[ext_resource type="FontFile" path="res://Analogist.ttf" id="14_vg8ko"]
+[ext_resource type="FontFile" uid="uid://bujcsy0diojex" path="res://Fonts/Analogist.ttf" id="14_vg8ko"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_f45uj"]
 resource_local_to_scene = true

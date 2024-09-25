@@ -37,11 +37,13 @@ public partial class Options : Node2D
         // set volumes
         Debug.Print("Music vol: " + Globals.settings_MusicVolume);
 
+        Debug.Print("full:" + Globals.settings_FullScreen);
+
         // set fullscreen chk
         //if (DisplayServer.WindowGetMode() == DisplayServer.WindowMode.ExclusiveFullscreen)
         if (Globals.settings_FullScreen)
         {
-            Debug.Print("Exclusive fullscreen");
+            //Debug.Print("Exclusive fullscreen");
             chkFullscreen.ButtonPressed = true;
         }
         else

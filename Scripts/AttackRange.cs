@@ -19,7 +19,7 @@ public partial class AttackRange : Area2D
     public int attackSpeedLevel = 1;
     private float dmgInc = .5f;
     private float AOEInc = .05f;
-    public float baseAOE = .1f;
+    public float baseAOE = .3f;
     private float attackSpeedInc = .9f;
     public float freezeTime = 3.0f;
     public int poisonTime = 3;
@@ -31,7 +31,7 @@ public partial class AttackRange : Area2D
     private Timer bulletTimer;
     public float finalAtkSpd; // = base*IAS-(PAS/50)+rndOffset-(ASL/50)
     public float atkSpdRndOffset; // 0.0-.5
-    public float baseAtkSpd = 1.2f; // can be different for each attack type (must be no less than 1)
+    public float baseAtkSpd = .9f; // can be different for each attack type (must be no less than 1)
 
     public Node2D targetEnemy;
 
@@ -102,7 +102,7 @@ public partial class AttackRange : Area2D
         // AOE
         newBullet.Scale = new Vector2(AOE, AOE);
 
-        newBullet.GlobalPosition = GetNode<Node2D>("ShootingPoint").GlobalPosition;
+        newBullet.GlobalPosition = GetNode<Node2D>("ShootingPoint").GlobalPosition+new Vector2(0,-80);
         newBullet.GlobalRotation = GetNode<Node2D>("ShootingPoint").GlobalRotation;
         var bullets = GetNode("/root/World/Bullets");
         bullets.AddChild(newBullet);

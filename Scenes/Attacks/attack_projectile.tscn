@@ -20,7 +20,6 @@ shape = SubResource("CircleShape2D_mk5pp")
 
 [node name="ShootingPoint" type="Marker2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(2, 26)
 
 [node name="BulletTimer" type="Timer" parent="."]
 wait_time = 0.75
