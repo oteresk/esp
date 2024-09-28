@@ -1088,6 +1088,7 @@ focus_neighbor_bottom = NodePath(".")
 texture_normal = ExtResource("8_3j46r")
 texture_hover = ExtResource("13_4kpsi")
 texture_disabled = ExtResource("9_trcln")
+texture_focused = ExtResource("13_4kpsi")
 script = ExtResource("23_wn04p")
 
 [node name="lblYes" type="Label" parent="ctlConfirm/btnYes"]
@@ -1124,6 +1125,7 @@ focus_neighbor_bottom = NodePath(".")
 texture_normal = ExtResource("8_3j46r")
 texture_hover = ExtResource("13_4kpsi")
 texture_disabled = ExtResource("9_trcln")
+texture_focused = ExtResource("13_4kpsi")
 script = ExtResource("23_wn04p")
 
 [node name="lblNo" type="Label" parent="ctlConfirm/btnNo"]

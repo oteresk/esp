@@ -798,6 +798,9 @@ wavy = NodePath("../Wavy")
 worldEnvironment = NodePath("../WorldEnvironment")
 ambientLight = NodePath("../WorldEnvironment/AmbientLight")
 
+[node name="TextureButton" parent="Player" index="0"]
+texture_focused = ExtResource("48_b2gfw")
+
 [node name="AnimatedSprite2D" parent="Player" index="2"]
 texture_filter = 4
 
@@ -982,6 +985,7 @@ size_flags_vertical = 8
 texture_normal = ExtResource("47_u8w4u")
 texture_hover = ExtResource("48_b2gfw")
 texture_disabled = ExtResource("49_upoq8")
+texture_focused = ExtResource("48_b2gfw")
 script = ExtResource("49_p4x58")
 
 [node name="lblBack" type="Label" parent="CLbtnBack/ctlBack/TextureButton"]
