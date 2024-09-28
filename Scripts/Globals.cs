@@ -25,6 +25,7 @@ public partial class Globals : Node
 	static public string NodeGlobals = "/root/World/Globals";
 	static public string NodeFPS = "/root/World/FPS";
 	static public string NodeBack = "/root/World/CLbtnBack/ctlBack/TextureButton";
+	static public string BuildBtn = "/root/World/LateGUI/ctlStructureSelect/TextureRect/MCbtnBuild/TextureButton";
 
 
 	static public Node rootNode;
@@ -102,7 +103,7 @@ public partial class Globals : Node
 	static public float itemAtkSpd; // 1 (default) .5 (with item)
 	static public float statAtkSpd = 0;
 	static public float statDamage = 1;
-	static public float statAoE=1;
+	static public float statAoE = 1;
 	static public float statMovementSpeed = 0;
 	static public int statArmor = 0;
 
@@ -131,7 +132,7 @@ public partial class Globals : Node
 	static public int[] costWood;
 
 	// starting structures
-	static public bool StartingTower=true;
+	static public bool StartingTower = true;
 	static public bool StartingPlatform = true;
 
 	static public int platformManaCost = 5;
@@ -156,7 +157,7 @@ public partial class Globals : Node
 
 	static public float healingModifier = .5f;
 	static public float fireTime = 6; // how long the big fire lasts in world
-	static public float flameTime=2.5f; // how long the flame on enemy lasts
+	static public float flameTime = 2.5f; // how long the flame on enemy lasts
 
 	static public int screenWidth;
 	static public int screenHeight;
@@ -189,14 +190,14 @@ public partial class Globals : Node
 		headerOffset = windowSizeY - 1009;
 
 		// stat upgrade cost
-		coststatUpgrade = new int[5,5] { { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 } };
+		coststatUpgrade = new int[5, 5] { { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 } };
 
 		statUpgradeLevel = new int[MAXUPGRADES];
-		for (int iter=0;iter<5;iter++)
+		for (int iter = 0; iter < 5; iter++)
 			statUpgradeLevel[iter] = 0;
 
-		hasRelic= new bool[MAXRELICS];
-;
+		hasRelic = new bool[MAXRELICS];
+		;
 		for (int iter = 0; iter < MAXRELICS; iter++)
 			hasRelic[iter] = false;
 
@@ -250,21 +251,21 @@ public partial class Globals : Node
 	static public void UpdateStatLevels()
 	{
 		// stat attack speed   0-.625
-		statAtkSpd = (float)statUpgradeLevel[0]/8.0f;
+		statAtkSpd = (float)statUpgradeLevel[0] / 8.0f;
 
 		// statDamage   1-26
-		statDamage = 1.0f+(float)statUpgradeLevel[1]* statUpgradeLevel[1];
-		
+		statDamage = 1.0f + (float)statUpgradeLevel[1] * statUpgradeLevel[1];
+
 		// statAoE   
-		statAoE= (float)statUpgradeLevel[2]/1.5f;
-		if (ps!=null)
+		statAoE = (float)statUpgradeLevel[2] / 1.5f;
+		if (ps != null)
 			ps.SetAllAoE(); // update all existing attack AoE
 
 		// statMovementSpeed
 		statMovementSpeed = (float)statUpgradeLevel[3];
 
 		// statArmor
-		statArmor = (int)statUpgradeLevel[4]* statUpgradeLevel[4];
+		statArmor = (int)statUpgradeLevel[4] * statUpgradeLevel[4];
 	}
 
 	public async void DelayedStart()
@@ -297,7 +298,7 @@ public partial class Globals : Node
 		}
 
 
-		settingsLoaded= true;
+		settingsLoaded = true;
 
 		if (settings_ShowFPS)
 		{
@@ -339,7 +340,7 @@ public partial class Globals : Node
 		}
 		itemAtkSpd = 1; // attackSpeed modifier for temp items
 
-		if (lblLevel!=null)
+		if (lblLevel != null)
 			black = (Sprite2D)GetNodeOrNull("../Black");
 
 		// hide poison effect
@@ -405,7 +406,7 @@ public partial class Globals : Node
 		weaponTypeUnlocked[1] = true; // projectile
 		weaponTypeUnlocked[2] = false; // cross
 		weaponTypeUnlocked[3] = true; // orbit
-									   // elements
+									  // elements
 		weaponTypeUnlocked[11] = false; // fire
 
 		costIron[0] = 1; // alchemy lab
@@ -543,7 +544,7 @@ public partial class Globals : Node
 			SaveLoad.LoadSettings();
 			//LoadGameState();
 		}
-			// For testing
+		// For testing
 		if (Input.IsKeyPressed(Key.U)) // Upgrade test
 		{
 			Globals.ShowUpgrades();
@@ -560,7 +561,7 @@ public partial class Globals : Node
 			//Globals.DamagePlayer(999999);
 		}
 
-			// reset game save
+		// reset game save
 		if (Input.IsActionJustPressed("reset"))
 		{
 			ResetStats();
@@ -601,7 +602,7 @@ public partial class Globals : Node
 		if (playerShieldActive == false && ps.canBeDamaged && playerAlive)
 		{
 			ps.PlayHurtSound();
-			xDmg = xDmg - GD.RandRange(0, armorLevel+Globals.statArmor);
+			xDmg = xDmg - GD.RandRange(0, armorLevel + Globals.statArmor);
 
 			if (xDmg > 0)
 			{
@@ -684,7 +685,7 @@ public partial class Globals : Node
 		Upgrade ug = (Upgrade)upgrade1;
 		string UGname1 = ug.GetName();
 		Debug.Print("up1:" + UGname1);
-		
+
 
 		var upgrade2 = upgradeScene.Instantiate();
 		GUINode.AddChild(upgrade2);
@@ -717,23 +718,23 @@ public partial class Globals : Node
 		}
 
 		Debug.Print("up1:" + UGname1 + " up2:" + UGname2 + " up3:" + UGname3);
-		
+
 		Control ctlUp1 = (Control)upgrade1.GetChild(0);
 		Control ctlUp2 = (Control)upgrade2.GetChild(0);
 		Control ctlUp3 = (Control)upgrade3.GetChild(0);
 		NodePath up1 = ctlUp1.GetPath();
 		NodePath up2 = ctlUp2.GetPath();
 		NodePath up3 = ctlUp3.GetPath();
-		
+
 		ctlUp1.SetFocusNeighbor(Side.Right, up2);
 		ctlUp2.SetFocusNeighbor(Side.Right, up3);
 		ctlUp2.SetFocusNeighbor(Side.Left, up1);
 		ctlUp3.SetFocusNeighbor(Side.Left, up2);
-		
+
 		ctlUp2.GrabFocus();
-		
+
 		PauseGame();
-}
+	}
 
 	static public void PauseGame()
 	{
@@ -750,7 +751,7 @@ public partial class Globals : Node
 
 	public static void UpdateStatsGUI()
 	{
-		if (ps != null && lblMaxHealth!=null)
+		if (ps != null && lblMaxHealth != null)
 		{
 			lblMaxHealth.Text = HPLevel.ToString();
 			lblMovementSpeed.Text = speedLevel.ToString();
@@ -784,7 +785,7 @@ public partial class Globals : Node
 
 	static public void SetAttackLevel()
 	{
-		if (attackLevel>1)
+		if (attackLevel > 1)
 			Globals.weaponTypeUnlocked[2] = true; // unlock cross
 		if (attackLevel > 2)
 			Globals.weaponTypeUnlocked[11] = true; // unlock fire
@@ -792,12 +793,12 @@ public partial class Globals : Node
 
 	static public void SetTowerLevel()
 	{
-			ResourceDiscovery[] rD = GetStructures("Tower"); // get all towers
-			// set level of tower
-			foreach (ResourceDiscovery rd in rD)
-			{
-				rd.SetTowerLevel();
-			}
+		ResourceDiscovery[] rD = GetStructures("Tower"); // get all towers
+														 // set level of tower
+		foreach (ResourceDiscovery rd in rD)
+		{
+			rd.SetTowerLevel();
+		}
 	}
 
 	// gets an array of ResourceDiscoveries that are in the Node Group "Tower"
@@ -821,7 +822,7 @@ public partial class Globals : Node
 	static public int GetRelicsNeeded()
 	{
 		int needed = 0;
-		for (int i = 0;i<MAXRELICS;i++)
+		for (int i = 0; i < MAXRELICS; i++)
 		{
 			if (hasRelic[i] == false)
 			{
@@ -834,8 +835,8 @@ public partial class Globals : Node
 
 	public void SetVolumes()
 	{
-		Debug.Print("volume settings_MusicVolume:"+ settings_MusicVolume);
-		AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("SFX"),settings_SFXVolume);
+		Debug.Print("volume settings_MusicVolume:" + settings_MusicVolume);
+		AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("SFX"), settings_SFXVolume);
 		AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Music"), settings_MusicVolume);
 		AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Master"), settings_MasterVolume);
 		Debug.Print("volume AudioServer.GetBusIndex(\"Music\"), settings_MusicVolume:" + AudioServer.GetBusVolumeDb(AudioServer.GetBusIndex("Music")));

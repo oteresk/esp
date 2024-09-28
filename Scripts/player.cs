@@ -746,7 +746,9 @@ public partial class player : Area2D
 		await Task.Delay(TimeSpan.FromMilliseconds(4400));
 
 		Globals.rootNode.GetTree().Paused = true;
-
+		
+		TextureButton backBtn = (TextureButton)GetNode("/root/World/CLbtnBack/ctlBack/TextureButton");
+		backBtn.GrabFocus();
 	}
 
 

@@ -150,12 +150,16 @@ public partial class StatUpgrades : CanvasLayer
 	{
 		confirm.Visible = true;
 		Globals.rootNode.GetTree().Paused = true;
+		TextureButton noBtn = (TextureButton)GetNode("/root/StatUpgrades/ctlConfirm/btnNo");
+		noBtn.GrabFocus();
 	}
 
 	public void ConfirmNo()
 	{
 		confirm.Visible = false;
 		Globals.rootNode.GetTree().Paused = false;
+		TextureButton resetBtn = (TextureButton)GetNode("/root/StatUpgrades/Control/TextureRect/MCbtnReset/TextureButton");
+		resetBtn.GrabFocus();
 	}
 
 	public void ConfirmYes()
@@ -163,6 +167,8 @@ public partial class StatUpgrades : CanvasLayer
 		confirm.Visible = false;
 		Globals.rootNode.GetTree().Paused = false;
 		Globals.instance.ResetStats();
+		TextureButton resetBtn = (TextureButton)GetNode("/root/StatUpgrades/Control/TextureRect/MCbtnReset/TextureButton");
+		resetBtn.GrabFocus();
 	}
 
 
