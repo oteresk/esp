@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://ce3u6rl1g6muh"]
+[gd_scene load_steps=14 format=3 uid="uid://ce3u6rl1g6muh"]
 
 [ext_resource type="Script" path="res://Scripts/Options.cs" id="1_gpfll"]
 [ext_resource type="Texture2D" uid="uid://cyc03qnixbx37" path="res://Art/GUI/ChruchBackground.jpg" id="1_wyvqs"]
@@ -8,14 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://duc3yrtenakjo" path="res://Art/GUI/StatUpgrades/Button Small.png" id="5_opc18"]
 [ext_resource type="Texture2D" uid="uid://ccbsebicl0cl7" path="res://Art/GUI/StatUpgrades/Button Small_Hover.png" id="6_0r1kx"]
 [ext_resource type="Texture2D" uid="uid://vy0172p8d6bq" path="res://Art/GUI/StatUpgrades/Button_Disabled.png" id="6_2satq"]
-[ext_resource type="Script" path="res://Scripts/SaveLoad.cs" id="7_ficni"]
-[ext_resource type="Script" path="res://Scripts/Globals.cs" id="8_sdnun"]
-[ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="9_qk4sq"]
-[ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/Resource-IronMine.tscn" id="10_hvv3w"]
-[ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/Resource-GoldMineOld.tscn" id="11_p5fos"]
-[ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/Resource-ManaWellOld.tscn" id="12_yf023"]
-[ext_resource type="PackedScene" uid="uid://ctcv7jmln8o34" path="res://Scenes/Resource-Wood.tscn" id="13_8fma3"]
-[ext_resource type="PackedScene" uid="uid://djjmkb3mx4ata" path="res://Scenes/Resource-Platform.tscn" id="14_fve1j"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_35om8"]
 font = ExtResource("2_i183a")
@@ -368,24 +360,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
-
-[node name="SaveLoad" type="Node2D" parent="."]
-script = ExtResource("7_ficni")
-
-[node name="Globals" type="Node2D" parent="."]
-script = ExtResource("8_sdnun")
-
-[node name="ResourceDiscoveries" type="Node2D" parent="."]
-y_sort_enabled = true
-position = Vector2(142, -55)
-script = ExtResource("9_qk4sq")
-rTemplateIronMine = ExtResource("10_hvv3w")
-rTemplateGoldMine = ExtResource("11_p5fos")
-rTemplateManaWell = ExtResource("12_yf023")
-rTemplateWood = ExtResource("13_8fma3")
-rTemplatePlatform = ExtResource("14_fve1j")
-resourcesPerCell = 5
-resourceUpdateFreq = 60
 
 [connection signal="toggled" from="Control/MCVScrollBar/VBoxControls/chkFullscreen" to="." method="FullScreenPress"]
 [connection signal="item_selected" from="Control/MCVScrollBar/VBoxControls/MCResolution/optResolution" to="." method="ChangeResolution"]

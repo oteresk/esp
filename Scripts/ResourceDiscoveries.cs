@@ -74,20 +74,22 @@ public partial class ResourceDiscoveries : Node2D
     private Node2D nodDecorations;
 	private int decNum;
 	private int randDecoration;
+	Node nodeEnemyTimer;
+
 
     public override void _Ready()
 	{
 		instance = this;
-        GD.Randomize();
+		GD.Randomize();
+	}
+	public void WorldReady()
+	{ 
         //Place resource discoveries
         //PlaceResourceDiscoveries();
-
-        if (Globals.rootNode.Name == "World")
-			if (Globals.xpBar != null) // dont place if on Stat Upgrade menu
-				PlaceRelics();
+		PlaceRelics();
 
         // get GUI nodes
-        rGUI = GetNodeOrNull("../GUI");
+        rGUI = GetNode("../GUI");
         if (rGUI != null)
         {
             Globals.rG2 = (resourceGUI)GetNode(rGUI.GetPath());
@@ -96,18 +98,23 @@ public partial class ResourceDiscoveries : Node2D
 
         // offset resourcediscoveries position to put player in middle of array
         Position = new Vector2(-(Globals.gridSizeX * Globals.subGridSizeX) / 2 * pixelSizeX, -(Globals.gridSizeY * Globals.subGridSizeY) / 2 * pixelSizeY);
-        Node2D nodStruct = (Node2D)GetNodeOrNull(Globals.NodeStructures);
+        Node2D nodStruct = (Node2D)GetNode(Globals.NodeStructures);
 		if (nodStruct!=null)
 	        nodStruct.Position = Position;
 
 		if (nodDecorations!=null)
 	        nodDecorations.Position = Position;
 
+        nodeEnemyTimer = GetNode("../EnemyTimer");
+        if (nodeEnemyTimer != null)
+            enemyTimer = (Timer)nodeEnemyTimer;
+
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		/*
 		if (Input.IsActionPressed("map") && mapNotPressed)
 		{
 			Debug.Print("Pressed 'm'");
@@ -118,10 +125,8 @@ public partial class ResourceDiscoveries : Node2D
 
 		if (Input.IsActionJustReleased("map"))
 			mapNotPressed = true;
-
-		Node nodeEnemyTimer = GetNodeOrNull("../EnemyTimer");
-        if (nodeEnemyTimer!=null)
-	        enemyTimer = (Timer)nodeEnemyTimer;
+		*/
+		
     }
 
 // Game Timer - also updates resources every minute
@@ -386,7 +391,7 @@ public void PlaceResourceDiscoveries()
 				rdp.gridYPos = y * Globals.subGridSizeY + py;
 				resourceDiscovery.Name = (rdp.gridXPos.ToString()) + ", " + (rdp.gridYPos.ToString());
 				// convert to structure
-				StructureSelect settle = (StructureSelect)GetNodeOrNull(Globals.NodeStructureGUI);
+				StructureSelect settle = (StructureSelect)GetNode(Globals.NodeStructureGUI);
 				if (settle != null)
 					settle.CreateStructure(6, resourceDiscovery);
 				break;

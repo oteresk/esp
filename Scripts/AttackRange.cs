@@ -41,7 +41,7 @@ public partial class AttackRange : Area2D
 
     public override void _Ready()
     {
-        if (GetNodeOrNull("BulletTimer")!=null)
+        if (GetNode("BulletTimer")!=null)
             bulletTimer = (Timer)GetNode("BulletTimer");
         atkSpdRndOffset = (float)GD.RandRange(0.0, 0.1);
         SetDamage();

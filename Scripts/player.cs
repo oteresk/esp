@@ -108,12 +108,17 @@ public partial class player : Area2D
         animatedSprite2DTop = GetNode<AnimatedSprite2D>("AnimatedSprite2DTop");
         if (Globals.settings_PlayerGhost)
 		{
+			Debug.Print("Ghost on");
 			animatedSprite2DTop.Animation = "idle";
 			animatedSprite2DTop.Play();
 			animatedSprite2DTop.FlipV = false;
 		}
 		else
-			animatedSprite2DTop.Visible = false;
+		{
+            animatedSprite2DTop.Visible = false;
+			Debug.Print("Ghost off");
+        }
+			
 
         SetMagnetismShape();
 
@@ -182,13 +187,10 @@ public partial class player : Area2D
 
 
         // set god mode
-        if (Globals.rootNode.Name == "World") // if world scene
-        { //only set god mode when in world scene
-            if (Globals.settings_GodMode)
-                canBeDamaged = false;
-            else
-                canBeDamaged = true;
-        }
+        if (Globals.settings_GodMode)
+            canBeDamaged = false;
+        else
+            canBeDamaged = true;
 
     }
 

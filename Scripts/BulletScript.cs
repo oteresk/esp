@@ -23,7 +23,7 @@ public partial class BulletScript : Area2D
 
     public override void _Ready()
     {
-        AnimatedSprite2D aS2D = GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D");
+        AnimatedSprite2D aS2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         if (aS2D!=null)
             aS2D.Play();
     }
@@ -37,15 +37,15 @@ public partial class BulletScript : Area2D
 
         if (bType != BulletType.Flame)
         {
-            AnimatedSprite2D aS2D = GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D");
+            AnimatedSprite2D aS2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
             if (aS2D!=null) // regular animated projectile
             {
-                if (GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D").Visible)
+                if (GetNode<AnimatedSprite2D>("AnimatedSprite2D").Visible)
                     Position += direction * SPEED * (float)delta;
             }
             else
             { // golem projectile
-                if (GetNodeOrNull<Sprite2D>("Shadow").Visible)
+                if (GetNode<Sprite2D>("Shadow").Visible)
                     Position += direction * SPEED * (float)delta;
             }
 

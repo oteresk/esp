@@ -49,6 +49,8 @@ public partial class Status : TextureRect
         tween.TweenProperty(this, "position", new Vector2(endX, Position.Y), 1.0f).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Circ);
         await ToSignal(tween, Tween.SignalName.Finished);
         panelMoving = false;
+        // pause game
+        //Globals.PauseGame();
     }
 
     async public void PushInPanel()
@@ -59,6 +61,8 @@ public partial class Status : TextureRect
         tween.TweenProperty(this, "position", new Vector2(startX, Position.Y), 1.0f).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Circ);
         await ToSignal(tween, Tween.SignalName.Finished);
         panelMoving = false;
+        // unpause game
+        //Globals.UnPauseGame();
     }
 
     public void MouseEntered()

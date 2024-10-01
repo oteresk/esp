@@ -194,17 +194,35 @@ public partial class Globals : Node
 	private ShaderMaterial vignetMat;
 	private ShaderMaterial nightPar2Mat;
 
-    public override void _Ready()
+	public override void _Ready()
 	{
 		instance = this;
-        rootNode = GetNode("..");
+		// init scenes
+        StatUpgradesScene = (PackedScene)ResourceLoader.Load("res://Scenes/StatUpgrades.tscn");
+        OptionsScene = (PackedScene)ResourceLoader.Load("res://Scenes/Options.tscn");
+        WorldScene = (PackedScene)ResourceLoader.Load("res://Scenes/world.tscn");
+        TitleScene = (PackedScene)ResourceLoader.Load("res://Scenes/Title.tscn");
 
+        weaponTypeUnlocked = new bool[12];
         costIron = new int[8];
         costWood = new int[8];
 
-        btnBack = (TextureButton)GetNodeOrNull(NodeBack);
+        // stat upgrade cost
+        coststatUpgrade = new int[5, 5] { { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 } };
 
-        weaponTypeUnlocked = new bool[12];
+        rootNode = GetNode("..");
+
+
+        Debug.Print("initialize save load");
+        SaveLoad.LoadGame();
+        SaveLoad.LoadSettings();
+        SetVolumes();
+
+    }
+    public void WorldReady()
+	{ 
+        
+        btnBack = (TextureButton)GetNode(NodeBack);
 
 		worldArray = new int[gridSizeX * subGridSizeX, gridSizeY * subGridSizeY];
 		// windowSizeY
@@ -213,39 +231,31 @@ public partial class Globals : Node
 		windowSizeY = (int)GetViewport().GetVisibleRect().Size.Y;
 		headerOffset = windowSizeY - 1009;
 
-        // stat upgrade cost
-        coststatUpgrade = new int[5,5] { { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 } };
-
         // "GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth"
         // get stat labels     GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed
 
-        Node lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth");
+        Node lbl = GetNode("../World//GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth");
 		lblMaxHealth = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed");
+		lbl = GetNode("../World/GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed");
 		lblMovementSpeed = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/Magnetism/VBoxContainer/lblMagnetism");
+		lbl = GetNode("../World/GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/Magnetism/VBoxContainer/lblMagnetism");
 		lblMagnetism = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/Armor/VBoxContainer/lblArmor");
+		lbl = GetNode("../World/GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/Armor/VBoxContainer/lblArmor");
 		lblArmor = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Attack/VBoxContainer/lblAttack");
+		lbl = GetNode("../World/GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Attack/VBoxContainer/lblAttack");
         lblAttack = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Towers/VBoxContainer/lblTowerLevel");
+		lbl = GetNode("../World/GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Towers/VBoxContainer/lblTowerLevel");
 		lblTowerLevel = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Golems/VBoxContainer/lblGolemLevel");
+		lbl = GetNode("../World/GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Golems/VBoxContainer/lblGolemLevel");
         lblGolemLevel = (Label)lbl;
 
         screenWidth = (int)GetViewport().GetVisibleRect().Size.X;
         screenHeight = (int)GetViewport().GetVisibleRect().Size.Y;
 
-        StatUpgradesScene = (PackedScene)ResourceLoader.Load("res://Scenes/StatUpgrades.tscn");
-        OptionsScene = (PackedScene)ResourceLoader.Load("res://Scenes/Options.tscn");
-        WorldScene = (PackedScene)ResourceLoader.Load("res://Scenes/world.tscn");
-        TitleScene = (PackedScene)ResourceLoader.Load("res://Scenes/Title.tscn");
-
 		if (Globals.rootNode.Name == "World")
 		{
-			nightPar1 = (ParallaxLayer)GetNode("../ParallaxBackground-Night/ParallaxLayer");
-			nightPar2 = (ColorRect)GetNode("../ParallaxBackground-Night/ParallaxLayer2/ColorRect");
+			nightPar1 = (ParallaxLayer)GetNode("../World/ParallaxBackground-Night/ParallaxLayer");
+			nightPar2 = (ColorRect)GetNode("../World/ParallaxBackground-Night/ParallaxLayer2/ColorRect");
 			vignetMat = (ShaderMaterial)vignet.Material;
 			nightPar2Mat = (ShaderMaterial)nightPar2.Material;
 
@@ -296,10 +306,6 @@ public partial class Globals : Node
 		// wait a bit
 		//await Task.Delay(TimeSpan.FromMilliseconds(40));
 
-		//Debug.Print("***********");
-        SaveLoad.LoadGame();
-        SaveLoad.LoadSettings();
-        SetVolumes();
 
         if (lblAttack != null)
 		{
@@ -313,7 +319,7 @@ public partial class Globals : Node
         ResourceDiscoveries.mapNotPressed = false;
 		if (IsInstanceValid(this))
 		{
-            Node2D miniMap = (Node2D)GetNodeOrNull(Globals.NodeMiniMap);
+            Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
             if (miniMap != null)
             {
                 MiniMap miniMap1 = (MiniMap)miniMap;
@@ -327,13 +333,13 @@ public partial class Globals : Node
 
         if (settings_ShowFPS)
         {
-            CanvasLayer nFPS = (CanvasLayer)GetNodeOrNull(NodeFPS);
+            CanvasLayer nFPS = (CanvasLayer)GetNode(NodeFPS);
             if (nFPS != null)
                 nFPS.Visible = true;
         }
         else
         {
-            CanvasLayer nFPS = (CanvasLayer)GetNodeOrNull(NodeFPS);
+            CanvasLayer nFPS = (CanvasLayer)GetNode(NodeFPS);
             if (nFPS != null)
                 nFPS.Visible = false;
         }
@@ -342,13 +348,14 @@ public partial class Globals : Node
 
 	public void ResetGame()
 	{
-		GUINode = (resourceGUI)GetNodeOrNull(NodeGUI);
+		GUINode = (resourceGUI)GetNode(NodeGUI);
 
 		playerAlive = true;
 		level = 1;
 		XPGoal = 20;
-		xpBar = (ProgressBar)GetNodeOrNull("../GUI/XPOverlay/XPBar");
-		lblLevel = (Label)GetNodeOrNull("../GUI/XPOverlay/XPBar/Label");
+		xpBar = (ProgressBar)GetNode("../World/GUI/XPOverlay/XPBar");
+		Debug.Print("XP bar init");
+		lblLevel = (Label)GetNode("../World/GUI/XPOverlay/XPBar/Label");
 		if (xpBar != null)
 		{
 			xpBar.Value = XP;
@@ -357,10 +364,10 @@ public partial class Globals : Node
 		itemAtkSpd = 1; // attackSpeed modifier for temp items
 
 		if (lblLevel!=null)
-			black = (Sprite2D)GetNodeOrNull("../Black");
+			black = (Sprite2D)GetNode("../World/Black");
 
 		// hide poison effect
-		poisonEffect = (HBoxContainer)GetNodeOrNull(NodePoison);
+		poisonEffect = (HBoxContainer)GetNode(NodePoison);
 
 		poisonNodes = new List<Node>();
 
@@ -369,7 +376,9 @@ public partial class Globals : Node
 		SetMaxHP();
 		Debug.Print("maxHP:" + MaxHP);
 		Globals.HP = MaxHP;
-        hpBar = (ProgressBar)GetNodeOrNull("../Player/HPBar");
+        hpBar = (ProgressBar)GetNode("../World/Player/HPBar");
+
+        Debug.Print("init hp bar");
         if (hpBar != null)
             hpBar.Value = HP / MaxHP;
 
@@ -395,7 +404,7 @@ public partial class Globals : Node
 		ResourceDiscoveries.research = 0;
 
 
-		Node2D fG = (Node2D)GetNodeOrNull("../FriendlyGolem");
+		Node2D fG = (Node2D)GetNodeOrNull("../World/FriendlyGolem");
 		if (fG != null)
 		{
 			Globals.golem = fG;
@@ -404,7 +413,7 @@ public partial class Globals : Node
 			Debug.Print("Golem not null");
 		}
 
-		Node2D aG = (Node2D)GetNodeOrNull("../AgroGolem");
+		Node2D aG = (Node2D)GetNodeOrNull("../World/AgroGolem");
 		if (aG != null)
 		{
 			Globals.agroGolem = aG;
@@ -675,7 +684,7 @@ public partial class Globals : Node
 		CheckNextLevel();
 
 		xpBar.Value = XP / XPGoal;
-		//Debug.Print("XP: " + XP + " XPGoal: " + XPGoal + " final: " + xpBar.Value);
+		Debug.Print("XP: " + XP + " XPGoal: " + XPGoal + " final: " + xpBar.Value);
 	}
 
 	static public void DamagePlayer(float xDmg)
@@ -702,7 +711,7 @@ public partial class Globals : Node
 					player p = (player)pl;
 					p.PlayDeathAnim();
 				}
-
+				Debug.Print("use hp bar");
 				hpBar.Value = HP / MaxHP;
 			}
 		}

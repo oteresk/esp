@@ -18,11 +18,11 @@ public partial class btnUpgrade : TextureButton
         // wait a bit
         await Task.Delay(TimeSpan.FromMilliseconds(30));
 
-        Node upgradeNode = Globals.rootNode.GetNode("Control/TextureRect/MCbtnUpgrade/TextureButton/lblUpgrade");
+        Node upgradeNode = Globals.rootNode.GetNode("StatUpgrades/Control/TextureRect/MCbtnUpgrade/TextureButton/lblUpgrade");
         lblUpgrade = (Label)upgradeNode;
         lblUpgrade.Modulate = new Color(1, 1, 1, .5f);
 
-        upgradeNode = Globals.rootNode.GetNode("Control/TextureRect/MCbtnUpgrade/TextureButton");
+        upgradeNode = Globals.rootNode.GetNode("StatUpgrades/Control/TextureRect/MCbtnUpgrade/TextureButton");
         textureButtonUpgrade = (TextureButton)upgradeNode;
         textureButtonUpgrade.Disabled = true;
 
@@ -64,7 +64,7 @@ public partial class btnUpgrade : TextureButton
                 SaveLoad.SaveGame();
 
                 // Update slots
-                Node nd = Globals.rootNode.GetNode(".");
+                Node nd = Globals.rootNode.GetNode("StatUpgrades");
                 StatUpgrades su = (StatUpgrades)nd;
                 su.UpdateAllSlots();
 

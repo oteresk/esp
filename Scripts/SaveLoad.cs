@@ -4,6 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
+using System.Collections.Generic;
+using System.Collections;
+using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
+
+
 public partial class SaveLoad : Node2D
 {
 	static private Godot.Collections.Dictionary settingsData;
@@ -15,6 +21,7 @@ public partial class SaveLoad : Node2D
     public override void _Ready()
 	{
         string path = ProjectSettings.GlobalizePath(settingsFilename);
+        //Globals.instance.Initialize();
 
         if (!File.Exists(path))
             SaveSettings();
@@ -122,6 +129,7 @@ public partial class SaveLoad : Node2D
 
     static public void LoadSettings()
 	{
+        Debug.Print("New settings data");
         settingsData = new Godot.Collections.Dictionary();
         settingsData.Clear();
 
@@ -233,35 +241,7 @@ public partial class SaveLoad : Node2D
             else
                 settingsData.Add("[Settings] PlayerGhost", true);
 
-
-
-
-
-            // initialize stuff
-
-            Node rdNode = Globals.rootNode.GetNodeOrNull(Globals.NodeResourceDiscoveries);
-            Debug.Print("Scene name: " + Globals.rootNode.Name);
-            if (Globals.rootNode.Name == "World") // if world scene
-            {
-                ResourceDiscoveries rD = (ResourceDiscoveries)rdNode;
-                rD.PlaceStartingStructures();
-                rD.PlaceResourceDiscoveries();
-                if (Globals.settings_Decorations)
-                    rD.PlaceDecorations();
-            }
-            else // if title
-            if (Globals.rootNode.Name == "Title")
-            {
-
-            }
-
-            // full screen
-            if (Globals.settings_FullScreen)
-                DisplayServer.WindowSetMode(DisplayServer.WindowMode.ExclusiveFullscreen);
-            else
-                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
-
-
+            
             Debug.Print("Load settings");
         }
 
@@ -413,9 +393,9 @@ public partial class SaveLoad : Node2D
             Debug.Print("Load Game Save");
 
             Globals.UpdateStatLevels();
-
+      
             // update stat upgrades
-            if (Globals.rootNode.Name == "StatUpgrades")
+            if (Globals.instance.GetTree().CurrentScene.ToString() == "StatUpgrades")
             {
                 Debug.Print("SaveLoad Stat Upgrades");
 

@@ -10,6 +10,10 @@ public partial class world : Node2D
 
     public override void _Ready()
 	{
+        Globals.instance.WorldReady();
+        ResourceDiscoveries.instance.WorldReady();
+
+
         enemyString = new string[]
         {
             "res://Scenes/Enemies/en_Bat.tscn",
@@ -27,10 +31,31 @@ public partial class world : Node2D
             "res://Scenes/Enemies/en_EvilEye.tscn",
             "res://Scenes/AgroGolem.tscn",
         };
+
+        // initialize stuff
+
+        Node rdNode = Globals.rootNode.GetNode(Globals.NodeResourceDiscoveries);
+        ResourceDiscoveries rD = (ResourceDiscoveries)rdNode;
+        rD.PlaceStartingStructures();
+        rD.PlaceResourceDiscoveries();
+        if (Globals.settings_Decorations)
+            rD.PlaceDecorations();
+
+
+        // full screen
+        if (Globals.settings_FullScreen)
+            DisplayServer.WindowSetMode(DisplayServer.WindowMode.ExclusiveFullscreen);
+        else
+            DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
+
+
+
+
+
     }
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(double delta)
 	{
 	}
 

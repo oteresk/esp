@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://0bpvsyr4x8kl"]
+[gd_scene load_steps=25 format=3 uid="uid://0bpvsyr4x8kl"]
 
 [ext_resource type="Texture2D" uid="uid://chbmayap43wjo" path="res://Art/Title/Logo.png" id="1_i4lwq"]
 [ext_resource type="Texture2D" uid="uid://d2mqidchgyvkh" path="res://Art/Title/BG_Layer3.png" id="2_camxe"]
@@ -13,15 +13,7 @@
 [ext_resource type="FontFile" uid="uid://bkjpjbwrgwmgj" path="res://Fonts/vinque rg.otf" id="14_05d0r"]
 [ext_resource type="Texture2D" uid="uid://duc3yrtenakjo" path="res://Art/GUI/StatUpgrades/Button Small.png" id="16_p6tm5"]
 [ext_resource type="Texture2D" uid="uid://ccbsebicl0cl7" path="res://Art/GUI/StatUpgrades/Button Small_Hover.png" id="17_imcsu"]
-[ext_resource type="Script" path="res://Scripts/Globals.cs" id="17_yikj4"]
 [ext_resource type="Texture2D" uid="uid://vy0172p8d6bq" path="res://Art/GUI/StatUpgrades/Button_Disabled.png" id="18_qg1fa"]
-[ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="18_vc4ry"]
-[ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/Resource-IronMine.tscn" id="19_vtko4"]
-[ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/Resource-GoldMineOld.tscn" id="20_bnwr3"]
-[ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/Resource-ManaWellOld.tscn" id="21_n6ryh"]
-[ext_resource type="PackedScene" uid="uid://ctcv7jmln8o34" path="res://Scenes/Resource-Wood.tscn" id="22_ixbe5"]
-[ext_resource type="PackedScene" uid="uid://djjmkb3mx4ata" path="res://Scenes/Resource-Platform.tscn" id="23_u041h"]
-[ext_resource type="Script" path="res://Scripts/SaveLoad.cs" id="24_qirlc"]
 
 [sub_resource type="Gradient" id="Gradient_7b4hk"]
 
@@ -81,6 +73,12 @@ shader_parameter/mask = ExtResource("11_4x48i")
 font = ExtResource("14_05d0r")
 font_size = 42
 font_color = Color(0.301961, 0.360784, 0.133333, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jl2ci"]
+resource_local_to_scene = true
+font = ExtResource("14_05d0r")
+font_size = 34
+font_color = Color(1, 1, 1, 0.835294)
 
 [node name="Title" type="Node2D"]
 
@@ -374,23 +372,27 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Globals" type="Node2D" parent="."]
-script = ExtResource("17_yikj4")
+[node name="Control2" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="ResourceDiscoveries" type="Node2D" parent="."]
-y_sort_enabled = true
-position = Vector2(142, -55)
-script = ExtResource("18_vc4ry")
-rTemplateIronMine = ExtResource("19_vtko4")
-rTemplateGoldMine = ExtResource("20_bnwr3")
-rTemplateManaWell = ExtResource("21_n6ryh")
-rTemplateWood = ExtResource("22_ixbe5")
-rTemplatePlatform = ExtResource("23_u041h")
-resourcesPerCell = 5
-resourceUpdateFreq = 60
+[node name="MarginContainer" type="MarginContainer" parent="Control2"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
 
-[node name="SaveLoad" type="Node2D" parent="."]
-script = ExtResource("24_qirlc")
+[node name="lblVersion" type="Label" parent="Control2/MarginContainer"]
+z_index = 6
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+text = "v0.34"
+label_settings = SubResource("LabelSettings_jl2ci")
 
 [connection signal="mouse_entered" from="Control/MCbtnUpgrades/btnUpgrades" to="Control/MCbtnUpgrades/btnUpgrades" method="Hover"]
 [connection signal="mouse_exited" from="Control/MCbtnUpgrades/btnUpgrades" to="Control/MCbtnUpgrades/btnUpgrades" method="UnHover"]

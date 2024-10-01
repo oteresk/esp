@@ -38,7 +38,7 @@ base_font = ExtResource("14_vg8ko")
 [sub_resource type="LabelSettings" id="LabelSettings_t6yut"]
 line_spacing = 6.0
 font = SubResource("FontVariation_0hjp2")
-font_size = 114
+font_size = 108
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 2
 shadow_color = Color(0, 0, 0, 0.360784)

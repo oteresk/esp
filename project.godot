@@ -25,6 +25,8 @@ boot_splash/image="res://Art/Plutonium Powered_logo_full.png"
 [autoload]
 
 SteamManager="*res://Scenes/SteamManager.tscn"
+Globals="*res://Scenes/globals.tscn"
+SaveLoad="*res://Scenes/SaveLoad.tscn"
 
 [display]
 
