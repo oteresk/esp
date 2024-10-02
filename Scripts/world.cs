@@ -129,7 +129,7 @@ public partial class world : Node2D
 
 	}
 
-	// this is just a rudimentary way of spawning enemies; a more detailed wave-like spawning system will replace this
+
 	public void _on_enemy_timer_timeout()
 	{
 		//Debug.Print("spawning mob");

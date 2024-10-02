@@ -17,6 +17,7 @@ ResourceScriptDirectories=["res://"]
 [application]
 
 config/name="Dark Age Asunder"
+config/description="v0.34.1"
 run/main_scene="res://Scenes/Title.tscn"
 config/features=PackedStringArray("4.1", "C#", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)

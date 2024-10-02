@@ -166,7 +166,7 @@ shader_parameter/block_size = 20.0
 shader_parameter/starting_colour = Vector4(1, 1, 1, 0.8)
 shader_parameter/ending_colour = Vector4(1, 1, 1, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pno7r"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ngj5c"]
 resource_local_to_scene = true
 shader = ExtResource("42_acbwv")
 shader_parameter/alpha = 0.0
@@ -208,7 +208,6 @@ scale = Vector2(1, 1)
 transform = Transform2D(1, 0, 0, 1, 0, 0)
 
 [node name="ParallaxBackground-Night" parent="." instance=ExtResource("5_xm47w")]
-visible = false
 
 [node name="ResourceDiscoveries" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -345,9 +344,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -960.0
-offset_top = -540.0
+offset_top = -541.0
 offset_right = 960.0
-offset_bottom = 540.0
+offset_bottom = 539.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -1072,7 +1071,7 @@ theme_override_constants/margin_bottom = 30
 layout_mode = 2
 
 [node name="SubViewportContainer" parent="MiniMapCanvas/Control2/Control/MarginContainer/ctlSub" instance=ExtResource("36_hw51v")]
-material = SubResource("ShaderMaterial_pno7r")
+material = SubResource("ShaderMaterial_ngj5c")
 custom_minimum_size = Vector2(362, 370)
 layout_mode = 0
 anchors_preset = 0

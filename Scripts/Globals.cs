@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
+using System.IO;
 
 public partial class Globals : Node
 {
@@ -185,12 +186,12 @@ public partial class Globals : Node
 
 	static public bool nightMode = false;
 
-    [Export] public AudioStreamPlayer musInGame;
+    private AudioStreamPlayer musInGame;
 
-    [Export] public ParallaxBackground nightBackground;
+    private ParallaxBackground nightBackground;
     private ParallaxLayer nightPar1;
     private ColorRect nightPar2;
-    [Export] public ColorRect vignet;
+    private ColorRect vignet;
 	private ShaderMaterial vignetMat;
 	private ShaderMaterial nightPar2Mat;
 
@@ -252,21 +253,31 @@ public partial class Globals : Node
         screenWidth = (int)GetViewport().GetVisibleRect().Size.X;
         screenHeight = (int)GetViewport().GetVisibleRect().Size.Y;
 
-		if (Globals.rootNode.Name == "World")
-		{
-			nightPar1 = (ParallaxLayer)GetNode("../World/ParallaxBackground-Night/ParallaxLayer");
-			nightPar2 = (ColorRect)GetNode("../World/ParallaxBackground-Night/ParallaxLayer2/ColorRect");
-			vignetMat = (ShaderMaterial)vignet.Material;
-			nightPar2Mat = (ShaderMaterial)nightPar2.Material;
+		
+		
+		nightPar1 = (ParallaxLayer)GetNode("../World/ParallaxBackground-Night/ParallaxLayer");
+		nightPar2 = (ColorRect)GetNode("../World/ParallaxBackground-Night/ParallaxLayer2/ColorRect");
+		Node vNod= GetNode("../World/CLVignet/Vignette/Vignette");
+		vignet = (ColorRect)vNod;
 
-			vignetMat.SetShaderParameter("inner_radius", .1f);
-			vignetMat.SetShaderParameter("outer_radius", 1.0f);
-			vignetMat.SetShaderParameter("vignette_strength", 1.2f);
-		}
+		vignetMat = (ShaderMaterial)vignet.Material;
+		nightPar2Mat = (ShaderMaterial)nightPar2.Material;
+
+		vignetMat.SetShaderParameter("inner_radius", .1f);
+		vignetMat.SetShaderParameter("outer_radius", 1.0f);
+		vignetMat.SetShaderParameter("vignette_strength", 1.2f);
+		
 
         ResetGame();
 
         Initialize();
+
+        vNod = GetNode("../World/CLVignet/Vignette/Vignette");
+        nightBackground = (ParallaxBackground)GetNode("../World/ParallaxBackground-Night");
+		nightBackground.Visible = false;
+
+        nightMode = true; // will be set to fales in togglenight
+        ToggleNight();
     }
 
     private void Input_JoyConnectionChanged(long device, bool connected)
@@ -664,7 +675,11 @@ public partial class Globals : Node
         ResourceDiscoveries.gold = 0;
         for (int iter = 0; iter < 5; iter++)
             Globals.statUpgradeLevel[iter] = 0;
-        SaveLoad.SaveGame();
+		//SaveLoad.SaveGame();
+		// delete save game file
+		File.Delete(SaveLoad.settingsFilename);
+
+
         // Update slots
         Node nd = Globals.rootNode.GetNode(".");
         StatUpgrades su = (StatUpgrades)nd;

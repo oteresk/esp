@@ -13,10 +13,10 @@ using static System.Net.Mime.MediaTypeNames;
 public partial class SaveLoad : Node2D
 {
 	static private Godot.Collections.Dictionary settingsData;
-	static private string settingsFilename = "Settings.json";
+	static public string settingsFilename = "Settings_v0.34.json";
 
     static private Godot.Collections.Dictionary gameSaveData;
-    static private string gameSaveFilename = "GameSave.dat";
+    static private string gameSaveFilename = "GameSave_v0.34.dat";
 
     public override void _Ready()
 	{

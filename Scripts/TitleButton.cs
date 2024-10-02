@@ -10,6 +10,7 @@ public partial class TitleButton : TextureButton
 	[Export] public Label lblButton;
     private bool overButton = false;
     private ColorRect black;
+    [Export] Label lblVersion;
 
     private AudioStreamPlayer titleMusic;
 
@@ -25,6 +26,12 @@ public partial class TitleButton : TextureButton
         }
 
         FadeIn();
+
+        // set version
+        if (lblButton.Name == "lblUpgrades")
+        {
+            lblVersion.Text = ProjectSettings.GetSetting("application/config/description").ToString();
+        }
     }
 
     public void Hover()
