@@ -63,6 +63,7 @@ public partial class Globals : Node
 
 	static public ProgressBar hpBar;
 	static public ProgressBar xpBar;
+	static public ProgressBar manaBar;
 
 	// player attributes and stats
 	static public float XP = 0;
@@ -71,6 +72,12 @@ public partial class Globals : Node
 	static public float MaxHP;
 	static public int HPLevel = 1;
 	static public float HPInc = 10;
+
+	static public float maxMana;
+	static public float curMana;
+	static public float manaMultiplier = 100;
+	static public float manaUseMultiplier = 2.0f;
+
 
     static public int speedLevel = 1;
 
@@ -387,6 +394,10 @@ public partial class Globals : Node
 		}
         xpBar.Value = XP / XPGoal;
 
+		manaBar= (ProgressBar)GetNode("../World/GUI/ManaOverlay/ManaBar");
+
+		CalcMana();
+
         itemAtkSpd = 1; // attackSpeed modifier for temp items
 
 		if (lblLevel!=null)
@@ -479,7 +490,22 @@ public partial class Globals : Node
         costWood[7] = 1;
     }
 
-	static public void InitArrays()
+	public void CalcMana() // this is called every minute and adds mana based on mana wells
+	{
+		maxMana = ResourceDiscoveries.mana * manaMultiplier;
+		manaBar.MaxValue = maxMana;
+		curMana = maxMana;
+        manaBar.Value = curMana;
+    }
+
+	public void UseMana(float m)
+	{
+		curMana *= m;
+        manaBar.Value = curMana;
+    }
+
+
+    static public void InitArrays()
 	{
         if (statUpgradeLevel == null) // init stat upgrades if null
         {
@@ -949,4 +975,64 @@ public partial class Globals : Node
         AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Master"), settings_MasterVolume);
         Debug.Print("volume AudioServer.GetBusIndex(\"Music\"), settings_MusicVolume:" + AudioServer.GetBusVolumeDb(AudioServer.GetBusIndex("Music")));
     }
+
+    static public float GetManaUse()
+    {
+        float manaUse = 0;
+
+        if (Globals.ps.atkSlashIce.Count > 0)
+        {
+            manaUse += Globals.ps.atkSlashIce[0].GetAOELevel() + Globals.ps.atkSlashIce[0].GetAttackSpeedLevel() + Globals.ps.atkSlashIce[0].GetDmgLevel();
+        }
+        if (Globals.ps.atkSlashLeeches.Count > 0)
+        {
+            manaUse += Globals.ps.atkSlashLeeches[0].GetAOELevel() + Globals.ps.atkSlashLeeches[0].GetAttackSpeedLevel() + Globals.ps.atkSlashLeeches[0].GetDmgLevel();
+        }
+        if (Globals.ps.atkProjectileEnergy.Count > 0)
+        {
+            manaUse += Globals.ps.atkProjectileEnergy[0].GetAOELevel() + Globals.ps.atkProjectileEnergy[0].GetAttackSpeedLevel() + Globals.ps.atkProjectileEnergy[0].GetDmgLevel();
+
+        }
+        if (Globals.ps.atkProjectileLeeches.Count > 0)
+        {
+            manaUse += Globals.ps.atkProjectileLeeches[0].GetAOELevel() + Globals.ps.atkProjectileLeeches[0].GetAttackSpeedLevel() + Globals.ps.atkProjectileLeeches[0].GetDmgLevel();
+        }
+        if (Globals.ps.atkProjectilePoison.Count > 0)
+        {
+            manaUse += Globals.ps.atkProjectilePoison[0].GetAOELevel() + Globals.ps.atkProjectilePoison[0].GetAttackSpeedLevel() + Globals.ps.atkProjectilePoison[0].GetDmgLevel();
+
+        }
+        if (Globals.ps.atkOrbitEnergy.Count > 0)
+        {
+            manaUse += Globals.ps.atkOrbitEnergy[0].GetAOELevel() + Globals.ps.atkOrbitEnergy[0].GetAttackSpeedLevel() + Globals.ps.atkOrbitEnergy[0].GetDmgLevel();
+
+        }
+        if (Globals.ps.atkOrbitFire.Count > 0)
+        {
+            manaUse += Globals.ps.atkOrbitFire[0].GetAOELevel() + Globals.ps.atkOrbitFire[0].GetAttackSpeedLevel() + Globals.ps.atkOrbitFire[0].GetDmgLevel();
+        }
+        if (Globals.ps.atkOrbitPoison.Count > 0)
+        {
+            manaUse += Globals.ps.atkOrbitPoison[0].GetAOELevel() + Globals.ps.atkOrbitPoison[0].GetAttackSpeedLevel() + Globals.ps.atkOrbitPoison[0].GetDmgLevel();
+
+        }
+        if (Globals.ps.atkCrossFire.Count > 0)
+        {
+            manaUse += Globals.ps.atkCrossFire[0].GetAOELevel() + Globals.ps.atkCrossFire[0].GetAttackSpeedLevel() + Globals.ps.atkCrossFire[0].GetDmgLevel();
+
+        }
+        if (Globals.ps.atkCrossIce.Count > 0)
+        {
+            manaUse += Globals.ps.atkCrossIce[0].GetAOELevel() + Globals.ps.atkCrossIce[0].GetAttackSpeedLevel() + Globals.ps.atkCrossIce[0].GetDmgLevel();
+
+        }
+        if (Globals.ps.atkCrossLeeches.Count > 0)
+        {
+            manaUse += Globals.ps.atkCrossLeeches[0].GetAOELevel() + Globals.ps.atkCrossLeeches[0].GetAttackSpeedLevel() + Globals.ps.atkCrossLeeches[0].GetDmgLevel();
+        }
+        return manaUse;
+
+    }
+
+
 }

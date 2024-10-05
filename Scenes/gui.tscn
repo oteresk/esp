@@ -19,9 +19,9 @@ font = ExtResource("3_f854n")
 font_size = 28
 outline_size = 3
 
-[sub_resource type="LabelSettings" id="LabelSettings_x1fjp"]
+[sub_resource type="LabelSettings" id="LabelSettings_emahu"]
 font = ExtResource("13_nxmw0")
-font_size = 32
+font_size = 46
 outline_size = 2
 
 [sub_resource type="LabelSettings" id="LabelSettings_8ejtw"]
@@ -260,7 +260,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 0
 theme_override_constants/margin_left = 22
-theme_override_constants/margin_top = 45
+theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 68
 
@@ -274,9 +274,11 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 0
 text = "00:00"
-label_settings = SubResource("LabelSettings_x1fjp")
+label_settings = SubResource("LabelSettings_emahu")
+horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer2/TLVertBox"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2

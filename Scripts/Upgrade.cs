@@ -82,9 +82,9 @@ public partial class Upgrade : CanvasLayer
 
     private void PrintAllUpgrades()
     {
-        if (Globals.ps.atkSlashEnergy.Count>0)
+        if (Globals.ps.atkSlashEnergy.Count > 0)
         {
-            GD.PrintRich("[color=green]"+"[b]"+"atkSlashEnergy " + "[/b]"+ "AoE:" + Globals.ps.atkSlashEnergy[0].GetAOELevel() + " spd:" + Globals.ps.atkSlashEnergy[0].GetAttackSpeedLevel() + " dmg:" + Globals.ps.atkSlashEnergy[0].GetDmgLevel() + "[/color]");
+            GD.PrintRich("[color=green]" + "[b]" + "atkSlashEnergy " + "[/b]" + "AoE:" + Globals.ps.atkSlashEnergy[0].GetAOELevel() + " spd:" + Globals.ps.atkSlashEnergy[0].GetAttackSpeedLevel() + " dmg:" + Globals.ps.atkSlashEnergy[0].GetDmgLevel() + "[/color]");
         }
         if (Globals.ps.atkSlashIce.Count > 0)
         {
@@ -132,6 +132,8 @@ public partial class Upgrade : CanvasLayer
         }
 
     }
+
+
     private async void ShrinkNotSelected()
     {
         float animTime = .5f;
