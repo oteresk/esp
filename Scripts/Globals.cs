@@ -108,7 +108,7 @@ public partial class Globals : Node
 	static public float statAtkSpd = 0;
 	static public float statDamage = 0;
 	static public float statAoE=0;
-	static public float statMovementSpeed = 0;
+	static public float statPermSpeed = 0;
 	static public int statArmor = 0;
 
     static public resourceGUI GUINode;
@@ -194,8 +194,10 @@ public partial class Globals : Node
     private ColorRect vignet;
 	private ShaderMaterial vignetMat;
 	private ShaderMaterial nightPar2Mat;
+	static public int bestTimeMinutes;
+    static public int bestTimeSeconds;
 
-	public override void _Ready()
+    public override void _Ready()
 	{
 		instance = this;
 		// init scenes
@@ -214,6 +216,15 @@ public partial class Globals : Node
         rootNode = GetNode("..");
 
 
+		// init stats
+        InitArrays();
+
+        for (int iter = 0; iter < 5; iter++)
+            statUpgradeLevel[iter] = 0;
+
+        for (int iter = 0; iter < MAXRELICS; iter++)
+            hasRelic[iter] = false;
+
         Debug.Print("initialize save load");
         SaveLoad.LoadGame();
         SaveLoad.LoadSettings();
@@ -221,8 +232,9 @@ public partial class Globals : Node
 
     }
     public void WorldReady()
-	{ 
-        
+	{
+        UpdateStatLevels();
+
         btnBack = (TextureButton)GetNode(NodeBack);
 
 		worldArray = new int[gridSizeX * subGridSizeX, gridSizeY * subGridSizeY];
@@ -306,7 +318,7 @@ public partial class Globals : Node
 			ps.SetAllAoE(); // update all existing attack AoE
 
 		// statMovementSpeed
-        statMovementSpeed = (float)statUpgradeLevel[3];
+        statPermSpeed = (float)statUpgradeLevel[3];
 
         // statArmor
         statArmor = (int)statUpgradeLevel[4]* statUpgradeLevel[4];
@@ -359,6 +371,7 @@ public partial class Globals : Node
 
 	public void ResetGame()
 	{
+		Debug.Print("Reset Game");
 		GUINode = (resourceGUI)GetNode(NodeGUI);
 
 		playerAlive = true;
@@ -372,7 +385,9 @@ public partial class Globals : Node
 			xpBar.Value = XP;
 			UpdateLevel();
 		}
-		itemAtkSpd = 1; // attackSpeed modifier for temp items
+        xpBar.Value = XP / XPGoal;
+
+        itemAtkSpd = 1; // attackSpeed modifier for temp items
 
 		if (lblLevel!=null)
 			black = (Sprite2D)GetNode("../World/Black");
@@ -408,7 +423,7 @@ public partial class Globals : Node
 		ResourceDiscoveries.iron = 0;
 		ResourceDiscoveries.mana = 0;
 		ResourceDiscoveries.wood = 0;
-		ResourceDiscoveries.gold = 0;
+		//ResourceDiscoveries.gold = 0;
 		ResourceDiscoveries.goldResourceCount = 0;
 		ResourceDiscoveries.ironResourceCount = 0;
 		ResourceDiscoveries.manaResourceCount = 0;
@@ -445,33 +460,23 @@ public partial class Globals : Node
                                        // elements
         weaponTypeUnlocked[11] = false; // fire
 
-        costIron[0] = 1; // alchemy lab
-        costIron[1] = 2; // blacksmith
-        costIron[3] = 1; // herbalist
-        costIron[4] = 0; // lodestone
-        costIron[5] = 4; // settlement
-        costIron[6] = 4; // tower
-        costIron[7] = 1; // training center
-        costIron[2] = 1; // golem factory
+        costIron[0] = 2; // blacksmith
+        costIron[2] = 1; // herbalist
+        costIron[3] = 0; // lodestone
+        costIron[4] = 4; // settlement
+        costIron[5] = 4; // tower
+        costIron[6] = 1; // training center
+        costIron[1] = 1; // golem factory
+        costIron[7] = 1; // alchemy lab
 
-        costWood[0] = 1;
-        costWood[1] = 2;
-        costWood[3] = 0;
-        costWood[4] = 1;
-        costWood[5] = 2;
-        costWood[6] = 6;
-        costWood[7] = 0;
+        costWood[0] = 2;
         costWood[2] = 0;
-
-		InitArrays();
-
-        for (int iter = 0; iter < 5; iter++)
-            statUpgradeLevel[iter] = 0;
-
-        for (int iter = 0; iter < MAXRELICS; iter++)
-            hasRelic[iter] = false;
-
-        UpdateStatLevels();
+        costWood[3] = 1;
+        costWood[4] = 2;
+        costWood[5] = 6;
+        costWood[6] = 0;
+        costWood[1] = 0;
+        costWood[7] = 1;
     }
 
 	static public void InitArrays()
@@ -677,11 +682,11 @@ public partial class Globals : Node
             Globals.statUpgradeLevel[iter] = 0;
 		//SaveLoad.SaveGame();
 		// delete save game file
-		File.Delete(SaveLoad.settingsFilename);
+		File.Delete(SaveLoad.gameSaveFilename);
 
 
         // Update slots
-        Node nd = Globals.rootNode.GetNode(".");
+        Node nd = Globals.rootNode.GetNode("StatUpgrades");
         StatUpgrades su = (StatUpgrades)nd;
         su.UpdateAllSlots();
 

@@ -164,6 +164,7 @@ public partial class enemy : RigidBody2D
                         {
                             Globals.enemies--;
                             Globals.UpdateEnemies();
+                            Debug.Print("enemy out of range and killing");
                             this.QueueFree();
                         }
                     }
@@ -401,7 +402,7 @@ public partial class enemy : RigidBody2D
 
     async void EnemyDrop()
 	{
-		//Debug.Print("EnemyDrop");
+		Debug.Print("EnemyDrop");
 		// wait a second for enemy to explode
         await Task.Delay(TimeSpan.FromMilliseconds(10));
 
@@ -431,6 +432,7 @@ public partial class enemy : RigidBody2D
 
     private async void KillEnemy()
     {
+        Debug.Print("kill enemy");
         ShaderMaterial enemyMat = (ShaderMaterial)enemySprite.Material;
         if (enemyMat != null) // stop damage flash
             enemyMat.SetShaderParameter("active", false);
@@ -439,7 +441,7 @@ public partial class enemy : RigidBody2D
         float deathDist = GlobalTransform.Origin.DistanceTo(Globals.pl.GlobalPosition)/1100;
         if (deathDist > .4f)
             deathDist = .4f;
-        await Task.Delay(TimeSpan.FromMilliseconds(deathDist));
+        await Task.Delay(TimeSpan.FromMilliseconds(deathDist*1000));
 
 
         enemySprite.Play("Death");

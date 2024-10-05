@@ -57,7 +57,9 @@ public partial class StatUpgrades : CanvasLayer
         Node nodBlack = GetNode("Black");
         black = (ColorRect)nodBlack;
 
-        ResetUpgrade();
+        UpdateAllSlots();
+
+//        ResetUpgrade();
 
         FadeIn();
     }

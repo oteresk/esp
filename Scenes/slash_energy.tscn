@@ -13,6 +13,9 @@
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
 "texture": ExtResource("1_yu8gb")
 }, {
 "duration": 1.0,

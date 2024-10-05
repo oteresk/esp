@@ -18,7 +18,7 @@ public partial class Poison : AnimatedSprite2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
-        scaleMod = new Vector2(1, 1);
+        scaleMod = new Vector2(.6f, .6f);
         DelayedStart();
     }
 

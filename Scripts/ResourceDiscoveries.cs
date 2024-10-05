@@ -343,7 +343,7 @@ public void PlaceResourceDiscoveries()
         }
         if (Globals.StartingTower)
         {
-            PlaceDiscovery(5, 5, 0, 0, 11);
+            PlaceDiscovery(5, 5, 0, 0, 10);
             Debug.Print("starting tower");
         }
 
@@ -380,7 +380,8 @@ public void PlaceResourceDiscoveries()
 				resourceDiscovery = (Node2D)rTemplatePlatform.Instantiate();
 				Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 5;
 				break;
-			case 11: // tower
+			case 10: // tower
+				Debug.Print("Tower");
 				resourceDiscovery = (Node2D)rTemplatePlatform.Instantiate();
 				Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 5;
 
@@ -393,11 +394,13 @@ public void PlaceResourceDiscoveries()
 				// convert to structure
 				StructureSelect settle = (StructureSelect)GetNode(Globals.NodeStructureGUI);
 				if (settle != null)
-					settle.CreateStructure(6, resourceDiscovery);
+					settle.CreateStructure(5, resourceDiscovery);
 				break;
 		}
 
-		if (rdType != 11) // skip this if creating structure directly
+		Debug.Print("rdType:" + rdType);
+
+		if (rdType != 10) // skip this if creating structure directly
 		{
 			AddChild(resourceDiscovery);
 

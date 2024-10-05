@@ -79,6 +79,7 @@ public partial class player : Area2D
 	[Export] public DirectionalLight2D ambientLight;
 
     [Export] public Label lblTime;
+	[Export] public Label lblBestTime;
 	[Export] public TextureButton btnBack;
 
     private bool OnFire = false;
@@ -315,7 +316,7 @@ public partial class player : Area2D
 			  //Debug.Print("Player pos:" + Position);
 				if (Globals.settings_ShowPlayerPosition==true)
 					lblPosition.Text = Position.ToString();
-				velocity *= (baseSpeed * speedMultiplier * poisonSpeed) + (Globals.speedLevel * speedInc) + (Globals.statMovementSpeed * speedInc);
+				velocity *= (baseSpeed * speedMultiplier * poisonSpeed) + (Globals.speedLevel * speedInc) + (Globals.statPermSpeed * speedInc);
 			}
 
 			// Moving the character around the screen
@@ -805,6 +806,8 @@ public partial class player : Area2D
         Globals.PlayRandomizedSound(sndPlayerDeath);
 		Debug.Print("Play game over sound");
 
+		SaveLoad.SaveGame();
+
         ShowTime();
 
         // wait 5 seconds
@@ -819,6 +822,8 @@ public partial class player : Area2D
 	private void ShowTime()
 	{
 		lblTime.Visible = true;
+		lblBestTime.Visible = true;
+		lblBestTime.Text = "";
 
         string strSeconds = ResourceDiscoveries.seconds.ToString();
         if (ResourceDiscoveries.seconds < 10)
@@ -829,8 +834,35 @@ public partial class player : Area2D
         if (ResourceDiscoveries.minutes < 10)
             strMinutes = "0" + strMinutes;
 
+		Debug.Print("best time before:"+ Globals.bestTimeMinutes+":"+ Globals.bestTimeSeconds);
 
-		lblTime.Text = "You lasted " + strMinutes + ":" + strSeconds;
+		if ((ResourceDiscoveries.minutes*60)+ ResourceDiscoveries.seconds > (Globals.bestTimeMinutes*60)+Globals.bestTimeSeconds) // if you have new high score
+		{
+			Globals.bestTimeMinutes = ResourceDiscoveries.minutes;
+			Globals.bestTimeSeconds=ResourceDiscoveries.seconds;
+			Debug.Print("Time beaten");
+			SaveLoad.SaveGame();
+		}
+
+        Debug.Print("best time after:" + Globals.bestTimeMinutes + ":" + Globals.bestTimeSeconds);
+
+        lblTime.Text = "You lasted " + strMinutes + ":" + strSeconds;
+		if (Globals.bestTimeMinutes > 0 && Globals.bestTimeSeconds > 0)
+		{
+			string strBestSeconds = Globals.bestTimeSeconds.ToString();
+			if (Globals.bestTimeSeconds < 10)
+				strBestSeconds = "0" + strBestSeconds;
+
+			string strBestMinutes = Globals.bestTimeMinutes.ToString();
+
+			if (Globals.bestTimeMinutes < 10)
+				strBestMinutes = "0" + strBestMinutes;
+
+			lblBestTime.Text = "Best time: "+strBestMinutes+ ":" + strBestSeconds;
+		}
+		else
+			lblBestTime.Text = "";
+
 
     }
 

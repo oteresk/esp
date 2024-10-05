@@ -201,25 +201,28 @@ public partial class StatUpgrade : MarginContainer
     // changes upgrade image to gold if can afford or silver if can't
     public void CheckCanAfford()
     {
-        if (Globals.statUpgradeLevel[upgradeNum] > Globals.MAXUPGRADES - 1)
-        {
-            //  unselected
-            image.Modulate = new Color(1, 1, 1, .5f);
-            return;
-        }
-
-        if (Globals.coststatUpgrade[upgradeNum, Globals.statUpgradeLevel[upgradeNum]] <= ResourceDiscoveries.gold)
-        {
-            // selected
-            //image.Visible = true;
-            if (IsInstanceValid(image))
-                image.Modulate = new Color(1, 1, 1, 1f);
-        }
-        else
-        {
-            // , unselected
-            if (IsInstanceValid(image))
+        if (IsInstanceValid(this))
+            {
+            if (Globals.statUpgradeLevel[upgradeNum] > Globals.MAXUPGRADES - 1)
+            {
+                //  unselected
                 image.Modulate = new Color(1, 1, 1, .5f);
+                return;
+            }
+
+            if (Globals.coststatUpgrade[upgradeNum, Globals.statUpgradeLevel[upgradeNum]] <= ResourceDiscoveries.gold)
+            {
+                // selected
+                //image.Visible = true;
+                if (IsInstanceValid(image))
+                    image.Modulate = new Color(1, 1, 1, 1f);
+            }
+            else
+            {
+                // , unselected
+                if (IsInstanceValid(image))
+                    image.Modulate = new Color(1, 1, 1, .5f);
+            }
         }
     }
 

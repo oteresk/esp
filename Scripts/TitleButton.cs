@@ -84,6 +84,8 @@ public partial class TitleButton : TextureButton
         if (lblButton.Name == "lblPlay")
         {
             //GetTree().ChangeSceneToFile("res://Scenes/world.tscn");
+            SaveLoad.LoadGame();
+            SaveLoad.ResetTempUpgrades();
             GetTree().ChangeSceneToPacked(Globals.WorldScene);
         }
 

@@ -789,7 +789,7 @@ shape = SubResource("CapsuleShape2D_538jq")
 texture_filter = 1
 position = Vector2(27.5, -50.5)
 sprite_frames = SubResource("SpriteFrames_7cwag")
-animation = &"idle"
+animation = &"attack"
 
 [node name="GodRays" type="ColorRect" parent="AnimatedSprite2D"]
 visible = false

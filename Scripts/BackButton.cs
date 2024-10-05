@@ -20,6 +20,7 @@ public partial class BackButton : TextureButton
     {
         Debug.Print("load upgrade scene");
         Globals.rootNode.GetTree().Paused = false;
+        Globals.canUnPause = true;
         //().ChangeSceneToFile("res://Scenes/StatUpgrades.tscn");
         GetTree().ChangeSceneToPacked(Globals.StatUpgradesScene);
         //Globals.instance.ResetGame();
