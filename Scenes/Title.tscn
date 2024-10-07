@@ -1,6 +1,5 @@
-[gd_scene load_steps=36 format=3 uid="uid://0bpvsyr4x8kl"]
+[gd_scene load_steps=35 format=3 uid="uid://0bpvsyr4x8kl"]
 
-[ext_resource type="Script" path="res://Scenes/Title.cs" id="1_0xc0g"]
 [ext_resource type="Texture2D" uid="uid://chbmayap43wjo" path="res://Art/Title/Logo.png" id="1_i4lwq"]
 [ext_resource type="Texture2D" uid="uid://d2mqidchgyvkh" path="res://Art/Title/BG_Layer3.png" id="2_camxe"]
 [ext_resource type="Shader" path="res://Shaders/Fire.gdshader" id="3_hwm84"]
@@ -91,7 +90,6 @@ font_size = 50
 font_color = Color(0.301961, 0.360784, 0.133333, 1)
 
 [node name="Title" type="Node2D"]
-script = ExtResource("1_0xc0g")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -236,12 +234,9 @@ theme_override_constants/margin_bottom = 40
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
-focus_neighbor_top = NodePath("../../MCbtnQuit/TextureButton")
-focus_neighbor_bottom = NodePath("../../MCbtnOptions/btnOptions")
 texture_normal = ExtResource("16_p6tm5")
 texture_hover = ExtResource("17_imcsu")
 texture_disabled = ExtResource("18_qg1fa")
-texture_focused = ExtResource("17_imcsu")
 script = ExtResource("12_pr8f2")
 lblButton = NodePath("lblUpgrades")
 
@@ -280,12 +275,9 @@ theme_override_constants/margin_bottom = 40
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
-focus_neighbor_top = NodePath("../../MCbtnUpgrades/btnUpgrades")
-focus_neighbor_bottom = NodePath("../../MCbtnPlay/btnPlay")
 texture_normal = ExtResource("16_p6tm5")
 texture_hover = ExtResource("17_imcsu")
 texture_disabled = ExtResource("18_qg1fa")
-texture_focused = ExtResource("17_imcsu")
 script = ExtResource("12_pr8f2")
 lblButton = NodePath("lblOptions")
 
@@ -325,11 +317,9 @@ theme_override_constants/margin_bottom = 40
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
-focus_neighbor_top = NodePath("../../MCbtnOptions/btnOptions")
 texture_normal = ExtResource("16_p6tm5")
 texture_hover = ExtResource("17_imcsu")
 texture_disabled = ExtResource("18_qg1fa")
-texture_focused = ExtResource("17_imcsu")
 script = ExtResource("12_pr8f2")
 lblButton = NodePath("lblPlay")
 
@@ -368,11 +358,9 @@ theme_override_constants/margin_bottom = 40
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
-focus_neighbor_bottom = NodePath("../../MCbtnUpgrades/btnUpgrades")
 texture_normal = ExtResource("16_p6tm5")
 texture_hover = ExtResource("17_imcsu")
 texture_disabled = ExtResource("18_qg1fa")
-texture_focused = ExtResource("17_imcsu")
 script = ExtResource("12_pr8f2")
 lblButton = NodePath("lblQuit")
 
