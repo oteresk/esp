@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://do5qsqhhmteq3"]
+[gd_scene load_steps=26 format=3 uid="uid://do5qsqhhmteq3"]
 
 [ext_resource type="Script" path="res://Scripts/Relic.cs" id="1_kgpfi"]
 [ext_resource type="Texture2D" uid="uid://dxd6akepaurun" path="res://Art/GUI/Relics/Bracelet.png" id="2_tc5s6"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://ckq4e154tu5pj" path="res://Art/GUI/Relics/StarParticle.png" id="12_tdlkb"]
 [ext_resource type="PackedScene" uid="uid://2i4s0bf304dm" path="res://Scenes/RelicDiscovery.tscn" id="13_a4nxa"]
 [ext_resource type="Shader" path="res://Shaders/Distortion.gdshader" id="14_8sb36"]
+[ext_resource type="Texture2D" uid="uid://dr5xuvuwhgro2" path="res://Art/2ColorCircle.png" id="15_lp7be"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dj03w"]
 shader = ExtResource("9_gybru")
@@ -38,14 +39,16 @@ gradient = SubResource("Gradient_iiffp")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jdpoq"]
 lifetime_randomness = 0.39
-particle_flag_disable_z = true
 emission_shape = 1
 emission_sphere_radius = 30.33
+particle_flag_disable_z = true
 direction = Vector3(0, -250, 0)
 spread = 31.86
+gravity = Vector3(0, 300, 0)
 initial_velocity_min = 715.33
 initial_velocity_max = 788.43
-gravity = Vector3(0, 300, 0)
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
 linear_accel_min = 58.4
 linear_accel_max = 74.46
 scale_min = 0.03
@@ -64,21 +67,24 @@ gradient = SubResource("Gradient_jl6ig")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cdwv5"]
 lifetime_randomness = 0.32
-particle_flag_disable_z = true
 emission_shape = 1
 emission_sphere_radius = 52.75
+particle_flag_disable_z = true
 gravity = Vector3(0, 40, 0)
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
 color_ramp = SubResource("GradientTexture1D_0v3on")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4q4kj"]
 resource_local_to_scene = true
 shader = ExtResource("14_8sb36")
-shader_parameter/effect_color = Color(0.2, 0.3, 0.8, 1)
-shader_parameter/octave_count = 10
-shader_parameter/amp_start = 0.5
-shader_parameter/amp_coeff = 0.5
-shader_parameter/freq_coeff = 2.0
-shader_parameter/speed = 0.5
+shader_parameter/strength = 0.08
+shader_parameter/center = Vector2(0.46, 0.46)
+shader_parameter/radius = 0.334
+shader_parameter/aberration = 0.425
+shader_parameter/width = 0.0301
+shader_parameter/feather = 0.135
+shader_parameter/maskImage = ExtResource("15_lp7be")
 
 [node name="Relic" type="Area2D" node_paths=PackedStringArray("sprRelic", "sprShadow", "sprDiscovery", "AreaDiscovery", "sndGetRelic", "sndDiscoverRelic", "dust", "stars") groups=["Relics"]]
 scale = Vector2(0.5, 0.5)
