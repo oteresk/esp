@@ -11,12 +11,12 @@ public partial class ResourceDiscovery : Sprite2D
 	[Export] public ResourceDiscoveryResource RDResource;
 	[Export] public AudioStreamPlayer2D sndTurnOn;
 	[Export] public AudioStreamPlayer2D sndTurnOff;
-    [Export] public AudioStreamPlayer2D sndDisabled;
-    public bool nearResource = false;
+	[Export] public AudioStreamPlayer2D sndDisabled;
+	public bool nearResource = false;
 	private ShaderMaterial mat;
 	private Node2D capTimer;
 	private CaptureTimer captureTimer;
-	[Export] public float resourceCaptureSpeed=.2f;
+	[Export] public float resourceCaptureSpeed = .2f;
 
 	[Export] public bool captured = false;
 	[Export] public bool discovered = false;
@@ -35,14 +35,14 @@ public partial class ResourceDiscovery : Sprite2D
 	public bool switchEnabled = true;
 	[Export] public Texture2D choppedTrees;
 
-    public override void _Ready()
+	public override void _Ready()
 	{
 
 		if (IsInGroup("Tower"))
 			SetTowerLevel();
 
 
-		if (Name== "Golem Factory")
+		if (Name == "Golem Factory")
 		{
 			if (progressBar != null)
 				progressBar.Value = 0;
@@ -55,7 +55,7 @@ public partial class ResourceDiscovery : Sprite2D
 				light3.Visible = false;
 			}
 		}
-		
+
 		if (RDResource != null)
 		{
 			Texture2D tx = (Texture2D)RDResource.sprImage;
@@ -95,7 +95,7 @@ public partial class ResourceDiscovery : Sprite2D
 	{
 		if (mat != null)
 		{
-			if (nearResource && captured==false)
+			if (nearResource && captured == false)
 			{
 				if (RDResource != null)
 				{
@@ -122,7 +122,7 @@ public partial class ResourceDiscovery : Sprite2D
 							}
 							else
 							{ // wood or platform
-								if (RDResource.resourceType.ToString()=="Wood") // if tree
+								if (RDResource.resourceType.ToString() == "Wood") // if tree
 								{
 									ResourceDiscoveries.AddResource(RDResource.resourceType.ToString(), RDResource.amount, RDResource.amountMax);
 									capTimer.Visible = false;
@@ -163,10 +163,10 @@ public partial class ResourceDiscovery : Sprite2D
 				nearResource = false;
 				Debug.Print("Hide Structure Select");
 
-                // unpause game
-                Globals.UnPauseGame();
-            }
-        }
+				// unpause game
+				Globals.UnPauseGame();
+			}
+		}
 		// not near resource
 		if (area.IsInGroup("Player") && captured == false && nearResource == true)
 		{
@@ -191,20 +191,24 @@ public partial class ResourceDiscovery : Sprite2D
 				nearResource = true;
 				Debug.Print("Show Structure Select");
 
-                // let Structure Select know which platform you are on
-                StructureSelect.platform = this;
+				// let Structure Select know which platform you are on
+				StructureSelect.platform = this;
 
-                // pause game
-                Globals.PauseGame();
+				// pause game
+				Globals.PauseGame();
+				
+				// build button focus
+				TextureButton buildBtn = (TextureButton)GetNode(Globals.BuildBtn);
+				buildBtn.GrabFocus();
 
-            }
-        }
+			}
+		}
 		// player near resource
 		if (area.IsInGroup("Player") && captured == false && nearResource == false)
 		{
 			nearResource = true;
 			// set capture speed
-			if (captureTimer!=null)
+			if (captureTimer != null)
 				captureTimer.captureSpeed = resourceCaptureSpeed;
 		}
 
@@ -230,7 +234,7 @@ public partial class ResourceDiscovery : Sprite2D
 		{
 			Visible = true;
 			//Debug.Print("occlusion: enter:" + RDResource.ToString());
-			
+
 		}
 	}
 
@@ -258,25 +262,25 @@ public partial class ResourceDiscovery : Sprite2D
 	{
 		if (switchEnabled)
 		{
-            if (button_pressed)
-            {
-                //smoke.Emitting = true;
-                light1.Visible = true;
-                light2.Visible = true;
-                light3.Visible = true;
-                factoryisOn = true;
-                sndTurnOn.Play();
-            }
-            else
-            {
-                //smoke.Emitting = false;
-                light1.Visible = false;
-                light2.Visible = false;
-                light3.Visible = false;
-                factoryisOn = false;
-                sndTurnOff.Play();
-            }
-        }
+			if (button_pressed)
+			{
+				//smoke.Emitting = true;
+				light1.Visible = true;
+				light2.Visible = true;
+				light3.Visible = true;
+				factoryisOn = true;
+				sndTurnOn.Play();
+			}
+			else
+			{
+				//smoke.Emitting = false;
+				light1.Visible = false;
+				light2.Visible = false;
+				light3.Visible = false;
+				factoryisOn = false;
+				sndTurnOff.Play();
+			}
+		}
 		else
 		{
 			sndDisabled.Play();
@@ -287,88 +291,88 @@ public partial class ResourceDiscovery : Sprite2D
 	public void PauseFactory()
 	{
 		factoryPaused = true;
-        smoke.Emitting = false;
+		smoke.Emitting = false;
 		FlashLight();
-    }
+	}
 
-    public void CompleteFactory()
-    {
-        factoryPaused = false;
-        smoke.Emitting = false;
-        light1.Visible = false;
-        light2.Visible = false;
-        light3.Visible = false;
-    }
-
-    private async void FlashLight()
+	public void CompleteFactory()
 	{
-        await Task.Delay(TimeSpan.FromMilliseconds(2 * 1000));
-
-        if (factoryPaused && factoryisOn && IsInstanceValid(light1) && IsInstanceValid(light2) && IsInstanceValid(light3))
-        {
-            light1.Visible = false;
-            light2.Visible = false;
-            light3.Visible = false;
-        }
-        await Task.Delay(TimeSpan.FromMilliseconds(2 * 1000));
-        if (factoryisOn && IsInstanceValid(light1) && IsInstanceValid(light2) && IsInstanceValid(light3))
-        {
-            light1.Visible = true;
-            light2.Visible = true;
-            light3.Visible = true;
-            if (factoryPaused)
-                FlashLight();
-        }
-    }
-
-    public void StartFactory()
-    {
 		factoryPaused = false;
-        smoke.Emitting = true;
-        light1.Visible = true;
-        light2.Visible = true;
-        light3.Visible = true;
-    }
+		smoke.Emitting = false;
+		light1.Visible = false;
+		light2.Visible = false;
+		light3.Visible = false;
+	}
+
+	private async void FlashLight()
+	{
+		await Task.Delay(TimeSpan.FromMilliseconds(2 * 1000));
+
+		if (factoryPaused && factoryisOn && IsInstanceValid(light1) && IsInstanceValid(light2) && IsInstanceValid(light3))
+		{
+			light1.Visible = false;
+			light2.Visible = false;
+			light3.Visible = false;
+		}
+		await Task.Delay(TimeSpan.FromMilliseconds(2 * 1000));
+		if (factoryisOn && IsInstanceValid(light1) && IsInstanceValid(light2) && IsInstanceValid(light3))
+		{
+			light1.Visible = true;
+			light2.Visible = true;
+			light3.Visible = true;
+			if (factoryPaused)
+				FlashLight();
+		}
+	}
+
+	public void StartFactory()
+	{
+		factoryPaused = false;
+		smoke.Emitting = true;
+		light1.Visible = true;
+		light2.Visible = true;
+		light3.Visible = true;
+	}
 
 	public void SetTowerLevel()
 	{
-		if (Globals.towerLevel==1)
+		if (Globals.towerLevel == 1)
 		{
 			AttackRange aR = (AttackRange)GetNode("AttackRange");
 
 			aR.attackSpeedLevel = 1;
 			aR.dmgLevel = 1;
 			aR.AOELevel = 4;
-            aR.SetAttackSpeed();
-            aR.SetAOE();
-            aR.SetDamage();
-            aR.SetBulletColor(new Color(0, 0.3f, 0.8f, 1));
-        }
+			aR.SetAttackSpeed();
+			aR.SetAOE();
+			aR.SetDamage();
+			aR.SetBulletColor(new Color(0, 0.3f, 0.8f, 1));
+		}
 
-        if (Globals.towerLevel == 2)
-        {
-            AttackRange aR = (AttackRange)GetNode("AttackRange");
+		if (Globals.towerLevel == 2)
+		{
+			AttackRange aR = (AttackRange)GetNode("AttackRange");
 
-            aR.attackSpeedLevel = 5;
-            aR.dmgLevel = 3;
-            aR.AOELevel = 7;
-            aR.SetAttackSpeed();
-            aR.SetAOE();
-            aR.SetDamage();
+			aR.attackSpeedLevel = 5;
+			aR.dmgLevel = 3;
+			aR.AOELevel = 7;
+			aR.SetAttackSpeed();
+			aR.SetAOE();
+			aR.SetDamage();
 			aR.SetBulletColor(new Color(1, .2f, .8f, 1));
-        }
-        if (Globals.towerLevel == 3)
-        {
-            AttackRange aR = (AttackRange)GetNode("AttackRange");
+		}
+		if (Globals.towerLevel == 3)
+		{
+			AttackRange aR = (AttackRange)GetNode("AttackRange");
 
-            aR.attackSpeedLevel = 10;
-            aR.dmgLevel = 6;
-            aR.AOELevel = 10;
-            aR.SetAttackSpeed();
-            aR.SetAOE();
-            aR.SetDamage();
-            aR.SetBulletColor(new Color(1, .2f, .2f, 1));
-        }
-    }
+			aR.attackSpeedLevel = 10;
+			aR.dmgLevel = 6;
+			aR.AOELevel = 10;
+			aR.SetAttackSpeed();
+			aR.SetAOE();
+			aR.SetDamage();
+			aR.SetBulletColor(new Color(1, .2f, .2f, 1));
+		}
+	}
 
 }

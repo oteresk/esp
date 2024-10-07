@@ -24,9 +24,9 @@ public partial class player : Area2D
 	public Vector2 ScreenSize;
 	Vector2 velocity;
 	public AnimatedSprite2D animatedSprite2D;
-    public AnimatedSprite2D animatedSprite2DTop;
+	public AnimatedSprite2D animatedSprite2DTop;
 
-    [Export] public bool canBeDamaged = true;
+	[Export] public bool canBeDamaged = true;
 	[Export] public CollisionShape2D magnetismShape;
 	[Export] public Sprite2D itemIconSpeed;
 	[Export] public Sprite2D itemIconAttackSpeed;
@@ -45,9 +45,9 @@ public partial class player : Area2D
 	private PackedScene attackSceneProjectile;
 	private PackedScene attackSceneSlash;
 	private PackedScene attackSceneCross;
-    private PackedScene attackSceneOrbit;
+	private PackedScene attackSceneOrbit;
 
-    public List<AttackSlash> atkSlashEnergy;
+	public List<AttackSlash> atkSlashEnergy;
 	public List<AttackSlash> atkSlashIce;
 	public List<AttackSlash> atkSlashLeeches;
 	public List<AttackRange> atkProjectileEnergy;
@@ -56,65 +56,65 @@ public partial class player : Area2D
 	public List<AttackCross> atkCrossFire;
 	public List<AttackCross> atkCrossIce;
 	public List<AttackCross> atkCrossLeeches;
-    public List<AttackOrbit> atkOrbitEnergy;
-    public List<AttackOrbit> atkOrbitPoison;
-    public List<AttackOrbit> atkOrbitFire;
+	public List<AttackOrbit> atkOrbitEnergy;
+	public List<AttackOrbit> atkOrbitPoison;
+	public List<AttackOrbit> atkOrbitFire;
 
 
-    [Export] public AudioStreamPlayer sndHurtPlayer;
-    [Export] public AudioStreamPlayer sndHurtPlayer2;
-    [Export] public AudioStreamPlayer sndDash;
-    [Export] public AudioStreamPlayer sndPlayerDeath;
-    [Export] public AudioStreamPlayer sndWarp;
-    [Export] public AudioStreamPlayer sndRingingLoop;
-    [Export] public AudioStreamPlayer sndGainLevel;
+	[Export] public AudioStreamPlayer sndHurtPlayer;
+	[Export] public AudioStreamPlayer sndHurtPlayer2;
+	[Export] public AudioStreamPlayer sndDash;
+	[Export] public AudioStreamPlayer sndPlayerDeath;
+	[Export] public AudioStreamPlayer sndWarp;
+	[Export] public AudioStreamPlayer sndRingingLoop;
+	[Export] public AudioStreamPlayer sndGainLevel;
 
-    private List<enemy> enemies;
+	private List<enemy> enemies;
 	private float dmgFreq = 1000; // how often in ms an enemy damages a play when it stays in his collider
 
 	[Export] public Sprite2D wavy;
-    private ShaderMaterial matWavy;
+	private ShaderMaterial matWavy;
 
-    [Export] public WorldEnvironment worldEnvironment;
+	[Export] public WorldEnvironment worldEnvironment;
 	[Export] public DirectionalLight2D ambientLight;
 
-    [Export] public Label lblTime;
+	[Export] public Label lblTime;
 	[Export] public TextureButton btnBack;
 
-    private bool OnFire = false;
+	private bool OnFire = false;
 	private float curFireTime;
 	private string curAnim;
 
 	[Export] public ColorRect GodRays;
 
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
 	{
 		// set player in Globals
 		Globals.pl = (Area2D)GetNode(Globals.NodePlayer);
 		Globals.ps = (player)Globals.pl;
 
-        enemies = new List<enemy>();
+		enemies = new List<enemy>();
 		DamagePlayer(); // this will call itself recursively
 
-        ScreenSize = GetViewportRect().Size;
+		ScreenSize = GetViewportRect().Size;
 		animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		animatedSprite2D.Animation = "idle";
 		animatedSprite2D.Play();
 		curAnim = "idle";
-        animatedSprite2D.FlipV = false;
+		animatedSprite2D.FlipV = false;
 
 		animatedSprite2DTop = GetNode<AnimatedSprite2D>("AnimatedSprite2DTop");
-        animatedSprite2DTop.Animation = "idle";
-        animatedSprite2DTop.Play();
-        animatedSprite2DTop.FlipV = false;
+		animatedSprite2DTop.Animation = "idle";
+		animatedSprite2DTop.Play();
+		animatedSprite2DTop.FlipV = false;
 
-        SetMagnetismShape();
+		SetMagnetismShape();
 
-        matWavy = (ShaderMaterial)wavy.Material;
+		matWavy = (ShaderMaterial)wavy.Material;
 
-        // setup itemIcons List
-        itemIcons = new Sprite2D[5];
+		// setup itemIcons List
+		itemIcons = new Sprite2D[5];
 		itemIcons[0] = itemIconSpeed;
 		itemIcons[1] = itemIconAttackSpeed;
 		itemIcons[2] = itemIconDamage;
@@ -125,11 +125,11 @@ public partial class player : Area2D
 		attackSceneProjectile = (PackedScene)ResourceLoader.Load("res://Scenes/Attacks/attack_projectile.tscn");
 		attackSceneSlash = (PackedScene)ResourceLoader.Load("res://Scenes/Attacks/attack_slash.tscn");
 		attackSceneCross = (PackedScene)ResourceLoader.Load("res://Scenes/Attacks/attack_Cross.tscn");
-        attackSceneOrbit = (PackedScene)ResourceLoader.Load("res://Scenes/Attacks/attack_Orbit.tscn");
+		attackSceneOrbit = (PackedScene)ResourceLoader.Load("res://Scenes/Attacks/attack_Orbit.tscn");
 
 
-        // init attack arrays
-        atkSlashEnergy = new List<AttackSlash>();
+		// init attack arrays
+		atkSlashEnergy = new List<AttackSlash>();
 		atkSlashIce = new List<AttackSlash>();
 		atkSlashLeeches = new List<AttackSlash>();
 		atkProjectileEnergy = new List<AttackRange>();
@@ -138,25 +138,25 @@ public partial class player : Area2D
 		atkCrossFire = new List<AttackCross>();
 		atkCrossIce = new List<AttackCross>();
 		atkCrossLeeches = new List<AttackCross>();
-        atkOrbitEnergy = new List<AttackOrbit>();
-        atkOrbitPoison = new List<AttackOrbit>();
-        atkOrbitFire = new List<AttackOrbit>(); ;
+		atkOrbitEnergy = new List<AttackOrbit>();
+		atkOrbitPoison = new List<AttackOrbit>();
+		atkOrbitFire = new List<AttackOrbit>(); ;
 
 
 
-        // add default attack
-        
+		// add default attack
+		
 		newAttack = (Node2D)attackSceneSlash.Instantiate();
 		AttackSlash newAttackSlash = (AttackSlash)newAttack;
 		AddChild(newAttackSlash);
 		atkSlashEnergy.Add(newAttackSlash);
 		newAttack.Call("SetWeaponElement", "energy");
 
-        
+		
 
-        //*/
+		//*/
 
-        /*
+		/*
 		newAttack = (Node2D)attackSceneProjectile.Instantiate();
 		AttackRange newAttackProjectile = (AttackRange)newAttack;
 		AddChild(newAttackProjectile);
@@ -164,57 +164,57 @@ public partial class player : Area2D
 		newAttack.Call("SetWeaponElement", "energy");
 		*/
 		/*
-        // orbit attack
-        newAttack = (Node2D)attackSceneOrbit.Instantiate();
-        AttackOrbit newAttackOrbit = (AttackOrbit)newAttack;
-        AddChild(newAttackOrbit);
-        atkOrbitEnergy.Add(newAttackOrbit);
-        newAttack.Call("SetWeaponElement", "energy");
+		// orbit attack
+		newAttack = (Node2D)attackSceneOrbit.Instantiate();
+		AttackOrbit newAttackOrbit = (AttackOrbit)newAttack;
+		AddChild(newAttackOrbit);
+		atkOrbitEnergy.Add(newAttackOrbit);
+		newAttack.Call("SetWeaponElement", "energy");
 		*/
 
 		
-    }
+	}
 
 	public void SetMagnetismShape()
 	{
-        // set magnetism size
+		// set magnetism size
 		if (IsInstanceValid(magnetismShape))
-	        magnetismShape.Scale = new Vector2(Globals.magnetism, Globals.magnetism);
-    }
+			magnetismShape.Scale = new Vector2(Globals.magnetism, Globals.magnetism);
+	}
 
-    public override void _Input(InputEvent @event)
-    {
-        // Mouse in viewport coordinates.
-        if (@event is InputEventMouseMotion eventMouseMotion && Globals.playerAlive)
+	public override void _Input(InputEvent @event)
+	{
+		// Mouse in viewport coordinates.
+		if (@event is InputEventMouseMotion eventMouseMotion && Globals.playerAlive)
 		{
-            //GD.Print("Mouse Motion at: ", eventMouseMotion.Position);
-            // >960 == right
-            // if using variable resolution, use GetViewport().GetVisibleRect().Size.X\2
-            if (eventMouseMotion.Position.X> Globals.screenWidth/2)
+			//GD.Print("Mouse Motion at: ", eventMouseMotion.Position);
+			// >960 == right
+			// if using variable resolution, use GetViewport().GetVisibleRect().Size.X\2
+			if (eventMouseMotion.Position.X> Globals.screenWidth/2)
 			{
-                animatedSprite2D.FlipH = false;
-                animatedSprite2D.Offset = new Vector2(0, 0);
-                animatedSprite2DTop.FlipH = false;
-                animatedSprite2DTop.Offset = new Vector2(0, 0);
-                SetAttackFlips();
-            }
+				animatedSprite2D.FlipH = false;
+				animatedSprite2D.Offset = new Vector2(0, 0);
+				animatedSprite2DTop.FlipH = false;
+				animatedSprite2DTop.Offset = new Vector2(0, 0);
+				SetAttackFlips();
+			}
 			else
-            {
-                animatedSprite2D.FlipH = true;
+			{
+				animatedSprite2D.FlipH = true;
 				animatedSprite2D.Offset = new Vector2(-100, 0);
-                animatedSprite2DTop.FlipH = true;
-                animatedSprite2DTop.Offset = new Vector2(-100, 0);
-                SetAttackFlips();
-            }
+				animatedSprite2DTop.FlipH = true;
+				animatedSprite2DTop.Offset = new Vector2(-100, 0);
+				SetAttackFlips();
+			}
 
-        }
+		}
 
 
 
-    }
+	}
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
 	{
 
 		if (Globals.playerAlive)
@@ -237,18 +237,18 @@ public partial class player : Area2D
 			{
 				animatedSprite2D.FlipH = true;
 				animatedSprite2D.Offset = new Vector2(-100, 0);
-                animatedSprite2DTop.FlipH = true;
-                animatedSprite2DTop.Offset = new Vector2(-100, 0);
-                SetAttackFlips();
+				animatedSprite2DTop.FlipH = true;
+				animatedSprite2DTop.Offset = new Vector2(-100, 0);
+				SetAttackFlips();
 			}
 			else
 				if (Input.IsActionPressed("FaceRight") && Globals.playerAlive)
 			{
 				animatedSprite2D.FlipH = false;
 				animatedSprite2D.Offset = new Vector2(0, 0);
-                animatedSprite2DTop.FlipH = false;
-                animatedSprite2DTop.Offset = new Vector2(0, 0);
-                SetAttackFlips();
+				animatedSprite2DTop.FlipH = false;
+				animatedSprite2DTop.Offset = new Vector2(0, 0);
+				SetAttackFlips();
 			}
 
 
@@ -331,17 +331,17 @@ public partial class player : Area2D
 			if (!OnFire)
 			{
 				animatedSprite2D.Animation = curAnim;
-                animatedSprite2DTop.Animation = curAnim;
-            }
+				animatedSprite2DTop.Animation = curAnim;
+			}
 			else
 			{
 				if (curAnim != "dash")
 				{
-                    animatedSprite2D.Animation = curAnim + "_flame";
-                    animatedSprite2DTop.Animation = curAnim;
-                }	
+					animatedSprite2D.Animation = curAnim + "_flame";
+					animatedSprite2DTop.Animation = curAnim;
+				}	
 			}
-        }
+		}
 
 		// check if out of bounds
 		CheckOutOfBounds();
@@ -352,49 +352,49 @@ public partial class player : Area2D
 	{
 		if (Position.X>28800 || Position.X<-28800 || Position.Y>16200 || Position.Y<-16200)
 		{
-            wavy.Visible = true;
+			wavy.Visible = true;
 			wavy.Position = Position;
 			float dist = 0;
 			float distX = (Mathf.Abs(Position.X) - 28800);
 			if (distX > 0)
 				dist += distX;
 			float distY=(Mathf.Abs(Position.Y) - 16200);
-            if (distY > 0)
+			if (distY > 0)
 				dist += distY;
 
-            // mult = .01 to .04
-            matWavy.SetShaderParameter("mult", dist/100000);
+			// mult = .01 to .04
+			matWavy.SetShaderParameter("mult", dist/100000);
 			// alpha .1 to 10
 			// dist 0 to 5000
-            matWavy.SetShaderParameter("alpha", dist / 500);
+			matWavy.SetShaderParameter("alpha", dist / 500);
 
 			// .75-2
 			worldEnvironment.Environment.GlowIntensity = dist/2500+.75f;
 			// 0 -1.5
 			ambientLight.Energy = dist / 3400;
 
-            // play rining loop sound
-            if (!sndRingingLoop.Playing)
-                sndRingingLoop.Play();
-            // volume -20 to 0
-            sndRingingLoop.VolumeDb = (float)(dist / 250) - 20;
+			// play rining loop sound
+			if (!sndRingingLoop.Playing)
+				sndRingingLoop.Play();
+			// volume -20 to 0
+			sndRingingLoop.VolumeDb = (float)(dist / 250) - 20;
 
-            if (dist>5000) // if too far then teleport back to center
+			if (dist>5000) // if too far then teleport back to center
 			{
 				Position = new Vector2(0, 0);
-                worldEnvironment.Environment.GlowIntensity = .75f;
-                ambientLight.Energy = 0;
-                matWavy.SetShaderParameter("mult", 0);
-                matWavy.SetShaderParameter("alpha", 0);
-                sndRingingLoop.Stop();
-                sndWarp.Play();
-            }
-            //Debug.Print("Player pos:" + Position + "dist:" + dist+" vol:"+ sndRingingLoop.VolumeDb);
-        }
+				worldEnvironment.Environment.GlowIntensity = .75f;
+				ambientLight.Energy = 0;
+				matWavy.SetShaderParameter("mult", 0);
+				matWavy.SetShaderParameter("alpha", 0);
+				sndRingingLoop.Stop();
+				sndWarp.Play();
+			}
+			//Debug.Print("Player pos:" + Position + "dist:" + dist+" vol:"+ sndRingingLoop.VolumeDb);
+		}
 		else
 		{
-            wavy.Visible = false;
-        }
+			wavy.Visible = false;
+		}
 	}
 
 	private void SetAttackFlips() // set the flip of all attacks that are children of Player to be same flip
@@ -402,11 +402,11 @@ public partial class player : Area2D
 		Godot.Collections.Array<Node> attacks=GetChildren(false);
 		foreach(Node attack in attacks)
 		{
-            if (attack.GetType() == typeof(AttackSlash))
+			if (attack.GetType() == typeof(AttackSlash))
 			{
-                AttackSlash aSlash = (AttackSlash)attack;
-                aSlash.FlipAttack();
-            }  
+				AttackSlash aSlash = (AttackSlash)attack;
+				aSlash.FlipAttack();
+			}  
 		}
 	}
 
@@ -414,23 +414,23 @@ public partial class player : Area2D
 	{
 		if (area.IsInGroup("Pickups"))
 		{
-            ItemScript gs = (ItemScript)area;
-            if (gs != null)
-            {
-                gs.collected = true; // start magnetism 
-            }
-        }
+			ItemScript gs = (ItemScript)area;
+			if (gs != null)
+			{
+				gs.collected = true; // start magnetism 
+			}
+		}
 
-        if (area.IsInGroup("Relics"))
-        {
-            Relic gs = (Relic)area;
-            if (gs != null)
-            {
-                gs.collected = true; // start magnetism 
-            }
-        }
+		if (area.IsInGroup("Relics"))
+		{
+			Relic gs = (Relic)area;
+			if (gs != null)
+			{
+				gs.collected = true; // start magnetism 
+			}
+		}
 
-    }
+	}
 
 	public void IncreaseSpeed(float mult)
 	{
@@ -495,29 +495,29 @@ public partial class player : Area2D
 		ShowText(txtAtkSpeed);
 	}
 
-    public void SetAllAoE()
-    {
-        if (atkSlashEnergy.Count > 0)
-            atkSlashEnergy[0].SetAOE();
-        if (atkSlashIce.Count > 0)
-            atkSlashIce[0].SetAOE();
-        if (atkSlashLeeches.Count > 0)
-            atkSlashLeeches[0].SetAOE();
-        if (atkProjectileEnergy.Count > 0)
-            atkProjectileEnergy[0].SetAOE();
-        if (atkProjectilePoison.Count > 0)
-            atkProjectilePoison[0].SetAOE();
-        if (atkProjectileLeeches.Count > 0)
-            atkProjectileLeeches[0].SetAOE();
-        if (atkCrossFire.Count > 0)
-            atkCrossFire[0].SetAOE();
-        if (atkCrossIce.Count > 0)
-            atkCrossIce[0].SetAOE();
-        if (atkCrossLeeches.Count > 0)
-            atkCrossLeeches[0].SetAOE();
-    }
+	public void SetAllAoE()
+	{
+		if (atkSlashEnergy.Count > 0)
+			atkSlashEnergy[0].SetAOE();
+		if (atkSlashIce.Count > 0)
+			atkSlashIce[0].SetAOE();
+		if (atkSlashLeeches.Count > 0)
+			atkSlashLeeches[0].SetAOE();
+		if (atkProjectileEnergy.Count > 0)
+			atkProjectileEnergy[0].SetAOE();
+		if (atkProjectilePoison.Count > 0)
+			atkProjectilePoison[0].SetAOE();
+		if (atkProjectileLeeches.Count > 0)
+			atkProjectileLeeches[0].SetAOE();
+		if (atkCrossFire.Count > 0)
+			atkCrossFire[0].SetAOE();
+		if (atkCrossIce.Count > 0)
+			atkCrossIce[0].SetAOE();
+		if (atkCrossLeeches.Count > 0)
+			atkCrossLeeches[0].SetAOE();
+	}
 
-    public void ResetSpeed()
+	public void ResetSpeed()
 	{
 		speedMultiplier = 1;
 		itemIconSpeed.Visible = false;
@@ -653,7 +653,7 @@ public partial class player : Area2D
 			animatedSprite2D.Animation = curAnim + "_flame";
 			animatedSprite2DTop.Animation = curAnim;
 		}
-        animatedSprite2D.Play();
+		animatedSprite2D.Play();
 		animatedSprite2DTop.Play();
 	}
 
@@ -661,23 +661,23 @@ public partial class player : Area2D
 	{
 		if (Globals.playerAlive)
 		{
-            curAnim = "idle";
-            if (!OnFire)
+			curAnim = "idle";
+			if (!OnFire)
 			{
-                animatedSprite2D.Animation = curAnim;
-                animatedSprite2DTop.Animation = curAnim;
-            }
-            else
-			{
-                animatedSprite2D.Animation = curAnim + "_flame";
+				animatedSprite2D.Animation = curAnim;
 				animatedSprite2DTop.Animation = curAnim;
-            }
-                
-            animatedSprite2D.Play();
-            animatedSprite2DTop.Animation = animatedSprite2D.Animation;
-            animatedSprite2DTop.Play();
-            //Debug.Print("Attack over");
-        }
+			}
+			else
+			{
+				animatedSprite2D.Animation = curAnim + "_flame";
+				animatedSprite2DTop.Animation = curAnim;
+			}
+				
+			animatedSprite2D.Play();
+			animatedSprite2DTop.Animation = animatedSprite2D.Animation;
+			animatedSprite2DTop.Play();
+			//Debug.Print("Attack over");
+		}
 	}
 
 	public void PlayDeathAnim()
@@ -686,15 +686,15 @@ public partial class player : Area2D
 		//Debug.Print("Play attack anim");
 		animatedSprite2D.Animation = "death";
 		animatedSprite2D.Play();
-        animatedSprite2DTop.Animation = "death";
-        animatedSprite2DTop.Play();
-        FadeToBlack();
-        // hide mini map
-        CanvasLayer miniMap = (CanvasLayer)GetNode(Globals.NodeMiniMapCanvas);
+		animatedSprite2DTop.Animation = "death";
+		animatedSprite2DTop.Play();
+		FadeToBlack();
+		// hide mini map
+		CanvasLayer miniMap = (CanvasLayer)GetNode(Globals.NodeMiniMapCanvas);
 		miniMap.Visible = false;       
 
-        // hide GUI
-        CanvasLayer gui = (CanvasLayer)GetNode(Globals.NodeGUI);
+		// hide GUI
+		CanvasLayer gui = (CanvasLayer)GetNode(Globals.NodeGUI);
 		gui.Visible = false;
 		itemIconSpeed.Visible = false;
 		itemIconAoE.Visible = false;
@@ -708,19 +708,19 @@ public partial class player : Area2D
 		if (atkOrbitEnergy.Count > 0)
 			atkOrbitEnergy[0].Visible = false;
 
-        if (atkOrbitPoison.Count > 0)
-            atkOrbitPoison[0].Visible = false;
+		if (atkOrbitPoison.Count > 0)
+			atkOrbitPoison[0].Visible = false;
 
-        if (atkOrbitFire.Count > 0)
-            atkOrbitFire[0].Visible = false;
+		if (atkOrbitFire.Count > 0)
+			atkOrbitFire[0].Visible = false;
 
-        // Don't process settlement select GUI
-        StructureSelect settle = (StructureSelect)GetNode(Globals.NodeStructureGUI);
+		// Don't process settlement select GUI
+		StructureSelect settle = (StructureSelect)GetNode(Globals.NodeStructureGUI);
 		settle.ProcessMode = Godot.Node.ProcessModeEnum.Disabled;
 
 		ResourceDiscoveries.enemyTimer.OneShot = true;
 
-        GameOver();
+		GameOver();
 
 	}
 
@@ -729,25 +729,27 @@ public partial class player : Area2D
 		ZIndex = 1000;
 		Tween tween = GetTree().CreateTween();
 		tween.TweenProperty(Globals.black, "modulate:a", 1f, 3.0f);
-        Globals.btnBack.Visible = true;
-        Globals.btnBack.Modulate = new Color(1, 1, 1, 0);
-        tween.TweenProperty(Globals.btnBack, "modulate:a", 1f, 1.5f);
-        
-    }
+		Globals.btnBack.Visible = true;
+		Globals.btnBack.Modulate = new Color(1, 1, 1, 0);
+		tween.TweenProperty(Globals.btnBack, "modulate:a", 1f, 1.5f);
+		
+	}
 
 	private async void GameOver()
 	{
-        Globals.PlayRandomizedSound(sndPlayerDeath);
+		Globals.PlayRandomizedSound(sndPlayerDeath);
 		Debug.Print("Play game over sound");
 
-        ShowTime();
+		ShowTime();
 
-        // wait 5 seconds
-        await Task.Delay(TimeSpan.FromMilliseconds(4400));
+		// wait 5 seconds
+		await Task.Delay(TimeSpan.FromMilliseconds(4400));
 
-        Globals.rootNode.GetTree().Paused = true;
-
-    }
+		Globals.rootNode.GetTree().Paused = true;
+		
+		TextureButton backBtn = (TextureButton)GetNode("/root/World/CLbtnBack/ctlBack/TextureButton");
+		backBtn.GrabFocus();
+	}
 
 
 
@@ -755,21 +757,21 @@ public partial class player : Area2D
 	{
 		lblTime.Visible = true;
 
-        string strSeconds = ResourceDiscoveries.seconds.ToString();
-        if (ResourceDiscoveries.seconds < 10)
-            strSeconds = "0" + strSeconds;
+		string strSeconds = ResourceDiscoveries.seconds.ToString();
+		if (ResourceDiscoveries.seconds < 10)
+			strSeconds = "0" + strSeconds;
 
-        string strMinutes = ResourceDiscoveries.minutes.ToString();
+		string strMinutes = ResourceDiscoveries.minutes.ToString();
 
-        if (ResourceDiscoveries.minutes < 10)
-            strMinutes = "0" + strMinutes;
+		if (ResourceDiscoveries.minutes < 10)
+			strMinutes = "0" + strMinutes;
 
 
 		lblTime.Text = "You lasted " + strMinutes + ":" + strSeconds;
 
-    }
+	}
 
-    public void PlayHurtSound()
+	public void PlayHurtSound()
 	{
 		int snd = GD.RandRange(0, 1);
 		if (snd == 0)
@@ -778,9 +780,9 @@ public partial class player : Area2D
 		}
 		else
 		{
-            Globals.PlayRandomizedSound(sndHurtPlayer2);
+			Globals.PlayRandomizedSound(sndHurtPlayer2);
 		}
-    }
+	}
 	public void AddAttack(string wType, string eType)
 	{
 		//Debug.Print("Add attack: " + wType + " - " + eType);
@@ -865,34 +867,34 @@ public partial class player : Area2D
 				newAttack.Call("SetWeaponElement", "leeches");
 			}
 		}
-        if (wType == "Orbit")
-        {
-            if (eType == "Energy")
-            {
-                newAttack = (Node2D)attackSceneOrbit.Instantiate();
-                AttackOrbit newAtk = (AttackOrbit)newAttack;
-                AddChild(newAtk);
-                atkOrbitEnergy.Add(newAtk);
-                newAttack.Call("SetWeaponElement", "energy");
-            }
-            if (eType == "Poison")
-            {
-                newAttack = (Node2D)attackSceneOrbit.Instantiate();
-                AttackOrbit newAtk = (AttackOrbit)newAttack;
-                AddChild(newAtk);
-                atkOrbitPoison.Add(newAtk);
-                newAttack.Call("SetWeaponElement", "poison");
-            }
-            if (eType == "Fire")
-            {
-                newAttack = (Node2D)attackSceneOrbit.Instantiate();
-                AttackOrbit newAtk = (AttackOrbit)newAttack;
-                AddChild(newAtk);
-                atkOrbitFire.Add(newAtk);
-                newAttack.Call("SetWeaponElement", "fire");
-            }
-        }
-    }
+		if (wType == "Orbit")
+		{
+			if (eType == "Energy")
+			{
+				newAttack = (Node2D)attackSceneOrbit.Instantiate();
+				AttackOrbit newAtk = (AttackOrbit)newAttack;
+				AddChild(newAtk);
+				atkOrbitEnergy.Add(newAtk);
+				newAttack.Call("SetWeaponElement", "energy");
+			}
+			if (eType == "Poison")
+			{
+				newAttack = (Node2D)attackSceneOrbit.Instantiate();
+				AttackOrbit newAtk = (AttackOrbit)newAttack;
+				AddChild(newAtk);
+				atkOrbitPoison.Add(newAtk);
+				newAttack.Call("SetWeaponElement", "poison");
+			}
+			if (eType == "Fire")
+			{
+				newAttack = (Node2D)attackSceneOrbit.Instantiate();
+				AttackOrbit newAtk = (AttackOrbit)newAttack;
+				AddChild(newAtk);
+				atkOrbitFire.Add(newAtk);
+				newAttack.Call("SetWeaponElement", "fire");
+			}
+		}
+	}
 
 	public void OnBodyEntered(Node body)
 	{
@@ -913,17 +915,17 @@ public partial class player : Area2D
 			}
 			else
 				if (en.damageType == enemy.DamageType.Fire)
-                IgnitePlayer(en.damage, en.damageTime);
+				IgnitePlayer(en.damage, en.damageTime);
 
-            // bounce back away from player
-            Vector2 dir = GlobalTransform.Origin.DirectionTo(en.GlobalPosition);
+			// bounce back away from player
+			Vector2 dir = GlobalTransform.Origin.DirectionTo(en.GlobalPosition);
 			en.ApplyForce(dir * en.speed * .4f);
 
 			// skeleton attack damage
-            if (en.enemyName == "Skeleton")
-                en.playerInDamageArea = true;
+			if (en.enemyName == "Skeleton")
+				en.playerInDamageArea = true;
 
-        }
+		}
 	}
 
 	private void IgnitePlayer(float dmg, float dmgTime)
@@ -931,7 +933,7 @@ public partial class player : Area2D
 		OnFire = true;
 		curFireTime = dmgTime;
 
-        string anim = animatedSprite2D.Animation;
+		string anim = animatedSprite2D.Animation;
 
 		if (anim=="attack")
 			anim = "attack_flame";
@@ -939,37 +941,37 @@ public partial class player : Area2D
 		if (anim == "idle")
 			anim = "idle_flame";
 
-        if (anim == "walk")
-            anim = "walk_flame";
+		if (anim == "walk")
+			anim = "walk_flame";
 
 		FlamePlayer(dmg, dmgTime);
-    }
+	}
 
 	private async void FlamePlayer(float dmg, float dmgTime)
 	{
-        await Task.Delay(TimeSpan.FromMilliseconds(1000));
-        Globals.DamagePlayer(dmg);
+		await Task.Delay(TimeSpan.FromMilliseconds(1000));
+		Globals.DamagePlayer(dmg);
 		curFireTime--;
 		if (curFireTime >0)
-            FlamePlayer(dmg, dmgTime);
+			FlamePlayer(dmg, dmgTime);
 		else
 		{ // end fire
 			OnFire = false;
-            string anim = animatedSprite2D.Animation;
+			string anim = animatedSprite2D.Animation;
 
-            if (anim == "attack_flame")
-                anim = "attack";
+			if (anim == "attack_flame")
+				anim = "attack";
 
-            if (anim == "idle_flame")
-                anim = "idle";
+			if (anim == "idle_flame")
+				anim = "idle";
 
-            if (anim == "walk_flame")
-                anim = "walk";
-        }
+			if (anim == "walk_flame")
+				anim = "walk";
+		}
 
-    }
+	}
 
-    public void OnBodyExited(Node body)
+	public void OnBodyExited(Node body)
 	{
 		// if enemy
 		if (body.IsInGroup("Enemies"))
@@ -979,80 +981,80 @@ public partial class player : Area2D
 			if (en.enemyName == "Skeleton")
 				en.playerInDamageArea = false;
 		}
-    }
+	}
 
 	public void OnAreaEntered(Area2D area) // enemy enter player
 	{
 
 		if (area.IsInGroup("Pickups") || area.IsInGroup("Relics"))
 		{
-            MagnetismEntered(area);
+			MagnetismEntered(area);
 		}
-        if (area.IsInGroup("SlimeTrail"))
+		if (area.IsInGroup("SlimeTrail"))
 		{
 			SlimeTrail st=area.GetParent<SlimeTrail>();
 			st.DamagePlayer();
 		}
 		// occlusion for enemies
 		if (area.IsInGroup("Occlusion"))
-        {
+		{
 			area.GetParent<RigidBody2D>().Visible = true;
-        }
-        if (area.IsInGroup("OcclusionTrail")) // slime trail
-        {
-            area.GetParent<AnimatedSprite2D>().Visible = true;
-        }
-    }
+		}
+		if (area.IsInGroup("OcclusionTrail")) // slime trail
+		{
+			area.GetParent<AnimatedSprite2D>().Visible = true;
+		}
+	}
 
 	public void OnAreaExited(Area2D area) // enemy exit
 	{
-        // occlusion for enemies
-        if (area.IsInGroup("Occlusion"))
-        {
-            area.GetParent<RigidBody2D>().Visible = false;
-        }
-        if (area.IsInGroup("OcclusionTrail")) // slime trail
-        {
-            area.GetParent<AnimatedSprite2D>().Visible = false;
-        }
-    }
+		// occlusion for enemies
+		if (area.IsInGroup("Occlusion"))
+		{
+			area.GetParent<RigidBody2D>().Visible = false;
+		}
+		if (area.IsInGroup("OcclusionTrail")) // slime trail
+		{
+			area.GetParent<AnimatedSprite2D>().Visible = false;
+		}
+	}
 
-    private async void DamagePlayer()
+	private async void DamagePlayer()
 	{
-        await Task.Delay(TimeSpan.FromMilliseconds(dmgFreq));
+		await Task.Delay(TimeSpan.FromMilliseconds(dmgFreq));
 		if (enemies.Count > 0 && Globals.rootNode.GetTree().Paused == false)
 		{
 			for (int i = 0; i < enemies.Count; i++)
 			{
 				enemy en = enemies[i];
-                if (en.damageType == enemy.DamageType.Normal)
-                {
-                    Globals.DamagePlayer(en.damage);
-                }
-                else
-                if (en.damageType == enemy.DamageType.Poison)
-                {
-                    Globals.PoisonPlayer(en.damage, en.damageTime);
-                }
-            }
+				if (en.damageType == enemy.DamageType.Normal)
+				{
+					Globals.DamagePlayer(en.damage);
+				}
+				else
+				if (en.damageType == enemy.DamageType.Poison)
+				{
+					Globals.PoisonPlayer(en.damage, en.damageTime);
+				}
+			}
 		}
 		DamagePlayer();
-    }
+	}
 
 	public async void GainLevel()
 	{
 		Debug.Print("God");
-        Globals.PlayRandomizedSound(sndGainLevel);
-        GodRays.Visible = true;
-        ShaderMaterial godRaysMat = (ShaderMaterial)GodRays.Material;
+		Globals.PlayRandomizedSound(sndGainLevel);
+		GodRays.Visible = true;
+		ShaderMaterial godRaysMat = (ShaderMaterial)GodRays.Material;
 
-        
-	    await Task.Delay(TimeSpan.FromMilliseconds(1100));
-        GodRays.Visible = false;
-        await Task.Delay(TimeSpan.FromMilliseconds(300));
-        Globals.UpdateLevel();
-        Globals.ShowUpgrades();
-    }
+		
+		await Task.Delay(TimeSpan.FromMilliseconds(1100));
+		GodRays.Visible = false;
+		await Task.Delay(TimeSpan.FromMilliseconds(300));
+		Globals.UpdateLevel();
+		Globals.ShowUpgrades();
+	}
 
 
 }

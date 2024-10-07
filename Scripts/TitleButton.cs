@@ -6,110 +6,120 @@ using static System.Net.Mime.MediaTypeNames;
 
 public partial class TitleButton : TextureButton
 {
-    Control steamManager;
+	Control steamManager;
 	[Export] public Label lblButton;
-    private bool overButton = false;
-    private ColorRect black;
+	private bool overButton = false;
+	private ColorRect black;
 
-    private AudioStreamPlayer titleMusic;
+	private AudioStreamPlayer titleMusic;
 
-    public override void _Ready()
-    {
-        Node nodMusic = GetNode("/root/Title/titleMusic");
-        titleMusic = (AudioStreamPlayer)nodMusic;
-
-        Node nodBlack = GetNode("/root/Title/Control/Black");
-        black = (ColorRect)nodBlack;
-
-        if (lblButton.Name == "lblSteamName")
-        {
-            steamManager = (Control)GetNode("/root/SteamManager");
-            lblButton.Text = steamManager.Call("GetSteamName").ToString();
-        }
-
-        FadeIn();
-    }
-
-    public void Hover()
+	public override void _Ready()
 	{
-        lblButton.Modulate = new Color(1, 1, .2f, 1);
-        overButton = true;
-    }
+		Node nodMusic = GetNode("/root/Title/titleMusic");
+		titleMusic = (AudioStreamPlayer)nodMusic;
 
-    public void UnHover()
-    {
-        lblButton.Modulate = new Color(1, 1, 1, 1);
-        overButton = false;
-    }
+		Node nodBlack = GetNode("/root/Title/Control/Black");
+		black = (ColorRect)nodBlack;
 
-    public override void _Input(InputEvent @event)
-    {
+		if (lblButton.Name == "lblSteamName")
+		{
+			steamManager = (Control)GetNode("/root/SteamManager");
+			lblButton.Text = steamManager.Call("GetSteamName").ToString();
+		}
+		
+		GetNode<TextureButton>("/root/Title/Control/MCbtnPlay/btnPlay").GrabFocus();
+		
+		FadeIn();
+	}
 
-        if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
-        {
-            if (mouseEvent.ButtonIndex == MouseButton.Left)
-            {
-                if (overButton == true)
-                {
-                        Fade();
-                }
-            }
-        }
-    }
+	public void Hover()
+	{
+		lblButton.Modulate = new Color(1, 1, .2f, 1);
+		overButton = true;
+	}
 
-    private async void Fade()
-    {
-        black.Visible = true;
+	public void UnHover()
+	{
+		lblButton.Modulate = new Color(1, 1, 1, 1);
+		overButton = false;
+	}
 
-        Tween tween = GetTree().CreateTween();
-        tween.TweenProperty(black, "modulate:a", 1f, 2f).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Cubic);
+	public override void _Input(InputEvent @event)
+	{
 
-        // wait a bit
-        await Task.Delay(TimeSpan.FromMilliseconds(2000));
+		if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
+		{
+			if (mouseEvent.ButtonIndex == MouseButton.Left)
+			{
+				if (overButton == true)
+				{
+						Debug.Print("Test");
+						Fade();
+				}
+			}
+		}
+		
+		if(@event.IsActionPressed("ui_accept") && HasFocus())
+		{
+			Debug.Print("UI Accept, starting next scene");
+			Fade();
+		}
+		
+	}
+
+	private async void Fade()
+	{
+		black.Visible = true;
+
+		Tween tween = GetTree().CreateTween();
+		tween.TweenProperty(black, "modulate:a", 1f, 2f).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Cubic);
+
+		// wait a bit
+		await Task.Delay(TimeSpan.FromMilliseconds(2000));
 
 
-        Debug.Print("Load scene: "+ lblButton.Name);
+		Debug.Print("Load scene: "+ lblButton.Name);
 
-        if (lblButton.Name == "lblPlay")
-        {
-            //GetTree().ChangeSceneToFile("res://Scenes/world.tscn");
-            GetTree().ChangeSceneToPacked(Globals.WorldScene);
-        }
+		if (lblButton.Name == "lblPlay")
+		{
+			//GetTree().ChangeSceneToFile("res://Scenes/world.tscn");
+			GetTree().ChangeSceneToPacked(Globals.WorldScene);
+		}
 
-        if (lblButton.Name == "lblUpgrades")
-        {
-            //GetTree().ChangeSceneToFile("res://Scenes/StatUpgrades.tscn");
-            GetTree().ChangeSceneToPacked(Globals.StatUpgradesScene);
-        }
+		if (lblButton.Name == "lblUpgrades")
+		{
+			//GetTree().ChangeSceneToFile("res://Scenes/StatUpgrades.tscn");
+			GetTree().ChangeSceneToPacked(Globals.StatUpgradesScene);
+		}
 
-        if (lblButton.Name == "lblOptions")
-        {
-            //GetTree().ChangeSceneToFile("res://Scenes/Options.tscn");
-            GetTree().ChangeSceneToPacked(Globals.OptionsScene);
-        }
-        if (lblButton.Name == "lblQuit")
-        {
-            Debug.Print("Quit");
-            GetTree().Quit();
-        }
-    }
+		if (lblButton.Name == "lblOptions")
+		{
+			//GetTree().ChangeSceneToFile("res://Scenes/Options.tscn");
+			GetTree().ChangeSceneToPacked(Globals.OptionsScene);
+		}
+		if (lblButton.Name == "lblQuit")
+		{
+			Debug.Print("Quit");
+			GetTree().Quit();
+		}
+	}
 
-    private async void FadeIn()
-    {
-        black.Visible = true;
-        black.Modulate = new Color(1, 1, 1, 1);
-        await Task.Delay(TimeSpan.FromMilliseconds(1900));
+	private async void FadeIn()
+	{
+		black.Visible = true;
+		black.Modulate = new Color(1, 1, 1, 1);
+		await Task.Delay(TimeSpan.FromMilliseconds(1900));
 
-        Tween tween = GetTree().CreateTween();
-        tween.TweenProperty(black, "modulate:a", 0f, 3f);
+		Tween tween = GetTree().CreateTween();
+		tween.TweenProperty(black, "modulate:a", 0f, 3f);
 
-        // play music
-        for (int i = 0; i < 10; i++) // wait to load volume settings
-        {
-            await Task.Delay(TimeSpan.FromMilliseconds(1000));
-            if (Globals.settingsLoaded)
-                break;
-        }
-        titleMusic.Play();
-    }
+		// play music
+		for (int i = 0; i < 10; i++) // wait to load volume settings
+		{
+			await Task.Delay(TimeSpan.FromMilliseconds(1000));
+			if (Globals.settingsLoaded)
+				break;
+		}
+		titleMusic.Play();
+	}
 }

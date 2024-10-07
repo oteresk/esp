@@ -81,6 +81,7 @@ grow_vertical = 2
 pivot_offset = Vector2(256, 432)
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="Control"]
 material = SubResource("ShaderMaterial_f45uj")
@@ -181,5 +182,7 @@ offset_bottom = 900.0
 mouse_filter = 2
 texture = ExtResource("6_iwog5")
 
+[connection signal="focus_entered" from="Control" to="." method="OnMouseEntered"]
+[connection signal="focus_exited" from="Control" to="." method="OnMouseExited"]
 [connection signal="mouse_entered" from="Control" to="." method="OnMouseEntered"]
 [connection signal="mouse_exited" from="Control" to="." method="OnMouseExited"]

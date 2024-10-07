@@ -227,6 +227,7 @@ offset_bottom = 338.0
 texture_normal = ExtResource("14_ew8ol")
 
 [node name="Iron" type="TextureRect" parent="TextureRect"]
+layout_mode = 0
 offset_left = 825.0
 offset_top = 630.0
 offset_right = 959.0
@@ -235,6 +236,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("23_u1pr4")
 
 [node name="lblIron" type="Label" parent="TextureRect"]
+layout_mode = 0
 offset_left = 900.0
 offset_top = 636.0
 offset_right = 972.0
@@ -243,6 +245,7 @@ text = "999"
 label_settings = SubResource("LabelSettings_g16je")
 
 [node name="Wood" type="TextureRect" parent="TextureRect"]
+layout_mode = 0
 offset_left = 984.0
 offset_top = 630.0
 offset_right = 1128.0
@@ -251,6 +254,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("25_a6euj")
 
 [node name="lblWood" type="Label" parent="TextureRect"]
+layout_mode = 0
 offset_left = 1061.0
 offset_top = 636.0
 offset_right = 1133.0
@@ -297,6 +301,7 @@ vertical_alignment = 1
 
 [node name="RedStroke" type="TextureRect" parent="TextureRect"]
 z_index = 2
+layout_mode = 0
 offset_left = 874.0
 offset_top = 436.0
 offset_right = 1066.0
@@ -306,6 +311,7 @@ texture = ExtResource("26_wnxte")
 
 [node name="MCbtnBuild" type="MarginContainer" parent="TextureRect"]
 z_index = 5
+layout_mode = 0
 offset_left = 752.0
 offset_top = 814.0
 offset_right = 1112.0
@@ -322,6 +328,7 @@ size_flags_vertical = 8
 texture_normal = ExtResource("27_fcrfb")
 texture_hover = ExtResource("28_5j0fs")
 texture_disabled = ExtResource("29_72pnm")
+texture_focused = ExtResource("28_5j0fs")
 
 [node name="lblBuild" type="Label" parent="TextureRect/MCbtnBuild/TextureButton"]
 layout_mode = 1
