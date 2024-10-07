@@ -4,27 +4,24 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
+using System.Collections.Generic;
+using System.Collections;
+using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
+
+
 public partial class SaveLoad : Node2D
 {
 	static private Godot.Collections.Dictionary settingsData;
-	static private string settingsFilename = "Settings.json";
+	static public string settingsFilename = "Settings_v0.34.12.json";
 
     static private Godot.Collections.Dictionary gameSaveData;
-    static private string gameSaveFilename = "GameSave.dat";
+    static public string gameSaveFilename = "GameSave_v0.34.12.dat";
 
     public override void _Ready()
 	{
-        settingsData = new Godot.Collections.Dictionary();
-        gameSaveData = new Godot.Collections.Dictionary();
-        DelayedStart();
-    }
-
-    public async void DelayedStart()
-    {
-        // wait a bit
-        await Task.Delay(TimeSpan.FromMilliseconds(200));
-
         string path = ProjectSettings.GlobalizePath(settingsFilename);
+        //Globals.instance.Initialize();
 
         if (!File.Exists(path))
             SaveSettings();
@@ -32,8 +29,9 @@ public partial class SaveLoad : Node2D
         path = ProjectSettings.GlobalizePath(gameSaveFilename);
 
         if (!File.Exists(path))
-            SaveGame();
+            SaveGameNewFile();
     }
+
 
     // clears the dictionary
     static public void ClearSettings()
@@ -42,32 +40,16 @@ public partial class SaveLoad : Node2D
     }
 
 
-        static public void SaveSettings()
+    static public void SaveSettings()
 	{
         Debug.Print("Save settings");
         // resource starting numbers (used for testing)
+        settingsData.Clear();
+
         settingsData.Add("[ResourceStart] StartIron", ResourceDiscoveries.iron);
         settingsData.Add("[ResourceStart] StartMana", ResourceDiscoveries.mana);
         settingsData.Add("[ResourceStart] StartWood", ResourceDiscoveries.wood);
         settingsData.Add("[ResourceStart] StartResearch", ResourceDiscoveries.research);
-
-        // Structure Costs
-        settingsData.Add("[StructureCosts] AlchemyLabIron", Globals.costIron[0]);
-        settingsData.Add("[StructureCosts] AlchemyLabWood", Globals.costWood[0]);
-        settingsData.Add("[StructureCosts] BlacksmithIron", Globals.costIron[1]);
-        settingsData.Add("[StructureCosts] BlacksmithWood", Globals.costWood[1]);
-        settingsData.Add("[StructureCosts] HerbalistIron", Globals.costIron[3]);
-        settingsData.Add("[StructureCosts] HerbalistWood", Globals.costWood[3]);
-        settingsData.Add("[StructureCosts] LodestoneIron", Globals.costIron[4]);
-        settingsData.Add("[StructureCosts] LodestoneWood", Globals.costWood[4]);
-        settingsData.Add("[StructureCosts] SettlementIron", Globals.costIron[5]);
-        settingsData.Add("[StructureCosts] SettlementWood", Globals.costWood[5]);
-        settingsData.Add("[StructureCosts] TowerIron", Globals.costIron[6]);
-        settingsData.Add("[StructureCosts] TowerWood", Globals.costWood[6]);
-        settingsData.Add("[StructureCosts] TrainingCenterIron", Globals.costIron[7]);
-        settingsData.Add("[StructureCosts] TrainingCenterWood", Globals.costWood[7]);
-        settingsData.Add("[StructureCosts] GolemFactoryIron", Globals.costIron[2]);
-        settingsData.Add("[StructureCosts] GolemFactoryWood", Globals.costWood[2]);
 
         // starting structures
         settingsData.Add("[StartingStructures] Tower", Globals.StartingTower);
@@ -111,9 +93,14 @@ public partial class SaveLoad : Node2D
         settingsData.Add("[Settings] MusicVolume", Globals.settings_MusicVolume);
         settingsData.Add("[Settings] MasterVolume", Globals.settings_MasterVolume);
 
+        settingsData.Add("[Settings] FullScreen", Globals.settings_FullScreen);
         settingsData.Add("[Settings] ShowFPS", Globals.settings_ShowFPS);
 
         settingsData.Add("[Settings] GodMode", Globals.settings_GodMode);
+        settingsData.Add("[Settings] ShowPlayerPosition", Globals.settings_ShowPlayerPosition);
+
+        settingsData.Add("[Settings] Decorations", Globals.settings_Decorations);
+        settingsData.Add("[Settings] PlayerGhost", Globals.settings_PlayerGhost);
 
         string json = Json.Stringify(settingsData, "\t");
         settingsData.Clear();
@@ -124,6 +111,8 @@ public partial class SaveLoad : Node2D
 
     static public void LoadSettings()
 	{
+        Debug.Print("New settings data");
+        settingsData = new Godot.Collections.Dictionary();
         settingsData.Clear();
 
         if (File.Exists(settingsFilename))
@@ -145,22 +134,25 @@ public partial class SaveLoad : Node2D
             ResourceDiscoveries.UpdateResourceGUI();
 
             // Structure Costs
-            Globals.costIron[0] = (int)settingsData["[StructureCosts] AlchemyLabIron"];
-            Globals.costWood[0] = (int)settingsData["[StructureCosts] AlchemyLabWood"];
-            Globals.costIron[1] = (int)settingsData["[StructureCosts] BlacksmithIron"];
-            Globals.costWood[1] = (int)settingsData["[StructureCosts] BlacksmithWood"];
-            Globals.costIron[3] = (int)settingsData["[StructureCosts] HerbalistIron"];
-            Globals.costWood[3] = (int)settingsData["[StructureCosts] HerbalistWood"];
-            Globals.costIron[4] = (int)settingsData["[StructureCosts] LodestoneIron"];
-            Globals.costWood[4] = (int)settingsData["[StructureCosts] LodestoneWood"];
-            Globals.costIron[5] = (int)settingsData["[StructureCosts] SettlementIron"];
-            Globals.costWood[5] = (int)settingsData["[StructureCosts] SettlementWood"];
-            Globals.costIron[6] = (int)settingsData["[StructureCosts] TowerIron"];
-            Globals.costWood[6] = (int)settingsData["[StructureCosts] TowerWood"];
-            Globals.costIron[7] = (int)settingsData["[StructureCosts] TrainingCenterIron"];
-            Globals.costWood[7] = (int)settingsData["[StructureCosts] TrainingCenterWood"];
-            Globals.costIron[2] = (int)settingsData["[StructureCosts] GolemFactoryIron"];
-            Globals.costWood[2] = (int)settingsData["[StructureCosts] GolemFactoryWood"];
+            Globals.costIron[7] = (int)settingsData["[StructureCosts] AlchemyLabIron"];
+            Globals.costWood[7] = (int)settingsData["[StructureCosts] AlchemyLabWood"];
+            Globals.costIron[0] = (int)settingsData["[StructureCosts] BlacksmithIron"];
+            Globals.costWood[0] = (int)settingsData["[StructureCosts] BlacksmithWood"];
+            Globals.costIron[2] = (int)settingsData["[StructureCosts] HerbalistIron"];
+            Globals.costWood[2] = (int)settingsData["[StructureCosts] HerbalistWood"];
+            Globals.costIron[3] = (int)settingsData["[StructureCosts] LodestoneIron"];
+            Globals.costWood[3] = (int)settingsData["[StructureCosts] LodestoneWood"];
+            Globals.costIron[4] = (int)settingsData["[StructureCosts] SettlementIron"];
+            Globals.costWood[4] = (int)settingsData["[StructureCosts] SettlementWood"];
+            Globals.costIron[5] = (int)settingsData["[StructureCosts] TowerIron"];
+            Globals.costWood[5] = (int)settingsData["[StructureCosts] TowerWood"];
+            Globals.costIron[6] = (int)settingsData["[StructureCosts] TrainingCenterIron"];
+            Globals.costWood[6] = (int)settingsData["[StructureCosts] TrainingCenterWood"];
+            Globals.costIron[1] = (int)settingsData["[StructureCosts] GolemFactoryIron"];
+            Globals.costWood[1] = (int)settingsData["[StructureCosts] GolemFactoryWood"];
+
+
+
 
             // starting structures
             Globals.StartingTower = (bool)settingsData["[StartingStructures] Tower"];
@@ -204,38 +196,64 @@ public partial class SaveLoad : Node2D
             Globals.settings_MusicVolume = (float)settingsData["[Settings] MusicVolume"];
             Globals.settings_MasterVolume = (float)settingsData["[Settings] MasterVolume"];
 
-            Globals.settings_ShowFPS = (bool)settingsData["[Settings] ShowFPS"];
-            Globals.settings_GodMode = (bool)settingsData["[Settings] GodMode"];
+            if (settingsData.ContainsKey("[Settings] FullScreen"))
+                Globals.settings_FullScreen = (bool)settingsData["[Settings] FullScreen"];
+            else
+                settingsData.Add("[Settings] FullScreen", true);
 
-            Node rdNode = Globals.rootNode.GetNodeOrNull(Globals.NodeResourceDiscoveries);
-            Debug.Print("Scene name: " + Globals.rootNode.Name);
-            if (Globals.rootNode.Name == "World") // if world scene
-            {
-                ResourceDiscoveries rD = (ResourceDiscoveries)rdNode;
-                rD.PlaceStartingStructures();
-            }
-            else // if stat upgrade scene
-            if (Globals.rootNode.Name == "StatUpgrades")
-            {
-                Node nd = Globals.rootNode.GetNode(".");
-                StatUpgrades su = (StatUpgrades)nd;
-                su.UpdateAllSlots();
-            }
-            else // if title
-            if (Globals.rootNode.Name == "Title")
-            {
+            if (settingsData.ContainsKey("[Settings] ShowFPS"))
+                Globals.settings_ShowFPS = (bool)settingsData["[Settings] ShowFPS"];
+            else
+                settingsData.Add("[Settings] ShowFPS", false);
 
-            }
+            if (settingsData.ContainsKey("[Settings] GodMode"))
+                Globals.settings_GodMode = (bool)settingsData["[Settings] GodMode"];
+            else
+                settingsData.Add("[Settings] GodMode", false);
 
+            if (settingsData.ContainsKey("[Settings] ShowPlayerPosition"))
+                Globals.settings_ShowPlayerPosition = (bool)settingsData["[Settings] ShowPlayerPosition"];
+            else
+                settingsData.Add("[Settings] ShowPlayerPosition", false);
+
+            if (settingsData.ContainsKey("[Settings] Decorations"))
+                Globals.settings_Decorations = (bool)settingsData["[Settings] Decorations"];
+            else
+                settingsData.Add("[Settings] Decorations", true);
+
+            if (settingsData.ContainsKey("[Settings] PlayerGhost"))
+                Globals.settings_PlayerGhost = (bool)settingsData["[Settings] PlayerGhost"];
+            else
+                settingsData.Add("[Settings] PlayerGhost", true);
+
+            
             Debug.Print("Load settings");
         }
 
     }
 
-    static public void SaveGame()
+    static public void SaveGameNewFile()
     {
-        Debug.Print("save gold:" + ResourceDiscoveries.gold);
+        // init stat upgrades
+        Globals.statUpgradeLevel = new int[Globals.MAXUPGRADES];
+        for (int iter = 0; iter < 5; iter++)
+            Globals.statUpgradeLevel[iter] = 0;
+
+        // init relics
+        Globals.hasRelic = new bool[Globals.MAXRELICS];
+
+        for (int iter = 0; iter < Globals.MAXRELICS; iter++)
+            Globals.hasRelic[iter] = false;
+
+        SaveGame();
+    }
+
+        static public void SaveGame()
+    {
+        Debug.Print("save game:" + ResourceDiscoveries.gold);
+        gameSaveData = new Godot.Collections.Dictionary();
         gameSaveData.Clear();
+
         gameSaveData.Add("StartGold", ResourceDiscoveries.gold);
         gameSaveData.Add("[StatUpgradeLevel] AttackSpeed", Globals.statUpgradeLevel[0]);
         gameSaveData.Add("[StatUpgradeLevel] Damage", Globals.statUpgradeLevel[1]);
@@ -244,13 +262,10 @@ public partial class SaveLoad : Node2D
         gameSaveData.Add("[StatUpgradeLevel] Armor", Globals.statUpgradeLevel[4]);
 
         // stats
-        gameSaveData.Add("[Stats] HPLevel", Globals.HPLevel);
-        gameSaveData.Add("[Stats] SpeedLevel", Globals.speedLevel);
-        gameSaveData.Add("[Stats] MagnetismLevel", Globals.magenetismLevel);
-        gameSaveData.Add("[Stats] ArmorLevel", Globals.armorLevel);
-        gameSaveData.Add("[Stats] AttackLevel", Globals.attackLevel);
-        gameSaveData.Add("[Stats] TowerLevel", Globals.towerLevel);
-        gameSaveData.Add("[Stats] GolemLevel", Globals.golemLevel);
+        //gameSaveData.Add("[Stats] HPLevel", Globals.HPLevel);
+        //gameSaveData.Add("[Stats] SpeedLevel", Globals.permSpeedLevel);
+        //gameSaveData.Add("[Stats] MagnetismLevel", Globals.magenetismLevel);
+        //gameSaveData.Add("[Stats] ArmorLevel", Globals.armorLevel);
 
         // relics
         gameSaveData.Add("[Relic] Citrine Bracelet", Globals.hasRelic[0]);
@@ -260,6 +275,10 @@ public partial class SaveLoad : Node2D
         gameSaveData.Add("[Relic] Sapphire Necklace", Globals.hasRelic[4]);
         gameSaveData.Add("[Relic] Topaz Necklace", Globals.hasRelic[5]);
         gameSaveData.Add("[Relic] Ruby Ring", Globals.hasRelic[6]);
+
+        gameSaveData.Add("[Time] Best Time Minutes", Globals.bestTimeMinutes);
+        gameSaveData.Add("[Time] Best Time Seconds", Globals.bestTimeSeconds);
+
 
         string json = Json.Stringify(gameSaveData, "\t");
         gameSaveData.Clear();
@@ -274,6 +293,7 @@ public partial class SaveLoad : Node2D
 
     static public void LoadGame()
     {
+        gameSaveData = new Godot.Collections.Dictionary();
         gameSaveData.Clear();
 
         if (File.Exists(gameSaveFilename))
@@ -294,30 +314,36 @@ public partial class SaveLoad : Node2D
                 jsonload.Parse(js2);
             }
             catch (Exception e) { GD.Print(e.ToString()); }
-
+            Debug.Print("1");
 
             gameSaveData = (Godot.Collections.Dictionary)jsonload.Data;
 
             // resource starting numbers (used for testing)
             if (gameSaveData.ContainsKey("StartGold"))
+            {
+                Debug.Print("1.1");
                 ResourceDiscoveries.gold = (float)gameSaveData["StartGold"];
+                Debug.Print("1.2");
+            }
 
             // stats
-            Globals.HPLevel = (int)gameSaveData["[Stats] HPLevel"];
-            Globals.speedLevel = (int)gameSaveData["[Stats] SpeedLevel"];
-            Globals.magenetismLevel = (int)gameSaveData["[Stats] MagnetismLevel"];
-            Globals.armorLevel = (int)gameSaveData["[Stats] ArmorLevel"];
-            Globals.attackLevel = (int)gameSaveData["[Stats] AttackLevel"];
-            Globals.towerLevel = (int)gameSaveData["[Stats] TowerLevel"];
-            Globals.golemLevel = (int)gameSaveData["[Stats] GolemLevel"];
+            //Globals.HPLevel = (int)gameSaveData["[Stats] HPLevel"];
+            //Globals.permSpeedLevel = (int)gameSaveData["[Stats] SpeedLevel"];
+            //Globals.magenetismLevel = (int)gameSaveData["[Stats] MagnetismLevel"];
+            //Globals.armorLevel = (int)gameSaveData["[Stats] ArmorLevel"];
+
             // update stats GUI
-            Globals.UpdateStatsGUI();
+            //Globals.UpdateStatsGUI();
+           /*
             if (Globals.lblAttack != null)
                 Stats.UpdateStats(); // set available stat upgrades
-            Globals.SetAttackLevel();
-            Globals.SetTowerLevel();
-
+           */
+            Debug.Print("1.4");
             // stat upgrades
+            Globals.InitArrays();
+
+            Debug.Print(("2"));
+
             if (gameSaveData.ContainsKey("[StatUpgradeLevel] AttackSpeed"))
                 Globals.statUpgradeLevel[0] = (int)gameSaveData["[StatUpgradeLevel] AttackSpeed"];
             if (gameSaveData.ContainsKey("[StatUpgradeLevel] Damage"))
@@ -330,6 +356,8 @@ public partial class SaveLoad : Node2D
                 Globals.statUpgradeLevel[4] = (int)gameSaveData["[StatUpgradeLevel] Armor"];
 
             //Debug.Print("Globals.statUpgradeLevel[0]:" + Globals.statUpgradeLevel[0]);
+
+            Debug.Print("3");
 
             // relics
             if (gameSaveData.ContainsKey("[Relic] Citrine Bracelet"))
@@ -347,10 +375,18 @@ public partial class SaveLoad : Node2D
             if (gameSaveData.ContainsKey("[Relic] Ruby Ring"))
                 Globals.hasRelic[6] = (bool)gameSaveData["[Relic] Ruby Ring"];
 
+            if (gameSaveData.ContainsKey("[Time] Best Time Minutes"))
+                Globals.bestTimeMinutes = (int)gameSaveData["[Time] Best Time Minutes"];
+            if (gameSaveData.ContainsKey("[Time] Best Time Seconds"))
+                Globals.bestTimeSeconds = (int)gameSaveData["[Time] Best Time Seconds"];
+
+            Debug.Print("4");
+
+
             // testing
             Globals.hasRelic[1] = true;
             Globals.hasRelic[2] = true;
-            Globals.hasRelic[6] = true;
+            //Globals.hasRelic[6] = true;
             Globals.hasRelic[5] = true;
 
 
@@ -358,21 +394,22 @@ public partial class SaveLoad : Node2D
 
             Globals.UpdateStatLevels();
 
-            // update stat upgrades
-            if (Globals.rootNode.Name == "StatUpgrades")
-            {
-                Node nd = Globals.rootNode.GetNode(".");
-                StatUpgrades su = (StatUpgrades)nd;
-                su.UpdateAllSlots();
-            }
-
-            Debug.Print("ResourceDiscoveries.gold:" + ResourceDiscoveries.gold);
+            Debug.Print("5");
 
             // update GUI
             ResourceDiscoveries.UpdateResourceGUI();
         }
     }
 
+    static public void ResetTempUpgrades()
+    {
+        Globals.attackLevel = 1;
+        Globals.towerLevel = 1;
+        Globals.golemLevel = 1;
+
+        Globals.SetAttackLevel();
+        Globals.SetTowerLevel();
+    }
     private static string UpdateFile(string source, Int16 shift)
     {
         var maxChar = Convert.ToInt32(char.MaxValue);

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bcfcqm7vog4k6"]
+[gd_scene load_steps=3 format=3 uid="uid://bcfcqm7vog4k6"]
 
 [ext_resource type="Script" path="res://Scripts/SteamManager.gd" id="1_jhh3g"]
+[ext_resource type="AudioStream" uid="uid://s17250rkp632" path="res://Audio/Music/DAA - Main theme final 1.ogg" id="2_60j3t"]
 
 [node name="SteamManager" type="Control"]
 layout_mode = 3
@@ -11,3 +12,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_jhh3g")
+
+[node name="TitleMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_60j3t")
+autoplay = true
+bus = &"Music"

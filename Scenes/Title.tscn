@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://0bpvsyr4x8kl"]
+[gd_scene load_steps=25 format=3 uid="uid://0bpvsyr4x8kl"]
 
 [ext_resource type="Texture2D" uid="uid://chbmayap43wjo" path="res://Art/Title/Logo.png" id="1_i4lwq"]
 [ext_resource type="Texture2D" uid="uid://d2mqidchgyvkh" path="res://Art/Title/BG_Layer3.png" id="2_camxe"]
@@ -9,21 +9,11 @@
 [ext_resource type="Texture2D" uid="uid://bpq7dl72422kj" path="res://Art/Title/Fire1.png" id="6_hujeb"]
 [ext_resource type="Shader" path="res://Shaders/CircularWaves.gdshader" id="10_1crk2"]
 [ext_resource type="Texture2D" uid="uid://b4x7q44g3mspr" path="res://Art/Title/LogoMask.png" id="11_4x48i"]
-[ext_resource type="FontFile" uid="uid://deu73dw073p0l" path="res://Analogist.ttf" id="11_70wfx"]
 [ext_resource type="Script" path="res://Scripts/TitleButton.cs" id="12_pr8f2"]
-[ext_resource type="AudioStream" uid="uid://bxu4ub7nr6pxe" path="res://Audio/Music/Fantasy Vol4 Enemy Main.wav" id="16_hhyhq"]
+[ext_resource type="FontFile" uid="uid://bkjpjbwrgwmgj" path="res://Fonts/vinque rg.otf" id="14_05d0r"]
 [ext_resource type="Texture2D" uid="uid://duc3yrtenakjo" path="res://Art/GUI/StatUpgrades/Button Small.png" id="16_p6tm5"]
 [ext_resource type="Texture2D" uid="uid://ccbsebicl0cl7" path="res://Art/GUI/StatUpgrades/Button Small_Hover.png" id="17_imcsu"]
-[ext_resource type="Script" path="res://Scripts/Globals.cs" id="17_yikj4"]
 [ext_resource type="Texture2D" uid="uid://vy0172p8d6bq" path="res://Art/GUI/StatUpgrades/Button_Disabled.png" id="18_qg1fa"]
-[ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="18_vc4ry"]
-[ext_resource type="FontFile" uid="uid://blv8i47j34igf" path="res://Fonts/CloisterBlack.ttf" id="19_utv2d"]
-[ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/Resource-IronMine.tscn" id="19_vtko4"]
-[ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/resource_template-GoldMine.tscn" id="20_bnwr3"]
-[ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/resource_template-ManaWell.tscn" id="21_n6ryh"]
-[ext_resource type="PackedScene" uid="uid://ctcv7jmln8o34" path="res://Scenes/Resource-Wood.tscn" id="22_ixbe5"]
-[ext_resource type="PackedScene" uid="uid://djjmkb3mx4ata" path="res://Scenes/Resource-Platform.tscn" id="23_u041h"]
-[ext_resource type="Script" path="res://Scripts/SaveLoad.cs" id="24_qirlc"]
 
 [sub_resource type="Gradient" id="Gradient_7b4hk"]
 
@@ -79,15 +69,16 @@ shader_parameter/amplitude = 0.2
 shader_parameter/alpha = 0.4
 shader_parameter/mask = ExtResource("11_4x48i")
 
-[sub_resource type="LabelSettings" id="LabelSettings_dtvkn"]
-font = ExtResource("11_70wfx")
-font_size = 42
-font_color = Color(0, 0.592157, 1, 1)
-
 [sub_resource type="LabelSettings" id="LabelSettings_d8md0"]
-font = ExtResource("19_utv2d")
-font_size = 50
+font = ExtResource("14_05d0r")
+font_size = 42
 font_color = Color(0.301961, 0.360784, 0.133333, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jl2ci"]
+resource_local_to_scene = true
+font = ExtResource("14_05d0r")
+font_size = 34
+font_color = Color(1, 1, 1, 0.835294)
 
 [node name="Title" type="Node2D"]
 
@@ -198,26 +189,6 @@ offset_bottom = -107.0
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("1_i4lwq")
 
-[node name="btnSteamName" type="TextureButton" parent="Control" node_paths=PackedStringArray("lblButton")]
-custom_minimum_size = Vector2(400, 0)
-layout_mode = 0
-offset_left = 427.0
-offset_top = -466.0
-offset_right = 827.0
-offset_bottom = -426.0
-disabled = true
-script = ExtResource("12_pr8f2")
-lblButton = NodePath("lblSteamName")
-
-[node name="lblSteamName" type="Label" parent="Control/btnSteamName"]
-z_index = 3
-layout_mode = 1
-offset_right = 135.0
-offset_bottom = 31.0
-text = "Steam Name"
-label_settings = SubResource("LabelSettings_dtvkn")
-horizontal_alignment = 2
-
 [node name="MCbtnUpgrades" type="MarginContainer" parent="Control"]
 z_index = 5
 layout_mode = 0
@@ -230,7 +201,7 @@ size_flags_vertical = 8
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_bottom = 40
 
-[node name="btnUpgrades" type="TextureButton" parent="Control/MCbtnUpgrades" node_paths=PackedStringArray("lblButton")]
+[node name="btnUpgrades" type="TextureButton" parent="Control/MCbtnUpgrades" node_paths=PackedStringArray("lblButton", "lblVersion")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -239,6 +210,7 @@ texture_hover = ExtResource("17_imcsu")
 texture_disabled = ExtResource("18_qg1fa")
 script = ExtResource("12_pr8f2")
 lblButton = NodePath("lblUpgrades")
+lblVersion = NodePath("../../../Control2/MarginContainer/lblVersion")
 
 [node name="lblUpgrades" type="Label" parent="Control/MCbtnUpgrades/btnUpgrades"]
 layout_mode = 1
@@ -345,10 +317,10 @@ metadata/_edit_use_anchors_ = true
 [node name="MCbtnQuit" type="MarginContainer" parent="Control"]
 z_index = 5
 layout_mode = 0
-offset_left = -911.412
-offset_top = -354.0
-offset_right = -551.412
-offset_bottom = -176.0
+offset_left = 587.0
+offset_top = -501.0
+offset_right = 947.0
+offset_bottom = -323.0
 size_flags_horizontal = 0
 size_flags_vertical = 8
 theme_override_constants/margin_left = 40
@@ -401,27 +373,27 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
-[node name="titleMusic" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("16_hhyhq")
-bus = &"Music"
+[node name="Control2" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Globals" type="Node2D" parent="."]
-script = ExtResource("17_yikj4")
+[node name="MarginContainer" type="MarginContainer" parent="Control2"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
 
-[node name="ResourceDiscoveries" type="Node2D" parent="."]
-y_sort_enabled = true
-position = Vector2(142, -55)
-script = ExtResource("18_vc4ry")
-rTemplateIronMine = ExtResource("19_vtko4")
-rTemplateGoldMine = ExtResource("20_bnwr3")
-rTemplateManaWell = ExtResource("21_n6ryh")
-rTemplateWood = ExtResource("22_ixbe5")
-rTemplatePlatform = ExtResource("23_u041h")
-resourcesPerCell = 5
-resourceUpdateFreq = 60
-
-[node name="SaveLoad" type="Node2D" parent="."]
-script = ExtResource("24_qirlc")
+[node name="lblVersion" type="Label" parent="Control2/MarginContainer"]
+z_index = 6
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+text = "ver."
+label_settings = SubResource("LabelSettings_jl2ci")
 
 [connection signal="mouse_entered" from="Control/MCbtnUpgrades/btnUpgrades" to="Control/MCbtnUpgrades/btnUpgrades" method="Hover"]
 [connection signal="mouse_exited" from="Control/MCbtnUpgrades/btnUpgrades" to="Control/MCbtnUpgrades/btnUpgrades" method="UnHover"]

@@ -22,32 +22,33 @@
 [ext_resource type="Texture2D" uid="uid://ncrc0frion5g" path="res://Art/GUI/Arrow Left.png" id="12_hrki4"]
 [ext_resource type="Texture2D" uid="uid://c0odekc8hv26u" path="res://Art/GUI/Arrow Right.png" id="13_2hwxe"]
 [ext_resource type="Texture2D" uid="uid://b5yd673bb7ce4" path="res://Art/GUI/btnClose.png" id="14_ew8ol"]
-[ext_resource type="FontFile" uid="uid://blv8i47j34igf" path="res://Fonts/CloisterBlack.ttf" id="16_bwwyj"]
 [ext_resource type="Texture2D" uid="uid://cvjn2m5ps58i1" path="res://Art/GUI/Resource -  Iron.png" id="23_u1pr4"]
 [ext_resource type="Texture2D" uid="uid://biq4q1a2gqxt3" path="res://Art/GUI/Resource - Wood.png" id="25_a6euj"]
 [ext_resource type="Texture2D" uid="uid://bkjl0vf4gs5nm" path="res://Art/GUI/RedStroke.png" id="26_wnxte"]
+[ext_resource type="FontFile" uid="uid://bkjpjbwrgwmgj" path="res://Fonts/vinque rg.otf" id="26_y7yby"]
 [ext_resource type="Texture2D" uid="uid://duc3yrtenakjo" path="res://Art/GUI/StatUpgrades/Button Small.png" id="27_fcrfb"]
 [ext_resource type="Texture2D" uid="uid://ccbsebicl0cl7" path="res://Art/GUI/StatUpgrades/Button Small_Hover.png" id="28_5j0fs"]
 [ext_resource type="Texture2D" uid="uid://vy0172p8d6bq" path="res://Art/GUI/StatUpgrades/Button_Disabled.png" id="29_72pnm"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_g16je"]
-font = ExtResource("16_bwwyj")
+font = ExtResource("26_y7yby")
 font_size = 33
 outline_size = 10
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_uq3h3"]
+font_size = 23
 shadow_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_5oljx"]
 resource_local_to_scene = true
-font = ExtResource("16_bwwyj")
+font = ExtResource("26_y7yby")
 font_size = 54
 font_color = Color(0.247059, 0.231373, 0.219608, 1)
 outline_size = 3
 
 [sub_resource type="LabelSettings" id="LabelSettings_vtdxf"]
-font = ExtResource("16_bwwyj")
+font = ExtResource("26_y7yby")
 font_size = 50
 font_color = Color(0.301961, 0.360784, 0.133333, 1)
 
@@ -61,13 +62,13 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("1_nxwgd")
-structures = [NodePath("TextureRect/imgStructure1"), NodePath("TextureRect/imgStructure2"), NodePath("TextureRect/imgStructure3"), NodePath("TextureRect/imgStructure4"), NodePath("TextureRect/imgStructure5"), NodePath("TextureRect/imgStructure6"), NodePath("TextureRect/imgStructure7"), NodePath("TextureRect/imgStructure8")]
+structures = [NodePath("TextureRect/imgStructure2"), NodePath("TextureRect/imgStructure3"), NodePath("TextureRect/imgStructure4"), NodePath("TextureRect/imgStructure5"), NodePath("TextureRect/imgStructure6"), NodePath("TextureRect/imgStructure7"), NodePath("TextureRect/imgStructure8"), NodePath("TextureRect/imgStructure1")]
 selStructure = NodePath("TextureRect/imgStructure")
-scnStruct = Array[PackedScene]([ExtResource("2_mc77p"), ExtResource("3_swbqo"), ExtResource("4_02udj"), ExtResource("5_k6ju7"), ExtResource("6_xvfvo"), ExtResource("7_ee7ro"), ExtResource("8_rb3cp"), ExtResource("9_kc8hf")])
+scnStruct = Array[PackedScene]([ExtResource("3_swbqo"), ExtResource("4_02udj"), ExtResource("5_k6ju7"), ExtResource("6_xvfvo"), ExtResource("7_ee7ro"), ExtResource("8_rb3cp"), ExtResource("9_kc8hf"), ExtResource("2_mc77p")])
 lblIron = NodePath("TextureRect/lblIron")
 lblWood = NodePath("TextureRect/lblWood")
-structName = PackedStringArray("Alchemy Lab", "BlckSmith", "Golem Factory", "Herbalist", "Lode Stone", "Settlement", "Tower", "Training Center")
-structDescription = PackedStringArray("Generates research points to be used to upgrade weapons, towers and golems.", "Increases your armor so you take less damage from enemies.", "Creates a golem. You may only have one.", "Increases your max health.", "Increases magnetism(the area around player that sucks in items).", "Nothing Yet.", "Shoots nearby enemies", "Increases player speed.")
+structName = PackedStringArray("BlckSmith", "Golem Factory", "Herbalist", "Lode Stone", "Settlement", "Tower", "Training Center", "Alchemy Lab")
+structDescription = PackedStringArray("Increases your armor so you take less damage from enemies.", "Creates a golem. ", "Increases your max health.", "Increases magnetism(the area around player that sucks in items).", "Not available in demo", "Shoots nearby enemies", "Increases player speed.", "Generates research points to be used to upgrade weapons, towers and golems.")
 lblStructName = NodePath("TextureRect/lblStructName")
 lblStructDescription = NodePath("TextureRect/lblStructDescription")
 btnBuild = NodePath("TextureRect/MCbtnBuild/TextureButton")
@@ -227,6 +228,7 @@ offset_bottom = 338.0
 texture_normal = ExtResource("14_ew8ol")
 
 [node name="Iron" type="TextureRect" parent="TextureRect"]
+layout_mode = 0
 offset_left = 825.0
 offset_top = 630.0
 offset_right = 959.0
@@ -235,6 +237,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("23_u1pr4")
 
 [node name="lblIron" type="Label" parent="TextureRect"]
+layout_mode = 0
 offset_left = 900.0
 offset_top = 636.0
 offset_right = 972.0
@@ -243,6 +246,7 @@ text = "999"
 label_settings = SubResource("LabelSettings_g16je")
 
 [node name="Wood" type="TextureRect" parent="TextureRect"]
+layout_mode = 0
 offset_left = 984.0
 offset_top = 630.0
 offset_right = 1128.0
@@ -251,6 +255,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("25_a6euj")
 
 [node name="lblWood" type="Label" parent="TextureRect"]
+layout_mode = 0
 offset_left = 1061.0
 offset_top = 636.0
 offset_right = 1133.0
@@ -297,6 +302,7 @@ vertical_alignment = 1
 
 [node name="RedStroke" type="TextureRect" parent="TextureRect"]
 z_index = 2
+layout_mode = 0
 offset_left = 874.0
 offset_top = 436.0
 offset_right = 1066.0
@@ -306,6 +312,7 @@ texture = ExtResource("26_wnxte")
 
 [node name="MCbtnBuild" type="MarginContainer" parent="TextureRect"]
 z_index = 5
+layout_mode = 0
 offset_left = 752.0
 offset_top = 814.0
 offset_right = 1112.0

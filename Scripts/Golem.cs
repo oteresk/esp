@@ -33,7 +33,7 @@ public partial class Golem : RigidBody2D
     private Area2D HitByEnemyArea;
     private ProgressBar HPBar;
 
-    public float maxHP = 500;
+    public float maxHP = 900;
     public float HP;
     public bool isDead = false;
 

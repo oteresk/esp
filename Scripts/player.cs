@@ -79,6 +79,7 @@ public partial class player : Area2D
 	[Export] public DirectionalLight2D ambientLight;
 
     [Export] public Label lblTime;
+	[Export] public Label lblBestTime;
 	[Export] public TextureButton btnBack;
 
     private bool OnFire = false;
@@ -86,6 +87,7 @@ public partial class player : Area2D
 	private string curAnim;
 
 	[Export] public ColorRect GodRays;
+	[Export] public Label lblPosition;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -104,10 +106,20 @@ public partial class player : Area2D
 		curAnim = "idle";
         animatedSprite2D.FlipV = false;
 
-		animatedSprite2DTop = GetNode<AnimatedSprite2D>("AnimatedSprite2DTop");
-        animatedSprite2DTop.Animation = "idle";
-        animatedSprite2DTop.Play();
-        animatedSprite2DTop.FlipV = false;
+        animatedSprite2DTop = GetNode<AnimatedSprite2D>("AnimatedSprite2DTop");
+        if (Globals.settings_PlayerGhost)
+		{
+			Debug.Print("Ghost on");
+			animatedSprite2DTop.Animation = "idle";
+			animatedSprite2DTop.Play();
+			animatedSprite2DTop.FlipV = false;
+		}
+		else
+		{
+            animatedSprite2DTop.Visible = false;
+			Debug.Print("Ghost off");
+        }
+			
 
         SetMagnetismShape();
 
@@ -152,7 +164,7 @@ public partial class player : Area2D
 		atkSlashEnergy.Add(newAttackSlash);
 		newAttack.Call("SetWeaponElement", "energy");
 
-        
+
 
         //*/
 
@@ -163,7 +175,7 @@ public partial class player : Area2D
 		atkProjectileEnergy.Add(newAttackProjectile);
 		newAttack.Call("SetWeaponElement", "energy");
 		*/
-		/*
+        /*
         // orbit attack
         newAttack = (Node2D)attackSceneOrbit.Instantiate();
         AttackOrbit newAttackOrbit = (AttackOrbit)newAttack;
@@ -172,7 +184,15 @@ public partial class player : Area2D
         newAttack.Call("SetWeaponElement", "energy");
 		*/
 
-		
+
+
+
+        // set god mode
+        if (Globals.settings_GodMode)
+            canBeDamaged = false;
+        else
+            canBeDamaged = true;
+
     }
 
 	public void SetMagnetismShape()
@@ -194,16 +214,22 @@ public partial class player : Area2D
 			{
                 animatedSprite2D.FlipH = false;
                 animatedSprite2D.Offset = new Vector2(0, 0);
-                animatedSprite2DTop.FlipH = false;
-                animatedSprite2DTop.Offset = new Vector2(0, 0);
+				if (Globals.settings_PlayerGhost)
+				{
+					animatedSprite2DTop.FlipH = false;
+					animatedSprite2DTop.Offset = new Vector2(0, 0);
+				}
                 SetAttackFlips();
             }
 			else
             {
                 animatedSprite2D.FlipH = true;
-				animatedSprite2D.Offset = new Vector2(-100, 0);
-                animatedSprite2DTop.FlipH = true;
-                animatedSprite2DTop.Offset = new Vector2(-100, 0);
+				animatedSprite2D.Offset = new Vector2(-50, 0);
+				if (Globals.settings_PlayerGhost)
+				{
+					animatedSprite2DTop.FlipH = true;
+					animatedSprite2DTop.Offset = new Vector2(-50, 0);
+				}
                 SetAttackFlips();
             }
 
@@ -236,9 +262,12 @@ public partial class player : Area2D
 			if (Input.IsActionPressed("FaceLeft") && Globals.playerAlive)
 			{
 				animatedSprite2D.FlipH = true;
-				animatedSprite2D.Offset = new Vector2(-100, 0);
-                animatedSprite2DTop.FlipH = true;
-                animatedSprite2DTop.Offset = new Vector2(-100, 0);
+				animatedSprite2D.Offset = new Vector2(-50, 0);
+				if (Globals.settings_PlayerGhost)
+				{
+					animatedSprite2DTop.FlipH = true;
+					animatedSprite2DTop.Offset = new Vector2(-50, 0);
+				}
                 SetAttackFlips();
 			}
 			else
@@ -246,8 +275,11 @@ public partial class player : Area2D
 			{
 				animatedSprite2D.FlipH = false;
 				animatedSprite2D.Offset = new Vector2(0, 0);
-                animatedSprite2DTop.FlipH = false;
-                animatedSprite2DTop.Offset = new Vector2(0, 0);
+				if (Globals.settings_PlayerGhost)
+				{
+					animatedSprite2DTop.FlipH = false;
+					animatedSprite2DTop.Offset = new Vector2(0, 0);
+				}
                 SetAttackFlips();
 			}
 
@@ -282,12 +314,14 @@ public partial class player : Area2D
 			else if (velocity.Length() > 0)
 			{ // TODO: efficiency - precalc this
 			  //Debug.Print("Player pos:" + Position);
-				velocity *= (baseSpeed * speedMultiplier * poisonSpeed) + (Globals.speedLevel * speedInc) + (Globals.statMovementSpeed * speedInc);
+				if (Globals.settings_ShowPlayerPosition==true)
+					lblPosition.Text = Position.ToString();
+				velocity *= (baseSpeed * speedMultiplier * poisonSpeed) + (Globals.speedLevel * speedInc) + (Globals.statPermSpeed * speedInc);
 			}
 
 			// Moving the character around the screen
 			Position += velocity * (float)delta;
-			// Position = new Vector2( x: Position.X, y: Position.Y);
+			 Position = new Vector2( x: Position.X, y: Position.Y);
 
 
 			// Setting the animations for the character
@@ -302,8 +336,21 @@ public partial class player : Area2D
 					if (curAnim != "attack")
 					{
 						curAnim = "walk";
-						// flip is now set in _input
-					}
+
+						// check if walking backwards
+						if ((velocity.X < 0 && animatedSprite2D.FlipH == true) || (velocity.X > 0 && animatedSprite2D.FlipH == false))
+						{
+							animatedSprite2D.SpeedScale = 1;
+							animatedSprite2DTop.SpeedScale = 1;
+						}
+						else
+						{
+							animatedSprite2D.SpeedScale = -1;
+                            animatedSprite2DTop.SpeedScale = -1;
+                        }
+
+                        // flip is now set in _input
+                    }
 				}
 			}
 			else if (velocity.Y != 0)
@@ -330,15 +377,17 @@ public partial class player : Area2D
 			}
 			if (!OnFire)
 			{
-				animatedSprite2D.Animation = curAnim;
-                animatedSprite2DTop.Animation = curAnim;
+                animatedSprite2D.Animation = curAnim;
+                if (Globals.settings_PlayerGhost)
+					animatedSprite2DTop.Animation = curAnim;
             }
 			else
 			{
 				if (curAnim != "dash")
 				{
                     animatedSprite2D.Animation = curAnim + "_flame";
-                    animatedSprite2DTop.Animation = curAnim;
+                    if (Globals.settings_PlayerGhost)
+						animatedSprite2DTop.Animation = curAnim;
                 }	
 			}
         }
@@ -646,36 +695,48 @@ public partial class player : Area2D
 		if (!OnFire)
 		{
 			animatedSprite2D.Animation = curAnim;
-			animatedSprite2DTop.Animation = curAnim;
+            if (Globals.settings_PlayerGhost)
+                animatedSprite2DTop.Animation = curAnim;
 		}
 		else
 		{ 
 			animatedSprite2D.Animation = curAnim + "_flame";
-			animatedSprite2DTop.Animation = curAnim;
+            if (Globals.settings_PlayerGhost)
+                animatedSprite2DTop.Animation = curAnim;
 		}
+        animatedSprite2D.SpeedScale = 1;
         animatedSprite2D.Play();
-		animatedSprite2DTop.Play();
+		if (Globals.settings_PlayerGhost)
+		{
+			animatedSprite2DTop.SpeedScale = 1;
+			animatedSprite2DTop.Play();
+		}
 	}
 
 	public void AnimationFinished()
 	{
 		if (Globals.playerAlive)
 		{
-            curAnim = "idle";
-            if (!OnFire)
+			curAnim = "idle";
+			if (!OnFire)
 			{
-                animatedSprite2D.Animation = curAnim;
-                animatedSprite2DTop.Animation = curAnim;
-            }
-            else
+				animatedSprite2D.Animation = curAnim;
+				if (Globals.settings_PlayerGhost)
+					animatedSprite2DTop.Animation = curAnim;
+			}
+			else
 			{
-                animatedSprite2D.Animation = curAnim + "_flame";
-				animatedSprite2DTop.Animation = curAnim;
-            }
-                
-            animatedSprite2D.Play();
-            animatedSprite2DTop.Animation = animatedSprite2D.Animation;
-            animatedSprite2DTop.Play();
+				animatedSprite2D.Animation = curAnim + "_flame";
+				if (Globals.settings_PlayerGhost)
+					animatedSprite2DTop.Animation = curAnim;
+			}
+
+			animatedSprite2D.Play();
+			if (Globals.settings_PlayerGhost)
+			{ 
+				animatedSprite2DTop.Animation = animatedSprite2D.Animation;
+				animatedSprite2DTop.Play();
+			}
             //Debug.Print("Attack over");
         }
 	}
@@ -685,9 +746,14 @@ public partial class player : Area2D
 		Globals.canUnPause = false;
 		//Debug.Print("Play attack anim");
 		animatedSprite2D.Animation = "death";
-		animatedSprite2D.Play();
-        animatedSprite2DTop.Animation = "death";
-        animatedSprite2DTop.Play();
+        animatedSprite2D.SpeedScale = 1;
+        animatedSprite2D.Play();
+		if (Globals.settings_PlayerGhost)
+		{
+			animatedSprite2DTop.Animation = "death";
+            animatedSprite2DTop.SpeedScale = 1;
+            animatedSprite2DTop.Play();
+		}
         FadeToBlack();
         // hide mini map
         CanvasLayer miniMap = (CanvasLayer)GetNode(Globals.NodeMiniMapCanvas);
@@ -740,6 +806,8 @@ public partial class player : Area2D
         Globals.PlayRandomizedSound(sndPlayerDeath);
 		Debug.Print("Play game over sound");
 
+		SaveLoad.SaveGame();
+
         ShowTime();
 
         // wait 5 seconds
@@ -754,6 +822,8 @@ public partial class player : Area2D
 	private void ShowTime()
 	{
 		lblTime.Visible = true;
+		lblBestTime.Visible = true;
+		lblBestTime.Text = "";
 
         string strSeconds = ResourceDiscoveries.seconds.ToString();
         if (ResourceDiscoveries.seconds < 10)
@@ -764,8 +834,35 @@ public partial class player : Area2D
         if (ResourceDiscoveries.minutes < 10)
             strMinutes = "0" + strMinutes;
 
+		Debug.Print("best time before:"+ Globals.bestTimeMinutes+":"+ Globals.bestTimeSeconds);
 
-		lblTime.Text = "You lasted " + strMinutes + ":" + strSeconds;
+		if ((ResourceDiscoveries.minutes*60)+ ResourceDiscoveries.seconds > (Globals.bestTimeMinutes*60)+Globals.bestTimeSeconds) // if you have new high score
+		{
+			Globals.bestTimeMinutes = ResourceDiscoveries.minutes;
+			Globals.bestTimeSeconds=ResourceDiscoveries.seconds;
+			Debug.Print("Time beaten");
+			SaveLoad.SaveGame();
+		}
+
+        Debug.Print("best time after:" + Globals.bestTimeMinutes + ":" + Globals.bestTimeSeconds);
+
+        lblTime.Text = "You lasted " + strMinutes + ":" + strSeconds;
+		if (Globals.bestTimeMinutes > 0 && Globals.bestTimeSeconds > 0)
+		{
+			string strBestSeconds = Globals.bestTimeSeconds.ToString();
+			if (Globals.bestTimeSeconds < 10)
+				strBestSeconds = "0" + strBestSeconds;
+
+			string strBestMinutes = Globals.bestTimeMinutes.ToString();
+
+			if (Globals.bestTimeMinutes < 10)
+				strBestMinutes = "0" + strBestMinutes;
+
+			lblBestTime.Text = "Best time: "+strBestMinutes+ ":" + strBestSeconds;
+		}
+		else
+			lblBestTime.Text = "";
+
 
     }
 
@@ -916,8 +1013,8 @@ public partial class player : Area2D
                 IgnitePlayer(en.damage, en.damageTime);
 
             // bounce back away from player
-            Vector2 dir = GlobalTransform.Origin.DirectionTo(en.GlobalPosition);
-			en.ApplyForce(dir * en.speed * .4f);
+            //Vector2 dir = GlobalTransform.Origin.DirectionTo(en.GlobalPosition);
+			//en.ApplyForce(dir * en.speed * .4f);
 
 			// skeleton attack damage
             if (en.enemyName == "Skeleton")
@@ -994,14 +1091,18 @@ public partial class player : Area2D
 			st.DamagePlayer();
 		}
 		// occlusion for enemies
+
 		if (area.IsInGroup("Occlusion"))
-        {
-			area.GetParent<RigidBody2D>().Visible = true;
+		{
+            area.GetParent<Node2D>().Visible = true;
         }
+
         if (area.IsInGroup("OcclusionTrail")) // slime trail
         {
             area.GetParent<AnimatedSprite2D>().Visible = true;
         }
+
+		
     }
 
 	public void OnAreaExited(Area2D area) // enemy exit
@@ -1009,11 +1110,14 @@ public partial class player : Area2D
         // occlusion for enemies
         if (area.IsInGroup("Occlusion"))
         {
-            area.GetParent<RigidBody2D>().Visible = false;
+            area.GetParent<Node2D>().Visible=false;
+
         }
         if (area.IsInGroup("OcclusionTrail")) // slime trail
         {
-            area.GetParent<AnimatedSprite2D>().Visible = false;
+            if (IsInstanceValid(area.GetParent<AnimatedSprite2D>()))
+                area.GetParent().QueueFree();
+            //area.GetParent<AnimatedSprite2D>().Visible = false;
         }
     }
 

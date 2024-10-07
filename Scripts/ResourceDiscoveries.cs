@@ -31,8 +31,8 @@ public partial class ResourceDiscoveries : Node2D
 	[Export] private PackedScene rTemplateWood;
 	[Export] private PackedScene rTemplatePlatform;
 
-	[Export] public static int pixelSizeX=192*3;
-	[Export] public static int pixelSizeY=108*3;
+	public static int pixelSizeX=192*3;
+	public static int pixelSizeY=108*3;
 	[Export] public int resourcesPerCell;
 
 	static public bool mapNotPressed = true; // prevents spamming map key
@@ -69,17 +69,27 @@ public partial class ResourceDiscoveries : Node2D
 
 	static public ResourceDiscoveries instance;
 
+    [Export] private PackedScene scnDecoration;
+    [Export] private Texture2D[] Decorations;
+    private Node2D nodDecorations;
+	private int decNum;
+	private int randDecoration;
+	Node nodeEnemyTimer;
+
+
     public override void _Ready()
 	{
 		instance = this;
-        GD.Randomize();
+		GD.Randomize();
+	}
+	public void WorldReady()
+	{ 
         //Place resource discoveries
-        PlaceResourceDiscoveries();
-
-		DelayedStart();
+        //PlaceResourceDiscoveries();
+		PlaceRelics();
 
         // get GUI nodes
-        rGUI = GetNodeOrNull("../GUI");
+        rGUI = GetNode("../GUI");
         if (rGUI != null)
         {
             Globals.rG2 = (resourceGUI)GetNode(rGUI.GetPath());
@@ -88,24 +98,23 @@ public partial class ResourceDiscoveries : Node2D
 
         // offset resourcediscoveries position to put player in middle of array
         Position = new Vector2(-(Globals.gridSizeX * Globals.subGridSizeX) / 2 * pixelSizeX, -(Globals.gridSizeY * Globals.subGridSizeY) / 2 * pixelSizeY);
-        Node2D nodStruct = (Node2D)GetNodeOrNull(Globals.NodeStructures);
+        Node2D nodStruct = (Node2D)GetNode(Globals.NodeStructures);
 		if (nodStruct!=null)
 	        nodStruct.Position = Position;
 
-    }
+		if (nodDecorations!=null)
+	        nodDecorations.Position = Position;
 
-	private async void DelayedStart()
-	{
-        await Task.Delay(TimeSpan.FromMilliseconds(200));
-        // place relics
-        if (Globals.xpBar != null) // dont place if on Stat Upgrade menu
-            PlaceRelics();
-    }
+        nodeEnemyTimer = GetNode("../EnemyTimer");
+        if (nodeEnemyTimer != null)
+            enemyTimer = (Timer)nodeEnemyTimer;
 
+    }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		/*
 		if (Input.IsActionPressed("map") && mapNotPressed)
 		{
 			Debug.Print("Pressed 'm'");
@@ -116,10 +125,8 @@ public partial class ResourceDiscoveries : Node2D
 
 		if (Input.IsActionJustReleased("map"))
 			mapNotPressed = true;
-
-		Node nodeEnemyTimer = GetNodeOrNull("../EnemyTimer");
-        if (nodeEnemyTimer!=null)
-	        enemyTimer = (Timer)nodeEnemyTimer;
+		*/
+		
     }
 
 // Game Timer - also updates resources every minute
@@ -143,7 +150,7 @@ public partial class ResourceDiscoveries : Node2D
 			strMinutes = "0" + strMinutes;
 
 		// decreas enemy timer as the minute goes on
-		enemyTimer.WaitTime = (double)0.6600 - (double)(seconds / 120.0); // 0-.5
+		enemyTimer.WaitTime = (double)0.700 - (double)(seconds / 220.0); // 0-.5
 		//Debug.Print("wait timer: " + enemyTimer.WaitTime+" seconds:"+seconds+"s/120:"+(double)(seconds/120.0));
 
 
@@ -239,7 +246,7 @@ GetNewPos:
 				relic.Position = new Vector2(relicX, relicY);
 
 				float dist = relic.GlobalPosition.DistanceTo(new Vector2(0, 0));
-				if (dist < 11000) // make sure distance to relic is >11000
+				if (dist < 5000) // make sure distance to relic is >11000
 					goto GetNewPos;
 				//Debug.Print("relic dist:" + dist);
 
@@ -251,7 +258,7 @@ GetNewPos:
             }
         }
 	}
-private void PlaceResourceDiscoveries()
+public void PlaceResourceDiscoveries()
 {
 	uint rdType;
 
@@ -277,7 +284,54 @@ private void PlaceResourceDiscoveries()
 
 	}
 
-	public void PlaceStartingStructures()
+    public void PlaceDecorations()
+    {
+		int numDecorations = 30;
+        Node nod = GetNode("../Decorations");
+        nodDecorations = (Node2D)nod;
+
+        int decorationType;
+        for (int y = 0; y < Globals.gridSizeY; y++)
+            for (int x = 0; x < Globals.gridSizeX; x++)
+                for (int i = 1; i <= numDecorations; i++)
+                {
+                    Vector2I pos;
+                    pos = GetRandomPos(x, y);
+					decNum++;
+
+                    PlaceDecoration(x, y, pos.X, pos.Y);
+                }
+
+
+		Debug.Print("Decorations: " + decNum);
+
+    }
+
+    private void PlaceDecoration(int x, int y, int px, int py)
+	{
+		Node2D nodDecoration;
+
+        nodDecoration = (Node2D)scnDecoration.Instantiate();
+		Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = -1; // -1 is decoration
+
+        nodDecorations.AddChild(nodDecoration);
+
+		int randOffsetX = GD.RandRange(-pixelSizeX/4, pixelSizeX/4);
+        int randOffsetY = GD.RandRange(-pixelSizeY / 4, pixelSizeY / 4);
+        Vector2 randDecorationOffset=new Vector2(randOffsetX, randOffsetY);
+        nodDecoration.Position = new Vector2(x * Globals.subGridSizeX * pixelSizeX + px * pixelSizeX, y * Globals.subGridSizeY * pixelSizeY + py * pixelSizeY)+ randDecorationOffset;
+		// set sprite
+		Sprite2D sprDecoration = (Sprite2D)nodDecoration.GetChild(0);
+        randDecoration=GD.RandRange(0,Decorations.Length-1);
+		sprDecoration.Texture = Decorations[randDecoration];
+
+		// offset by texture size
+		sprDecoration.Offset = new Vector2(-sprDecoration.Texture.GetWidth()/2, -sprDecoration.Texture.GetHeight()+30);
+
+        //Debug.Print("pos:" + nodDecoration.Position);
+}
+
+    public void PlaceStartingStructures()
 	{
         Debug.Print("PlaceStartingStructures Globals.StartingPlatform:"+ Globals.StartingPlatform);
 
@@ -289,7 +343,7 @@ private void PlaceResourceDiscoveries()
         }
         if (Globals.StartingTower)
         {
-            PlaceDiscovery(5, 5, 0, 0, 11);
+            PlaceDiscovery(5, 5, 0, 0, 10);
             Debug.Print("starting tower");
         }
 
@@ -326,7 +380,8 @@ private void PlaceResourceDiscoveries()
 				resourceDiscovery = (Node2D)rTemplatePlatform.Instantiate();
 				Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 5;
 				break;
-			case 11: // tower
+			case 10: // tower
+				Debug.Print("Tower");
 				resourceDiscovery = (Node2D)rTemplatePlatform.Instantiate();
 				Globals.worldArray[x * Globals.subGridSizeX + px, y * Globals.subGridSizeY + py] = 5;
 
@@ -337,13 +392,15 @@ private void PlaceResourceDiscoveries()
 				rdp.gridYPos = y * Globals.subGridSizeY + py;
 				resourceDiscovery.Name = (rdp.gridXPos.ToString()) + ", " + (rdp.gridYPos.ToString());
 				// convert to structure
-				StructureSelect settle = (StructureSelect)GetNodeOrNull(Globals.NodeStructureGUI);
+				StructureSelect settle = (StructureSelect)GetNode(Globals.NodeStructureGUI);
 				if (settle != null)
-					settle.CreateStructure(6, resourceDiscovery);
+					settle.CreateStructure(5, resourceDiscovery);
 				break;
 		}
 
-		if (rdType != 11) // skip this if creating structure directly
+		Debug.Print("rdType:" + rdType);
+
+		if (rdType != 10) // skip this if creating structure directly
 		{
 			AddChild(resourceDiscovery);
 

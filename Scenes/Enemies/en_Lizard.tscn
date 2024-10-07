@@ -1,4 +1,4 @@
-[gd_scene load_steps=79 format=3 uid="uid://bqxdb10bcyxkp"]
+[gd_scene load_steps=78 format=3 uid="uid://bqxdb10bcyxkp"]
 
 [ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_repf3"]
 [ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_tc6au"]
@@ -296,8 +296,6 @@ animations = [{
 radius = 19.98
 height = 67.44
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vifxa"]
-
 [node name="en_Lizard" type="RigidBody2D" node_paths=PackedStringArray("enemyNoise", "enemyDeathSound") groups=["Enemies"]]
 collision_layer = 2
 collision_mask = 2
@@ -312,7 +310,7 @@ damage = 10
 enemyName = "Lizard"
 XP = 4
 enemyNoise = []
-enemyDeathSound = NodePath("enemyDeathSound")
+enemyDeathSound = []
 bloodScene = ExtResource("3_eheme")
 bloodColor = Color(0, 0.54902, 0.290196, 0.890196)
 bloodFrame = 20
@@ -331,16 +329,6 @@ position = Vector2(-3, -4)
 rotation = -1.02276
 scale = Vector2(0.919833, 1)
 shape = SubResource("CapsuleShape2D_j3bk0")
-
-[node name="Occlusion Area Collider" type="Area2D" parent="." groups=["Occlusion"]]
-editor_description = "Shows and hides node for efficiency"
-collision_layer = 4
-collision_mask = 0
-monitoring = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
-scale = Vector2(140, 90)
-shape = SubResource("RectangleShape2D_vifxa")
 
 [node name="enemyNoise" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("31_1sgj7")

@@ -10,14 +10,12 @@ public partial class TitleButton : TextureButton
 	[Export] public Label lblButton;
     private bool overButton = false;
     private ColorRect black;
+    [Export] Label lblVersion;
 
     private AudioStreamPlayer titleMusic;
 
     public override void _Ready()
     {
-        Node nodMusic = GetNode("/root/Title/titleMusic");
-        titleMusic = (AudioStreamPlayer)nodMusic;
-
         Node nodBlack = GetNode("/root/Title/Control/Black");
         black = (ColorRect)nodBlack;
 
@@ -28,6 +26,12 @@ public partial class TitleButton : TextureButton
         }
 
         FadeIn();
+
+        // set version
+        if (lblButton.Name == "lblUpgrades")
+        {
+            lblVersion.Text = ProjectSettings.GetSetting("application/config/description").ToString();
+        }
     }
 
     public void Hover()
@@ -64,8 +68,15 @@ public partial class TitleButton : TextureButton
         Tween tween = GetTree().CreateTween();
         tween.TweenProperty(black, "modulate:a", 1f, 2f).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Cubic);
 
-        // wait a bit
-        await Task.Delay(TimeSpan.FromMilliseconds(2000));
+        // fade music if you hit play
+        if (lblButton.Name == "lblPlay")
+        {
+            AudioStreamPlayer titleMusic = (AudioStreamPlayer)GetNode(Globals.NodeTitleMusic);
+            tween.Parallel().TweenProperty(titleMusic, "volume_db", -40f, 2f).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Cubic);
+        }
+
+            // wait a bit
+            await Task.Delay(TimeSpan.FromMilliseconds(2000));
 
 
         Debug.Print("Load scene: "+ lblButton.Name);
@@ -73,6 +84,8 @@ public partial class TitleButton : TextureButton
         if (lblButton.Name == "lblPlay")
         {
             //GetTree().ChangeSceneToFile("res://Scenes/world.tscn");
+            SaveLoad.LoadGame();
+            SaveLoad.ResetTempUpgrades();
             GetTree().ChangeSceneToPacked(Globals.WorldScene);
         }
 
@@ -110,6 +123,5 @@ public partial class TitleButton : TextureButton
             if (Globals.settingsLoaded)
                 break;
         }
-        titleMusic.Play();
     }
 }

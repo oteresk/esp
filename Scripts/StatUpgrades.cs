@@ -24,21 +24,29 @@ public partial class StatUpgrades : CanvasLayer
 
     public override void _Ready()
     {
+
+        // reset title music volume
+        AudioStreamPlayer titleMusic = (AudioStreamPlayer)GetNode(Globals.NodeTitleMusic);
+        titleMusic.VolumeDb = 0;
+        if (!titleMusic.Playing)
+            titleMusic.Play();
+
         confirm.Visible = false;
 
-		Node nod = Globals.rootNode.GetNode("Control/TextureRect/MCGold/HBGold/MCGold/Gold");
+		Node nod = Globals.rootNode.GetNode("StatUpgrades/Control/TextureRect/MCGold/HBGold/MCGold/Gold");
+        Debug.Print("StatUpgrades.lblGold");
 		lblGold = (Label)nod;
 
-        nod = Globals.rootNode.GetNode("Control/TextureRect/MCUpgradeImage/UpgradeImage");
+        nod = Globals.rootNode.GetNode("StatUpgrades/Control/TextureRect/MCUpgradeImage/UpgradeImage");
         imgSelUpgrade = (TextureRect)nod;
 
-        nod = Globals.rootNode.GetNode("Control/TextureRect/MCUpgradeName/UpgradeName");
+        nod = Globals.rootNode.GetNode("StatUpgrades/Control/TextureRect/MCUpgradeName/UpgradeName");
         lblUpgradeName = (Label)nod;
 
-        nod = Globals.rootNode.GetNode("Control/TextureRect/MClblCost/lblCost");
+        nod = Globals.rootNode.GetNode("StatUpgrades/Control/TextureRect/MClblCost/lblCost");
         lblCost = (Label)nod;
 
-        nod = Globals.rootNode.GetNode("Control/TextureRect/MCDescription/Description");
+        nod = Globals.rootNode.GetNode("StatUpgrades/Control/TextureRect/MCDescription/Description");
         lblDescription = (Label)nod;
 
         imgEmptyUpgrade = (Texture2D)GD.Load("res://Art/GUI/StatUpgrades/Border.png");
@@ -49,7 +57,9 @@ public partial class StatUpgrades : CanvasLayer
         Node nodBlack = GetNode("Black");
         black = (ColorRect)nodBlack;
 
-        ResetUpgrade();
+        UpdateAllSlots();
+
+//        ResetUpgrade();
 
         FadeIn();
     }
@@ -70,7 +80,7 @@ public partial class StatUpgrades : CanvasLayer
 
         var statUpgrade = sceneTree.GetNodesInGroup("StatUpgrade");
 
-        Debug.Print("Stat Upgrades: " + statUpgrade.Count);
+        Debug.Print("UpdateAllSlots Stat Upgrades: " + statUpgrade.Count);
 
         for (int i = 0; i < statUpgrade.Count; i++)
         {
@@ -106,6 +116,17 @@ public partial class StatUpgrades : CanvasLayer
         }
     }
 
+    public override void _Process(double delta)
+    {
+        if (Input.IsActionJustPressed("AddGold"))
+        {
+            ResourceDiscoveries.gold += 100;
+            StatUpgrades.lblGold.Text = ResourceDiscoveries.gold.ToString();
+            SaveLoad.SaveGame();
+            UpdateAllSlots();
+        }
+    }
+
     private async void Fade()
     {
         black.Visible = true;
@@ -126,8 +147,12 @@ public partial class StatUpgrades : CanvasLayer
         black.Modulate = new Color(1, 1, 1, 1);
         await Task.Delay(TimeSpan.FromMilliseconds(1900));
 
-        Tween tween = GetTree().CreateTween();
-        tween.TweenProperty(black, "modulate:a", 0f, 3f);
+        if (IsInstanceValid(this))
+        {
+            Tween tween = GetTree().CreateTween();
+            tween.TweenProperty(black, "modulate:a", 0f, 3f);
+        }
+
 
         // play music
         for (int i = 0; i < 10; i++) // wait to load volume settings

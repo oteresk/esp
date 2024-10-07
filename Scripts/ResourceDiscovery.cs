@@ -34,11 +34,19 @@ public partial class ResourceDiscovery : Sprite2D
 	private bool factoryPaused = false;
 	public bool switchEnabled = true;
 	[Export] public Texture2D choppedTrees;
+	private Control nodStruct;
+    private Control nodStructMessage;
 
     public override void _Ready()
 	{
+		if (RDResource != null)
+		{
+			nodStruct = (Control)GetNode(Globals.NodeStructureGUI);
+			nodStructMessage = (Control)GetNode(Globals.NodeStructureGUIMessage);
+		}
+        
 
-		if (IsInGroup("Tower"))
+        if (IsInGroup("Tower"))
 			SetTowerLevel();
 
 
@@ -156,12 +164,18 @@ public partial class ResourceDiscovery : Sprite2D
 			// exit platform
 			if (RDResource.resourceType.ToString() == "None" && nearResource == true && area.IsInGroup("Player"))
 			{
-				// hide structure select canvas
-				Control nodStruct = (Control)GetNode(Globals.NodeStructureGUI);
-				nodStruct.Visible = false;
+                if (ResourceDiscoveries.ironResourceCount > 0 || ResourceDiscoveries.wood > 0)
+                {
+                    // hide structure select canvas
+                    nodStruct.Visible = false;
+                    nearResource = false;
+                    Debug.Print("Hide Structure Select");
+                }
+                else // hide message
+                {
+                    nodStructMessage.Visible = false;
+                }
 
-				nearResource = false;
-				Debug.Print("Hide Structure Select");
 
                 // unpause game
                 Globals.UnPauseGame();
@@ -182,17 +196,24 @@ public partial class ResourceDiscovery : Sprite2D
 		{
 			if (RDResource.resourceType.ToString() == "None" && nearResource == false && area.IsInGroup("Player"))
 			{
-				Control nodStruct = (Control)GetNode(Globals.NodeStructureGUI);
-				nodStruct.Visible = true;
-				StructureSelect sSel = (StructureSelect)nodStruct;
-				sSel.UpdateStructure();
-				sSel.UpdateCost();
+				if (ResourceDiscoveries.ironResourceCount>0 || ResourceDiscoveries.wood>0)
+				{
+                    nodStruct.Visible = true;
+                    StructureSelect sSel = (StructureSelect)nodStruct;
+                    sSel.UpdateStructure();
+                    sSel.UpdateCost();
 
-				nearResource = true;
-				Debug.Print("Show Structure Select");
+                    nearResource = true;
+                    Debug.Print("Show Structure Select");
 
-                // let Structure Select know which platform you are on
-                StructureSelect.platform = this;
+                    // let Structure Select know which platform you are on
+                    StructureSelect.platform = this;
+                }
+				else // show message
+				{
+					nodStructMessage.Visible = true;
+				}
+
 
                 // pause game
                 Globals.PauseGame();
@@ -230,7 +251,6 @@ public partial class ResourceDiscovery : Sprite2D
 		{
 			Visible = true;
 			//Debug.Print("occlusion: enter:" + RDResource.ToString());
-			
 		}
 	}
 

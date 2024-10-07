@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://diapsx8y3pdo" path="res://Art/Resources/Gold Mine.png" id="2_8147i"]
 
 [resource]
+resource_local_to_scene = true
 script = ExtResource("1_5ht1o")
 sprImage = ExtResource("2_8147i")
 resourceType = 2

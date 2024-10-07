@@ -97,12 +97,14 @@ public partial class Stats : VBoxContainer
                         
     public static void UpdateStats()
 	{
-        
+        Debug.Print("0.0");
 		if (Globals.attackLevel==1)
 		{
             if (ResourceDiscoveries.research >= statCostL1[0]) // Attack L1
             {
+                Debug.Print("0.01");
                 Globals.lblAttack.GetParent().GetChild<TextureRect>(0).Modulate = new Color(0, 1, 0, 1);
+                Debug.Print("0.1");
             }
             else
                 Globals.lblAttack.GetParent().GetChild<TextureRect>(0).Modulate = new Color(1, 1, 1, 1);
@@ -112,6 +114,7 @@ public partial class Stats : VBoxContainer
             if (ResourceDiscoveries.research >= statCostL2[0]) // Attack L2
             {
                 Globals.lblAttack.GetParent().GetChild<TextureRect>(0).Modulate = new Color(0, 1, 0, 1);
+                Debug.Print("0.3");
             }
             else
                 Globals.lblAttack.GetParent().GetChild<TextureRect>(0).Modulate = new Color(1, 1, 1, 1);
@@ -181,13 +184,11 @@ public partial class Stats : VBoxContainer
     public void OnBtnTowerLevelEnter()
     {
         btnTowerLevel = true;
-        Debug.Print("tower enter");
     }
 
     public void OnBtnTowerLevelExit()
     {
         btnTowerLevel = false;
-        Debug.Print("tower exit");
     }
 
     public void OnBtnGolemLevelEnter()

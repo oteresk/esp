@@ -63,34 +63,46 @@ public partial class StructureSelect : Control
 
     public void UpdateStructure()
 	{
-		selStructure.Texture = structures[curStruct].Texture;
-        lblStructName.Text = structName[curStruct];
-        lblStructDescription.Text = structDescription[curStruct];
+        if (structures.Length>0)
+        {
+            selStructure.Texture = structures[curStruct].Texture;
+            lblStructName.Text = structName[curStruct];
+            lblStructDescription.Text = structDescription[curStruct];
+        }
     }
 
     public void _OnClose()
     {
 		Visible = false;
         Globals.UnPauseGame();
+
+        if (Globals.wonGame == true) // if win game
+        {
+            GetTree().ChangeSceneToPacked(Globals.StatUpgradesScene);
+        }
+
     }
 
     // update iron and wood cost
     public void UpdateCost()
     {
-        Debug.Print("Update Cost:" + curStruct);
-        if (Globals.costIron != null)
+        if (structures.Length > 0)
         {
-            lblIron.Text = Globals.costIron[curStruct].ToString();
-            lblWood.Text = Globals.costWood[curStruct].ToString();
+            Debug.Print("Update Cost:" + curStruct);
+            if (Globals.costIron != null)
+            {
+                lblIron.Text = Globals.costIron[curStruct].ToString();
+                lblWood.Text = Globals.costWood[curStruct].ToString();
 
-            if (Globals.costIron[curStruct] > ResourceDiscoveries.iron || Globals.costWood[curStruct] > ResourceDiscoveries.wood || (curStruct == 2 && golemFactoryExists))
-            {
-                // can't afford it
-                redStroke.Visible = true;
-            }
-            else
-            {
-                redStroke.Visible = false;
+                if (Globals.costIron[curStruct] > ResourceDiscoveries.iron || Globals.costWood[curStruct] > ResourceDiscoveries.wood || (curStruct == 2 && golemFactoryExists))
+                {
+                    // can't afford it
+                    redStroke.Visible = true;
+                }
+                else
+                {
+                    redStroke.Visible = false;
+                }
             }
         }
     }
