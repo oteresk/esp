@@ -74,7 +74,7 @@ texture = ExtResource("22_kdkw7")
 [node name="Node2D" type="Node2D" parent="SubViewport"]
 modulate = Color(1, 1, 1, 0)
 script = ExtResource("1_4v5yl")
-icon = Array[PackedScene]([ExtResource("2_5ab15"), ExtResource("3_chvyf"), ExtResource("4_pj7pk"), ExtResource("5_8hhcj"), ExtResource("6_o7hxm"), ExtResource("7_6whpy"), ExtResource("8_uecrb"), ExtResource("14_8u8vh"), ExtResource("9_3lv5s"), ExtResource("10_jwisb"), ExtResource("11_ssm7w"), ExtResource("12_d3dt4"), ExtResource("13_fb1br"), ExtResource("15_1yd5h"), ExtResource("18_k332e")])
+icon = Array[PackedScene]([ExtResource("2_5ab15"), ExtResource("3_chvyf"), ExtResource("4_pj7pk"), ExtResource("5_8hhcj"), ExtResource("6_o7hxm"), ExtResource("8_uecrb"), ExtResource("14_8u8vh"), ExtResource("9_3lv5s"), ExtResource("10_jwisb"), ExtResource("11_ssm7w"), ExtResource("12_d3dt4"), ExtResource("13_fb1br"), ExtResource("15_1yd5h"), ExtResource("18_k332e"), ExtResource("7_6whpy")])
 iconScale = 0.1
 offset = Vector2(-1302, -657)
 

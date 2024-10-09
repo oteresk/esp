@@ -24,20 +24,17 @@ public partial class StatUpgrade : MarginContainer
 
 	public override void _Ready()
 	{
-		DelayedStart();
-		Tween tween = GetTree().CreateTween();
-		tween.Parallel().TweenProperty(image, "scale", new Vector2(.95f, .95f), .2f);
-
-		Node nodMusic = GetNode("/root/StatUpgrades/statsMusic");
-		statsMusic = (AudioStreamPlayer)nodMusic;
-		
+        DelayedStart();
+        Tween tween = GetTree().CreateTween();
+        tween.Parallel().TweenProperty(image, "scale", new Vector2(.95f, .95f), .2f);
+        
 		GetNode<VBoxContainer>("/root/StatUpgrades/Control/MCUpgrade2/VBoxContainer").GrabFocus();
-	}
+    }
 
 	public async void DelayedStart()
-	{
-		// wait a bit
-		await Task.Delay(TimeSpan.FromMilliseconds(300));
+    {
+        // wait a bit
+        await Task.Delay(TimeSpan.FromMilliseconds(20));
 
 		StatUpgrades.lblGold.Text=ResourceDiscoveries.gold.ToString();
 
@@ -116,62 +113,62 @@ public partial class StatUpgrade : MarginContainer
 	}
 
 
-	public void UpdateSlots()
-	{
-		slots = Globals.statUpgradeLevel[upgradeNum];
-		//Debug.Print("Slots:" + slots);
-		if (IsInstanceValid(imgSlot1))
-		{
-			if (slots == 0)
-			{
-				imgSlot1.Texture = StatUpgrades.slotEmpty;
-				imgSlot2.Texture = StatUpgrades.slotEmpty;
-				imgSlot3.Texture = StatUpgrades.slotEmpty;
-				imgSlot4.Texture = StatUpgrades.slotEmpty;
-				imgSlot5.Texture = StatUpgrades.slotEmpty;
-			}
-			if (slots == 1)
-			{
-				imgSlot1.Texture = StatUpgrades.slotFull;
-				imgSlot2.Texture = StatUpgrades.slotEmpty;
-				imgSlot3.Texture = StatUpgrades.slotEmpty;
-				imgSlot4.Texture = StatUpgrades.slotEmpty;
-				imgSlot5.Texture = StatUpgrades.slotEmpty;
-			}
-			if (slots == 2)
-			{
-				imgSlot1.Texture = StatUpgrades.slotFull;
-				imgSlot2.Texture = StatUpgrades.slotFull;
-				imgSlot3.Texture = StatUpgrades.slotEmpty;
-				imgSlot4.Texture = StatUpgrades.slotEmpty;
-				imgSlot5.Texture = StatUpgrades.slotEmpty;
-			}
-			if (slots == 3)
-			{
-				imgSlot1.Texture = StatUpgrades.slotFull;
-				imgSlot2.Texture = StatUpgrades.slotFull;
-				imgSlot3.Texture = StatUpgrades.slotFull;
-				imgSlot4.Texture = StatUpgrades.slotEmpty;
-				imgSlot5.Texture = StatUpgrades.slotEmpty;
-			}
-			if (slots == 4)
-			{
-				imgSlot1.Texture = StatUpgrades.slotFull;
-				imgSlot2.Texture = StatUpgrades.slotFull;
-				imgSlot3.Texture = StatUpgrades.slotFull;
-				imgSlot4.Texture = StatUpgrades.slotFull;
-				imgSlot5.Texture = StatUpgrades.slotEmpty;
-			}
-			if (slots == 5)
-			{
-				imgSlot1.Texture = StatUpgrades.slotFull;
-				imgSlot2.Texture = StatUpgrades.slotFull;
-				imgSlot3.Texture = StatUpgrades.slotFull;
-				imgSlot4.Texture = StatUpgrades.slotFull;
-				imgSlot5.Texture = StatUpgrades.slotFull;
-			}
-		}
-	}
+    public void UpdateSlots()
+    {
+        slots = Globals.statUpgradeLevel[upgradeNum];
+        Debug.Print("Slots:"+ upgradeNum+" - " + slots);
+        if (IsInstanceValid(imgSlot1))
+        {
+            if (slots == 0)
+            {
+                imgSlot1.Texture = StatUpgrades.slotEmpty;
+                imgSlot2.Texture = StatUpgrades.slotEmpty;
+                imgSlot3.Texture = StatUpgrades.slotEmpty;
+                imgSlot4.Texture = StatUpgrades.slotEmpty;
+                imgSlot5.Texture = StatUpgrades.slotEmpty;
+            }
+            if (slots == 1)
+            {
+                imgSlot1.Texture = StatUpgrades.slotFull;
+                imgSlot2.Texture = StatUpgrades.slotEmpty;
+                imgSlot3.Texture = StatUpgrades.slotEmpty;
+                imgSlot4.Texture = StatUpgrades.slotEmpty;
+                imgSlot5.Texture = StatUpgrades.slotEmpty;
+            }
+            if (slots == 2)
+            {
+                imgSlot1.Texture = StatUpgrades.slotFull;
+                imgSlot2.Texture = StatUpgrades.slotFull;
+                imgSlot3.Texture = StatUpgrades.slotEmpty;
+                imgSlot4.Texture = StatUpgrades.slotEmpty;
+                imgSlot5.Texture = StatUpgrades.slotEmpty;
+            }
+            if (slots == 3)
+            {
+                imgSlot1.Texture = StatUpgrades.slotFull;
+                imgSlot2.Texture = StatUpgrades.slotFull;
+                imgSlot3.Texture = StatUpgrades.slotFull;
+                imgSlot4.Texture = StatUpgrades.slotEmpty;
+                imgSlot5.Texture = StatUpgrades.slotEmpty;
+            }
+            if (slots == 4)
+            {
+                imgSlot1.Texture = StatUpgrades.slotFull;
+                imgSlot2.Texture = StatUpgrades.slotFull;
+                imgSlot3.Texture = StatUpgrades.slotFull;
+                imgSlot4.Texture = StatUpgrades.slotFull;
+                imgSlot5.Texture = StatUpgrades.slotEmpty;
+            }
+            if (slots == 5)
+            {
+                imgSlot1.Texture = StatUpgrades.slotFull;
+                imgSlot2.Texture = StatUpgrades.slotFull;
+                imgSlot3.Texture = StatUpgrades.slotFull;
+                imgSlot4.Texture = StatUpgrades.slotFull;
+                imgSlot5.Texture = StatUpgrades.slotFull;
+            }
+        }
+    }
 
 	// if cost<=gold then enable upgrade button
 	public bool CheckUpgrade()
@@ -220,30 +217,33 @@ public partial class StatUpgrade : MarginContainer
 		return canUpgrade;
 	}
 
-	// changes upgrade image to gold if can afford or silver if can't
-	public void CheckCanAfford()
-	{
-		if (Globals.statUpgradeLevel[upgradeNum] > Globals.MAXUPGRADES - 1)
-		{
-			//  unselected
-			image.Modulate = new Color(1, 1, 1, .5f);
-			return;
-		}
+    // changes upgrade image to gold if can afford or silver if can't
+    public void CheckCanAfford()
+    {
+        if (IsInstanceValid(this))
+            {
+            if (Globals.statUpgradeLevel[upgradeNum] > Globals.MAXUPGRADES - 1)
+            {
+                //  unselected
+                image.Modulate = new Color(1, 1, 1, .5f);
+                return;
+            }
 
-		if (Globals.coststatUpgrade[upgradeNum, Globals.statUpgradeLevel[upgradeNum]] <= ResourceDiscoveries.gold)
-		{
-			// selected
-			//image.Visible = true;
-			if (IsInstanceValid(image))
-				image.Modulate = new Color(1, 1, 1, 1f);
-		}
-		else
-		{
-			// , unselected
-			if (IsInstanceValid(image))
-				image.Modulate = new Color(1, 1, 1, .5f);
-		}
-	}
+            if (Globals.coststatUpgrade[upgradeNum, Globals.statUpgradeLevel[upgradeNum]] <= ResourceDiscoveries.gold)
+            {
+                // selected
+                //image.Visible = true;
+                if (IsInstanceValid(image))
+                    image.Modulate = new Color(1, 1, 1, 1f);
+            }
+            else
+            {
+                // , unselected
+                if (IsInstanceValid(image))
+                    image.Modulate = new Color(1, 1, 1, .5f);
+            }
+        }
+    }
 
 
 }

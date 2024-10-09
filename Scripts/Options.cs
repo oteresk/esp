@@ -8,10 +8,12 @@ public partial class Options : Node2D
 	private bool btnBackEntered;
 	private ColorRect black;
 
-	[Export] public Slider sldMusicVolume;
-	[Export] public Slider sldSFXVolume;
-	[Export] public OptionButton optResolution;
-	[Export] public CheckButton chkFullscreen;
+    [Export] public Slider sldMusicVolume;
+    [Export] public Slider sldSFXVolume;
+    [Export] public OptionButton optResolution;
+    [Export] public CheckButton chkFullscreen;
+    [Export] public CheckButton chkDecorations;
+    [Export] public CheckButton chkPlayerGhost;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -19,51 +21,64 @@ public partial class Options : Node2D
 		Node nodBlack = GetNode("Black");
 		black = (ColorRect)nodBlack;
 
-		// get current resolution
-		string resString = DisplayServer.ScreenGetSize().X + "x" + DisplayServer.ScreenGetSize().Y;
-
-		int sel = -1;
-		for (int i = 0;i<optResolution.ItemCount;i++)
-		{
-			Debug.Print("opt " + i + ": " + optResolution.GetItemText(i));
-			if (optResolution.GetItemText(i) == resString)
-			{
-				sel = i;
-			}
-		}
-
-		optResolution.Selected= sel;
-
-		// set fullscreen chk
-		if (DisplayServer.WindowGetMode() == DisplayServer.WindowMode.ExclusiveFullscreen)
-		{
-			Debug.Print("Exclusive fullscreen");
-			chkFullscreen.ButtonPressed = true;
-		}
-		else
-			chkFullscreen.ButtonPressed = false;
-
-		// set volumes
-		Debug.Print("Music vol: " + Globals.settings_MusicVolume);
-		Debug.Print("SFX vol: " + Globals.settings_SFXVolume);
 		
-		GetNode<CheckButton>("/root/Options/Control/MCVScrollBar/VBoxControls/chkFullscreen").GrabFocus();
-		
-		DelayedStart();
-	}
 
-	private async void DelayedStart()
-	{
-		for (int i = 0; i < 10; i++) // wait to load volume settings
-		{
-			await Task.Delay(TimeSpan.FromMilliseconds(300));
-			if (Globals.settingsLoaded)
-				break;
-		}
-		sldMusicVolume.Value = Mathf.DbToLinear(Globals.settings_MusicVolume);
-		sldSFXVolume.Value = Mathf.DbToLinear(Globals.settings_SFXVolume);
-		Globals.settingsLoaded = false;
-	}
+        DelayedStart();
+    }
+
+    private async void DelayedStart()
+    {
+        for (int i = 0; i < 20; i++) // wait to load settings
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(20));
+            if (Globals.settingsLoaded)
+                break;
+        }
+        sldMusicVolume.Value = Mathf.DbToLinear(Globals.settings_MusicVolume);
+        sldSFXVolume.Value = Mathf.DbToLinear(Globals.settings_SFXVolume);
+        // set volumes
+        Debug.Print("Music vol: " + Globals.settings_MusicVolume);
+
+        Debug.Print("full:" + Globals.settings_FullScreen);
+
+        // set fullscreen chk
+        //if (DisplayServer.WindowGetMode() == DisplayServer.WindowMode.ExclusiveFullscreen)
+        if (Globals.settings_FullScreen)
+        {
+            //Debug.Print("Exclusive fullscreen");
+            chkFullscreen.ButtonPressed = true;
+        }
+        else
+            chkFullscreen.ButtonPressed = false;
+        Debug.Print("SFX vol: " + Globals.settings_SFXVolume);
+
+        // get current resolution
+        string resString = DisplayServer.ScreenGetSize().X + "x" + DisplayServer.ScreenGetSize().Y;
+
+        int sel = -1;
+        for (int i = 0; i < optResolution.ItemCount; i++)
+        {
+            Debug.Print("opt " + i + ": " + optResolution.GetItemText(i));
+            if (optResolution.GetItemText(i) == resString)
+            {
+                sel = i;
+            }
+        }
+        optResolution.Selected = sel;
+
+        // decorations
+        if (Globals.settings_Decorations)
+            chkDecorations.ButtonPressed = true;
+        else
+            chkDecorations.ButtonPressed = false;
+
+        if (Globals.settings_PlayerGhost)
+            chkPlayerGhost.ButtonPressed = true;
+        else
+            chkPlayerGhost.ButtonPressed = false;
+
+        Globals.settingsLoaded = false;
+    }
 
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -154,35 +169,78 @@ public partial class Options : Node2D
 	{
 		AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("SFX"), (float)Mathf.LinearToDb(sldSFXVolume.Value));
 	}
-	public void ChangeResolution(int item)
-	{
-		Debug.Print("Resolution: " + optResolution.GetItemText(item));
-		string full = optResolution.GetItemText(item);
-		string[] separate = full.Split('x');
-		Debug.Print(separate[0]+" x "+separate[1]);
-		GetWindow().Size = new Vector2I(Int32.Parse(separate[0]), Int32.Parse(separate[1]));
-		CenterWindow();
-	}
+
+    public void ChangeResolution(int item)
+    {
+        Debug.Print("Resolution: " + optResolution.GetItemText(item));
+        string full = optResolution.GetItemText(item);
+        string[] separate = full.Split('x');
+        Debug.Print(separate[0]+"x"+separate[1]);
+        GetWindow().Size = new Vector2I(Int32.Parse(separate[0]), Int32.Parse(separate[1]));
+        CenterWindow();
+    }
 
 	public void CenterWindow()
-	{
-		Vector2I screenCenter = DisplayServer.ScreenGetPosition() + DisplayServer.ScreenGetSize()/2;
-		Vector2I windowSize = GetWindow().GetSizeWithDecorations();
-		GetWindow().Position = screenCenter - windowSize/ 2;
+    {
+        Vector2I screenCenter = DisplayServer.ScreenGetPosition() + DisplayServer.ScreenGetSize()/2;
+        Vector2I windowSize = GetWindow().GetSizeWithDecorations();
+        GetWindow().Position = screenCenter - windowSize/ 2;
 
-		Debug.Print("center:"+screenCenter+" size: "+windowSize);
-	}
+        Debug.Print("center:"+screenCenter+" size: "+windowSize);
+    }
 
-	public void FullScreenPress(bool pressed)
-	{
-		if (pressed)
-		{
-			DisplayServer.WindowSetMode(DisplayServer.WindowMode.ExclusiveFullscreen);
-		}
-		else
-		{
-			DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
-		}
-	}
+    public void FullScreenPress(bool pressed)
+    {
+        if (pressed)
+        {
+            DisplayServer.WindowSetMode(DisplayServer.WindowMode.ExclusiveFullscreen);
+            Globals.settings_FullScreen = true;
+        }
+        else
+        {
+            DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
+            Globals.settings_FullScreen = false;
+        }
+        SaveLoad.SaveSettings();
+    }
+
+    public void ShowFPSPress(bool pressed)
+    {
+        if (pressed)
+        {
+            Globals.settings_ShowFPS = true;
+        }
+        else
+        {
+            Globals.settings_ShowFPS = false;
+        }
+        SaveLoad.SaveSettings();
+    }
+
+    public void DecorationsPress(bool pressed)
+    {
+        if (pressed)
+        {
+            Globals.settings_Decorations = true;
+        }
+        else
+        {
+            Globals.settings_Decorations = false;
+        }
+        SaveLoad.SaveSettings();
+    }
+
+    public void PlayerGhostPress(bool pressed)
+    {
+        if (pressed)
+        {
+            Globals.settings_PlayerGhost = true;
+        }
+        else
+        {
+            Globals.settings_PlayerGhost = false;
+        }
+        SaveLoad.SaveSettings();
+    }
 
 }

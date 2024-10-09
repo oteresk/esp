@@ -18,7 +18,7 @@ public partial class AgroGolem : RigidBody2D
     public float moveSpeed = 60f;
     public float poisonSpeed = 1f;
     Vector2 velocity;
-    private float damage = 50;
+    private float damage = 60;
     public bool throwing = false;
     private Node2D targetEnemy;
     private Vector2 targetEnemyPos;
@@ -41,11 +41,20 @@ public partial class AgroGolem : RigidBody2D
 
     public bool isDead = false;
 
-    public float maxHP = 150;
+    public float maxHP = 200;
     public float HP;
+
+    private Control nodWinMessage;
 
     public override void _Ready()
     {
+        if (canThrow == false) // if small golem
+        {
+            maxHP = maxHP / 3;
+        }
+
+        nodWinMessage = (Control)GetNode(Globals.NodeGUIWinMessage);
+
         animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         animatedSprite2D.Animation = "Idle";
         animatedSprite2D.Play();
@@ -314,6 +323,19 @@ public partial class AgroGolem : RigidBody2D
             mode = "stand";
             //Debug.Print("mode=stand");
         }
+        else
+        {
+            if (canThrow == true) // if agro golem
+            {
+                // win game
+                nodWinMessage.Visible = true;
+                Globals.wonGame = true;
+                Globals.PauseGame();
+            }
+        }
+
+
+
     }
 
     public void FrameChanged() // triggered by signal
@@ -448,7 +470,7 @@ public partial class AgroGolem : RigidBody2D
         {
             pounded = true;
             Debug.Print("Golem pound player:" + damage);
-            Globals.DamagePlayer(damage);
+            Globals.DamagePlayer(damage/3);
         }
 
         

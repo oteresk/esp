@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
+using System.IO;
 
 public partial class Globals : Node
 {
@@ -14,7 +16,9 @@ public partial class Globals : Node
 	static public string NodeMiniMapPlayer = "/root/World/MiniMapCanvas/Control2/Control/MarginContainer/ctlSub/SubViewportContainer/SubViewport/Node2D/PlayerIcon/TextureRect";
 	static public string NodeMiniMapBorder = "/root/World/MiniMapCanvas/Control2/Control/MarginContainer/ctlBorder/Border";
 	static public string NodeStructureGUI = "/root/World/LateGUI/ctlStructureSelect";
-	static public string NodeGUI = "/root/World/GUI";
+    static public string NodeStructureGUIMessage = "/root/World/LateGUI/ctlResourceMessage";
+    static public string NodeGUIWinMessage = "/root/World/LateGUI/ctlWinMessage";
+    static public string NodeGUI = "/root/World/GUI";
 	static public string NodeResourceDiscoveries = "/root/World/ResourceDiscoveries";
 	static public string NodePlayer = "/root/World/Player";
 	static public string NodeWorld = "/root/World";
@@ -26,6 +30,7 @@ public partial class Globals : Node
 	static public string NodeFPS = "/root/World/FPS";
 	static public string NodeBack = "/root/World/CLbtnBack/ctlBack/TextureButton";
 	static public string BuildBtn = "/root/World/LateGUI/ctlStructureSelect/TextureRect/MCbtnBuild/TextureButton";
+    static public string NodeTitleMusic = "/root/SteamManager/TitleMusic";
 
 
 	static public Node rootNode;
@@ -102,9 +107,9 @@ public partial class Globals : Node
 
 	static public float itemAtkSpd; // 1 (default) .5 (with item)
 	static public float statAtkSpd = 0;
-	static public float statDamage = 1;
-	static public float statAoE = 1;
-	static public float statMovementSpeed = 0;
+	static public float statDamage = 0;
+	static public float statAoE=0;
+	static public float statPermSpeed = 0;
 	static public int statArmor = 0;
 
 	static public resourceGUI GUINode;
@@ -151,9 +156,13 @@ public partial class Globals : Node
 	static public float settings_MusicVolume = 0;
 	static public float settings_MasterVolume = 0;
 
-	static public bool settings_ShowFPS = false;
+    static public bool settings_FullScreen = true;
+    static public bool settings_ShowFPS = false;
 	static public bool settings_GodMode = false;
-	static public bool settingsLoaded = false;
+    static public bool settingsLoaded = false;
+	static public bool settings_ShowPlayerPosition = false;
+	static public bool settings_Decorations = true;
+	static public bool settings_PlayerGhost = true;
 
 	static public float healingModifier = .5f;
 	static public float fireTime = 6; // how long the big fire lasts in world
@@ -173,14 +182,61 @@ public partial class Globals : Node
 
 	static public bool canUnPause = true;
 
-	[Export] public AudioStreamPlayer musInGame;
+	static public bool wonGame = false;
+	static public int maxAttackLevel = 15; // the limits for attack upgrades
+
+	static public bool nightMode = false;
+
+    private AudioStreamPlayer musInGame;
+
+    private ParallaxBackground nightBackground;
+    private ParallaxLayer nightPar1;
+    private ColorRect nightPar2;
+    private ColorRect vignet;
+	private ShaderMaterial vignetMat;
+	private ShaderMaterial nightPar2Mat;
+	static public int bestTimeMinutes;
+    static public int bestTimeSeconds;
 
 	public override void _Ready()
 	{
 		instance = this;
-		btnBack = (TextureButton)GetNodeOrNull(NodeBack);
+		// init scenes
+        StatUpgradesScene = (PackedScene)ResourceLoader.Load("res://Scenes/StatUpgrades.tscn");
+        OptionsScene = (PackedScene)ResourceLoader.Load("res://Scenes/Options.tscn");
+        WorldScene = (PackedScene)ResourceLoader.Load("res://Scenes/world.tscn");
+        TitleScene = (PackedScene)ResourceLoader.Load("res://Scenes/Title.tscn");
 
-		weaponTypeUnlocked = new bool[12];
+        weaponTypeUnlocked = new bool[12];
+        costIron = new int[8];
+        costWood = new int[8];
+
+        // stat upgrade cost
+        coststatUpgrade = new int[5, 5] { { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 } };
+
+        rootNode = GetNode("..");
+
+
+		// init stats
+        InitArrays();
+
+        for (int iter = 0; iter < 5; iter++)
+            statUpgradeLevel[iter] = 0;
+
+        for (int iter = 0; iter < MAXRELICS; iter++)
+            hasRelic[iter] = false;
+
+        Debug.Print("initialize save load");
+        SaveLoad.LoadGame();
+        SaveLoad.LoadSettings();
+        SetVolumes();
+
+    }
+    public void WorldReady()
+	{
+        UpdateStatLevels();
+
+        btnBack = (TextureButton)GetNode(NodeBack);
 
 		worldArray = new int[gridSizeX * subGridSizeX, gridSizeY * subGridSizeY];
 		// windowSizeY
@@ -189,52 +245,53 @@ public partial class Globals : Node
 		windowSizeY = (int)GetViewport().GetVisibleRect().Size.Y;
 		headerOffset = windowSizeY - 1009;
 
-		// stat upgrade cost
-		coststatUpgrade = new int[5, 5] { { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 }, { 2, 6, 18, 54, 162 } };
+        // "GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth"
+        // get stat labels     GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed
 
-		statUpgradeLevel = new int[MAXUPGRADES];
-		for (int iter = 0; iter < 5; iter++)
-			statUpgradeLevel[iter] = 0;
-
-		hasRelic = new bool[MAXRELICS];
-		;
-		for (int iter = 0; iter < MAXRELICS; iter++)
-			hasRelic[iter] = false;
-
-		DelayedStart();
-
-		rootNode = GetNode("..");
-		// "GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth"
-		// get stat labels     GUI/Control/MarginContainer/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed
-
-		Node lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth");
+        Node lbl = GetNode("../World//GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/MaxHealth/VBoxContainer/lblMaxHealth");
 		lblMaxHealth = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed");
+		lbl = GetNode("../World/GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/MovementSpeed/VBoxContainer/lblMovementSpeed");
 		lblMovementSpeed = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/Magnetism/VBoxContainer/lblMagnetism");
+		lbl = GetNode("../World/GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/Magnetism/VBoxContainer/lblMagnetism");
 		lblMagnetism = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/Armor/VBoxContainer/lblArmor");
+		lbl = GetNode("../World/GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer/Armor/VBoxContainer/lblArmor");
 		lblArmor = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Attack/VBoxContainer/lblAttack");
-		lblAttack = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Towers/VBoxContainer/lblTowerLevel");
+		lbl = GetNode("../World/GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Attack/VBoxContainer/lblAttack");
+        lblAttack = (Label)lbl;
+		lbl = GetNode("../World/GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Towers/VBoxContainer/lblTowerLevel");
 		lblTowerLevel = (Label)lbl;
-		lbl = GetNodeOrNull("../GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Golems/VBoxContainer/lblGolemLevel");
-		lblGolemLevel = (Label)lbl;
+		lbl = GetNode("../World/GUI/ctlStatus/StatusBG/Area2D/StatsGUI/HBoxContainer2/Golems/VBoxContainer/lblGolemLevel");
+        lblGolemLevel = (Label)lbl;
 
-		costIron = new int[8];
-		costWood = new int[8];
+        screenWidth = (int)GetViewport().GetVisibleRect().Size.X;
+        screenHeight = (int)GetViewport().GetVisibleRect().Size.Y;
 
-		screenWidth = (int)GetViewport().GetVisibleRect().Size.X;
-		screenHeight = (int)GetViewport().GetVisibleRect().Size.Y;
+		
+		
+		nightPar1 = (ParallaxLayer)GetNode("../World/ParallaxBackground-Night/ParallaxLayer");
+		nightPar2 = (ColorRect)GetNode("../World/ParallaxBackground-Night/ParallaxLayer2/ColorRect");
+		Node vNod= GetNode("../World/CLVignet/Vignette/Vignette");
+		vignet = (ColorRect)vNod;
 
-		StatUpgradesScene = (PackedScene)ResourceLoader.Load("res://Scenes/StatUpgrades.tscn");
-		OptionsScene = (PackedScene)ResourceLoader.Load("res://Scenes/Options.tscn");
-		WorldScene = (PackedScene)ResourceLoader.Load("res://Scenes/world.tscn");
-		TitleScene = (PackedScene)ResourceLoader.Load("res://Scenes/Title.tscn");
+		vignetMat = (ShaderMaterial)vignet.Material;
+		nightPar2Mat = (ShaderMaterial)nightPar2.Material;
 
-		ResetGame();
-	}
+		vignetMat.SetShaderParameter("inner_radius", .1f);
+		vignetMat.SetShaderParameter("outer_radius", 1.0f);
+		vignetMat.SetShaderParameter("vignette_strength", 1.2f);
+		
+
+        ResetGame();
+
+        Initialize();
+
+        vNod = GetNode("../World/CLVignet/Vignette/Vignette");
+        nightBackground = (ParallaxBackground)GetNode("../World/ParallaxBackground-Night");
+		nightBackground.Visible = false;
+
+        nightMode = true; // will be set to fales in togglenight
+        ToggleNight();
+    }
 
 	private void Input_JoyConnectionChanged(long device, bool connected)
 	{
@@ -262,21 +319,17 @@ public partial class Globals : Node
 			ps.SetAllAoE(); // update all existing attack AoE
 
 		// statMovementSpeed
-		statMovementSpeed = (float)statUpgradeLevel[3];
+        statPermSpeed = (float)statUpgradeLevel[3];
 
 		// statArmor
 		statArmor = (int)statUpgradeLevel[4] * statUpgradeLevel[4];
 	}
 
-	public async void DelayedStart()
+	public void Initialize()
 	{
 		// wait a bit
-		await Task.Delay(TimeSpan.FromMilliseconds(40));
+		//await Task.Delay(TimeSpan.FromMilliseconds(40));
 
-		//Debug.Print("***********");
-		SaveLoad.LoadGame();
-		SaveLoad.LoadSettings();
-		SetVolumes();
 
 		if (lblAttack != null)
 		{
@@ -290,61 +343,58 @@ public partial class Globals : Node
 		ResourceDiscoveries.mapNotPressed = false;
 		if (IsInstanceValid(this))
 		{
-			Node2D miniMap = (Node2D)GetNodeOrNull(Globals.NodeMiniMap);
-			if (miniMap != null)
-			{
-				miniMap.Call("ShowMiniMap");
-			}
-		}
+            Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
+            if (miniMap != null)
+            {
+                MiniMap miniMap1 = (MiniMap)miniMap;
+                miniMap1.borderNode = GetNode(Globals.NodeMiniMapBorder);
+                miniMap.Call("ShowMiniMap");
+            }
+        }
 
 
 		settingsLoaded = true;
 
-		if (settings_ShowFPS)
-		{
-			CanvasLayer nFPS = (CanvasLayer)GetNodeOrNull(NodeFPS);
-			if (nFPS != null)
-				nFPS.Visible = true;
-		}
-		else
-		{
-			CanvasLayer nFPS = (CanvasLayer)GetNodeOrNull(NodeFPS);
-			if (nFPS != null)
-				nFPS.Visible = false;
-		}
+        if (settings_ShowFPS)
+        {
+            CanvasLayer nFPS = (CanvasLayer)GetNode(NodeFPS);
+            if (nFPS != null)
+                nFPS.Visible = true;
+        }
+        else
+        {
+            CanvasLayer nFPS = (CanvasLayer)GetNode(NodeFPS);
+            if (nFPS != null)
+                nFPS.Visible = false;
+        }
 
-		// set god mode
-		if (rootNode.Name == "World") // if world scene
-		{ //only set god mode when in world scene
-			if (settings_GodMode)
-				ps.canBeDamaged = false;
-			else
-				ps.canBeDamaged = true;
-		}
-
-	}
+    }
 
 	public void ResetGame()
 	{
-		GUINode = (resourceGUI)GetNodeOrNull(NodeGUI);
+		Debug.Print("Reset Game");
+		GUINode = (resourceGUI)GetNode(NodeGUI);
 
 		playerAlive = true;
 		level = 1;
 		XPGoal = 20;
-		xpBar = (ProgressBar)GetNodeOrNull("../GUI/XPOverlay/XPBar");
-		lblLevel = (Label)GetNodeOrNull("../GUI/XPOverlay/XPBar/Label");
+		xpBar = (ProgressBar)GetNode("../World/GUI/XPOverlay/XPBar");
+		Debug.Print("XP bar init");
+		lblLevel = (Label)GetNode("../World/GUI/XPOverlay/XPBar/Label");
 		if (xpBar != null)
 		{
 			xpBar.Value = XP;
 			UpdateLevel();
 		}
-		itemAtkSpd = 1; // attackSpeed modifier for temp items
+        xpBar.Value = XP / XPGoal;
 
-		if (lblLevel != null)
-			black = (Sprite2D)GetNodeOrNull("../Black");
+        itemAtkSpd = 1; // attackSpeed modifier for temp items
+
+		if (lblLevel!=null)
+			black = (Sprite2D)GetNode("../World/Black");
 
 		// hide poison effect
-		poisonEffect = (HBoxContainer)GetNodeOrNull(NodePoison);
+		poisonEffect = (HBoxContainer)GetNode(NodePoison);
 
 		poisonNodes = new List<Node>();
 
@@ -353,16 +403,18 @@ public partial class Globals : Node
 		SetMaxHP();
 		Debug.Print("maxHP:" + MaxHP);
 		Globals.HP = MaxHP;
-		hpBar = (ProgressBar)GetNodeOrNull("../Player/HPBar");
-		if (hpBar != null)
-			hpBar.Value = HP / MaxHP;
+        hpBar = (ProgressBar)GetNode("../World/Player/HPBar");
+
+        Debug.Print("init hp bar");
+        if (hpBar != null)
+            hpBar.Value = HP / MaxHP;
 
 		XPGoalIncrease = 1.5f;
 		magnetism = 30;
 
 		magenetismLevel = 1;
 		armorLevel = 1;
-		attackLevel = 1;
+		attackLevel = 2; // for testing
 		towerLevel = 1;
 		golemLevel = 1;
 
@@ -372,14 +424,14 @@ public partial class Globals : Node
 		ResourceDiscoveries.iron = 0;
 		ResourceDiscoveries.mana = 0;
 		ResourceDiscoveries.wood = 0;
-		ResourceDiscoveries.gold = 0;
+		//ResourceDiscoveries.gold = 0;
 		ResourceDiscoveries.goldResourceCount = 0;
 		ResourceDiscoveries.ironResourceCount = 0;
 		ResourceDiscoveries.manaResourceCount = 0;
 		ResourceDiscoveries.research = 0;
 
 
-		Node2D fG = (Node2D)GetNodeOrNull("../FriendlyGolem");
+		Node2D fG = (Node2D)GetNodeOrNull("../World/FriendlyGolem");
 		if (fG != null)
 		{
 			Globals.golem = fG;
@@ -388,7 +440,7 @@ public partial class Globals : Node
 			Debug.Print("Golem not null");
 		}
 
-		Node2D aG = (Node2D)GetNodeOrNull("../AgroGolem");
+		Node2D aG = (Node2D)GetNodeOrNull("../World/AgroGolem");
 		if (aG != null)
 		{
 			Globals.agroGolem = aG;
@@ -409,32 +461,36 @@ public partial class Globals : Node
 									  // elements
 		weaponTypeUnlocked[11] = false; // fire
 
-		costIron[0] = 1; // alchemy lab
-		costIron[1] = 2; // blacksmith
-		costIron[3] = 1; // herbalist
-		costIron[4] = 0; // lodestone
-		costIron[5] = 4; // settlement
-		costIron[6] = 4; // tower
-		costIron[7] = 1; // training center
-		costIron[2] = 1; // golem factory
+        costIron[0] = 2; // blacksmith
+        costIron[2] = 1; // herbalist
+        costIron[3] = 0; // lodestone
+        costIron[4] = 4; // settlement
+        costIron[5] = 4; // tower
+        costIron[6] = 1; // training center
+        costIron[1] = 1; // golem factory
+        costIron[7] = 1; // alchemy lab
 
-		costWood[0] = 1;
-		costWood[1] = 2;
-		costWood[3] = 0;
-		costWood[4] = 1;
-		costWood[5] = 2;
-		costWood[6] = 6;
-		costWood[7] = 0;
-		costWood[2] = 0;
+        costWood[0] = 2;
+        costWood[2] = 0;
+        costWood[3] = 1;
+        costWood[4] = 2;
+        costWood[5] = 6;
+        costWood[6] = 0;
+        costWood[1] = 0;
+        costWood[7] = 1;
+    }
 
-		for (int iter = 0; iter < 5; iter++)
-			statUpgradeLevel[iter] = 0;
+	static public void InitArrays()
+	{
+        if (statUpgradeLevel == null) // init stat upgrades if null
+        {
+            // init stat upgrades
+            statUpgradeLevel = new int[MAXUPGRADES];
 
-		for (int iter = 0; iter < MAXRELICS; iter++)
-			hasRelic[iter] = false;
-
-		UpdateStatLevels();
-	}
+            // init relics
+            hasRelic = new bool[MAXRELICS];
+        }
+    }
 
 	static public void SetMaxHP()
 	{
@@ -565,20 +621,75 @@ public partial class Globals : Node
 		if (Input.IsActionJustPressed("reset"))
 		{
 			ResetStats();
-		}
+        }
+		// night mode
+        if (Input.IsActionJustPressed("ToggleNightMode"))
+        {
+			ToggleNight();
+        }
 
+    }
+
+	public async void ToggleNight()
+	{
+		nightMode = !nightMode;
+		if (nightMode)
+		{
+			nightPar1.Modulate = new Color(1, 1, 1, 0);
+			nightBackground.Visible = true;
+            Tween tween = GetTree().CreateTween();
+            tween.Parallel().TweenProperty(nightPar1, "modulate:a", 1f, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderNoiseColor), 0f,0.205f, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderInner), .1f, -.4f, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderOuter), 1.0f, 2.2f, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderStrength), 1.2f, 4.0f, 5.0f);
+
+            
+        }
+		else
+		{
+            Tween tween = GetTree().CreateTween();
+            tween.Parallel().TweenProperty(nightPar1, "modulate:a", 0f, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderNoiseColor), .205f,0f, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderInner), -.4f, .1f, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderOuter), 2.2f, 1, 5.0f);
+            tween.Parallel().TweenMethod(Callable.From<float>(SetShaderStrength), 4f, 1.2f, 5.0f);
+            await Task.Delay(TimeSpan.FromMilliseconds(5000));
+            nightBackground.Visible = false;
+        }
 	}
 
-	public void ResetStats()
+    private void SetShaderInner(float value)
+    {
+        vignetMat.SetShaderParameter("inner_radius", value);
+    }
+    private void SetShaderOuter(float value)
+    {
+        vignetMat.SetShaderParameter("outer_radius", value);
+    }
+    private void SetShaderStrength(float value)
+    {
+        vignetMat.SetShaderParameter("vignette_strength", value);
+    }
+    private void SetShaderNoiseColor(float value)
+    {
+        nightPar2Mat.SetShaderParameter("AlphaLevel", value);
+    }
+
+    public void ResetStats()
 	{
-		ResourceDiscoveries.gold = 0;
-		for (int iter = 0; iter < 5; iter++)
-			Globals.statUpgradeLevel[iter] = 0;
-		SaveLoad.SaveGame();
-		// Update slots
-		Node nd = Globals.rootNode.GetNode(".");
-		StatUpgrades su = (StatUpgrades)nd;
-		su.UpdateAllSlots();
+        ResourceDiscoveries.gold = 0;
+        for (int iter = 0; iter < 5; iter++)
+            Globals.statUpgradeLevel[iter] = 0;
+		//SaveLoad.SaveGame();
+		// delete save game file
+		File.Delete(SaveLoad.gameSaveFilename);
+
+
+        // Update slots
+        Node nd = Globals.rootNode.GetNode("StatUpgrades");
+        StatUpgrades su = (StatUpgrades)nd;
+        su.UpdateAllSlots();
 
 		// update GUI
 		StatUpgrades.lblGold.Text = ResourceDiscoveries.gold.ToString();
@@ -594,11 +705,15 @@ public partial class Globals : Node
 		CheckNextLevel();
 
 		xpBar.Value = XP / XPGoal;
-		//Debug.Print("XP: " + XP + " XPGoal: " + XPGoal + " final: " + xpBar.Value);
+		Debug.Print("XP: " + XP + " XPGoal: " + XPGoal + " final: " + xpBar.Value);
 	}
 
 	static public void DamagePlayer(float xDmg)
 	{
+		// double damage for night mode
+		if (Globals.nightMode)
+			xDmg *= 2;
+
 		if (playerShieldActive == false && ps.canBeDamaged && playerAlive)
 		{
 			ps.PlayHurtSound();
@@ -617,7 +732,7 @@ public partial class Globals : Node
 					player p = (player)pl;
 					p.PlayDeathAnim();
 				}
-
+				Debug.Print("use hp bar");
 				hpBar.Value = HP / MaxHP;
 			}
 		}
@@ -751,7 +866,7 @@ public partial class Globals : Node
 
 	public static void UpdateStatsGUI()
 	{
-		if (ps != null && lblMaxHealth != null)
+        if (ps != null && lblMaxHealth!=null && IsInstanceValid(lblMaxHealth))
 		{
 			lblMaxHealth.Text = HPLevel.ToString();
 			lblMovementSpeed.Text = speedLevel.ToString();
@@ -780,18 +895,27 @@ public partial class Globals : Node
 
 	static public void UpdateEnemies()
 	{
-		//Debug.Print("Enemies: " + enemies);
-	}
+        GD.PrintRich("[color=blue]Enemies: [/color]" + enemies +" - "+ ResourceDiscoveries.minutes.ToString()+ ":"+ResourceDiscoveries.seconds.ToString()+" - FPS:"+ Engine.GetFramesPerSecond().ToString());
+
+
+    }
 
 	static public void SetAttackLevel()
 	{
-		if (attackLevel > 1)
-			Globals.weaponTypeUnlocked[2] = true; // unlock cross
-		if (attackLevel > 2)
-			Globals.weaponTypeUnlocked[11] = true; // unlock fire
-	}
+        //if (attackLevel>1)
+        //    Globals.weaponTypeUnlocked[2] = true; // unlock cross
+        //if (attackLevel > 2)
+        //    Globals.weaponTypeUnlocked[11] = true; // unlock fire
 
-	static public void SetTowerLevel()
+        // only for demo
+        if (attackLevel > 0)
+            Globals.weaponTypeUnlocked[2] = true; // unlock cross
+        if (attackLevel > 1)
+            Globals.weaponTypeUnlocked[11] = true; // unlock fire
+
+    }
+
+    static public void SetTowerLevel()
 	{
 		ResourceDiscovery[] rD = GetStructures("Tower"); // get all towers
 														 // set level of tower

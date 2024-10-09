@@ -57,9 +57,9 @@ public partial class AttackCross : Area2D
     }
     public void SetAOE()
     {
-        AOE = baseAOE + AOELevel * AOEInc + (Globals.statAoE * AOEInc);
+        AOE = (baseAOE + AOELevel * AOEInc + (Globals.statAoE * AOEInc))/2;
         Debug.Print("AOR: " + AOE);
-        //Scale = new Vector2(AOE, AOE);
+        Scale = new Vector2(AOE, AOE);
     }
     public float GetDamage()
     {
@@ -191,6 +191,10 @@ public partial class AttackCross : Area2D
                 SetAttackSpeed();
                 break;
         }
+        // limit attack upgrade levels
+        dmgLevel = Math.Min(dmgLevel, Globals.maxAttackLevel);
+        AOELevel = Math.Min(AOELevel, Globals.maxAttackLevel);
+        attackSpeedLevel = Math.Min(attackSpeedLevel, Globals.maxAttackLevel);
     }
 
     // used for upgrades to see current levels

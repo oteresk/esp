@@ -8,29 +8,31 @@ public partial class TitleButton : TextureButton
 {
 	Control steamManager;
 	[Export] public Label lblButton;
-	private bool overButton = false;
-	private ColorRect black;
+    private bool overButton = false;
+    private ColorRect black;
+    [Export] Label lblVersion;
 
 	private AudioStreamPlayer titleMusic;
 
-	public override void _Ready()
-	{
-		Node nodMusic = GetNode("/root/Title/titleMusic");
-		titleMusic = (AudioStreamPlayer)nodMusic;
+    public override void _Ready()
+    {
+        Node nodBlack = GetNode("/root/Title/Control/Black");
+        black = (ColorRect)nodBlack;
 
-		Node nodBlack = GetNode("/root/Title/Control/Black");
-		black = (ColorRect)nodBlack;
+        if (lblButton.Name == "lblSteamName")
+        {
+            steamManager = (Control)GetNode("/root/SteamManager");
+            lblButton.Text = steamManager.Call("GetSteamName").ToString();
+        }
 
-		if (lblButton.Name == "lblSteamName")
-		{
-			steamManager = (Control)GetNode("/root/SteamManager");
-			lblButton.Text = steamManager.Call("GetSteamName").ToString();
-		}
-		
-		GetNode<TextureButton>("/root/Title/Control/MCbtnPlay/btnPlay").GrabFocus();
-		
-		FadeIn();
-	}
+        FadeIn();
+
+        // set version
+        if (lblButton.Name == "lblUpgrades")
+        {
+            lblVersion.Text = ProjectSettings.GetSetting("application/config/description").ToString();
+        }
+    }
 
 	public void Hover()
 	{
@@ -74,17 +76,26 @@ public partial class TitleButton : TextureButton
 		Tween tween = GetTree().CreateTween();
 		tween.TweenProperty(black, "modulate:a", 1f, 2f).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Cubic);
 
-		// wait a bit
-		await Task.Delay(TimeSpan.FromMilliseconds(2000));
+        // fade music if you hit play
+        if (lblButton.Name == "lblPlay")
+        {
+            AudioStreamPlayer titleMusic = (AudioStreamPlayer)GetNode(Globals.NodeTitleMusic);
+            tween.Parallel().TweenProperty(titleMusic, "volume_db", -40f, 2f).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Cubic);
+        }
+
+            // wait a bit
+            await Task.Delay(TimeSpan.FromMilliseconds(2000));
 
 
 		Debug.Print("Load scene: "+ lblButton.Name);
 
-		if (lblButton.Name == "lblPlay")
-		{
-			//GetTree().ChangeSceneToFile("res://Scenes/world.tscn");
-			GetTree().ChangeSceneToPacked(Globals.WorldScene);
-		}
+        if (lblButton.Name == "lblPlay")
+        {
+            //GetTree().ChangeSceneToFile("res://Scenes/world.tscn");
+            SaveLoad.LoadGame();
+            SaveLoad.ResetTempUpgrades();
+            GetTree().ChangeSceneToPacked(Globals.WorldScene);
+        }
 
 		if (lblButton.Name == "lblUpgrades")
 		{
@@ -113,13 +124,12 @@ public partial class TitleButton : TextureButton
 		Tween tween = GetTree().CreateTween();
 		tween.TweenProperty(black, "modulate:a", 0f, 3f);
 
-		// play music
-		for (int i = 0; i < 10; i++) // wait to load volume settings
-		{
-			await Task.Delay(TimeSpan.FromMilliseconds(1000));
-			if (Globals.settingsLoaded)
-				break;
-		}
-		titleMusic.Play();
-	}
+        // play music
+        for (int i = 0; i < 10; i++) // wait to load volume settings
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(1000));
+            if (Globals.settingsLoaded)
+                break;
+        }
+    }
 }

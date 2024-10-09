@@ -1,45 +1,36 @@
-[gd_scene load_steps=37 format=3 uid="uid://buj15m7kgw8nk"]
+[gd_scene load_steps=28 format=3 uid="uid://dvtslu2gha2sa"]
 
 [ext_resource type="Script" path="res://Scripts/StatUpgrades.cs" id="1_ge2oc"]
 [ext_resource type="Texture2D" uid="uid://pmir7d3ysfmu" path="res://Art/GUI/StatUpgrades/UpgradesBackground.png" id="1_xej6k"]
 [ext_resource type="Script" path="res://Scripts/StatUpgrade.cs" id="2_o5phl"]
 [ext_resource type="Texture2D" uid="uid://2dbdki0i67n1" path="res://Art/GUI/StatUpgrades/Menu Tab.png" id="3_7i52p"]
 [ext_resource type="Texture2D" uid="uid://bwmagyws5tkga" path="res://Art/GUI/StatUpgrades/Block_Empty.png" id="3_ydy0s"]
-[ext_resource type="FontFile" uid="uid://blv8i47j34igf" path="res://Fonts/CloisterBlack.ttf" id="4_47kom"]
+[ext_resource type="FontFile" uid="uid://bkjpjbwrgwmgj" path="res://Fonts/vinque rg.otf" id="4_7gcw7"]
 [ext_resource type="Texture2D" uid="uid://gycg2mxwedlh" path="res://Art/GUI/Gold.png" id="5_wx2qb"]
 [ext_resource type="FontVariation" uid="uid://cioe7t5vpxgkl" path="res://StatUpgradeFont.tres" id="6_iukmn"]
-[ext_resource type="FontFile" uid="uid://deu73dw073p0l" path="res://Analogist.ttf" id="7_o6e22"]
+[ext_resource type="FontFile" uid="uid://bujcsy0diojex" path="res://Fonts/Analogist.ttf" id="7_o6e22"]
 [ext_resource type="Texture2D" uid="uid://duc3yrtenakjo" path="res://Art/GUI/StatUpgrades/Button Small.png" id="8_3j46r"]
 [ext_resource type="Texture2D" uid="uid://451kmtclyme1" path="res://Art/GUI/StatUpgrades/Border.png" id="8_wxuvw"]
 [ext_resource type="Texture2D" uid="uid://vy0172p8d6bq" path="res://Art/GUI/StatUpgrades/Button_Disabled.png" id="9_trcln"]
 [ext_resource type="Texture2D" uid="uid://cd6pne2n8repc" path="res://Art/GUI/StatUpgrades/AreaOfEffect.png" id="10_q3f6h"]
 [ext_resource type="Texture2D" uid="uid://b1shib1f0y2x0" path="res://Art/GUI/StatUpgrades/Gold Display.png" id="11_y5xxc"]
 [ext_resource type="Texture2D" uid="uid://ccbsebicl0cl7" path="res://Art/GUI/StatUpgrades/Button Small_Hover.png" id="13_4kpsi"]
-[ext_resource type="Script" path="res://Scripts/SaveLoad.cs" id="13_18dtb"]
-[ext_resource type="Script" path="res://Scripts/Globals.cs" id="14_k2fsy"]
-[ext_resource type="Script" path="res://Scripts/ResourceDiscoveries.cs" id="15_mc0ly"]
 [ext_resource type="Texture2D" uid="uid://detiu1nruacbm" path="res://Art/GUI/StatUpgrades/Attack Speed.png" id="16_20t5r"]
-[ext_resource type="PackedScene" uid="uid://btwxpde08w643" path="res://Scenes/Resource-IronMine.tscn" id="16_mdlpe"]
-[ext_resource type="PackedScene" uid="uid://c410fmb2oa282" path="res://Scenes/resource_template-GoldMine.tscn" id="17_27he6"]
-[ext_resource type="PackedScene" uid="uid://br0xhpqyxkcjm" path="res://Scenes/resource_template-ManaWell.tscn" id="18_rvxhx"]
 [ext_resource type="Texture2D" uid="uid://dj3l4qa3d73m" path="res://Art/GUI/StatUpgrades/Attack Damage.png" id="18_yptus"]
-[ext_resource type="PackedScene" uid="uid://ctcv7jmln8o34" path="res://Scenes/Resource-Wood.tscn" id="19_ejcab"]
 [ext_resource type="Texture2D" uid="uid://bxw7wfv2xylr5" path="res://Art/GUI/StatUpgrades/Move Speed.png" id="20_isbwc"]
-[ext_resource type="PackedScene" uid="uid://djjmkb3mx4ata" path="res://Scenes/Resource-Platform.tscn" id="20_jwskn"]
 [ext_resource type="Texture2D" uid="uid://cqw6wgvaxgdgv" path="res://Art/GUI/StatUpgrades/Defense.png" id="21_mul4e"]
 [ext_resource type="Script" path="res://Scripts/btnUpgrade.cs" id="23_wn04p"]
-[ext_resource type="AudioStream" uid="uid://b2beyxfybchew" path="res://Audio/Music/Fantasy Vol4 Enemy Intensity 2.wav" id="32_1c8d3"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_8iope"]
-font = ExtResource("4_47kom")
+font = ExtResource("4_7gcw7")
 font_size = 52
 font_color = Color(0.301961, 0.360784, 0.133333, 1)
 shadow_size = 4
 shadow_color = Color(0.227451, 0.243137, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_s770q"]
-font = ExtResource("4_47kom")
-font_size = 42
+font = ExtResource("4_7gcw7")
+font_size = 41
 font_color = Color(0.301961, 0.360784, 0.133333, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_rtwsg"]
@@ -55,18 +46,18 @@ outline_size = 2
 outline_color = Color(0.141176, 0.117647, 0.121569, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_3l5xi"]
-font = ExtResource("4_47kom")
+font = ExtResource("4_7gcw7")
 font_size = 50
 font_color = Color(0.301961, 0.360784, 0.133333, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_728cv"]
-font = ExtResource("4_47kom")
+font = ExtResource("4_7gcw7")
 font_size = 50
 font_color = Color(0.572549, 0, 0.211765, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_548jd"]
-font = ExtResource("4_47kom")
-font_size = 45
+font = ExtResource("4_7gcw7")
+font_size = 32
 font_color = Color(0.301961, 0.360784, 0.133333, 1)
 
 [node name="StatUpgrades" type="CanvasLayer" node_paths=PackedStringArray("confirm")]
@@ -336,14 +327,14 @@ size_flags_horizontal = 10
 size_flags_vertical = 4
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 22
-theme_override_constants/margin_right = 20
+theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 0
 
 [node name="Gold" type="Label" parent="Control/TextureRect/MCGold/HBGold/MCGold"]
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_fonts/font = ExtResource("6_iukmn")
-text = "9000000"
+text = "900000"
 label_settings = SubResource("LabelSettings_s770q")
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -1147,24 +1138,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="SaveLoad" type="Node2D" parent="."]
-script = ExtResource("13_18dtb")
-
-[node name="Globals" type="Node2D" parent="."]
-script = ExtResource("14_k2fsy")
-
-[node name="ResourceDiscoveries" type="Node2D" parent="."]
-y_sort_enabled = true
-position = Vector2(142, -55)
-script = ExtResource("15_mc0ly")
-rTemplateIronMine = ExtResource("16_mdlpe")
-rTemplateGoldMine = ExtResource("17_27he6")
-rTemplateManaWell = ExtResource("18_rvxhx")
-rTemplateWood = ExtResource("19_ejcab")
-rTemplatePlatform = ExtResource("20_jwskn")
-resourcesPerCell = 5
-resourceUpdateFreq = 60
-
 [node name="Black" type="ColorRect" parent="."]
 modulate = Color(1, 1, 1, 0)
 z_index = 999
@@ -1181,11 +1154,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
-
-[node name="statsMusic" type="AudioStreamPlayer" parent="."]
-process_mode = 3
-stream = ExtResource("32_1c8d3")
-bus = &"Music"
 
 [connection signal="pressed" from="Control/TextureRect/MCbtnUpgrade/TextureButton" to="Control/TextureRect/MCbtnUpgrade/TextureButton" method="ClickButton"]
 [connection signal="pressed" from="Control/TextureRect/MCbtnReset/TextureButton" to="." method="ShowConfirm"]

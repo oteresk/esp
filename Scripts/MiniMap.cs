@@ -31,11 +31,11 @@ public partial class MiniMap : Node2D
 	private PackedScene agroGolemIcon;
 	private Node2D agroGolemMapIcon;
 
-	ShaderMaterial minMapMat;
-	Node miniMapNode;
-	Node borderNode;
-	int pixelSizeX;
-	int pixelSizeY;
+    ShaderMaterial minMapMat;
+    Node miniMapNode;
+    public Node borderNode;
+    int pixelSizeX;
+    int pixelSizeY;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -45,36 +45,28 @@ public partial class MiniMap : Node2D
 		
 		Player = (Area2D)GetNode(Globals.NodePlayer);
 
-		miniMapNode = GetNode("../..");
-		borderNode = GetNode(Globals.NodeMiniMapBorder);
+        miniMapNode = GetNode("../..");
 
 		lastPos = new Vector2(-999999, -999999); // make sure last pos doesn't match cur player pos
 
 		CalculateZoom();
 		DisplayMap();
 
+        CreateGolemIcons();
 
-		DelayedStart();
-	}
+        DisplayGolem();
+        DisplayAgroGolem();
+    }
 
-	public async void DelayedStart()
-	{
-		await Task.Delay(TimeSpan.FromMilliseconds(200));
 
-		CreateGolemIcons();
-		
-		DisplayGolem();
-		DisplayAgroGolem();
-	}
-
-	public void CreateGolemIcons()
-	{
-		Debug.Print("instantiate minimap golems");
-		golemIcon = icon[13];
-		golemMapIcon = (Node2D)golemIcon.Instantiate();
-		GetNode(Globals.NodeMiniMapContainer).AddChild((Node2D)golemMapIcon);
-		golemMapIcon.Scale = new Vector2(iconScale, iconScale);
-		golemMapIcon.Name = "Golem";
+    public void CreateGolemIcons()
+    {
+        Debug.Print("instantiate minimap golems");
+        golemIcon = icon[13];
+        golemMapIcon = (Node2D)golemIcon.Instantiate();
+        GetNode(Globals.NodeMiniMapContainer).AddChild((Node2D)golemMapIcon);
+        golemMapIcon.Scale = new Vector2(iconScale, iconScale);
+        golemMapIcon.Name = "Golem";
 
 		// agro golem
 		agroGolemIcon = icon[14];
