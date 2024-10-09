@@ -329,6 +329,7 @@ size_flags_vertical = 8
 texture_normal = ExtResource("27_fcrfb")
 texture_hover = ExtResource("28_5j0fs")
 texture_disabled = ExtResource("29_72pnm")
+texture_focused = ExtResource("28_5j0fs")
 
 [node name="lblBuild" type="Label" parent="TextureRect/MCbtnBuild/TextureButton"]
 layout_mode = 1

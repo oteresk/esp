@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 public partial class btnUpgrade : TextureButton
 {
 	static private Label lblUpgrade;
-    static private TextureButton textureButtonUpgrade;
+	static private TextureButton textureButtonUpgrade;
 	public override void _Ready()
 	{
-        DelayedStart();
-    }
+		DelayedStart();
+	}
 
     public async void DelayedStart()
     {
@@ -26,23 +26,32 @@ public partial class btnUpgrade : TextureButton
         textureButtonUpgrade = (TextureButton)upgradeNode;
         textureButtonUpgrade.Disabled = true;
 
-        DisableButton();
-    }
-
-    static public void DisableButton()
-    {
-        lblUpgrade.Modulate = new Color(1, 1, 1, .5f);
-        textureButtonUpgrade.Disabled = true;
-
-        StatUpgrades.curUpgradeNum = -1;
-    }
-
-    static public void EnableButton()
+		DisableButton();
+	}
+	
+	public override void _Input(InputEvent @event)
 	{
-        Debug.Print("Enabled");
-        lblUpgrade.Modulate = new Color(1, 1, .5f, 1);
-        textureButtonUpgrade.Disabled = false;
-    }
+		if(@event.IsActionPressed("ui_accept") && HasFocus())
+		{
+			// EmitSignal(_pressed());
+			ClickButton();
+		}
+	}
+
+	static public void DisableButton()
+	{
+		lblUpgrade.Modulate = new Color(1, 1, 1, .5f);
+		textureButtonUpgrade.Disabled = true;
+
+		StatUpgrades.curUpgradeNum = -1;
+	}
+
+	static public void EnableButton()
+	{
+		Debug.Print("Enabled");
+		lblUpgrade.Modulate = new Color(1, 1, .5f, 1);
+		textureButtonUpgrade.Disabled = false;
+	}
 
     public void ClickButton()
     {
@@ -54,14 +63,14 @@ public partial class btnUpgrade : TextureButton
                 // minus gold
                 ResourceDiscoveries.gold -= Globals.coststatUpgrade[StatUpgrades.curUpgradeNum, Globals.statUpgradeLevel[StatUpgrades.curUpgradeNum]];
 
-                // update gold label
-                StatUpgrades.lblGold.Text = ResourceDiscoveries.gold.ToString();
+				// update gold label
+				StatUpgrades.lblGold.Text = ResourceDiscoveries.gold.ToString();
 
-                // increase upgrade level
-                Globals.statUpgradeLevel[StatUpgrades.curUpgradeNum]++;
+				// increase upgrade level
+				Globals.statUpgradeLevel[StatUpgrades.curUpgradeNum]++;
 
-                // save gold
-                SaveLoad.SaveGame();
+				// save gold
+				SaveLoad.SaveGame();
 
                 // Update slots
                 Node nd = Globals.rootNode.GetNode("StatUpgrades");
@@ -105,12 +114,12 @@ public partial class btnUpgrade : TextureButton
                     btnUpgrade.DisableButton();
                 }
 
-                StatUpgrades.sUpgrade.CheckCanAfford();
+				StatUpgrades.sUpgrade.CheckCanAfford();
 
-                //SaveLoad.SaveGame();
-            }
-        }
-        
-    }
+				//SaveLoad.SaveGame();
+			}
+		}
+		
+	}
 
 }

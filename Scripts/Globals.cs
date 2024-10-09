@@ -12,8 +12,8 @@ public partial class Globals : Node
 {
 	static public string NodeMiniMap = "/root/World/MiniMapCanvas/Control2/Control/MarginContainer/ctlSub/SubViewportContainer/SubViewport/Node2D";
 	static public string NodeMiniMapContainer = "/root/World/MiniMapCanvas/Control2/Control/MarginContainer/ctlSub/SubViewportContainer/SubViewport/Node2D/MiniMap";
-    static public string NodeMiniMapCanvas = "/root/World/MiniMapCanvas";
-    static public string NodeMiniMapPlayer = "/root/World/MiniMapCanvas/Control2/Control/MarginContainer/ctlSub/SubViewportContainer/SubViewport/Node2D/PlayerIcon/TextureRect";
+	static public string NodeMiniMapCanvas = "/root/World/MiniMapCanvas";
+	static public string NodeMiniMapPlayer = "/root/World/MiniMapCanvas/Control2/Control/MarginContainer/ctlSub/SubViewportContainer/SubViewport/Node2D/PlayerIcon/TextureRect";
 	static public string NodeMiniMapBorder = "/root/World/MiniMapCanvas/Control2/Control/MarginContainer/ctlBorder/Border";
 	static public string NodeStructureGUI = "/root/World/LateGUI/ctlStructureSelect";
     static public string NodeStructureGUIMessage = "/root/World/LateGUI/ctlResourceMessage";
@@ -27,12 +27,13 @@ public partial class Globals : Node
 	static public string NodeEnemies = "/root/World/Enemies";
 	static public string NodePoison = "/root/World/GUI/Control/MarginContainer/MarginContainer/PoisonGUINode";
 	static public string NodeGlobals = "/root/World/Globals";
-    static public string NodeFPS = "/root/World/FPS";
+	static public string NodeFPS = "/root/World/FPS";
 	static public string NodeBack = "/root/World/CLbtnBack/ctlBack/TextureButton";
+	static public string BuildBtn = "/root/World/LateGUI/ctlStructureSelect/TextureRect/MCbtnBuild/TextureButton";
     static public string NodeTitleMusic = "/root/SteamManager/TitleMusic";
 
 
-    static public Node rootNode;
+	static public Node rootNode;
 
 	static public int gridSizeX = 10;
 	static public int gridSizeY = 10;
@@ -72,9 +73,9 @@ public partial class Globals : Node
 	static public int HPLevel = 1;
 	static public float HPInc = 10;
 
-    static public int speedLevel = 1;
+	static public int speedLevel = 1;
 
-    static public Label lblLevel;
+	static public Label lblLevel;
 	static public int level = 1;
 	static public float XPGoalIncrease = 1.5f;
 	static public float magnetism;
@@ -111,7 +112,7 @@ public partial class Globals : Node
 	static public float statPermSpeed = 0;
 	static public int statArmor = 0;
 
-    static public resourceGUI GUINode;
+	static public resourceGUI GUINode;
 
 	// research upgrade stats
 	static public Label lblMaxHealth;
@@ -132,12 +133,12 @@ public partial class Globals : Node
 
 	static public bool[] weaponTypeUnlocked;
 
-    static public int[] costIron;
-    static public int[] costWood;
+	static public int[] costIron;
+	static public int[] costWood;
 
-    // starting structures
-    static public bool StartingTower=true;
-    static public bool StartingPlatform = true;
+	// starting structures
+	static public bool StartingTower = true;
+	static public bool StartingPlatform = true;
 
 	static public int platformManaCost = 5;
 
@@ -145,15 +146,15 @@ public partial class Globals : Node
 	static public int[,] coststatUpgrade;
 
 	static public int MAXUPGRADES = 5;
-    static public int[] statUpgradeLevel;
+	static public int[] statUpgradeLevel;
 
 	static public int MAXRELICS = 7;
 
-    static public bool[] hasRelic;
+	static public bool[] hasRelic;
 
 	static public float settings_SFXVolume = 0;
-    static public float settings_MusicVolume = 0;
-    static public float settings_MasterVolume = 0;
+	static public float settings_MusicVolume = 0;
+	static public float settings_MasterVolume = 0;
 
     static public bool settings_FullScreen = true;
     static public bool settings_ShowFPS = false;
@@ -163,21 +164,21 @@ public partial class Globals : Node
 	static public bool settings_Decorations = true;
 	static public bool settings_PlayerGhost = true;
 
-    static public float healingModifier = .5f;
-    static public float fireTime = 6; // how long the big fire lasts in world
-    static public float flameTime=2.5f; // how long the flame on enemy lasts
+	static public float healingModifier = .5f;
+	static public float fireTime = 6; // how long the big fire lasts in world
+	static public float flameTime = 2.5f; // how long the flame on enemy lasts
 
 	static public int screenWidth;
-    static public int screenHeight;
+	static public int screenHeight;
 
 	static public TextureButton btnBack;
 
 	static public Globals instance;
 
-    static public PackedScene TitleScene;
-    static public PackedScene StatUpgradesScene;
-    static public PackedScene OptionsScene;
-    static public PackedScene WorldScene;
+	static public PackedScene TitleScene;
+	static public PackedScene StatUpgradesScene;
+	static public PackedScene OptionsScene;
+	static public PackedScene WorldScene;
 
 	static public bool canUnPause = true;
 
@@ -197,7 +198,7 @@ public partial class Globals : Node
 	static public int bestTimeMinutes;
     static public int bestTimeSeconds;
 
-    public override void _Ready()
+	public override void _Ready()
 	{
 		instance = this;
 		// init scenes
@@ -292,37 +293,37 @@ public partial class Globals : Node
         ToggleNight();
     }
 
-    private void Input_JoyConnectionChanged(long device, bool connected)
-    {
-        if (connected)
-            Debug.Print("Gamepad connected: " + device);
-        else
-            Debug.Print("Gamepad disconnected: " + device);
-
-        //throw new NotImplementedException();
-    }
-
-
-
-    static public void UpdateStatLevels()
+	private void Input_JoyConnectionChanged(long device, bool connected)
 	{
-        // stat attack speed   0-.625
-        statAtkSpd = (float)statUpgradeLevel[0]/8.0f;
+		if (connected)
+			Debug.Print("Gamepad connected: " + device);
+		else
+			Debug.Print("Gamepad disconnected: " + device);
+
+		//throw new NotImplementedException();
+	}
+
+
+
+	static public void UpdateStatLevels()
+	{
+		// stat attack speed   0-.625
+		statAtkSpd = (float)statUpgradeLevel[0] / 8.0f;
 
 		// statDamage   1-26
-        statDamage = 1.0f+(float)statUpgradeLevel[1]* statUpgradeLevel[1];
-        
+		statDamage = 1.0f + (float)statUpgradeLevel[1] * statUpgradeLevel[1];
+
 		// statAoE   
-		statAoE= (float)statUpgradeLevel[2]/1.5f;
-		if (ps!=null)
+		statAoE = (float)statUpgradeLevel[2] / 1.5f;
+		if (ps != null)
 			ps.SetAllAoE(); // update all existing attack AoE
 
 		// statMovementSpeed
         statPermSpeed = (float)statUpgradeLevel[3];
 
-        // statArmor
-        statArmor = (int)statUpgradeLevel[4]* statUpgradeLevel[4];
-    }
+		// statArmor
+		statArmor = (int)statUpgradeLevel[4] * statUpgradeLevel[4];
+	}
 
 	public void Initialize()
 	{
@@ -330,16 +331,16 @@ public partial class Globals : Node
 		//await Task.Delay(TimeSpan.FromMilliseconds(40));
 
 
-        if (lblAttack != null)
+		if (lblAttack != null)
 		{
 			ResourceDiscoveries.UpdateResourceGUI();
 			UpdateStatsGUI();
-            if (Globals.lblAttack != null)
-                Stats.UpdateStats();
+			if (Globals.lblAttack != null)
+				Stats.UpdateStats();
 		}
 
-        // show map
-        ResourceDiscoveries.mapNotPressed = false;
+		// show map
+		ResourceDiscoveries.mapNotPressed = false;
 		if (IsInstanceValid(this))
 		{
             Node2D miniMap = (Node2D)GetNode(Globals.NodeMiniMap);
@@ -352,7 +353,7 @@ public partial class Globals : Node
         }
 
 
-		settingsLoaded= true;
+		settingsLoaded = true;
 
         if (settings_ShowFPS)
         {
@@ -456,9 +457,9 @@ public partial class Globals : Node
 		weaponTypeUnlocked[0] = true; // slash
 		weaponTypeUnlocked[1] = true; // projectile
 		weaponTypeUnlocked[2] = false; // cross
-        weaponTypeUnlocked[3] = true; // orbit
-                                       // elements
-        weaponTypeUnlocked[11] = false; // fire
+		weaponTypeUnlocked[3] = true; // orbit
+									  // elements
+		weaponTypeUnlocked[11] = false; // fire
 
         costIron[0] = 2; // blacksmith
         costIron[2] = 1; // herbalist
@@ -494,7 +495,7 @@ public partial class Globals : Node
 	static public void SetMaxHP()
 	{
 		MaxHP = 90 + HPInc * HPLevel * HPLevel;
-        if (hpBar != null)
+		if (hpBar != null)
 			if (IsInstanceValid(hpBar))
 				hpBar.Value = HP / MaxHP;
 	}
@@ -599,8 +600,8 @@ public partial class Globals : Node
 			SaveLoad.LoadSettings();
 			//LoadGameState();
 		}
-            // For testing
-        if (Input.IsKeyPressed(Key.U)) // Upgrade test
+		// For testing
+		if (Input.IsKeyPressed(Key.U)) // Upgrade test
 		{
 			Globals.ShowUpgrades();
 
@@ -616,8 +617,8 @@ public partial class Globals : Node
 			//Globals.DamagePlayer(999999);
 		}
 
-            // reset game save
-        if (Input.IsActionJustPressed("reset"))
+		// reset game save
+		if (Input.IsActionJustPressed("reset"))
 		{
 			ResetStats();
         }
@@ -690,12 +691,12 @@ public partial class Globals : Node
         StatUpgrades su = (StatUpgrades)nd;
         su.UpdateAllSlots();
 
-        // update GUI
-        StatUpgrades.lblGold.Text = ResourceDiscoveries.gold.ToString();
+		// update GUI
+		StatUpgrades.lblGold.Text = ResourceDiscoveries.gold.ToString();
 
 
-        btnUpgrade.DisableButton();
-    }
+		btnUpgrade.DisableButton();
+	}
 
 	static public void AddXP(float xAdd)
 	{
@@ -716,7 +717,7 @@ public partial class Globals : Node
 		if (playerShieldActive == false && ps.canBeDamaged && playerAlive)
 		{
 			ps.PlayHurtSound();
-			xDmg = xDmg - GD.RandRange(0, armorLevel+Globals.statArmor);
+			xDmg = xDmg - GD.RandRange(0, armorLevel + Globals.statArmor);
 
 			if (xDmg > 0)
 			{
@@ -753,22 +754,22 @@ public partial class Globals : Node
 	static async void ShowPlayerHeal()
 	{
 		ps.animatedSprite2D.Modulate = new Color(0, 0, 1, 1);
-        ps.animatedSprite2DTop.Modulate = new Color(0, 0, 1, .5f);
-        // wait a bit
-        await Task.Delay(TimeSpan.FromMilliseconds(100));
+		ps.animatedSprite2DTop.Modulate = new Color(0, 0, 1, .5f);
+		// wait a bit
+		await Task.Delay(TimeSpan.FromMilliseconds(100));
 		ps.animatedSprite2D.Modulate = new Color(1, 1, 1, 1);
-        ps.animatedSprite2DTop.Modulate = new Color(1, 1, 1, .5f);
-    }
+		ps.animatedSprite2DTop.Modulate = new Color(1, 1, 1, .5f);
+	}
 
 	static async void ShowPlayerDamage()
 	{
 		ps.animatedSprite2D.Modulate = new Color(1, 0, 0, 1);
-        ps.animatedSprite2DTop.Modulate = new Color(1, 0, 0, .5f);
-        // wait a bit
-        await Task.Delay(TimeSpan.FromMilliseconds(100));
+		ps.animatedSprite2DTop.Modulate = new Color(1, 0, 0, .5f);
+		// wait a bit
+		await Task.Delay(TimeSpan.FromMilliseconds(100));
 		ps.animatedSprite2D.Modulate = new Color(1, 1, 1, 1);
-        ps.animatedSprite2DTop.Modulate = new Color(1, 1, 1, .5f);
-    }
+		ps.animatedSprite2DTop.Modulate = new Color(1, 1, 1, .5f);
+	}
 	static private void CheckNextLevel()
 	{
 		if (XP >= XPGoal)
@@ -832,6 +833,21 @@ public partial class Globals : Node
 		}
 
 		Debug.Print("up1:" + UGname1 + " up2:" + UGname2 + " up3:" + UGname3);
+
+		Control ctlUp1 = (Control)upgrade1.GetChild(0);
+		Control ctlUp2 = (Control)upgrade2.GetChild(0);
+		Control ctlUp3 = (Control)upgrade3.GetChild(0);
+		NodePath up1 = ctlUp1.GetPath();
+		NodePath up2 = ctlUp2.GetPath();
+		NodePath up3 = ctlUp3.GetPath();
+
+		ctlUp1.SetFocusNeighbor(Side.Right, up2);
+		ctlUp2.SetFocusNeighbor(Side.Right, up3);
+		ctlUp2.SetFocusNeighbor(Side.Left, up1);
+		ctlUp3.SetFocusNeighbor(Side.Left, up2);
+
+		ctlUp2.GrabFocus();
+
 		PauseGame();
 	}
 
@@ -852,14 +868,14 @@ public partial class Globals : Node
 	{
         if (ps != null && lblMaxHealth!=null && IsInstanceValid(lblMaxHealth))
 		{
-            lblMaxHealth.Text = HPLevel.ToString();
-            lblMovementSpeed.Text = speedLevel.ToString();
-            lblMagnetism.Text = magenetismLevel.ToString();
-            lblArmor.Text = armorLevel.ToString();
-            lblAttack.Text = attackLevel.ToString();
-            lblTowerLevel.Text = towerLevel.ToString();
-            lblGolemLevel.Text = golemLevel.ToString();
-        }
+			lblMaxHealth.Text = HPLevel.ToString();
+			lblMovementSpeed.Text = speedLevel.ToString();
+			lblMagnetism.Text = magenetismLevel.ToString();
+			lblArmor.Text = armorLevel.ToString();
+			lblAttack.Text = attackLevel.ToString();
+			lblTowerLevel.Text = towerLevel.ToString();
+			lblGolemLevel.Text = golemLevel.ToString();
+		}
 
 	}
 
@@ -870,14 +886,14 @@ public partial class Globals : Node
 		snd.Play();
 	}
 
-    static public void PlayRandomizedSound2D(AudioStreamPlayer2D snd)
-    {
-        snd.VolumeDb = GD.RandRange(-6, 6);
-        snd.PitchScale = (float)GD.RandRange(.79f, 1.21f);
-        snd.Play();
-    }
+	static public void PlayRandomizedSound2D(AudioStreamPlayer2D snd)
+	{
+		snd.VolumeDb = GD.RandRange(-6, 6);
+		snd.PitchScale = (float)GD.RandRange(.79f, 1.21f);
+		snd.Play();
+	}
 
-    static public void UpdateEnemies()
+	static public void UpdateEnemies()
 	{
         GD.PrintRich("[color=blue]Enemies: [/color]" + enemies +" - "+ ResourceDiscoveries.minutes.ToString()+ ":"+ResourceDiscoveries.seconds.ToString()+" - FPS:"+ Engine.GetFramesPerSecond().ToString());
 
@@ -901,36 +917,36 @@ public partial class Globals : Node
 
     static public void SetTowerLevel()
 	{
-            ResourceDiscovery[] rD = GetStructures("Tower"); // get all towers
-			// set level of tower
-			foreach (ResourceDiscovery rd in rD)
-			{
-                rd.SetTowerLevel();
-            }
+		ResourceDiscovery[] rD = GetStructures("Tower"); // get all towers
+														 // set level of tower
+		foreach (ResourceDiscovery rd in rD)
+		{
+			rd.SetTowerLevel();
+		}
 	}
 
-    // gets an array of ResourceDiscoveries that are in the Node Group "Tower"
-    static private ResourceDiscovery[] GetStructures(string resourceName)
+	// gets an array of ResourceDiscoveries that are in the Node Group "Tower"
+	static private ResourceDiscovery[] GetStructures(string resourceName)
 	{
-        var mainLoop = Godot.Engine.GetMainLoop();
-        var sceneTree = mainLoop as SceneTree;
+		var mainLoop = Godot.Engine.GetMainLoop();
+		var sceneTree = mainLoop as SceneTree;
 
-        var rds = sceneTree.GetNodesInGroup(resourceName);
-        ResourceDiscovery[] blockList = new ResourceDiscovery[rds.Count];
-        for (int i = 0; i < rds.Count; i++)
-        {
-            blockList[i] = (ResourceDiscovery)rds[i];
+		var rds = sceneTree.GetNodesInGroup(resourceName);
+		ResourceDiscovery[] blockList = new ResourceDiscovery[rds.Count];
+		for (int i = 0; i < rds.Count; i++)
+		{
+			blockList[i] = (ResourceDiscovery)rds[i];
 
-        }
+		}
 
-        return blockList;
-    }
+		return blockList;
+	}
 
-    // returns how many relics have not been found yet
+	// returns how many relics have not been found yet
 	static public int GetRelicsNeeded()
 	{
 		int needed = 0;
-		for (int i = 0;i<MAXRELICS;i++)
+		for (int i = 0; i < MAXRELICS; i++)
 		{
 			if (hasRelic[i] == false)
 			{
@@ -943,10 +959,10 @@ public partial class Globals : Node
 
 	public void SetVolumes()
 	{
-		Debug.Print("volume settings_MusicVolume:"+ settings_MusicVolume);
-		AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("SFX"),settings_SFXVolume);
-        AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Music"), settings_MusicVolume);
-        AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Master"), settings_MasterVolume);
-        Debug.Print("volume AudioServer.GetBusIndex(\"Music\"), settings_MusicVolume:" + AudioServer.GetBusVolumeDb(AudioServer.GetBusIndex("Music")));
-    }
+		Debug.Print("volume settings_MusicVolume:" + settings_MusicVolume);
+		AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("SFX"), settings_SFXVolume);
+		AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Music"), settings_MusicVolume);
+		AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Master"), settings_MasterVolume);
+		Debug.Print("volume AudioServer.GetBusIndex(\"Music\"), settings_MusicVolume:" + AudioServer.GetBusVolumeDb(AudioServer.GetBusIndex("Music")));
+	}
 }

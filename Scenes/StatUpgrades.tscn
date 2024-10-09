@@ -211,9 +211,14 @@ size_flags_vertical = 6
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../../MCUpgrade4/VBoxContainer")
+focus_neighbor_top = NodePath("../../MCbtnReset/TextureButton")
+focus_neighbor_right = NodePath("../../MCbtnReset/TextureButton")
+focus_neighbor_bottom = NodePath(".")
 texture_normal = ExtResource("8_3j46r")
 texture_hover = ExtResource("13_4kpsi")
 texture_disabled = ExtResource("9_trcln")
+texture_focused = ExtResource("13_4kpsi")
 script = ExtResource("23_wn04p")
 
 [node name="lblUpgrade" type="Label" parent="Control/TextureRect/MCbtnUpgrade/TextureButton"]
@@ -249,9 +254,15 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../MCbtnUpgrade/TextureButton")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../MCbtnUpgrade/TextureButton")
+focus_next = NodePath("../../../../ctlConfirm/btnNo")
 texture_normal = ExtResource("8_3j46r")
 texture_hover = ExtResource("13_4kpsi")
 texture_disabled = ExtResource("9_trcln")
+texture_focused = ExtResource("13_4kpsi")
 script = ExtResource("23_wn04p")
 
 [node name="lblReset" type="Label" parent="Control/TextureRect/MCbtnReset/TextureButton"]
@@ -343,9 +354,14 @@ theme_override_constants/margin_bottom = 40
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../MCUpgrade1/VBoxContainer")
+focus_neighbor_right = NodePath("../../MCUpgrade4/VBoxContainer")
+focus_neighbor_bottom = NodePath(".")
 texture_normal = ExtResource("8_3j46r")
 texture_hover = ExtResource("13_4kpsi")
 texture_disabled = ExtResource("9_trcln")
+texture_focused = ExtResource("13_4kpsi")
 
 [node name="lblBack" type="Label" parent="Control/MCbtnBack/TextureButton"]
 layout_mode = 1
@@ -391,6 +407,11 @@ upgradeName = "Attack Speed"
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/MCUpgrade0"]
 layout_mode = 2
 size_flags_vertical = 0
+focus_neighbor_left = NodePath("../../MCUpgrade1/VBoxContainer")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath("../../MCUpgrade3/VBoxContainer")
+focus_neighbor_bottom = NodePath("../../MCUpgrade2/VBoxContainer")
+focus_mode = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="Control/MCUpgrade0/VBoxContainer"]
 custom_minimum_size = Vector2(132, 130)
@@ -512,6 +533,11 @@ upgradeNum = 1
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/MCUpgrade1"]
 layout_mode = 2
 size_flags_vertical = 0
+focus_neighbor_left = NodePath("../../MCbtnBack/TextureButton")
+focus_neighbor_top = NodePath("../../MCUpgrade0/VBoxContainer")
+focus_neighbor_right = NodePath("../../MCUpgrade2/VBoxContainer")
+focus_neighbor_bottom = NodePath("../../MCUpgrade4/VBoxContainer")
+focus_mode = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="Control/MCUpgrade1/VBoxContainer"]
 custom_minimum_size = Vector2(132, 130)
@@ -633,6 +659,11 @@ upgradeNum = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/MCUpgrade2"]
 layout_mode = 2
 size_flags_vertical = 0
+focus_neighbor_left = NodePath("../../MCUpgrade1/VBoxContainer")
+focus_neighbor_top = NodePath("../../MCUpgrade0/VBoxContainer")
+focus_neighbor_right = NodePath("../../MCUpgrade3/VBoxContainer")
+focus_neighbor_bottom = NodePath("../../MCUpgrade4/VBoxContainer")
+focus_mode = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="Control/MCUpgrade2/VBoxContainer"]
 custom_minimum_size = Vector2(132, 130)
@@ -754,6 +785,11 @@ upgradeNum = 3
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/MCUpgrade3"]
 layout_mode = 2
 size_flags_vertical = 0
+focus_neighbor_left = NodePath("../../MCUpgrade2/VBoxContainer")
+focus_neighbor_top = NodePath("../../MCUpgrade0/VBoxContainer")
+focus_neighbor_right = NodePath("../../TextureRect/MCbtnUpgrade/TextureButton")
+focus_neighbor_bottom = NodePath("../../MCUpgrade4/VBoxContainer")
+focus_mode = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="Control/MCUpgrade3/VBoxContainer"]
 custom_minimum_size = Vector2(132, 130)
@@ -875,6 +911,11 @@ upgradeNum = 4
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/MCUpgrade4"]
 layout_mode = 2
 size_flags_vertical = 0
+focus_neighbor_left = NodePath("../../MCbtnBack/TextureButton")
+focus_neighbor_top = NodePath("../../MCUpgrade2/VBoxContainer")
+focus_neighbor_right = NodePath("../../TextureRect/MCbtnUpgrade/TextureButton")
+focus_neighbor_bottom = NodePath(".")
+focus_mode = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="Control/MCUpgrade4/VBoxContainer"]
 custom_minimum_size = Vector2(132, 130)
@@ -1031,9 +1072,14 @@ offset_right = 584.0
 offset_bottom = 285.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_neighbor_left = NodePath("../btnNo")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
 texture_normal = ExtResource("8_3j46r")
 texture_hover = ExtResource("13_4kpsi")
 texture_disabled = ExtResource("9_trcln")
+texture_focused = ExtResource("13_4kpsi")
 script = ExtResource("23_wn04p")
 
 [node name="lblYes" type="Label" parent="ctlConfirm/btnYes"]
@@ -1063,9 +1109,14 @@ offset_right = 256.0
 offset_bottom = 285.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath("../btnYes")
+focus_neighbor_bottom = NodePath(".")
 texture_normal = ExtResource("8_3j46r")
 texture_hover = ExtResource("13_4kpsi")
 texture_disabled = ExtResource("9_trcln")
+texture_focused = ExtResource("13_4kpsi")
 script = ExtResource("23_wn04p")
 
 [node name="lblNo" type="Label" parent="ctlConfirm/btnNo"]
@@ -1106,16 +1157,28 @@ color = Color(0, 0, 0, 1)
 
 [connection signal="pressed" from="Control/TextureRect/MCbtnUpgrade/TextureButton" to="Control/TextureRect/MCbtnUpgrade/TextureButton" method="ClickButton"]
 [connection signal="pressed" from="Control/TextureRect/MCbtnReset/TextureButton" to="." method="ShowConfirm"]
+[connection signal="focus_entered" from="Control/MCbtnBack/TextureButton" to="." method="BackEntered"]
+[connection signal="focus_exited" from="Control/MCbtnBack/TextureButton" to="." method="BackExited"]
 [connection signal="mouse_entered" from="Control/MCbtnBack/TextureButton" to="." method="BackEntered"]
 [connection signal="mouse_exited" from="Control/MCbtnBack/TextureButton" to="." method="BackExited"]
+[connection signal="focus_entered" from="Control/MCUpgrade0/VBoxContainer" to="Control/MCUpgrade0" method="OnMouseEntered"]
+[connection signal="focus_exited" from="Control/MCUpgrade0/VBoxContainer" to="Control/MCUpgrade0" method="OnMouseExited"]
 [connection signal="mouse_entered" from="Control/MCUpgrade0/VBoxContainer" to="Control/MCUpgrade0" method="OnMouseEntered"]
 [connection signal="mouse_exited" from="Control/MCUpgrade0/VBoxContainer" to="Control/MCUpgrade0" method="OnMouseExited"]
+[connection signal="focus_entered" from="Control/MCUpgrade1/VBoxContainer" to="Control/MCUpgrade1" method="OnMouseEntered"]
+[connection signal="focus_exited" from="Control/MCUpgrade1/VBoxContainer" to="Control/MCUpgrade1" method="OnMouseExited"]
 [connection signal="mouse_entered" from="Control/MCUpgrade1/VBoxContainer" to="Control/MCUpgrade1" method="OnMouseEntered"]
 [connection signal="mouse_exited" from="Control/MCUpgrade1/VBoxContainer" to="Control/MCUpgrade1" method="OnMouseExited"]
+[connection signal="focus_entered" from="Control/MCUpgrade2/VBoxContainer" to="Control/MCUpgrade2" method="OnMouseEntered"]
+[connection signal="focus_exited" from="Control/MCUpgrade2/VBoxContainer" to="Control/MCUpgrade2" method="OnMouseExited"]
 [connection signal="mouse_entered" from="Control/MCUpgrade2/VBoxContainer" to="Control/MCUpgrade2" method="OnMouseEntered"]
 [connection signal="mouse_exited" from="Control/MCUpgrade2/VBoxContainer" to="Control/MCUpgrade2" method="OnMouseExited"]
+[connection signal="focus_entered" from="Control/MCUpgrade3/VBoxContainer" to="Control/MCUpgrade3" method="OnMouseEntered"]
+[connection signal="focus_exited" from="Control/MCUpgrade3/VBoxContainer" to="Control/MCUpgrade3" method="OnMouseExited"]
 [connection signal="mouse_entered" from="Control/MCUpgrade3/VBoxContainer" to="Control/MCUpgrade3" method="OnMouseEntered"]
 [connection signal="mouse_exited" from="Control/MCUpgrade3/VBoxContainer" to="Control/MCUpgrade3" method="OnMouseExited"]
+[connection signal="focus_entered" from="Control/MCUpgrade4/VBoxContainer" to="Control/MCUpgrade4" method="OnMouseEntered"]
+[connection signal="focus_exited" from="Control/MCUpgrade4/VBoxContainer" to="Control/MCUpgrade4" method="OnMouseExited"]
 [connection signal="mouse_entered" from="Control/MCUpgrade4/VBoxContainer" to="Control/MCUpgrade4" method="OnMouseEntered"]
 [connection signal="mouse_exited" from="Control/MCUpgrade4/VBoxContainer" to="Control/MCUpgrade4" method="OnMouseExited"]
 [connection signal="pressed" from="ctlConfirm/btnYes" to="." method="ConfirmYes"]

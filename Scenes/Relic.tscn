@@ -38,16 +38,14 @@ gradient = SubResource("Gradient_iiffp")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jdpoq"]
 lifetime_randomness = 0.39
+particle_flag_disable_z = true
 emission_shape = 1
 emission_sphere_radius = 30.33
-particle_flag_disable_z = true
 direction = Vector3(0, -250, 0)
 spread = 31.86
-gravity = Vector3(0, 300, 0)
 initial_velocity_min = 715.33
 initial_velocity_max = 788.43
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
+gravity = Vector3(0, 300, 0)
 linear_accel_min = 58.4
 linear_accel_max = 74.46
 scale_min = 0.03
@@ -66,12 +64,10 @@ gradient = SubResource("Gradient_jl6ig")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cdwv5"]
 lifetime_randomness = 0.32
+particle_flag_disable_z = true
 emission_shape = 1
 emission_sphere_radius = 52.75
-particle_flag_disable_z = true
 gravity = Vector3(0, 40, 0)
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
 color_ramp = SubResource("GradientTexture1D_0v3on")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m2wgp"]
