@@ -13,9 +13,6 @@
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": null
-}, {
-"duration": 1.0,
 "texture": ExtResource("1_g1okb")
 }, {
 "duration": 1.0,

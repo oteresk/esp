@@ -22,7 +22,6 @@ shader_parameter/noise_texture = SubResource("NoiseTexture2D_02sox")
 layer = 1
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="."]
-modulate = Color(0.643137, 0.631373, 1, 1)
 motion_mirroring = Vector2(1920, 1080)
 
 [node name="ColorRect" type="ColorRect" parent="ParallaxLayer"]

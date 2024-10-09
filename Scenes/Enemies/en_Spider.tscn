@@ -14,13 +14,10 @@ shader_parameter/flash_color = Color(1, 0, 0, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
 animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("3_gqysb")
-}],
-"loop": false,
+"frames": [],
+"loop": true,
 "name": &"Death",
-"speed": 16.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -40,7 +37,7 @@ height = 28.331
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7wo8c"]
 
-[node name="en_Spider" type="RigidBody2D" node_paths=PackedStringArray("enemyNoise", "enemyDeathSound") groups=["Enemies"]]
+[node name="en_Spider" type="RigidBody2D" node_paths=PackedStringArray("enemyNoise") groups=["Enemies"]]
 collision_layer = 2
 collision_mask = 2
 mass = 0.01
@@ -55,7 +52,6 @@ damage = 3
 damageTime = 4
 XP = 6
 enemyNoise = []
-enemyDeathSound = []
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1

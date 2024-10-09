@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://d4cgrsns2jj4f"]
+[gd_scene load_steps=21 format=3 uid="uid://d4cgrsns2jj4f"]
 
 [ext_resource type="Script" path="res://Scripts/enemy.cs" id="1_oj8ul"]
 [ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_7c3o3"]
@@ -16,9 +16,6 @@
 [ext_resource type="Texture2D" uid="uid://bi44e0tsy2koy" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_10.png" id="14_y0afu"]
 [ext_resource type="Texture2D" uid="uid://d36krh4lqqdxp" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_11.png" id="15_0kdcy"]
 [ext_resource type="Texture2D" uid="uid://b2kpswqaptbes" path="res://Art/Enemy-sprites/PoisonSlime/PoisonSlime-animation_12.png" id="16_81i2q"]
-[ext_resource type="AudioStream" uid="uid://di012nuwxtbg0" path="res://Audio/SFX/Squish1.ogg" id="17_5mmxx"]
-[ext_resource type="AudioStream" uid="uid://diy52vnk1b44s" path="res://Audio/SFX/Squish2.ogg" id="18_wpfex"]
-[ext_resource type="AudioStream" uid="uid://mn3s2t60jtun" path="res://Audio/SFX/Squish3.ogg" id="19_rncaj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_j2qla"]
 resource_local_to_scene = true
@@ -28,13 +25,10 @@ shader_parameter/flash_color = Color(1, 0, 0, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7y2m0"]
 animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("4_3rlw4")
-}],
-"loop": false,
+"frames": [],
+"loop": true,
 "name": &"Death",
-"speed": 120.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -87,7 +81,7 @@ height = 52.0246
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bxtip"]
 
-[node name="en_PoisonSlime" type="RigidBody2D" node_paths=PackedStringArray("enemyNoise", "enemyDeathSound") groups=["Enemies"]]
+[node name="en_PoisonSlime" type="RigidBody2D" node_paths=PackedStringArray("enemyNoise") groups=["Enemies"]]
 modulate = Color(0.054902, 1, 0.301961, 1)
 light_mask = 2
 visibility_layer = 2
@@ -107,7 +101,6 @@ leavesTrail = true
 enemyName = "Poison Slime"
 XP = 8
 enemyNoise = []
-enemyDeathSound = [NodePath("enemyDeathSound1"), NodePath("enemyDeathSound2"), NodePath("enemyDeathSound3")]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -133,27 +126,6 @@ monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
 scale = Vector2(140, 90)
 shape = SubResource("RectangleShape2D_bxtip")
-
-[node name="enemyDeathSound1" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("17_5mmxx")
-volume_db = 5.547
-max_distance = 1800.0
-panning_strength = 3.0
-bus = &"SFX"
-
-[node name="enemyDeathSound2" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("18_wpfex")
-volume_db = 5.547
-max_distance = 1800.0
-panning_strength = 3.0
-bus = &"SFX"
-
-[node name="enemyDeathSound3" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("19_rncaj")
-volume_db = 5.547
-max_distance = 1800.0
-panning_strength = 3.0
-bus = &"SFX"
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="AnimationFinished"]
 [connection signal="frame_changed" from="AnimatedSprite2D" to="." method="FrameChanged"]

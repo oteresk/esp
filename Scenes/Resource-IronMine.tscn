@@ -1,29 +1,15 @@
-[gd_scene load_steps=14 format=3 uid="uid://btwxpde08w643"]
+[gd_scene load_steps=12 format=3 uid="uid://btwxpde08w643"]
 
 [ext_resource type="Texture2D" uid="uid://c17ydqj1oygfj" path="res://Art/Resources/Iron Mine.png" id="1_4rjnv"]
 [ext_resource type="Script" path="res://Scripts/ResourceDiscovery.cs" id="1_iewui"]
 [ext_resource type="Shader" path="res://Shaders/SaturationShader.gdshader" id="1_k61yw"]
-[ext_resource type="Script" path="res://Scripts/ResourceDiscoveryResource.cs" id="4_ao2oq"]
+[ext_resource type="Resource" uid="uid://blji6kurt5pcl" path="res://ResourceDiscoveries/IronMine.tres" id="2_txmhu"]
 [ext_resource type="PackedScene" uid="uid://d2xu8yw5qkaq" path="res://Scenes/CaptureTimer.tscn" id="5_xb7x2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_spxbx"]
 resource_local_to_scene = true
 shader = ExtResource("1_k61yw")
 shader_parameter/saturation = null
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8f5nc"]
-load_path = "res://.godot/imported/Iron Mine.png-2f164d1ddecefeccfa7932beb20f501b.ctex"
-
-[sub_resource type="Resource" id="Resource_eqk0v"]
-resource_local_to_scene = true
-script = ExtResource("4_ao2oq")
-sprImage = SubResource("CompressedTexture2D_8f5nc")
-resourceType = 0
-amount = 1.0
-amountMax = 0.0
-freq = 1.0
-recoverType = 0
-spriteScale = 0.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fvjvk"]
 radius = 471.038
@@ -48,7 +34,7 @@ material = SubResource("ShaderMaterial_spxbx")
 texture = ExtResource("1_4rjnv")
 offset = Vector2(0, -30)
 script = ExtResource("1_iewui")
-RDResource = SubResource("Resource_eqk0v")
+RDResource = ExtResource("2_txmhu")
 resourceCaptureSpeed = 0.6
 
 [node name="Area2D" type="Area2D" parent="." groups=["ResourceDiscovery"]]
@@ -65,10 +51,7 @@ color = Color(0.54902, 0.776471, 1, 1)
 energy = 2.16
 texture = SubResource("GradientTexture2D_dyhuy")
 
-[node name="Occlusion Area Collider" type="Area2D" parent="." groups=["Occlusion"]]
-collision_layer = 4
-collision_mask = 0
-monitoring = false
+[node name="Occlusion Area Collider" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
 scale = Vector2(140, 90)
@@ -82,4 +65,6 @@ shape = SubResource("CircleShape2D_7c1gb")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
+[connection signal="area_entered" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_entered"]
+[connection signal="area_exited" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_exited"]
 [connection signal="area_entered" from="Discovery Area Collider" to="." method="OnDiscoveryColliderEnter"]

@@ -16,13 +16,13 @@ public partial class btnUpgrade : TextureButton
     public async void DelayedStart()
     {
         // wait a bit
-        await Task.Delay(TimeSpan.FromMilliseconds(30));
+        await Task.Delay(TimeSpan.FromMilliseconds(200));
 
-        Node upgradeNode = Globals.rootNode.GetNode("StatUpgrades/Control/TextureRect/MCbtnUpgrade/TextureButton/lblUpgrade");
+        Node upgradeNode = Globals.rootNode.GetNode("Control/TextureRect/MCbtnUpgrade/TextureButton/lblUpgrade");
         lblUpgrade = (Label)upgradeNode;
         lblUpgrade.Modulate = new Color(1, 1, 1, .5f);
 
-        upgradeNode = Globals.rootNode.GetNode("StatUpgrades/Control/TextureRect/MCbtnUpgrade/TextureButton");
+        upgradeNode = Globals.rootNode.GetNode("Control/TextureRect/MCbtnUpgrade/TextureButton");
         textureButtonUpgrade = (TextureButton)upgradeNode;
         textureButtonUpgrade.Disabled = true;
 
@@ -46,7 +46,7 @@ public partial class btnUpgrade : TextureButton
 
     public void ClickButton()
     {
-        //Debug.Print("Upgrade: " + StatUpgrades.curUpgradeNum);
+        Debug.Print("Upgrade: " + StatUpgrades.curUpgradeNum);
         if (StatUpgrades.curUpgradeNum>=0)
         {
             if (ResourceDiscoveries.gold >= Globals.coststatUpgrade[StatUpgrades.curUpgradeNum, Globals.statUpgradeLevel[StatUpgrades.curUpgradeNum]])
@@ -64,35 +64,35 @@ public partial class btnUpgrade : TextureButton
                 SaveLoad.SaveGame();
 
                 // Update slots
-                Node nd = Globals.rootNode.GetNode("StatUpgrades");
+                Node nd = Globals.rootNode.GetNode(".");
                 StatUpgrades su = (StatUpgrades)nd;
                 su.UpdateAllSlots();
 
-                //Debug.Print("curUpgradeNum:" + StatUpgrades.curUpgradeNum);
+                Debug.Print("curUpgradeNum:" + StatUpgrades.curUpgradeNum);
 
                 // update cost label
                 if (Globals.statUpgradeLevel[StatUpgrades.curUpgradeNum] < Globals.MAXUPGRADES) // if upgrade not maxed out
                 {
-                    StatUpgrades.lblCost.Text = "Cost: " + Globals.coststatUpgrade[StatUpgrades.curUpgradeNum, Globals.statUpgradeLevel[StatUpgrades.curUpgradeNum]].ToString();
+                    StatUpgrades.lblCost.Text = Globals.coststatUpgrade[StatUpgrades.curUpgradeNum, Globals.statUpgradeLevel[StatUpgrades.curUpgradeNum]].ToString();
 
                     // check if can afford next upgrade
                     if (!StatUpgrades.sUpgrade.CheckUpgrade())
                     {
-                        Debug.Print("Upgrade Disabled");
+                        Debug.Print("Disabled");
                         btnUpgrade.DisableButton();
                     }
                     else
                     {
                         // check if upgrade is maxed out
-                        //Debug.Print("Globals.statUpgradeLevel[upgradeNum]: " + Globals.statUpgradeLevel[StatUpgrades.curUpgradeNum]);
+                        Debug.Print("Globals.statUpgradeLevel[upgradeNum]: " + Globals.statUpgradeLevel[StatUpgrades.curUpgradeNum]);
                         if (Globals.statUpgradeLevel[StatUpgrades.curUpgradeNum] < Globals.MAXUPGRADES)
                         {
-                            Debug.Print("Upgrade Enabled");
+                            Debug.Print("Enabled");
                             btnUpgrade.EnableButton();
                         }
                         else
                         {
-                            Debug.Print("Upgrade Disabled");
+                            Debug.Print("Disabled");
                             btnUpgrade.DisableButton();
                             // reset selUpgrade
                             StatUpgrades.ResetUpgrade();
