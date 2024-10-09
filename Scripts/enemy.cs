@@ -8,7 +8,6 @@ using System.Text;
 using static System.Net.Mime.MediaTypeNames;
 using System.Security.Cryptography;
 using System.Xml;
-using System.Linq;
 
 public partial class enemy : RigidBody2D
 {
@@ -59,28 +58,16 @@ public partial class enemy : RigidBody2D
     private int flipCounter = 0;
 
     [Export] public AudioStreamPlayer2D[] enemyNoise;
-    [Export] public AudioStreamPlayer2D[] enemyDeathSound;
+    [Export] public AudioStreamPlayer2D enemyDeathSound;
     [Export] public AudioStreamPlayer2D enemyAttackSound;
 
     [Export] public PackedScene bloodScene;
     [Export] public Color bloodColor;
     private Node2D newBlood;
     [Export] public int bloodFrame;
-    private Vector2 offset;
-    private bool occluded = false;
-    private float occlusionDistance = 920;
-    private float randOcclusionVariance;
-
-    Node colNode;
-    CollisionShape2D col;
 
     public override void _Ready()
     {
-        offset=new Vector2(0, -36);
-        randOcclusionVariance = GD.RandRange(0, 400);
-        colNode = (Node)GetNode("CollisionShape2D2");
-        col = (CollisionShape2D)colNode;
-
         if (randomAttackRange > 0)
             attackRange += (float)GD.RandRange(-randomAttackRange, randomAttackRange);
         enemySprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
@@ -104,7 +91,7 @@ public partial class enemy : RigidBody2D
         if (enemyName == "Floating Skull")
             FloatingSkullMovement();
 
-        PlayRandomSound(enemyNoise); // plays a random enemy noise
+        PlayRandomNoise(); // plays a random enemy noise
 
         Globals.enemies++;
         Globals.UpdateEnemies();
@@ -112,17 +99,17 @@ public partial class enemy : RigidBody2D
         Name="Bat"+Globals.enemies.ToString();
     }
 
-    private async void PlayRandomSound(AudioStreamPlayer2D[] eSound)
+    private async void PlayRandomNoise()
     {
-        if (eSound.Length > 0)
+        if (enemyNoise.Length > 0)
         {
-            int r=GD.RandRange(0, eSound.Length-1);
+            int r=GD.RandRange(0, enemyNoise.Length-1);
 
-            if (IsInstanceValid(eSound[r]))
-                Globals.PlayRandomizedSound2D(eSound[r]);
+            if (IsInstanceValid(enemyNoise[r]))
+                Globals.PlayRandomizedSound2D(enemyNoise[r]);
 
             await Task.Delay(TimeSpan.FromMilliseconds(GD.RandRange(15000, 25000)));
-            PlayRandomSound(eSound);
+            PlayRandomNoise();
         }
     }
 
@@ -131,54 +118,13 @@ public partial class enemy : RigidBody2D
     {
         if (Globals.playerAlive && !frozen && Visible && !isDead) // move towards player
         {
-            //get distance to player
-            if (flipCounter == 1) // only check distance every 5th time to save processing
-            {
-                dist = GlobalTransform.Origin.DistanceTo(Globals.pl.GlobalPosition);
-                // check occlusion based on dist
-                if (dist<occlusionDistance && occluded==true)
-                {
-                    //occluded = false;
-                    //ShowEnemy();
-                }
-                else
-                if (dist> occlusionDistance+40 && occluded==false)
-                {
-                    //occluded=true;
-                    //HideEnemy();
-                }
-                if (dist> occlusionDistance*1.3+randOcclusionVariance)
-                {
-                    int r = GD.RandRange(1, 2);
-                    if (r==1) //teleport
-                    {
-                        randOcclusionVariance = GD.RandRange(0, 400);
-                        direction = GlobalTransform.Origin.DirectionTo(Globals.pl.GlobalPosition + offset);
-                        Position = Globals.ps.Position+direction * occlusionDistance;
-                        occluded = false;
-                        ShowEnemy();
-                    }
-                    else // kill
-                    {
-                        if (IsInstanceValid(this))
-                        {
-                            Globals.enemies--;
-                            Globals.UpdateEnemies();
-                            Debug.Print("enemy out of range and killing");
-                            this.QueueFree();
-                        }
-                    }
-                }
-
-            }
-
             if ((enemyName == "Skeleton" && enemySprite.Animation == "Attack") || (enemyName == "Evil Eye" && enemySprite.Animation == "Attack")) // don't attack if already attacking
             {
                 // don't move
             }
             else
             {
-                direction = GlobalTransform.Origin.DirectionTo(Globals.pl.GlobalPosition + offset);
+                direction = GlobalTransform.Origin.DirectionTo(Globals.pl.GlobalPosition + new Vector2(0, -36));
                 velocity = direction * speed * poisonSpeed;
 
                 AdjustFlip();
@@ -192,12 +138,15 @@ public partial class enemy : RigidBody2D
                     Attack();
 
                 //Debug.Print("Dist: " + GlobalTransform.Origin.DistanceTo(Globals.pl.GlobalPosition));
-            }  
+
+
+            }
         }
 
         // shorten laser to player
-        if (enemyName=="Evil Eye" && canAttack==false && !occluded) // if lasering
+        if (enemyName=="Evil Eye" && canAttack==false) // if lasering
         {
+            dist = GlobalTransform.Origin.DistanceTo(Globals.pl.GlobalPosition);
             if (dist<400)
             {
                 laser.Scale = new Vector2(dist / 400, laser.Scale.Y);
@@ -241,7 +190,7 @@ public partial class enemy : RigidBody2D
 
     private async void Attack()
     {
-        
+        dist = GlobalTransform.Origin.DistanceTo(Globals.pl.GlobalPosition);
         if (dist < attackRange && !isDead)
         {
             canAttack = false;
@@ -329,11 +278,8 @@ public partial class enemy : RigidBody2D
             bowtime = GD.RandRange(1500, 3400);
             await Task.Delay(TimeSpan.FromMilliseconds(bowtime));
             speed = GD.RandRange(140, 180);
-            if (IsInstanceValid(this))
-            {
-                enemySprite.Animation = "run";
-                enemySprite.Play();
-            }
+            enemySprite.Animation = "run";
+            enemySprite.Play();
         }
     }
 
@@ -352,8 +298,6 @@ public partial class enemy : RigidBody2D
     }
     public void take_damage(float dmg) 
 	{
-        if (Globals.nightMode)
-            dmg *= .5f;
 		health -= dmg;
         DamageBlink();
 
@@ -390,7 +334,7 @@ public partial class enemy : RigidBody2D
             
         // wait a bit
         await Task.Delay(TimeSpan.FromMilliseconds(100));
-        if (enemySprite != null && !isDead && IsInstanceValid(this))
+        if (enemySprite != null && !isDead)
         {
             ShaderMaterial enemyMat = (ShaderMaterial)enemySprite.Material;
             if (enemyMat != null)
@@ -402,7 +346,7 @@ public partial class enemy : RigidBody2D
 
     async void EnemyDrop()
 	{
-		Debug.Print("EnemyDrop");
+		//Debug.Print("EnemyDrop");
 		// wait a second for enemy to explode
         await Task.Delay(TimeSpan.FromMilliseconds(10));
 
@@ -419,12 +363,14 @@ public partial class enemy : RigidBody2D
             nodItems.AddChild(item);
 
             // disable colliders
+            Node colNode = (Node)GetNode("CollisionShape2D2");
+            CollisionShape2D col=(CollisionShape2D)colNode;
             col.Disabled = true;
 
-            //colNode = (Node)GetNode("Occlusion Area Collider");
-            //Area2D col2 = (Area2D)colNode;
-            //col2.CallDeferred("set_monitorable", false);
-            //col2.CallDeferred("set_monitoring", false);
+            colNode = (Node)GetNode("Occlusion Area Collider");
+            Area2D col2 = (Area2D)colNode;
+            col2.CallDeferred("set_monitorable", false);
+            col2.CallDeferred("set_monitoring", false);
 
         }
 
@@ -432,7 +378,6 @@ public partial class enemy : RigidBody2D
 
     private async void KillEnemy()
     {
-        Debug.Print("kill enemy");
         ShaderMaterial enemyMat = (ShaderMaterial)enemySprite.Material;
         if (enemyMat != null) // stop damage flash
             enemyMat.SetShaderParameter("active", false);
@@ -441,13 +386,14 @@ public partial class enemy : RigidBody2D
         float deathDist = GlobalTransform.Origin.DistanceTo(Globals.pl.GlobalPosition)/1100;
         if (deathDist > .4f)
             deathDist = .4f;
-        await Task.Delay(TimeSpan.FromMilliseconds(deathDist*1000));
+        await Task.Delay(TimeSpan.FromMilliseconds(deathDist));
 
 
         enemySprite.Play("Death");
 
         // play death sound
-        PlayRandomSound(enemyDeathSound);
+        if (enemyDeathSound!=null)
+            Globals.PlayRandomizedSound2D(enemyDeathSound);
 
     }
 
@@ -458,9 +404,7 @@ public partial class enemy : RigidBody2D
             //Debug.Print("Death visible=false");
             Globals.enemies--;
             Globals.UpdateEnemies();
-            //Visible = false;
-            if (IsInstanceValid(this)) // don't access disposed nodes
-                this.QueueFree();
+            Visible = false;
         }
 
         if (enemySprite.Animation == "Attack" && enemyName=="Evil Eye")
@@ -524,19 +468,19 @@ public partial class enemy : RigidBody2D
         }
     }
 
-    private void ShowEnemy()
+    // this is when enemy is hidden for efficiency reasons
+    async void MoveTowardsPlayer()
     {
-        enemySprite.Visible = true;
-        Sleeping = true;
-        col.Disabled = false;
+        //Debug.Print("Move TowardsPlayer");
+        await Task.Delay(TimeSpan.FromMilliseconds(1000));
+        if (Globals.playerAlive && IsInstanceValid(this) && Globals.rootNode.GetTree().Paused == false)
+        {
+            Vector2 direction = GlobalTransform.Origin.DirectionTo(pl.GlobalPosition);
+            velocity = direction * speed * poisonSpeed;
+            Position += velocity * (float)1;
+            if (!Visible && !isDead)
+                MoveTowardsPlayer();
+        }
     }
-
-    private void HideEnemy()
-    {
-        enemySprite.Visible = false;
-        Sleeping = false;
-        col.Disabled = true;
-    }
-
 
 }

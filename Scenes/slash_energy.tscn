@@ -13,9 +13,6 @@
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": null
-}, {
-"duration": 1.0,
 "texture": ExtResource("1_yu8gb")
 }, {
 "duration": 1.0,
@@ -49,3 +46,5 @@ animations = [{
 
 [node name="Slash" type="AnimatedSprite2D"]
 sprite_frames = SubResource("SpriteFrames_seomp")
+frame = 8
+frame_progress = 1.0

@@ -11,4 +11,4 @@ amount = 1.0
 amountMax = 0.0
 freq = 1.0
 recoverType = 0
-spriteScale = 0.0
+spriteScale = 0.2

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bedvv8mb5ie0g"
+path="res://.godot/imported/Ambient Vol5 Hall of Idols Main.wav-23cdecc28c1601c76bc93ae0f03faff8.sample"
+
+[deps]
+
+source_file="res://Audio/Music/Ambient Vol5 Hall of Idols Main.wav"
+dest_files=["res://.godot/imported/Ambient Vol5 Hall of Idols Main.wav-23cdecc28c1601c76bc93ae0f03faff8.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

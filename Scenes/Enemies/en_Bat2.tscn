@@ -4,32 +4,32 @@
 [ext_resource type="PackedScene" uid="uid://dncl3kxfnxxyi" path="res://Scenes/Item.tscn" id="2_gh2ca"]
 [ext_resource type="Shader" path="res://Shaders/ColorFlash.gdshader" id="3_3thp2"]
 [ext_resource type="PackedScene" uid="uid://bwf1ntuq71oi1" path="res://Scenes/Blood.tscn" id="3_45cd7"]
-[ext_resource type="Texture2D" uid="uid://d0nu1mvpmu5lj" path="res://Art/Enemy-sprites/FireBat/Bat-death_00.png" id="5_nwrkp"]
-[ext_resource type="Texture2D" uid="uid://4ofqxccq5y3e" path="res://Art/Enemy-sprites/FireBat/Bat-death_01.png" id="6_wbvo5"]
-[ext_resource type="Texture2D" uid="uid://bb0ljaqjkryrs" path="res://Art/Enemy-sprites/FireBat/Bat-death_02.png" id="7_bojxm"]
-[ext_resource type="Texture2D" uid="uid://bclpv8d8yk5nq" path="res://Art/Enemy-sprites/FireBat/Bat-death_03.png" id="8_sapu3"]
-[ext_resource type="Texture2D" uid="uid://775dfh0wn0va" path="res://Art/Enemy-sprites/FireBat/Bat-death_04.png" id="9_qmwbk"]
-[ext_resource type="Texture2D" uid="uid://cw3ggoml444ul" path="res://Art/Enemy-sprites/FireBat/Bat-death_05.png" id="10_2snaw"]
-[ext_resource type="Texture2D" uid="uid://b8kt1rhuol3wt" path="res://Art/Enemy-sprites/FireBat/Bat-death_06.png" id="11_fj08g"]
-[ext_resource type="Texture2D" uid="uid://cwewjw44mcdoa" path="res://Art/Enemy-sprites/FireBat/Bat-death_07.png" id="12_4myj1"]
-[ext_resource type="Texture2D" uid="uid://gn3dwxsi4r83" path="res://Art/Enemy-sprites/FireBat/Bat-death_08.png" id="13_op5x8"]
-[ext_resource type="Texture2D" uid="uid://bp2rwd40fy7cq" path="res://Art/Enemy-sprites/FireBat/Bat-death_09.png" id="14_opo5a"]
-[ext_resource type="Texture2D" uid="uid://c1k5n24e1p0d" path="res://Art/Enemy-sprites/FireBat/Bat-death_10.png" id="15_vyy06"]
-[ext_resource type="Texture2D" uid="uid://ce838fu71ridt" path="res://Art/Enemy-sprites/FireBat/Bat-death_11.png" id="16_05fdu"]
-[ext_resource type="Texture2D" uid="uid://d0w6hg7x50260" path="res://Art/Enemy-sprites/FireBat/Bat-death_12.png" id="17_lq6lw"]
-[ext_resource type="Texture2D" uid="uid://cqgt78qirvajr" path="res://Art/Enemy-sprites/FireBat/Bat-death_13.png" id="18_4rn3t"]
-[ext_resource type="Texture2D" uid="uid://baxhkxnw0xpa" path="res://Art/Enemy-sprites/FireBat/Bat-death_14.png" id="19_6x7nd"]
-[ext_resource type="Texture2D" uid="uid://dabeyubgedbnn" path="res://Art/Enemy-sprites/FireBat/Bat-death_15.png" id="20_4qtc6"]
-[ext_resource type="Texture2D" uid="uid://hn2gd418mooy" path="res://Art/Enemy-sprites/FireBat/Bat-death_16.png" id="21_6j5f8"]
-[ext_resource type="Texture2D" uid="uid://cb1n2ygebpktp" path="res://Art/Enemy-sprites/FireBat/Bat-animation_0.png" id="22_ln245"]
-[ext_resource type="Texture2D" uid="uid://rl115r4ela5o" path="res://Art/Enemy-sprites/FireBat/Bat-animation_1.png" id="23_woj57"]
-[ext_resource type="Texture2D" uid="uid://c5d3pskmjjfu0" path="res://Art/Enemy-sprites/FireBat/Bat-animation_2.png" id="24_1utxs"]
-[ext_resource type="Texture2D" uid="uid://bgb46jljvoura" path="res://Art/Enemy-sprites/FireBat/Bat-animation_3.png" id="25_3gs3v"]
-[ext_resource type="Texture2D" uid="uid://bqkxqfshewf6p" path="res://Art/Enemy-sprites/FireBat/Bat-animation_4.png" id="26_3jvpm"]
-[ext_resource type="Texture2D" uid="uid://dcxoo3nk0m2s3" path="res://Art/Enemy-sprites/FireBat/Bat-animation_5.png" id="27_xh6fh"]
-[ext_resource type="Texture2D" uid="uid://dgapru6gx5po0" path="res://Art/Enemy-sprites/FireBat/Bat-animation_6.png" id="28_h751a"]
-[ext_resource type="Texture2D" uid="uid://wwxrgs5g7l32" path="res://Art/Enemy-sprites/FireBat/Bat-animation_7.png" id="29_2fouj"]
-[ext_resource type="Texture2D" uid="uid://chc2eopse2421" path="res://Art/Enemy-sprites/FireBat/Bat-animation_8.png" id="30_6nu7s"]
+[ext_resource type="Texture2D" uid="uid://b230n6bx2qxvn" path="res://Art/Enemy-sprites/Bat/Bat-animation_0.png" id="4_2t8jh"]
+[ext_resource type="Texture2D" uid="uid://c5x6281yqg3f8" path="res://Art/Enemy-sprites/Bat/Bat-death_00.png" id="4_hcoak"]
+[ext_resource type="Texture2D" uid="uid://d3utisami2ax6" path="res://Art/Enemy-sprites/Bat/Bat-death_01.png" id="5_a02ni"]
+[ext_resource type="Texture2D" uid="uid://cjbf53ssohgrp" path="res://Art/Enemy-sprites/Bat/Bat-animation_1.png" id="5_rurdc"]
+[ext_resource type="Texture2D" uid="uid://dgmp3pkdr086r" path="res://Art/Enemy-sprites/Bat/Bat-death_02.png" id="6_clpvq"]
+[ext_resource type="Texture2D" uid="uid://ca04ghkqyhn7f" path="res://Art/Enemy-sprites/Bat/Bat-animation_2.png" id="6_dly14"]
+[ext_resource type="Texture2D" uid="uid://dcb2kmg8l38x" path="res://Art/Enemy-sprites/Bat/Bat-death_03.png" id="7_boxyx"]
+[ext_resource type="Texture2D" uid="uid://dpajecjk6prgy" path="res://Art/Enemy-sprites/Bat/Bat-animation_3.png" id="7_y45pq"]
+[ext_resource type="Texture2D" uid="uid://cua1ohnlracue" path="res://Art/Enemy-sprites/Bat/Bat-animation_4.png" id="8_4wn12"]
+[ext_resource type="Texture2D" uid="uid://bpq2qh0seybrf" path="res://Art/Enemy-sprites/Bat/Bat-death_04.png" id="8_o5r00"]
+[ext_resource type="Texture2D" uid="uid://brchb4w6e5kry" path="res://Art/Enemy-sprites/Bat/Bat-animation_5.png" id="9_0bgep"]
+[ext_resource type="Texture2D" uid="uid://c3prv3e2l1b32" path="res://Art/Enemy-sprites/Bat/Bat-death_05.png" id="9_gqoh0"]
+[ext_resource type="Texture2D" uid="uid://vmm5baf71wvx" path="res://Art/Enemy-sprites/Bat/Bat-animation_6.png" id="10_2sebw"]
+[ext_resource type="Texture2D" uid="uid://c0p1hxgkqr1nn" path="res://Art/Enemy-sprites/Bat/Bat-death_06.png" id="10_fwjav"]
+[ext_resource type="Texture2D" uid="uid://ck0sbcp4gta16" path="res://Art/Enemy-sprites/Bat/Bat-death_07.png" id="11_bug78"]
+[ext_resource type="Texture2D" uid="uid://bk34x86f3t7lo" path="res://Art/Enemy-sprites/Bat/Bat-animation_7.png" id="11_meea1"]
+[ext_resource type="Texture2D" uid="uid://c47w55doerjvd" path="res://Art/Enemy-sprites/Bat/Bat-death_08.png" id="12_2018v"]
+[ext_resource type="Texture2D" uid="uid://cwq1hew2x1j6y" path="res://Art/Enemy-sprites/Bat/Bat-animation_8.png" id="12_wytb1"]
+[ext_resource type="Texture2D" uid="uid://b11yv1w5kwcvt" path="res://Art/Enemy-sprites/Bat/Bat-death_09.png" id="13_y8ips"]
+[ext_resource type="Texture2D" uid="uid://dqvvll6i5hmb1" path="res://Art/Enemy-sprites/Bat/Bat-death_10.png" id="14_i1nlu"]
+[ext_resource type="Texture2D" uid="uid://2pqbl4yhlwa0" path="res://Art/Enemy-sprites/Bat/Bat-death_11.png" id="15_8bc4q"]
+[ext_resource type="Texture2D" uid="uid://bk4ult6lfcbnm" path="res://Art/Enemy-sprites/Bat/Bat-death_12.png" id="16_lqb0e"]
+[ext_resource type="Texture2D" uid="uid://cffwcoketwret" path="res://Art/Enemy-sprites/Bat/Bat-death_13.png" id="17_nhd2g"]
+[ext_resource type="Texture2D" uid="uid://cravppwdife32" path="res://Art/Enemy-sprites/Bat/Bat-death_14.png" id="18_i8xsk"]
+[ext_resource type="Texture2D" uid="uid://v518pqj6w7lu" path="res://Art/Enemy-sprites/Bat/Bat-death_15.png" id="19_fni0e"]
+[ext_resource type="Texture2D" uid="uid://beqk7at8sgwqx" path="res://Art/Enemy-sprites/Bat/Bat-death_16.png" id="20_73lqo"]
 [ext_resource type="AudioStream" uid="uid://cj243ouwjbnc8" path="res://Audio/SFX/BatNoise1.ogg" id="37_o5evs"]
 [ext_resource type="AudioStream" uid="uid://uow2frulnolw" path="res://Audio/SFX/BatNoise2.ogg" id="38_xrqqb"]
 [ext_resource type="AudioStream" uid="uid://duknboedv3oni" path="res://Audio/SFX/BatNoise3.ogg" id="39_ak4rv"]
@@ -45,96 +45,96 @@ shader_parameter/flash_color = Color(1, 0, 0, 1)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("5_nwrkp")
+"texture": ExtResource("4_hcoak")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_wbvo5")
+"texture": ExtResource("5_a02ni")
 }, {
 "duration": 1.0,
-"texture": ExtResource("7_bojxm")
+"texture": ExtResource("6_clpvq")
 }, {
 "duration": 1.0,
-"texture": ExtResource("8_sapu3")
+"texture": ExtResource("7_boxyx")
 }, {
 "duration": 1.0,
-"texture": ExtResource("9_qmwbk")
+"texture": ExtResource("8_o5r00")
 }, {
 "duration": 1.0,
-"texture": ExtResource("10_2snaw")
+"texture": ExtResource("9_gqoh0")
 }, {
 "duration": 1.0,
-"texture": ExtResource("11_fj08g")
+"texture": ExtResource("10_fwjav")
 }, {
 "duration": 1.0,
-"texture": ExtResource("12_4myj1")
+"texture": ExtResource("11_bug78")
 }, {
 "duration": 1.0,
-"texture": ExtResource("13_op5x8")
+"texture": ExtResource("12_2018v")
 }, {
 "duration": 1.0,
-"texture": ExtResource("14_opo5a")
+"texture": ExtResource("13_y8ips")
 }, {
 "duration": 1.0,
-"texture": ExtResource("15_vyy06")
+"texture": ExtResource("14_i1nlu")
 }, {
 "duration": 1.0,
-"texture": ExtResource("16_05fdu")
+"texture": ExtResource("15_8bc4q")
 }, {
 "duration": 1.0,
-"texture": ExtResource("17_lq6lw")
+"texture": ExtResource("16_lqb0e")
 }, {
 "duration": 1.0,
-"texture": ExtResource("18_4rn3t")
+"texture": ExtResource("17_nhd2g")
 }, {
 "duration": 1.0,
-"texture": ExtResource("19_6x7nd")
+"texture": ExtResource("18_i8xsk")
 }, {
 "duration": 1.0,
-"texture": ExtResource("20_4qtc6")
+"texture": ExtResource("19_fni0e")
 }, {
 "duration": 1.0,
-"texture": ExtResource("21_6j5f8")
+"texture": ExtResource("20_73lqo")
 }],
-"loop": false,
+"loop": true,
 "name": &"Death",
-"speed": 16.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("22_ln245")
+"texture": ExtResource("4_2t8jh")
 }, {
 "duration": 1.0,
-"texture": ExtResource("23_woj57")
+"texture": ExtResource("5_rurdc")
 }, {
 "duration": 1.0,
-"texture": ExtResource("24_1utxs")
+"texture": ExtResource("6_dly14")
 }, {
 "duration": 1.0,
-"texture": ExtResource("25_3gs3v")
+"texture": ExtResource("7_y45pq")
 }, {
 "duration": 1.0,
-"texture": ExtResource("26_3jvpm")
+"texture": ExtResource("8_4wn12")
 }, {
 "duration": 1.0,
-"texture": ExtResource("27_xh6fh")
+"texture": ExtResource("9_0bgep")
 }, {
 "duration": 1.0,
-"texture": ExtResource("28_h751a")
+"texture": ExtResource("10_2sebw")
 }, {
 "duration": 1.0,
-"texture": ExtResource("29_2fouj")
+"texture": ExtResource("11_meea1")
 }, {
 "duration": 1.0,
-"texture": ExtResource("30_6nu7s")
+"texture": ExtResource("12_wytb1")
 }],
 "loop": true,
 "name": &"default",
-"speed": 18.0
+"speed": 20.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nqx1y"]
-radius = 20.0
-height = 40.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3bk0"]
+radius = 19.9795
+height = 39.9591
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tilnt"]
 
@@ -148,30 +148,28 @@ script = ExtResource("1_nt4iv")
 health = 12.0
 speed = 90.0
 itemScene = ExtResource("2_gh2ca")
-damageType = 2
 damage = 20
 XP = 7
 enemyNoise = [NodePath("enemyNoise"), NodePath("enemyNoise2"), NodePath("enemyNoise3")]
-enemyDeathSound = [NodePath("enemyDeathSound")]
+enemyDeathSound = NodePath("enemyDeathSound")
 bloodScene = ExtResource("3_45cd7")
 bloodColor = Color(1, 0.301961, 0.513726, 0.752941)
 bloodFrame = 10
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-modulate = Color(1, 1, 0.952941, 1)
+modulate = Color(1, 0.117647, 0.219608, 1)
 texture_filter = 1
 material = SubResource("ShaderMaterial_boo5v")
-position = Vector2(0, -13)
+position = Vector2(1, 10)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_nyuw3")
 animation = &"Death"
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-editor_description = "small physics circle"
-position = Vector2(0, 1)
+position = Vector2(4.76837e-07, -4)
 rotation = 0.00420356
 scale = Vector2(0.919833, 1)
-shape = SubResource("CapsuleShape2D_nqx1y")
+shape = SubResource("CapsuleShape2D_j3bk0")
 
 [node name="Occlusion Area Collider" type="Area2D" parent="." groups=["Occlusion"]]
 collision_layer = 4

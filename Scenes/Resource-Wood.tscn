@@ -12,8 +12,7 @@ resource_local_to_scene = true
 shader = ExtResource("1_pnngt")
 shader_parameter/saturation = 1.0
 
-[sub_resource type="Resource" id="Resource_be5o7"]
-resource_local_to_scene = true
+[sub_resource type="Resource" id="Resource_2r7ac"]
 script = ExtResource("2_l2fjf")
 sprImage = ExtResource("3_hgklo")
 resourceType = 3
@@ -40,14 +39,14 @@ gradient = SubResource("Gradient_mrxxq")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
-[node name="Resource" type="Sprite2D" groups=["Occlusion"]]
+[node name="Resource" type="Sprite2D"]
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_t7s0j")
 texture = ExtResource("3_hgklo")
 centered = false
 offset = Vector2(-180, -220)
 script = ExtResource("1_g74qy")
-RDResource = SubResource("Resource_be5o7")
+RDResource = SubResource("Resource_2r7ac")
 resourceCaptureSpeed = 0.8
 choppedTrees = ExtResource("5_ms2w4")
 
@@ -59,10 +58,7 @@ shape = SubResource("CircleShape2D_5yecl")
 [node name="CaptureTimer" parent="." instance=ExtResource("4_7s3b0")]
 scale = Vector2(1.36008, 1.53771)
 
-[node name="Occlusion Area Collider" type="Area2D" parent="." groups=["Occlusion"]]
-collision_layer = 4
-collision_mask = 0
-monitoring = false
+[node name="Occlusion Area Collider" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Occlusion Area Collider"]
 scale = Vector2(140, 90)
@@ -83,4 +79,6 @@ texture = SubResource("GradientTexture2D_dbe4t")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
+[connection signal="area_entered" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_entered"]
+[connection signal="area_exited" from="Occlusion Area Collider" to="." method="_on_occlusion_area_collider_area_exited"]
 [connection signal="area_entered" from="Discovery Area Collider" to="." method="OnDiscoveryColliderEnter"]

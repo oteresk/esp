@@ -27,13 +27,16 @@ public partial class StatUpgrade : MarginContainer
         DelayedStart();
         Tween tween = GetTree().CreateTween();
         tween.Parallel().TweenProperty(image, "scale", new Vector2(.95f, .95f), .2f);
+
+        Node nodMusic = GetNode("/root/StatUpgrades/statsMusic");
+        statsMusic = (AudioStreamPlayer)nodMusic;
         
     }
 
 	public async void DelayedStart()
     {
         // wait a bit
-        await Task.Delay(TimeSpan.FromMilliseconds(20));
+        await Task.Delay(TimeSpan.FromMilliseconds(300));
 
         StatUpgrades.lblGold.Text=ResourceDiscoveries.gold.ToString();
 
@@ -97,7 +100,7 @@ public partial class StatUpgrade : MarginContainer
     public void UpdateSlots()
     {
         slots = Globals.statUpgradeLevel[upgradeNum];
-        Debug.Print("Slots:"+ upgradeNum+" - " + slots);
+        //Debug.Print("Slots:" + slots);
         if (IsInstanceValid(imgSlot1))
         {
             if (slots == 0)
@@ -201,28 +204,25 @@ public partial class StatUpgrade : MarginContainer
     // changes upgrade image to gold if can afford or silver if can't
     public void CheckCanAfford()
     {
-        if (IsInstanceValid(this))
-            {
-            if (Globals.statUpgradeLevel[upgradeNum] > Globals.MAXUPGRADES - 1)
-            {
-                //  unselected
-                image.Modulate = new Color(1, 1, 1, .5f);
-                return;
-            }
+        if (Globals.statUpgradeLevel[upgradeNum] > Globals.MAXUPGRADES - 1)
+        {
+            //  unselected
+            image.Modulate = new Color(1, 1, 1, .5f);
+            return;
+        }
 
-            if (Globals.coststatUpgrade[upgradeNum, Globals.statUpgradeLevel[upgradeNum]] <= ResourceDiscoveries.gold)
-            {
-                // selected
-                //image.Visible = true;
-                if (IsInstanceValid(image))
-                    image.Modulate = new Color(1, 1, 1, 1f);
-            }
-            else
-            {
-                // , unselected
-                if (IsInstanceValid(image))
-                    image.Modulate = new Color(1, 1, 1, .5f);
-            }
+        if (Globals.coststatUpgrade[upgradeNum, Globals.statUpgradeLevel[upgradeNum]] <= ResourceDiscoveries.gold)
+        {
+            // selected
+            //image.Visible = true;
+            if (IsInstanceValid(image))
+                image.Modulate = new Color(1, 1, 1, 1f);
+        }
+        else
+        {
+            // , unselected
+            if (IsInstanceValid(image))
+                image.Modulate = new Color(1, 1, 1, .5f);
         }
     }
 

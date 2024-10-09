@@ -63,7 +63,7 @@ public partial class AttackSlash : Area2D
 
     public void SetAOE()
     {
-        AOE = (baseAOE + AOELevel * AOEInc+(Globals.statAoE * AOEInc))/2;
+        AOE = baseAOE + AOELevel * AOEInc+(Globals.statAoE * AOEInc);
         if (IsInstanceValid(this))
            Scale=new Vector2(AOE,AOE);
         //Debug.Print("SetAoE");
@@ -250,10 +250,6 @@ public partial class AttackSlash : Area2D
                 SetAttackSpeed();
                 break;
         }
-        // limit attack upgrade levels
-        dmgLevel = Math.Min(dmgLevel, Globals.maxAttackLevel);
-        AOELevel = Math.Min(AOELevel, Globals.maxAttackLevel);
-        attackSpeedLevel = Math.Min(attackSpeedLevel, Globals.maxAttackLevel);
     }
 
     public void OnBodyEntered(Node2D body) // enemy

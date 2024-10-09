@@ -1,10 +1,9 @@
-[gd_scene load_steps=181 format=3 uid="uid://bj68a1718682m"]
+[gd_scene load_steps=182 format=3 uid="uid://bj68a1718682m"]
 
 [ext_resource type="Script" path="res://Scripts/player.cs" id="1_kjyyd"]
 [ext_resource type="Shader" path="res://Shaders/GodRays.gdshader" id="2_o1qhm"]
 [ext_resource type="Texture2D" uid="uid://b3igky0q8qf8c" path="res://Art/Hero-sprites/Player-Attack_1.png" id="3_hj7v1"]
 [ext_resource type="Texture2D" uid="uid://dchrtjh225qbj" path="res://Art/Hero-sprites/Player-Attack_2.png" id="4_5mh2d"]
-[ext_resource type="FontFile" uid="uid://bkjpjbwrgwmgj" path="res://Fonts/vinque rg.otf" id="5_mpaqf"]
 [ext_resource type="Texture2D" uid="uid://d2sv6rdxcmnuv" path="res://Art/Hero-sprites/Player-Attack_3.png" id="5_xfopp"]
 [ext_resource type="Texture2D" uid="uid://cyc1nxpri23oh" path="res://Art/Hero-sprites/Player-Attack_4.png" id="6_qx6kv"]
 [ext_resource type="Texture2D" uid="uid://bn4uogls8i6a4" path="res://Art/Hero-sprites/Flame_Player-Attack_1.png" id="7_ho65e"]
@@ -162,13 +161,14 @@
 [ext_resource type="Texture2D" uid="uid://dn4tigb54g5u3" path="res://Art/Hero-sprites/Flame_Player-Walk_14.png" id="141_5role"]
 [ext_resource type="Texture2D" uid="uid://cqbtk1toe6338" path="res://Art/Hero-sprites/Flame_Player-Walk_15.png" id="142_bkn2f"]
 [ext_resource type="Texture2D" uid="uid://chydsg056khai" path="res://Art/Hero-sprites/Flame_Player-Walk_16.png" id="143_2kbw4"]
+[ext_resource type="FontFile" uid="uid://blv8i47j34igf" path="res://Fonts/CloisterBlack.ttf" id="161_28ixg"]
 [ext_resource type="Texture2D" uid="uid://duc3yrtenakjo" path="res://Art/GUI/StatUpgrades/Button Small.png" id="162_rwui1"]
 [ext_resource type="Texture2D" uid="uid://vy0172p8d6bq" path="res://Art/GUI/StatUpgrades/Button_Disabled.png" id="163_1mo48"]
 [ext_resource type="Texture2D" uid="uid://ccbsebicl0cl7" path="res://Art/GUI/StatUpgrades/Button Small_Hover.png" id="163_xdepo"]
 [ext_resource type="AudioStream" uid="uid://du7h1878ks1mo" path="res://Audio/SFX/GainLevel.ogg" id="166_eb023"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_cu0p3"]
-font = ExtResource("5_mpaqf")
+font = ExtResource("161_28ixg")
 font_size = 50
 font_color = Color(0.301961, 0.360784, 0.133333, 1)
 
@@ -663,50 +663,50 @@ shader_parameter/seed = 2.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tac1t"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_4jkrr"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5nqbr"]
 atlas = ExtResource("23_ir632")
-region = Rect2(0, 0, 57, 58)
+region = Rect2(480, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_1pflv"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_6uonw"]
 atlas = ExtResource("23_ir632")
-region = Rect2(57, 0, 57, 58)
+region = Rect2(384, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_dvsgv"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_p2w23"]
 atlas = ExtResource("23_ir632")
-region = Rect2(114, 0, 57, 58)
+region = Rect2(288, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_kfjl3"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_yw10x"]
 atlas = ExtResource("23_ir632")
-region = Rect2(171, 0, 57, 58)
+region = Rect2(192, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ebxu6"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5a2mr"]
 atlas = ExtResource("23_ir632")
-region = Rect2(228, 0, 57, 58)
+region = Rect2(96, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_rx573"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_u33e7"]
 atlas = ExtResource("23_ir632")
-region = Rect2(285, 0, 57, 58)
+region = Rect2(0, 0, 96, 96)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ul1vv"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_4jkrr")
+"texture": SubResource("AtlasTexture_5nqbr")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_1pflv")
+"texture": SubResource("AtlasTexture_6uonw")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_dvsgv")
+"texture": SubResource("AtlasTexture_p2w23")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_kfjl3")
+"texture": SubResource("AtlasTexture_yw10x")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ebxu6")
+"texture": SubResource("AtlasTexture_5a2mr")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_rx573")
+"texture": SubResource("AtlasTexture_u33e7")
 }],
 "loop": true,
 "name": &"default",
@@ -719,7 +719,11 @@ bg_color = Color(0.462745, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lc6ir"]
 bg_color = Color(1, 0, 0.0980392, 1)
 
-[node name="Player" type="Area2D" node_paths=PackedStringArray("magnetismShape", "itemIconSpeed", "itemIconAttackSpeed", "itemIconDamage", "itemIconAoE", "itemIconShield", "txtSpeed", "txtAtkSpeed", "txtDamage", "txtAoE", "txtShield", "shield", "sndHurtPlayer", "sndHurtPlayer2", "sndDash", "sndPlayerDeath", "sndWarp", "sndRingingLoop", "sndGainLevel", "btnBack", "GodRays") groups=["Player"]]
+[sub_resource type="LabelSettings" id="LabelSettings_yxpro"]
+font = ExtResource("161_28ixg")
+font_size = 52
+
+[node name="Player" type="Area2D" node_paths=PackedStringArray("magnetismShape", "itemIconSpeed", "itemIconAttackSpeed", "itemIconDamage", "itemIconAoE", "itemIconShield", "txtSpeed", "txtAtkSpeed", "txtDamage", "txtAoE", "txtShield", "shield", "sndHurtPlayer", "sndHurtPlayer2", "sndDash", "sndPlayerDeath", "sndWarp", "sndRingingLoop", "sndGainLevel", "lblTime", "btnBack", "GodRays") groups=["Player"]]
 y_sort_enabled = true
 collision_mask = 6
 script = ExtResource("1_kjyyd")
@@ -742,6 +746,7 @@ sndPlayerDeath = NodePath("Sounds/sndPlayerDeath")
 sndWarp = NodePath("Sounds/sndWarp")
 sndRingingLoop = NodePath("Sounds/sndRingingLoop")
 sndGainLevel = NodePath("Sounds/sndGainLevel")
+lblTime = NodePath("lblTime")
 btnBack = NodePath("TextureButton")
 GodRays = NodePath("AnimatedSprite2D/GodRays")
 metadata/_edit_group_ = true
@@ -781,13 +786,13 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-position = Vector2(-0.5, -42.5)
-scale = Vector2(2, 2)
+position = Vector2(-2, -81)
+scale = Vector2(4, 3)
 shape = SubResource("CapsuleShape2D_538jq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-position = Vector2(27.5, -50.5)
+position = Vector2(52, -89)
 sprite_frames = SubResource("SpriteFrames_7cwag")
 animation = &"attack"
 
@@ -812,14 +817,13 @@ rotation = 3.14159
 modulate = Color(1, 1, 1, 0.498039)
 z_index = 999
 texture_filter = 1
-position = Vector2(27.5, -50.5)
+position = Vector2(52, -89)
 sprite_frames = SubResource("SpriteFrames_7cwag")
-animation = &"idle"
+animation = &"attack"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="MagnetismArea2D" type="Area2D" parent="."]
-position = Vector2(1.5, 38.5)
 collision_layer = 0
 collision_mask = 4
 
@@ -828,12 +832,10 @@ position = Vector2(0, -82)
 shape = SubResource("CircleShape2D_tac1t")
 
 [node name="ItemIcons" type="Node2D" parent="."]
-position = Vector2(1.5, 40)
-scale = Vector2(0.8, 0.8)
 
 [node name="ItemIconSpeed" type="Sprite2D" parent="ItemIcons"]
 visible = false
-position = Vector2(2, -194.87)
+position = Vector2(0, -221)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("13_cyfdm")
 
@@ -889,10 +891,10 @@ texture = ExtResource("22_e1mk8")
 [node name="Shield" type="AnimatedSprite2D" parent="."]
 visible = false
 modulate = Color(1, 1, 1, 0.541176)
-position = Vector2(0, -41)
+position = Vector2(0, -82)
 scale = Vector2(4.4, 4.4)
 sprite_frames = SubResource("SpriteFrames_ul1vv")
-frame_progress = 0.796817
+frame_progress = 0.267013
 speed_scale = 2.0
 
 [node name="HPBar" type="ProgressBar" parent="."]
@@ -900,12 +902,11 @@ z_index = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -23.0
-offset_top = 4.0
-offset_right = 77.0
-offset_bottom = 10.0
+offset_left = -50.0
+offset_top = 13.0
+offset_right = 50.0
+offset_bottom = 19.0
 grow_horizontal = 2
-scale = Vector2(0.5, 0.5)
 mouse_filter = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_evnss")
 theme_override_styles/fill = SubResource("StyleBoxFlat_lc6ir")
@@ -942,6 +943,22 @@ bus = &"SFX"
 [node name="sndGainLevel" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("166_eb023")
 bus = &"SFX"
+
+[node name="lblTime" type="Label" parent="."]
+visible = false
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.5
+offset_top = -270.0
+offset_right = 40.5
+offset_bottom = -244.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+label_settings = SubResource("LabelSettings_yxpro")
+horizontal_alignment = 1
 
 [connection signal="area_entered" from="." to="." method="OnAreaEntered"]
 [connection signal="area_exited" from="." to="." method="OnAreaExited"]
