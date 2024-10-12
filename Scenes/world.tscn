@@ -173,7 +173,7 @@ shader_parameter/block_size = 20.0
 shader_parameter/starting_colour = Vector4(1, 1, 1, 0.8)
 shader_parameter/ending_colour = Vector4(1, 1, 1, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_g64cp"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_liv2t"]
 resource_local_to_scene = true
 shader = ExtResource("42_acbwv")
 shader_parameter/alpha = 0.0
@@ -473,6 +473,7 @@ label_settings = SubResource("LabelSettings_7qdhh")
 vertical_alignment = 1
 
 [node name="ManaOverlay" type="TextureRect" parent="GUI"]
+visible = false
 self_modulate = Color(1, 0, 1, 1)
 anchors_preset = 5
 anchor_left = 0.5
@@ -1146,7 +1147,7 @@ theme_override_constants/margin_bottom = 30
 layout_mode = 2
 
 [node name="SubViewportContainer" parent="MiniMapCanvas/Control2/Control/MarginContainer/ctlSub" instance=ExtResource("36_hw51v")]
-material = SubResource("ShaderMaterial_g64cp")
+material = SubResource("ShaderMaterial_liv2t")
 custom_minimum_size = Vector2(362, 370)
 layout_mode = 0
 anchors_preset = 0
