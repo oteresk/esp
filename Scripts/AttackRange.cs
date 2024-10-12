@@ -93,6 +93,9 @@ public partial class AttackRange : Area2D
 
     public void Shoot()
     {
+        // check mana here
+        //Debug.Print("Mana Use:" + Globals.GetManaUse());
+
         // play sound
         Globals.PlayRandomizedSound(sndProjectile);
 

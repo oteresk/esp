@@ -189,31 +189,31 @@ public partial class StructureSelect : Control
 
     private void AdjustStats(int strucNum) // adjust player stats for structures that increase stats
     {
-        if (strucNum == 0) // alchemy lab - inc research
+        if (strucNum == 7) // alchemy lab - inc research
         {
             ResourceDiscoveries.research++;
             ResourceDiscoveries.UpdateResourceGUI();
             Stats.UpdateStats();
         }
 
-        if (strucNum == 1) // armory - inc armor
+        if (strucNum == 0) // armory - inc armor
         {
             Globals.armorLevel++;
         }
 
-        if (strucNum == 3) // Herbalist - inc max HP
+        if (strucNum == 2) // Herbalist - inc max HP
         {
             Globals.HPLevel++;
             Globals.SetMaxHP();
         }
 
-        if (strucNum == 4) // lode stone - inc magnetism
+        if (strucNum == 3) // lode stone - inc magnetism
         {
             Globals.magenetismLevel++;
             Globals.SetMagnetism();
         }
 
-        if (strucNum == 7) // Training Center - inc player speed
+        if (strucNum == 6) // Training Center - inc player speed
         {
             Globals.speedLevel++;
         }
